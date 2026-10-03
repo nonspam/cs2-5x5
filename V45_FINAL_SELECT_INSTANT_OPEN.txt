@@ -1,0 +1,7 @@
+V45 FINAL SELECT INSTANT OPEN
+Base: V44 FINAL SELECT OPEN SPEED.
+Select-only performance fix.
+Removed expensive :has(.custom-select.open) selector; explicit host class is used.
+Select opens on pointerdown for immediate visual response.
+Opening closes only the active custom select instead of scanning the entire document.
+No map assets, data, page-scroll logic, Supabase, favicon, or unrelated files changed.

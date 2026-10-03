@@ -1,0 +1,16 @@
+const fs=require('fs');
+const app=fs.readFileSync('app.js','utf8');
+const css=fs.readFileSync('style.css','utf8');
+const data=JSON.parse(fs.readFileSync('data/maps.json','utf8')).maps;
+const active=data.filter(x=>x.archived!==true);
+const nums=active.map(x=>Number(String(x.map_id).match(/(\d+)$/)?.[1]||0)).filter(Boolean).sort((a,b)=>b-a);
+const assert=(ok,msg)=>{if(!ok)throw Error(msg)};
+assert(nums.length===61,'Expected 61 active maps');
+assert(nums[0]===61 && nums[nums.length-1]===1,'Active map range must be 61..1');
+assert(app.includes('activeMapNumber(b.mp.map_id)-activeMapNumber(a.mp.map_id)'),'All Games must sort by descending map number');
+assert(css.includes("url('assets/maps/nuke.svg')!important"),'Hero must use local Nuke asset');
+assert(!css.includes("background-image:linear-gradient(90deg,rgba(5,12,20,.90) 0%,rgba(5,12,20,.68) 43%,rgba(5,12,20,.18) 78%),url('assets/maps/mirage.svg')!important"),'Stale Mirage hero override must be absent');
+assert(css.includes('.home-info .promo-mark{font-size:22px!important'),'Bottom-right CS2 mark must fit card');
+console.log('V56 QA PASS');
+console.log('Active maps:',nums.length,'range:',nums[0]+'..'+nums[nums.length-1]);
+console.log('Hero asset: Nuke');

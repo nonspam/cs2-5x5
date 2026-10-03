@@ -1,0 +1,23 @@
+const fs=require('fs'), path=require('path');
+const root=__dirname;
+const read=(f)=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
+const P=read('data/players.json').players;
+const M=read('data/maps.json').maps;
+const S=read('data/matches.json').matches;
+const A=read('data/aliases.json').aliases;
+function assert(x,msg){if(!x)throw new Error(msg)}
+assert(P.length===14,'players total');
+assert(P.filter(x=>x.is_active!==false && x.status!=='archived').length===13,'active players');
+assert(M.length===67,'maps total');
+assert(M.filter(x=>x.archived!==true).length===61,'active maps');
+assert(S.length===33,'matches total');
+assert(S.filter(x=>x.archived!==true).length===30,'active matches');
+assert(S.filter(x=>x.format==='BO1').length===7,'BO1 total');
+assert(S.filter(x=>x.format==='BO3').length===26,'BO3 total');
+assert(S.filter(x=>x.archived===true).length===3,'trash matches');
+assert(M.filter(x=>x.archived===true).length===6,'trash maps');
+for(const s of S) for(const id of s.map_ids) assert(M.some(m=>m.map_id===id&&m.match_id===s.match_id),'orphan/relation '+id);
+assert(P.some(x=>x.player_id==='FLAFF1X'),'FLAFF1X present');
+assert(P.some(x=>x.player_id==='Romanchestr'&&x.is_active===true),'Romanchestr present');
+assert(P.some(x=>x.player_id==='player_new'&&x.is_active===false),'archived duplicate preserved');
+console.log(JSON.stringify({PASS:true,total:{players:P.length,maps:M.length,matches:S.length},active:{players:13,maps:61,matches:30},trash:{maps:6,matches:3}},null,2));

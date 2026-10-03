@@ -1,0 +1,6 @@
+V44 FINAL SELECT OPEN SPEED
+Base: V43 FINAL SELECT AUTO WIDTH.
+Only app_v57.js custom-select opening path changed.
+Removed forced menu.scrollHeight layout reads during open/positioning.
+Removed selected-item scroll calculation during open.
+No CSS, maps, data, page-scroll system, Supabase, favicon, or other files changed.

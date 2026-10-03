@@ -1,0 +1,5 @@
+V32 DEVICE READY
+Base: V31 MOBILE HARDENED
+Runtime: app_v57.js + style_v57.css
+No database/data changes.
+Prepared for final cross-device functional QA.

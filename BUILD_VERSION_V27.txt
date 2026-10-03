@@ -1,0 +1,4 @@
+CS2_ANALYTICS_V58_3_V27_MICRO_FIXES
+Base: V26 Peter Fortress Favicon
+Runtime: app_v57.js / style_v57.css
+Cloud state: version 36

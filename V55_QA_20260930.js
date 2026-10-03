@@ -1,0 +1,25 @@
+const fs=require('fs');
+const app=fs.readFileSync('app.js','utf8');
+const css=fs.readFileSync('style.css','utf8');
+const matches=JSON.parse(fs.readFileSync('data/matches.json','utf8')).matches;
+const maps=JSON.parse(fs.readFileSync('data/maps.json','utf8')).maps;
+const active=maps.filter(x=>x.archived!==true).sort((a,b)=>{const na=Number(String(a.map_id).match(/(\d+)$/)?.[1]||0),nb=Number(String(b.map_id).match(/(\d+)$/)?.[1]||0);return na-nb});
+const checks=[];
+const ok=(name,pass,detail='')=>checks.push({name,pass,detail});
+ok('active map count is 61',active.length===61,String(active.length));
+ok('latest active map is #61',active.at(-1)?.map_id==='map_061',active.at(-1)?.map_id);
+ok('history window is 61..51',app.includes('historyMs.slice(0,11)')&&app.includes('#${activeMapNumber(historyMs[0].map_id)||\'—\'}'), 'static');
+ok('game rows use active map number',app.includes('ИГРА ${n||\'—\'}'), 'static');
+ok('player form shows lowercase avg and colored KD',app.includes('avg ${fmt(w.avg,2)}')&&app.includes("kdMarkupValue(w.kd,'K/D ')"), 'static');
+ok('eras show lowercase avg and colored KD',app.includes('avg ${fmt(e.avg,2)}')&&app.includes("kdMarkupValue(e.kd,'K/D ')"), 'static');
+ok('detailed player maps render colored KDA and blue MVP',app.includes('map-kda ${kdClass(r.kills,r.deaths)}')&&app.includes('class="map-mvp-link"'), 'static');
+ok('team quick add removed; bottom roster remains',!app.includes('БЫСТРЫЙ НАБОР ИГРОКОВ')&&app.includes('roster-list'), 'static');
+ok('Nuke hero restored',app.includes("url('assets/maps/nuke.svg')")&&css.includes("background-image:linear-gradient"), 'static');
+ok('CS2 Analytics promo restored',app.includes('promo-mark">CS2 <span>ANALYTICS'), 'static');
+ok('score colors defined',css.includes('.score-positive')&&css.includes('.score-negative'), 'static');
+ok('history map row has blue number and white map name',app.includes('map-history-index')&&app.includes('map-history-name'), 'static');
+ok('history row has no MVP text',!app.includes('all-map-history-row')||!app.match(/all-map-history-row[\s\S]{0,500}mapMvp\(/), 'static');
+ok('map numbering follows map id',app.includes('function activeMapNumber(mapId)')&&app.includes('return n||null}'), 'static');
+
+console.log(JSON.stringify({PASS:checks.every(x=>x.pass),checks},null,2));
+if(!checks.every(x=>x.pass))process.exit(1);

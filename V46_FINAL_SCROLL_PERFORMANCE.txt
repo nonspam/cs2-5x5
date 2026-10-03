@@ -1,0 +1,5 @@
+V46 FINAL SCROLL PERFORMANCE
+Base: V45 FINAL SELECT INSTANT OPEN.
+Only style_v57.css changed.
+Global html scroll-behavior changed from smooth to native auto.
+No JS, maps, data, select logic, Supabase, favicon, or other files changed.

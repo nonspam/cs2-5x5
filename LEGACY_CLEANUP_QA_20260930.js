@@ -1,0 +1,13 @@
+const fs=require('fs'),path=require('path'),root=__dirname;
+const app=fs.readFileSync(path.join(root,'app.js'),'utf8');
+const embedded=fs.readFileSync(path.join(root,'data_embedded.js'),'utf8');
+const readme=fs.readFileSync(path.join(root,'README.md'),'utf8');
+const checks=[];const ok=(name,pass,detail='')=>checks.push({name,pass:!!pass,detail});
+ok('hardcoded offline password removed',!app.includes('черный флаг')&&!app.includes('ammo19'));
+ok('legacy embedded global removed',!embedded.includes('CS5_EMBEDDED_DATA')&&embedded.includes('CS2_EMBEDDED_DATA'));
+ok('current storage namespace is CS2',app.includes('cs2_analytics_base_override')&&app.includes('cs2_analytics_additions')&&app.includes('cs2_analytics_audit_log'));
+ok('legacy storage migration exists',app.includes('function migrateLegacyStorage')&&app.includes("['cs5_base_override','cs2_analytics_base_override']"));
+ok('cloud login remains Supabase-backed',app.includes('CS2Cloud.signIn(u,pw)')&&app.includes('state.cloudMode'));
+ok('local server admin has explicit mode',app.includes('if(state.serverSync)')&&app.includes('Локальная админка открыта'));
+ok('documentation no longer exposes password',!readme.includes('ammo19')&&!readme.includes('черный флаг'));
+const failed=checks.filter(x=>!x.pass);console.log(JSON.stringify({PASS:!failed.length,checks},null,2));process.exitCode=failed.length?1:0;

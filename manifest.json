@@ -1,0 +1,27 @@
+{
+  "name": "CS2 Analytics",
+  "short_name": "CS2 Analytics",
+  "description": "Персональная аналитика матчей, карт и игроков CS2.",
+  "version": "58.3.0",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080a0c",
+  "theme_color": "#080a0c",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

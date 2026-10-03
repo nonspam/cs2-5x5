@@ -1,0 +1,2 @@
+V40 FINAL METRIC-ONLY FIX
+Base: V35 FINAL FIX. Only app_v57.js custom metric select changed: immediate open + downward positioning. No maps/CSS/data/scroll/Supabase/other tabs changed.

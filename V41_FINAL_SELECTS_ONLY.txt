@@ -1,0 +1,5 @@
+V41 FINAL SELECTS ONLY
+Base: V40 FINAL METRIC ONLY FIX.
+Scope: custom selection/dropdown UI only, used by Home, Match Creation, Maps, Records.
+Changes: immediate open path preserved; selected-item auto-scroll removed; inner dropdown scrollbar hidden while wheel/touch scrolling remains.
+No map assets, page scrolling, data, Supabase, or unrelated tabs changed.

@@ -1,0 +1,169 @@
+{
+  "suite": "CS2 Analytics V34 offline Chromium smoke test",
+  "method": "Real headless Chromium with local CSS/JS inlined into about:blank because sandbox blocks localhost/file navigation.",
+  "scope": "Bundled-data/offline UI and primary navigation; Supabase SDK/network excluded, cloud connectivity not covered.",
+  "passed": 16,
+  "failed": 0,
+  "results": [
+    {
+      "viewport": "desktop",
+      "size": "1365x900",
+      "checks": [
+        {
+          "check": "document title",
+          "passed": true,
+          "detail": "CS2 Analytics — матчи, карты, игроки"
+        },
+        {
+          "check": "primary navigation rendered",
+          "passed": true,
+          "detail": "buttons=6"
+        },
+        {
+          "check": "home view rendered",
+          "passed": true,
+          "detail": "characters=1767"
+        },
+        {
+          "check": "bundled dataset visible",
+          "passed": true,
+          "detail": "66 maps visible"
+        },
+        {
+          "check": "home metric selector updates without page jump",
+          "passed": true,
+          "detail": [
+            {
+              "metric": "diff",
+              "passed": true,
+              "before": 0,
+              "after": 0
+            }
+          ]
+        },
+        {
+          "check": "tab render timing stays lightweight",
+          "passed": true,
+          "detail": [
+            {
+              "label": "⌂ ГЛАВНАЯ",
+              "ms": 74.9
+            },
+            {
+              "label": "▥ СТАТИСТИКА",
+              "ms": 55.8
+            },
+            {
+              "label": "▤ МАТЧИ",
+              "ms": 44.6
+            },
+            {
+              "label": "◫ КАРТЫ",
+              "ms": 72.4
+            },
+            {
+              "label": "♟ СОСТАВЫ",
+              "ms": 51.6
+            },
+            {
+              "label": "♜ РЕКОРДЫ",
+              "ms": 75.1
+            }
+          ]
+        },
+        {
+          "check": "navigation interactions",
+          "passed": true,
+          "detail": "[{\"label\": \"⌂ ГЛАВНАЯ\", \"passed\": true, \"view_chars\": 1772}, {\"label\": \"▥ СТАТИСТИКА\", \"passed\": true, \"view_chars\": 828}, {\"label\": \"▤ МАТЧИ\", \"passed\": true, \"view_chars\": 2367}, {\"label\": \"◫ КАРТЫ\", \"passed\": true, \"view_chars\": 1766}, {\"label\": \"♟ СОСТАВЫ\", \"passed\": true, \"view_chars\": 1206}, {\"label\": \"♜ РЕКОРДЫ\", \"passed\": true, \"view_chars\": 4303}]"
+        },
+        {
+          "check": "no uncaught JavaScript errors",
+          "passed": true,
+          "detail": "[]"
+        }
+      ],
+      "javascript_errors": [],
+      "screenshot": "BROWSER_SMOKE_V34_desktop.png"
+    },
+    {
+      "viewport": "mobile",
+      "size": "390x844",
+      "checks": [
+        {
+          "check": "document title",
+          "passed": true,
+          "detail": "CS2 Analytics — матчи, карты, игроки"
+        },
+        {
+          "check": "primary navigation rendered",
+          "passed": true,
+          "detail": "buttons=6"
+        },
+        {
+          "check": "home view rendered",
+          "passed": true,
+          "detail": "characters=1767"
+        },
+        {
+          "check": "bundled dataset visible",
+          "passed": true,
+          "detail": "66 maps visible"
+        },
+        {
+          "check": "home metric selector updates without page jump",
+          "passed": true,
+          "detail": [
+            {
+              "metric": "diff",
+              "passed": true,
+              "before": 525,
+              "after": 525
+            }
+          ]
+        },
+        {
+          "check": "tab render timing stays lightweight",
+          "passed": true,
+          "detail": [
+            {
+              "label": "ГЛАВНАЯ",
+              "ms": 66.1
+            },
+            {
+              "label": "СТАТИСТИКА",
+              "ms": 54.9
+            },
+            {
+              "label": "МАТЧИ",
+              "ms": 39.8
+            },
+            {
+              "label": "КАРТЫ",
+              "ms": 65.1
+            },
+            {
+              "label": "СОСТАВЫ",
+              "ms": 54.5
+            },
+            {
+              "label": "РЕКОРДЫ",
+              "ms": 64.3
+            }
+          ]
+        },
+        {
+          "check": "navigation interactions",
+          "passed": true,
+          "detail": "[{\"label\": \"ГЛАВНАЯ\", \"passed\": true, \"view_chars\": 1772}, {\"label\": \"СТАТИСТИКА\", \"passed\": true, \"view_chars\": 828}, {\"label\": \"МАТЧИ\", \"passed\": true, \"view_chars\": 2367}, {\"label\": \"КАРТЫ\", \"passed\": true, \"view_chars\": 1766}, {\"label\": \"СОСТАВЫ\", \"passed\": true, \"view_chars\": 1206}, {\"label\": \"РЕКОРДЫ\", \"passed\": true, \"view_chars\": 4303}]"
+        },
+        {
+          "check": "no uncaught JavaScript errors",
+          "passed": true,
+          "detail": "[]"
+        }
+      ],
+      "javascript_errors": [],
+      "screenshot": "BROWSER_SMOKE_V34_mobile.png"
+    }
+  ]
+}

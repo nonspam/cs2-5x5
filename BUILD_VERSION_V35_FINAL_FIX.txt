@@ -1,0 +1,7 @@
+CS2 Analytics — V35 FINAL FIX
+Date: 2026-10-03
+
+Fixes:
+- Fixed home Dynamic Metrics custom selector page-jump bug: removed document-level scrollIntoView behavior and kept menu scrolling local.
+- Added lightweight per-render memoization for detailRows(), reducing repeated DB scans/sorts across Players/Home/Records/Charts without changing derived values.
+- No dataset, Supabase schema, player stats, aliases, or visual design changes.

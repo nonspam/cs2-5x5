@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice">
+<defs>
+ <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10253b"/><stop offset=".45" stop-color="#1b5d78"/><stop offset="1" stop-color="#6b2d5c"/></linearGradient>
+ <radialGradient id="r" cx="78%" cy="28%"><stop offset="0" stop-color="#7ee7ff" stop-opacity=".85"/><stop offset="1" stop-color="#7ee7ff" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1200" height="420" fill="url(#g)"/><rect width="1200" height="420" fill="url(#r)"/>
+<g fill="none" stroke="#b9f3ff" stroke-opacity=".35" stroke-width="2">
+ <path d="M0 330 L180 180 L350 300 L520 120 L710 270 L900 90 L1200 250"/>
+ <path d="M0 380 L220 240 L410 350 L610 190 L820 330 L1030 150 L1200 290"/>
+</g>
+<g fill="#dffaff" opacity=".9"><circle cx="940" cy="85" r="5"/><circle cx="1010" cy="125" r="3"/><circle cx="1080" cy="70" r="4"/><circle cx="1140" cy="145" r="3"/></g>
+<text x="70" y="145" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="800" letter-spacing="4">CS2</text>
+<text x="72" y="205" fill="#d9f8ff" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="700" letter-spacing="8">ANALYTICS</text>
+<text x="74" y="250" fill="#b8d8e5" font-family="Arial,Helvetica,sans-serif" font-size="16" letter-spacing="3">HERO IMAGE TEST</text>
+</svg>

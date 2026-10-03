@@ -1,0 +1,45 @@
+WITH patches(match_id,team_a,team_b,player_ids) AS (VALUES
+('match_001',ARRAY['пяточки','vorenxy','gletcher','эгоист','bigchungus']::text[],ARRAY['Patr1k','donater']::text[],ARRAY['пяточки','vorenxy','gletcher','эгоист','bigchungus','Patr1k','donater']::text[]),
+('match_002',ARRAY['эгоист','vorenxy','пяточки','Patr1k','donater']::text[],ARRAY['bigchungus','gletcher','подушка пердушка']::text[],ARRAY['эгоист','vorenxy','пяточки','Patr1k','donater','bigchungus','gletcher','подушка пердушка']::text[]),
+('match_003',ARRAY['эгоист','пяточки','bigchungus','gletcher','vorenxy']::text[],ARRAY['donater','подушка пердушка','Patr1k']::text[],ARRAY['эгоист','пяточки','bigchungus','gletcher','vorenxy','donater','подушка пердушка','Patr1k']::text[]),
+('match_004',ARRAY['gletcher','bigchungus','пяточки','donater','эгоист']::text[],ARRAY['Patr1k','vorenxy']::text[],ARRAY['gletcher','bigchungus','пяточки','donater','эгоист','Patr1k','vorenxy']::text[]),
+('match_005',ARRAY['эгоист','vorenxy','donater','Patr1k','пяточки']::text[],ARRAY['gletcher','подушка пердушка']::text[],ARRAY['эгоист','vorenxy','donater','Patr1k','пяточки','gletcher','подушка пердушка']::text[]),
+('match_006',ARRAY['Patr1k','подушка пердушка','gletcher','donater','пяточки']::text[],ARRAY['эгоист','vorenxy']::text[],ARRAY['Patr1k','подушка пердушка','gletcher','donater','пяточки','эгоист','vorenxy']::text[]),
+('match_007',ARRAY['bigchungus','vorenxy','Patr1k','gletcher','donater']::text[],ARRAY['подушка пердушка','пяточки','эгоист']::text[],ARRAY['bigchungus','vorenxy','Patr1k','gletcher','donater','подушка пердушка','пяточки','эгоист']::text[]),
+('match_008',ARRAY['эгоист','vorenxy','Patr1k','подушка пердушка','пяточки']::text[],ARRAY['donater','gletcher']::text[],ARRAY['эгоист','vorenxy','Patr1k','подушка пердушка','пяточки','donater','gletcher']::text[]),
+('match_009',ARRAY['vorenxy','gletcher','donater','эгоист','пяточки']::text[],ARRAY['подушка пердушка','Patr1k']::text[],ARRAY['vorenxy','gletcher','donater','эгоист','пяточки','подушка пердушка','Patr1k']::text[]),
+('match_010',ARRAY['gletcher','Patr1k','подушка пердушка','donater','vorenxy']::text[],ARRAY['эгоист']::text[],ARRAY['gletcher','Patr1k','подушка пердушка','donater','vorenxy','эгоист']::text[]),
+('match_011',ARRAY['gletcher','donater','bigchungus','эгоист','vorenxy']::text[],ARRAY['Patr1k','пяточки']::text[],ARRAY['gletcher','donater','bigchungus','эгоист','vorenxy','Patr1k','пяточки']::text[]),
+('match_012',ARRAY['эгоист','bigchungus','пяточки','vorenxy','donater']::text[],ARRAY['Patr1k','gletcher']::text[],ARRAY['эгоист','bigchungus','пяточки','vorenxy','donater','Patr1k','gletcher']::text[]),
+('match_013',ARRAY['gletcher','пяточки','bigchungus','donater','vorenxy']::text[],ARRAY['Patr1k']::text[],ARRAY['gletcher','пяточки','bigchungus','donater','vorenxy','Patr1k']::text[]),
+('match_014',ARRAY['эгоист','vorenxy','Patr1k','donater','gletcher']::text[],ARRAY['пяточки']::text[],ARRAY['эгоист','vorenxy','Patr1k','donater','gletcher','пяточки']::text[]),
+('match_015',ARRAY['gletcher','bigchungus','эгоист','пяточки','donater']::text[],ARRAY['vorenxy','подушка пердушка','Patr1k']::text[],ARRAY['gletcher','bigchungus','эгоист','пяточки','donater','vorenxy','подушка пердушка','Patr1k']::text[]),
+('match_016',ARRAY['эгоист','пяточки','Patr1k','gletcher','bigchungus']::text[],ARRAY['vorenxy','donater']::text[],ARRAY['эгоист','пяточки','Patr1k','gletcher','bigchungus','vorenxy','donater']::text[]),
+('match_017',ARRAY['gletcher','donater','Patr1k','эгоист','DaDa_VoVa']::text[],ARRAY['пяточки','подушка пердушка']::text[],ARRAY['gletcher','donater','Patr1k','эгоист','DaDa_VoVa','пяточки','подушка пердушка']::text[]),
+('match_018',ARRAY['gletcher','donater','Patr1k','подушка пердушка','эгоист']::text[],ARRAY['пяточки']::text[],ARRAY['gletcher','donater','Patr1k','подушка пердушка','эгоист','пяточки']::text[]),
+('match_019',ARRAY['gletcher','vorenxy','эгоист','подушка пердушка','пяточки']::text[],ARRAY['donater','Patr1k']::text[],ARRAY['gletcher','vorenxy','эгоист','подушка пердушка','пяточки','donater','Patr1k']::text[]),
+('match_020',ARRAY['gletcher','пяточки','дядя','эгоист','DaDa_VoVa']::text[],ARRAY['donater','подушка пердушка','Patr1k','gamiersanek']::text[],ARRAY['gletcher','пяточки','дядя','эгоист','DaDa_VoVa','donater','подушка пердушка','Patr1k','gamiersanek']::text[]),
+('match_021',ARRAY['gletcher','DaDa_VoVa','эгоист','vorenxy','Patr1k']::text[],ARRAY['gamiersanek','donater']::text[],ARRAY['gletcher','DaDa_VoVa','эгоист','vorenxy','Patr1k','gamiersanek','donater']::text[]),
+('match_022',ARRAY['gletcher','подушка пердушка','vorenxy','DaDa_VoVa','дядя']::text[],ARRAY['donater','Patr1k','пяточки','эгоист','gamiersanek']::text[],ARRAY['gletcher','подушка пердушка','vorenxy','DaDa_VoVa','дядя','donater','Patr1k','пяточки','эгоист','gamiersanek']::text[]),
+('match_023',ARRAY['дядя','gamiersanek','эгоист','пяточки','DaDa_VoVa']::text[],ARRAY['gletcher','donater','Patr1k','vorenxy','подушка пердушка']::text[],ARRAY['дядя','gamiersanek','эгоист','пяточки','DaDa_VoVa','gletcher','donater','Patr1k','vorenxy','подушка пердушка']::text[]),
+('match_024',ARRAY['gletcher','donater','gamiersanek','Patr1k','эгоист']::text[],ARRAY['подушка пердушка','DaDa_VoVa','пяточки','дядя']::text[],ARRAY['gletcher','donater','gamiersanek','Patr1k','эгоист','подушка пердушка','DaDa_VoVa','пяточки','дядя']::text[]),
+('match_025',ARRAY['gletcher','подушка пердушка','DaDa_VoVa','gamiersanek','donater']::text[],ARRAY['эгоист','дядя','Patr1k','vorenxy']::text[],ARRAY['gletcher','подушка пердушка','DaDa_VoVa','gamiersanek','donater','эгоист','дядя','Patr1k','vorenxy']::text[]),
+('match_026',ARRAY['gletcher','Patr1k','эгоист','дядя','vorenxy']::text[],ARRAY['donater','пяточки','gamiersanek','подушка пердушка','DaDa_VoVa']::text[],ARRAY['gletcher','Patr1k','эгоист','дядя','vorenxy','donater','пяточки','gamiersanek','подушка пердушка','DaDa_VoVa']::text[]),
+('match_027',ARRAY['gletcher','vorenxy','Patr1k','gamiersanek','donater']::text[],ARRAY['DaDa_VoVa','дядя','пяточки','подушка пердушка','эгоист']::text[],ARRAY['gletcher','vorenxy','Patr1k','gamiersanek','donater','DaDa_VoVa','дядя','пяточки','подушка пердушка','эгоист']::text[]),
+('match_028',ARRAY['gletcher','bigchungus','donater','gamiersanek','Patr1k']::text[],ARRAY['эгоист','подушка пердушка','DaDa_VoVa','пяточки','дядя']::text[],ARRAY['gletcher','bigchungus','donater','gamiersanek','Patr1k','эгоист','подушка пердушка','DaDa_VoVa','пяточки','дядя']::text[]),
+('match_029',ARRAY['gletcher','Patr1k','gamiersanek','donater','bigchungus']::text[],ARRAY['эгоист','подушка пердушка','дядя','DaDa_VoVa','пяточки']::text[],ARRAY['gletcher','Patr1k','gamiersanek','donater','bigchungus','эгоист','подушка пердушка','дядя','DaDa_VoVa','пяточки']::text[]),
+('match_030',ARRAY['gletcher','bigchungus','Patr1k','donater','gamiersanek']::text[],ARRAY['пяточки','дядя','эгоист','подушка пердушка']::text[],ARRAY['gletcher','bigchungus','Patr1k','donater','gamiersanek','пяточки','дядя','эгоист','подушка пердушка']::text[]),
+('match_062',ARRAY['gletcher','эгоист','donater','дядя','bigchungus']::text[],ARRAY['FLAFF1X','gamiersanek','подушка пердушка','Patr1k']::text[],ARRAY['gletcher','эгоист','donater','дядя','bigchungus','FLAFF1X','gamiersanek','подушка пердушка','Patr1k']::text[]),
+('match_063',ARRAY['gletcher','Patr1k','эгоист','donater','дядя']::text[],ARRAY['подушка пердушка','пяточки','bigchungus']::text[],ARRAY['gletcher','Patr1k','эгоист','donater','дядя','подушка пердушка','пяточки','bigchungus']::text[]),
+('match_local_1790694105818',ARRAY['gletcher','donater','подушка пердушка','пяточки','DaDa_VoVa']::text[],ARRAY['дядя','Patr1k','эгоист','bigchungus','gamiersanek']::text[],ARRAY['gletcher','donater','подушка пердушка','пяточки','DaDa_VoVa','дядя','Patr1k','эгоист','bigchungus','gamiersanek']::text[])
+)
+UPDATE public.cs2_app_state s
+SET state = jsonb_set(
+  jsonb_set(
+    jsonb_set(s.state,'{matches}',(SELECT jsonb_agg(CASE WHEN p.match_id IS NULL THEN m ELSE jsonb_set(jsonb_set(jsonb_set(m,'{team_a}',to_jsonb(p.team_a)),'{team_b}',to_jsonb(p.team_b)),'{player_ids}',to_jsonb(p.player_ids)) END ORDER BY x.ord) FROM jsonb_array_elements(s.state->'matches') WITH ORDINALITY x(m,ord) LEFT JOIN patches p ON p.match_id=x.m->>'match_id'),true),
+    '{audit}',COALESCE(s.state->'audit','[]'::jsonb)||jsonb_build_array(jsonb_build_object('action','REBUILD_HISTORICAL_TEAMS','target','33 matches','at',now()::text,'detail',jsonb_build_object('source','historical_source_order','partial_rosters_allowed',true))),true),
+  '{version}',to_jsonb(COALESCE((s.state->>'version')::int,13)+1),true),
+  '{updated_at}',to_jsonb(now()::text),true),
+ version=version+1,updated_at=now()
+WHERE id=1
+RETURNING id,version,updated_at,jsonb_array_length(state->'matches') AS matches;

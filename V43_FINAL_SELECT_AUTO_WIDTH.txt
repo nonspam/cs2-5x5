@@ -1,0 +1,5 @@
+V43 FINAL SELECT AUTO WIDTH
+Base: V42 FINAL SELECT ALIGNMENT.
+Only the Home metric select CSS was changed.
+Fixed 140px width removed; select uses intrinsic/max-content width with compact padding.
+No JS, data, maps, scroll logic, Supabase, or other files changed.

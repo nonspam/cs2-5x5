@@ -1,0 +1,5 @@
+CS2 Analytics V34 FINAL QA FREEZE
+Base: V33 FINAL MICRO FIX
+Runtime: app_v57.js + style_v57.css
+Data: 14 players / 13 active / 66 active maps / 32 matches / 10 map types / 41 aliases
+Scope: QA/test-suite synchronization only; no runtime/data/Supabase redesign

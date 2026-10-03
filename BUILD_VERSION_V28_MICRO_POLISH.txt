@@ -1,0 +1,10 @@
+V28 — VISUAL POLISH / SERIES WINRATE / AVG FIX
+Base: V27 MICRO FIXES
+
+Changes:
+- Player Profile career win/loss/winrate now counts series, not individual maps.
+- Player Profile section headings use uppercase, smaller typography, horizontal breathing room, and responsive helper text.
+- Records AVG fixed: career AVG is total kills / total played maps for each active player; rankings sorted descending.
+- AVG record entries show the calculated value and map sample size.
+- Matches tab rendering optimized by precomputing series/map ranks and lookup maps, reducing repeated sorting/search work.
+- No player K/D/A/map/match source data was modified in this UI release.

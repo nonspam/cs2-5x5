@@ -1,0 +1,4 @@
+V42 FINAL SELECT ALIGNMENT
+Base: V41 FINAL SELECTS ONLY.
+Only visual styling of #homeMetric was changed: centered text, consistent height, larger arrow.
+No JS, data, maps, scroll behavior, Supabase, or calculations changed.
