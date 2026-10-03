@@ -61,26 +61,30 @@ async function load(){
       return;
     }
 
-    // Cloud mode: do NOT paint the embedded snapshot first. It can be a stale release snapshot
-    // (for example 61 maps while the live database has 59), which previously caused a visible
-    // 61 -> 59 flash and left hard-coded/home-derived counters looking inconsistent.
-    // Startup optimization: cloud state and admin check are independent network reads.
-    // Run them in parallel so the first paint waits for only the slower request.
-    const [remote, admin] = await Promise.all([
-      loadServerState(),
-      (async()=>{try{return await CS2Cloud.isAdmin()}catch{return false}})()
-    ]);
-    if(remote){
+      // Cloud mode: paint the embedded release snapshot immediately.
+      // Live Supabase state is fetched in the background, so a slow mobile
+      // connection cannot leave the page on a black screen during startup.
+      state.cloudMode=true;
       state.serverSync=true;
-      state.serverVersion=remote.updated_at||null;
-      applyLoadedState(remote,remote.audit);
-    }
-    state.cloudAdmin=!!admin;
-    state.logged=!!admin;
-    render();
-    preloadMapPhotos();
-    if(state.hydrationError)toast(state.hydrationError);else if(state.storageWarning)toast(state.storageWarning);
-    if(remote)connectServerEvents();
+      render();
+      preloadMapPhotos();
+      if(state.hydrationError)toast(state.hydrationError);else if(state.storageWarning)toast(state.storageWarning);
+
+      Promise.all([
+        loadServerState(),
+        (async()=>{try{return await CS2Cloud.isAdmin()}catch{return false}})()
+      ]).then(([remote,admin])=>{
+        if(remote){
+          state.serverSync=true;
+          state.serverVersion=remote.updated_at||null;
+          applyLoadedState(remote,remote.audit);
+        }
+        state.cloudAdmin=!!admin;
+        state.logged=!!admin;
+        render();
+        preloadMapPhotos();
+        if(remote)connectServerEvents();
+      }).catch(()=>{});
   }catch(e){
     state.bootError=e?.message||'Не удалось загрузить базу';
     const v=$('#view');
