@@ -292,7 +292,16 @@ function formTone(v){const n=Number(v);return n>0?'positive':n<0?'negative':'neu
 function indexTone(v){const n=Number(v);return n>=80?'index-high':n>=65?'index-good':n>=50?'index-mid':n>=35?'index-low':'index-bad'}
 function seriesAggregateRows(match,includeArchived=false){const maps=matchMaps(match,includeArchived),src=match.source_kind==='compact_bo3'?(match.series_aggregate_stats||[]):maps.flatMap(mp=>mp.stats_available?(mp.player_stats||[]):[]),by=new Map();for(const r of src){const id=r.player_id||`raw:${r.raw_name||''}`;if(!by.has(id))by.set(id,{player_id:r.player_id||null,raw_name:r.raw_name||'',kills:0,deaths:0,assists:0});const x=by.get(id);x.kills+=Number(r.kills)||0;x.deaths+=Number(r.deaths)||0;x.assists+=Number(r.assists)||0}return [...by.values()].map(x=>({...x,name:x.player_id?playerName(x.player_id):(x.raw_name||'Неопознанный игрок'),kd:x.deaths?x.kills/x.deaths:0,diff:x.kills-x.deaths})).sort((a,b)=>b.kd-a.kd||b.kills-a.kills)}
 function mapMvp(mapId){const mp=DB.maps.find(x=>x.map_id===mapId);if(!mp||!mp.stats_available)return '—';const r=(mp.player_stats||[]).slice().sort((a,b)=>(b.deaths?b.kills/b.deaths:0)-(a.deaths?a.kills/a.deaths:0)||b.kills-a.kills)[0];return r?(r.player_id?playerName(r.player_id):(r.raw_name||'Игрок')):'—'}
-function lobbyGroups(match){return historicalLobbyGroups(match)}
+function lobbyGroups(match){
+  const maps=matchMaps(match,match?.archived===true);
+  const rosterCount=mp=>{
+    const a=Array.isArray(mp?.lobby_team_a)?mp.lobby_team_a:Array.isArray(mp?.team_a)?mp.team_a:[];
+    const b=Array.isArray(mp?.lobby_team_b)?mp.lobby_team_b:Array.isArray(mp?.team_b)?mp.team_b:[];
+    return a.length+b.length;
+  };
+  const primary=maps.slice().sort((a,b)=>rosterCount(b)-rosterCount(a)||Number(a.map_index||0)-Number(b.map_index||0)).find(mp=>rosterCount(mp)>0);
+  return historicalLobbyGroups(match,primary||null);
+}
 function home(v){
   const active=activePlayers();
   const ps=active.map(p=>({p,x:aggregate(p.player_id),idx:index(p.player_id),imp:impact(p.player_id),fo:form(p.player_id),st:stability(p.player_id)})).sort((a,b)=>b.idx-a.idx);
