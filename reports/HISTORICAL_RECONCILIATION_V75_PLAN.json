@@ -1,0 +1,271 @@
+{
+  "created_at": "2026-10-20",
+  "source": "67.txt",
+  "base_version": 75,
+  "source_series": 33,
+  "source_maps": 69,
+  "expected_final_series": 40,
+  "expected_final_maps": 83,
+  "final_players": 14,
+  "added_series": [
+    {
+      "match_id": "match_003a",
+      "header": "bo3 0:2    mirage-anubis",
+      "map_ids": [
+        "map_081",
+        "map_082"
+      ]
+    }
+  ],
+  "added_maps": [
+    {
+      "map_id": "map_081",
+      "match_id": "match_003a",
+      "map": "mirage",
+      "score": {
+        "team_a": 6,
+        "team_b": 13
+      },
+      "map_index": 1,
+      "registered_stat_rows": 8,
+      "lobby_a": [
+        "пяточки",
+        "эгоист",
+        "подушка пердушка",
+        "Si,mple",
+        "steep1"
+      ],
+      "lobby_b": [
+        "donater",
+        "gletcher",
+        "vorenxy",
+        "bigchungus",
+        "Patr1k"
+      ]
+    },
+    {
+      "map_id": "map_082",
+      "match_id": "match_003a",
+      "map": "anubis",
+      "score": {
+        "team_a": 9,
+        "team_b": 13
+      },
+      "map_index": 2,
+      "registered_stat_rows": 8,
+      "lobby_a": [
+        "пяточки",
+        "эгоист",
+        "подушка пердушка",
+        "Si,mple",
+        "steep1"
+      ],
+      "lobby_b": [
+        "donater",
+        "gletcher",
+        "vorenxy",
+        "bigchungus",
+        "Patr1k"
+      ]
+    },
+    {
+      "map_id": "map_083",
+      "match_id": "match_004",
+      "map": "anubis",
+      "score": {
+        "team_a": 13,
+        "team_b": 6
+      },
+      "map_index": 1,
+      "registered_stat_rows": 7,
+      "lobby_a": [
+        "gletcher",
+        "bigchungus",
+        "пяточки",
+        "donater",
+        "эгоист"
+      ],
+      "lobby_b": [
+        "Niko2",
+        "Si,mple",
+        "lilbubblegummy",
+        "Patr1k",
+        "vorenxy"
+      ]
+    }
+  ],
+  "added_registered_stat_rows": [
+    {
+      "series": 18,
+      "map": "mirage",
+      "mapId": "map_032",
+      "id": "bigchungus",
+      "kda": [
+        14,
+        13,
+        3
+      ],
+      "source_line": 1449
+    },
+    {
+      "series": 19,
+      "map": "mirage",
+      "mapId": "map_033",
+      "id": "bigchungus",
+      "kda": [
+        7,
+        16,
+        1
+      ],
+      "source_line": 1499
+    },
+    {
+      "series": 19,
+      "map": "nuke",
+      "mapId": "map_034",
+      "id": "bigchungus",
+      "kda": [
+        5,
+        16,
+        3
+      ],
+      "source_line": 1537
+    },
+    {
+      "series": 20,
+      "map": "nuke",
+      "mapId": "map_035",
+      "id": "bigchungus",
+      "kda": [
+        22,
+        30,
+        8
+      ],
+      "source_line": 1597
+    },
+    {
+      "series": 20,
+      "map": "dust2",
+      "mapId": "map_036",
+      "id": "bigchungus",
+      "kda": [
+        5,
+        11,
+        0
+      ],
+      "source_line": 1629
+    },
+    {
+      "series": 22,
+      "map": "inferno",
+      "mapId": "map_039",
+      "id": "bigchungus",
+      "kda": [
+        9,
+        13,
+        3
+      ],
+      "source_line": 1769
+    },
+    {
+      "series": 22,
+      "map": "anubis",
+      "mapId": "map_040",
+      "id": "bigchungus",
+      "kda": [
+        4,
+        16,
+        3
+      ],
+      "source_line": 1807
+    },
+    {
+      "series": 25,
+      "map": "cache",
+      "mapId": "map_046",
+      "id": "bigchungus",
+      "kda": [
+        10,
+        14,
+        4
+      ],
+      "source_line": 2009
+    },
+    {
+      "series": 25,
+      "map": "overpass",
+      "mapId": "map_047",
+      "id": "bigchungus",
+      "kda": [
+        11,
+        8,
+        1
+      ],
+      "source_line": 2045
+    },
+    {
+      "series": 25,
+      "map": "anubis",
+      "mapId": "map_048",
+      "id": "bigchungus",
+      "kda": [
+        13,
+        16,
+        6
+      ],
+      "source_line": 2077
+    },
+    {
+      "series": 26,
+      "map": "dust2",
+      "mapId": "map_049",
+      "id": "bigchungus",
+      "kda": [
+        13,
+        8,
+        2
+      ],
+      "source_line": 2123
+    },
+    {
+      "series": 26,
+      "map": "nuke",
+      "mapId": "map_050",
+      "id": "bigchungus",
+      "kda": [
+        15,
+        17,
+        6
+      ],
+      "source_line": 2157
+    }
+  ],
+  "registered_stat_rows_added": 12,
+  "patched_historical_maps": 69,
+  "patched_historical_matches": 33,
+  "random_names_in_rosters": [
+    "-RahatAze",
+    "M1mic",
+    "Moss Zybbi",
+    "Niko2",
+    "Si,mple",
+    "User 1125247884",
+    "V potoke Slipyyy",
+    "YAdevstvinik",
+    "lilbubblegummy",
+    "lutik86",
+    "mR_Karma_777",
+    "steep1"
+  ],
+  "later_match_ids": [
+    "match_local_1791078688664",
+    "match_local_1791079238504",
+    "match_local_1791675076066",
+    "match_local_1791675965585",
+    "match_local_1791676122799",
+    "match_local_1792425907139",
+    "match_local_1792426465790"
+  ],
+  "later_unchanged": true,
+  "validation_errors": []
+}
