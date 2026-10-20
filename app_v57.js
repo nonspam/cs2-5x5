@@ -591,7 +591,7 @@ function records(v){
   else source=recordRows().filter(r=>r.kind==='detailed');
   const key=metric==='kd'?'kd':metric==='diff'?'diff':metric==='assists'?'a':metric==='deaths'?'d':metric==='impact'?'impact':metric==='index'?'idx':'k';
   const sorted=source.slice().sort((a,b)=>(b[key]??0)-(a[key]??0)||String(a.player).localeCompare(String(b.player),'ru')).slice(0,10);
-  const label=filter==='match'?'последний матч':filter==='map'?'выбранная карта':filter==='bo5'?'серии BO5':filter==='bo3'?'серии BO3':filter==='bo1':filter==='career'?'карьера':'подробные карты';
+  const label=filter==='match'?'последний матч':filter==='map'?'выбранная карта':filter==='bo5'?'серии BO5':filter==='bo3'?'серии BO3':filter==='bo1'?'BO1':filter==='career'?'карьера':'подробные карты';
   const avgRows=(filter==='career'?activePlayers().map(p=>{const x=aggregate(p.player_id);return{player:p.display_name,playerId:p.player_id,map:`Карьера · ${x.maps} карт`,k:x.k,d:x.d,a:x.a,kd:x.kd,diff:x.kdDiff,avg:x.maps?x.k/x.maps:0,maps:x.maps,impact:impact(p.player_id),idx:index(p.player_id),mapId:null,kind:'career'}}).filter(r=>r.maps>0):recordAvgRows(source)).sort((a,b)=>b.avg-a.avg||b.maps-a.maps||String(a.player).localeCompare(String(b.player),'ru')).slice(0,10);
   const winRowsAll=recordWinRows(source,filter,state.recordMap||'all');
   const minPlayed=Math.min(3,Math.max(1,...winRowsAll.map(r=>r.wrPlayed||0)));
