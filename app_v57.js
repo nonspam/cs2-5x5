@@ -469,6 +469,9 @@ function openMapDetail(mapId){
     const key=normalizeName(id);
     const row=rows.find(r=>r.player_id&&r.player_id===id)||rows.find(r=>normalizeName(r.raw_name)===key);
     return row?{...row,name:row.name||id}:{name:player(id)?.display_name||id,kills:null,deaths:null,assists:null,kd:null};
+  }).sort((a,b)=>{
+    const ak=a.kd==null?-1:a.kd,bk=b.kd==null?-1:b.kd;
+    return bk-ak||(Number(b.kills)||0)-(Number(a.kills)||0)||((Number(b.kills)||0)-(Number(b.deaths)||0))-((Number(a.kills)||0)-(Number(a.deaths)||0))||String(a.name).localeCompare(String(b.name),'ru');
   });
   const teamPanel=groups[0].length||groups[1].length?'<section class="section"><div class="section-head"><h3>СТАТИСТИКА КОМАНД</h3><span class="muted">K/D/A · K/D</span></div><div class="lobby-grid"><div><h3>КОМАНДА A <small>'+groups[0].length+'/5</small></h3>'+teamRows(groups[0]).map(r=>'<div class="lobby-row"><b>'+esc(r.name)+'</b><span>'+(r.kills==null?'—/—/—':r.kills+'/'+r.deaths+'/'+r.assists)+'</span><strong>'+(r.kills==null?'—':kdMarkup(r.kills,r.deaths))+'</strong></div>').join('')+'</div><div><h3>КОМАНДА B <small>'+groups[1].length+'/5</small></h3>'+teamRows(groups[1]).map(r=>'<div class="lobby-row"><b>'+esc(r.name)+'</b><span>'+(r.kills==null?'—/—/—':r.kills+'/'+r.deaths+'/'+r.assists)+'</span><strong>'+(r.kills==null?'—':kdMarkup(r.kills,r.deaths))+'</strong></div>').join('')+'</div></div></section>':'<section class="section"><div class="empty">Составы команд для этой карты не записаны.</div></section>';
   const title=`${m.map} ${mapScoreText(m)}`;
