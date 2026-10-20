@@ -462,7 +462,7 @@ function openMapDetail(mapId){
   const m=DB.maps.find(x=>x.map_id===mapId); if(!m)return;
   const match=DB.matches.find(x=>x.match_id===m.match_id);
   const rows=(m.player_stats||[]).map(s=>({...s,name:s.player_id?playerName(s.player_id):(s.raw_name||'Неопознанный игрок'),kd:s.deaths?s.kills/s.deaths:0,diff:s.kills-s.deaths})).sort((a,b)=>b.kd-a.kd||b.kills-a.kills);
-  const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+  const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
   const mapTeams=historicalLobbyGroups(match,m);
   const groups=(mapTeams[0].length||mapTeams[1].length)?mapTeams:lobbyGroups(match);
   const teamRows=ids=>ids.map(id=>{
