@@ -266,11 +266,11 @@
     "match_local_1792425907139",
     "match_local_1792426465790"
   ],
-  "later_unchanged": true,
+  "later_unchanged": false,
   "validation_errors": [],
   "data_commit_version": 76,
   "validation_metadata_commit_version": 77,
-  "final_live_version": 77,
+  "final_live_version": 80,
   "verified": {
     "source_series": 33,
     "source_maps": 69,
@@ -281,14 +281,30 @@
     "registered_stat_conflicts": 0,
     "roster_differences": 0,
     "map_order_differences": 0,
-    "later_matches_and_maps_unchanged": true,
-    "guest_stats_added": 0
+    "guest_stats_added": 0,
+    "later_game_data_unchanged": true,
+    "unique_map_numbers_1_to_83": true,
+    "later_series_numbers_34_to_40": true
   },
   "notes": [
     "Restored missing BO3 Mirage-Anubis as match_003a.",
     "Reclassified existing BO1 Train as BO3 Anubis-Train; preserved the existing Train K/D/A rows.",
     "Added 12 source-backed bigchungus K/D/A rows where missing.",
     "Guest names are stored only in lobby_team_a/lobby_team_b and are not player records or K/D/A rows.",
-    "Set missing status='active' on existing active player godzila to satisfy canonical backend validation."
-  ]
+    "Set missing status='active' on existing active player godzila to satisfy canonical backend validation.",
+    "All 83 map numbers are now unique and sequential in chronological order (1–83).",
+    "The seven later series retain their scores, maps, player stats, and compositions; only series_number (34–40) and map_number (70–83) were resequenced to account for the restored historical series."
+  ],
+  "map_number_commit_version": 79,
+  "series_order_commit_version": 80,
+  "final_counts": {
+    "matches": 40,
+    "active_matches": 37,
+    "maps": 83,
+    "active_maps": 80,
+    "players": 14
+  },
+  "later_matches_and_maps_unchanged": false,
+  "later_game_data_unchanged": true,
+  "ordering_metadata_resequenced": true
 }
