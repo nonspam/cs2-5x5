@@ -293,7 +293,10 @@
     "Guest names are stored only in lobby_team_a/lobby_team_b and are not player records or K/D/A rows.",
     "Set missing status='active' on existing active player godzila to satisfy canonical backend validation.",
     "All 83 map numbers are now unique and sequential in chronological order (1–83).",
-    "The seven later series retain their scores, maps, player stats, and compositions; only series_number (34–40) and map_number (70–83) were resequenced to account for the restored historical series."
+    "The seven later series retain their scores, maps, player stats, and compositions; only series_number (34–40) and map_number (70–83) were resequenced to account for the restored historical series.",
+    "Supabase operation audit confirms all five state commits completed successfully.",
+    "GitHub Pages deployment for the main branch completed successfully after the app/cache-key updates.",
+    "cs2-admin Edge Function deployed as version 14 with compatibility checks for existing local_series and maps without explicit team arrays."
   ],
   "map_number_commit_version": 79,
   "series_order_commit_version": 80,
@@ -306,5 +309,18 @@
   },
   "later_matches_and_maps_unchanged": false,
   "later_game_data_unchanged": true,
-  "ordering_metadata_resequenced": true
+  "ordering_metadata_resequenced": true,
+  "edge_function_version": 14,
+  "github_pages_deployment": {
+    "status": "success",
+    "commit": "2f5f815937d7fdad540bfee585de32a994997b1f",
+    "url": "https://github.com/nonspam/cs2-5x5/actions/runs/39353089948"
+  },
+  "live_commits": {
+    "historical_data_version": 76,
+    "player_status_compatibility_version": 77,
+    "map_number_version": 78,
+    "chronological_resequence_version": 79,
+    "series_number_version": 80
+  }
 }
