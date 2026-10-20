@@ -267,5 +267,28 @@
     "match_local_1792426465790"
   ],
   "later_unchanged": true,
-  "validation_errors": []
+  "validation_errors": [],
+  "data_commit_version": 76,
+  "validation_metadata_commit_version": 77,
+  "final_live_version": 77,
+  "verified": {
+    "source_series": 33,
+    "source_maps": 69,
+    "final_series": 40,
+    "final_maps": 83,
+    "players": 14,
+    "missing_registered_stat_rows": 0,
+    "registered_stat_conflicts": 0,
+    "roster_differences": 0,
+    "map_order_differences": 0,
+    "later_matches_and_maps_unchanged": true,
+    "guest_stats_added": 0
+  },
+  "notes": [
+    "Restored missing BO3 Mirage-Anubis as match_003a.",
+    "Reclassified existing BO1 Train as BO3 Anubis-Train; preserved the existing Train K/D/A rows.",
+    "Added 12 source-backed bigchungus K/D/A rows where missing.",
+    "Guest names are stored only in lobby_team_a/lobby_team_b and are not player records or K/D/A rows.",
+    "Set missing status='active' on existing active player godzila to satisfy canonical backend validation."
+  ]
 }
