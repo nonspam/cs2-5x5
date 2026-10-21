@@ -1,0 +1,29 @@
+name: CS2 integrity
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'audit/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check app_v57.js
+          node --check validation.js
+          node --check supabase_adapter.js
+          node --check tests/safety_invariants.test.js
+      - name: Regression tests
+        run: node --test tests/safety_invariants.test.js
