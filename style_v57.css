@@ -2475,3 +2475,36 @@ html{scroll-behavior:auto!important}
  .profile-drill-modal{padding:12px!important}
  .profile-drill-summary{gap:8px}
 }
+
+
+/* FIX 2026-10-21: enforce semantic colors in all player-stat drilldowns. */
+#playerDrilldown .profile-drill-game small b.positive,
+#playerDrilldown .profile-drill-result.positive,
+#playerDrilldown .profile-drill-summary b.positive,
+.player-profile-modal .profile-match-row strong.positive,
+.player-profile-modal .profile-match-row span b.positive,
+.player-profile-modal .profile-map-card>strong.positive{color:var(--green)!important}
+#playerDrilldown .profile-drill-game small b.negative,
+#playerDrilldown .profile-drill-result.negative,
+#playerDrilldown .profile-drill-summary b.negative,
+.player-profile-modal .profile-match-row strong.negative,
+.player-profile-modal .profile-match-row span b.negative,
+.player-profile-modal .profile-map-card>strong.negative{color:var(--red)!important}
+#playerDrilldown .profile-drill-game small b.neutral,
+#playerDrilldown .profile-drill-result.neutral,
+#playerDrilldown .profile-drill-summary b.neutral,
+.player-profile-modal .profile-match-row strong.neutral,
+.player-profile-modal .profile-match-row span b.neutral,
+.player-profile-modal .profile-map-card>strong.neutral{color:#edf1ef!important}
+#playerDrilldown .profile-drill-kda b.kd-positive,
+.player-profile-modal .profile-match-row .kd-value.kd-positive,
+.player-profile-modal .form-window-card .kd-positive,
+.player-profile-modal .era-card .kd-positive{color:var(--green)!important}
+#playerDrilldown .profile-drill-kda b.kd-negative,
+.player-profile-modal .profile-match-row .kd-value.kd-negative,
+.player-profile-modal .form-window-card .kd-negative,
+.player-profile-modal .era-card .kd-negative{color:var(--red)!important}
+#playerDrilldown .profile-drill-kda b.kd-neutral,
+.player-profile-modal .profile-match-row .kd-value.kd-neutral,
+.player-profile-modal .form-window-card .kd-neutral,
+.player-profile-modal .era-card .kd-neutral{color:#edf1ef!important}
