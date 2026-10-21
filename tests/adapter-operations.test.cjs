@@ -63,7 +63,7 @@ test('refuses to delete a map if it would violate the match format minimum', () 
   assert.equal(state.maps.length, 2);
 });
 
-test('deleting a player removes dependent stats, team slots and aliases', () => {
+test('deleting a player referenced by match history is refused without data loss', () => {
   const state = {
     players: [{ player_id: 'p1' }, { player_id: 'p2' }],
     aliases: { oldnick: 'p1', keepnick: 'p2' },
@@ -78,13 +78,26 @@ test('deleting a player removes dependent stats, team slots and aliases', () => 
     ] }]
   };
 
+  assert.throws(() => applyOp(state, { kind: 'delete_player', player_id: 'p1' }), /связан с историей матчей/);
+  assert.equal(state.players.length, 2);
+  assert.equal(state.maps[0].player_stats.length, 3);
+  assert.deepEqual(state.matches[0].team_a, ['p1', 'p2']);
+  assert.deepEqual(state.matches[0].series_aggregate_stats.map(x => x.player_id), ['p1', 'p2']);
+  assert.deepEqual(state.aliases, { oldnick: 'p1', keepnick: 'p2' });
+});
+
+test('deleting an unreferenced player removes only the catalog entry and its aliases', () => {
+  const state = {
+    players: [{ player_id: 'p1' }, { player_id: 'p2' }],
+    aliases: { oldnick: 'p1', keepnick: 'p2' },
+    maps: [],
+    matches: []
+  };
+
   applyOp(state, { kind: 'delete_player', player_id: 'p1' });
 
   assert.deepEqual(state.players.map(x => x.player_id), ['p2']);
   assert.deepEqual(state.aliases, { keepnick: 'p2' });
-  assert.deepEqual(state.maps[0].player_stats.map(x => x.player_id || x.raw_name), ['p2', 'guest']);
-  assert.deepEqual(state.matches[0].team_a, ['p2']);
-  assert.deepEqual(state.matches[0].series_aggregate_stats.map(x => x.player_id), ['p2']);
 });
 
 test('deleting an unknown player fails without changing state', () => {
