@@ -58,7 +58,7 @@ test('refuses to delete a map if it would violate the match format minimum', () 
     aliases: {}
   };
 
-  assert.throws(() => applyOp(state, { kind: 'delete_map', map_id: 'map2' }), /requires at least 2 maps/);
+  assert.throws(() => applyOp(state, { kind: 'delete_map', map_id: 'map2' }), /требует минимум 2 карт/);
   assert.deepEqual(state.matches[0].map_ids, ['map1', 'map2']);
   assert.equal(state.maps.length, 2);
 });
