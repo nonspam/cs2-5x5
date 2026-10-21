@@ -103,3 +103,60 @@ test('a guest-only entry preserves a participant without fabricated KDA', async 
   });
   expect(output).toMatchObject({guests:1,kda:1,known:1,valid:true});
 });
+
+
+test('offline created match and later edits both survive a full page reload', async ({ page }) => {
+  await openOffline(page);
+  await page.evaluate(() => {
+    state.logged = true;
+    openAddGame();
+    const roster = DB.players.filter(p => p.is_active !== false).slice(0, 9).map(p => p.player_id);
+    window.__newTeamA = roster.slice(0, 5);
+    window.__newTeamB = roster.slice(5);
+    window.__newMaps = ['mirage'];
+    document.querySelector('#newScore').value = '13:10';
+    continueNewGame();
+  });
+  await page.evaluate(() => {
+    document.querySelectorAll('[data-new-map]').forEach(el => { el.value = '1'; });
+    reviewNewGame();
+  });
+  const id = await page.evaluate(async () => {
+    await commitNewGame();
+    return DB.matches.at(-1).match_id;
+  });
+  await page.evaluate(async id => {
+    openEditMatch(id);
+    const firstKillInput = document.querySelector('[data-map][data-k="k"]');
+    if (!firstKillInput) throw Error('no map editor inputs');
+    firstKillInput.value = '42';
+    await saveMatchEdit(id);
+  }, id);
+  const beforeReload = await page.evaluate(id => {
+    const m = DB.matches.find(x => x.match_id === id);
+    return {found:!!m,kills:DB.maps.find(x=>x.match_id===id).player_stats[0].kills,valid:validateBase(DB)};
+  }, id);
+  expect(beforeReload).toMatchObject({found:true,kills:42,valid:true});
+  await page.reload({waitUntil:'domcontentloaded'});
+  const afterReload = await page.evaluate(id => {
+    const m = DB.matches.find(x => x.match_id === id);
+    const mp = DB.maps.find(x => x.match_id === id);
+    return {found:!!m,kills:mp?.player_stats?.[0]?.kills,valid:validateBase(DB)};
+  }, id);
+  expect(afterReload).toMatchObject({found:true,kills:42,valid:true});
+});
+
+test('a failed cloud read persistently labels the fallback snapshot as stale', async ({ page }) => {
+  await page.route('**/supabase-config.js*', route => route.fulfill({
+    status: 200, contentType: 'application/javascript',
+    body: "window.CS2_SUPABASE_CONFIG={url:'https://offline.supabase.co',key:'test'};"
+  }));
+  await page.route('https://cdn.jsdelivr.net/**', route => route.fulfill({
+    status: 200, contentType: 'application/javascript',
+    body: "window.supabase={createClient:()=>({from:()=>({select:()=>({eq:()=>({maybeSingle:async()=>({data:null,error:new Error('offline')})})})}),auth:{getSession:async()=>({data:{session:null}})}})};"
+  }));
+  await page.goto('http://127.0.0.1:8123/', {waitUntil:'domcontentloaded'});
+  await expect(page.locator('#cloudStatusBanner')).toContainText('Облачная база недоступна');
+  await expect(page.locator('#cloudStatusBanner')).toBeVisible();
+  expect(await page.evaluate(()=>DB.maps.length)).toBeGreaterThan(0);
+});
