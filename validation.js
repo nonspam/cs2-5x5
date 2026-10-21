@@ -1,5 +1,6 @@
 /* Shared CS2 state validation. Browser: window.CS2Validation. Node/CommonJS: module.exports. */
 (function(root){
+  const validStat=n=>(typeof n==='number'||(typeof n==='string'&&n.trim()!==''))&&Number.isFinite(Number(n))&&Number(n)>=0;
   function validateBase(b){
     if(!b||!Array.isArray(b.players)||!Array.isArray(b.maps)||!Array.isArray(b.matches)||!b.aliases||typeof b.aliases!=='object'||Array.isArray(b.aliases))return{ok:false,error:'state shape is invalid'};
     try{
@@ -13,9 +14,10 @@
       for(const m of b.maps){
         if(!mids.has(m.match_id)||!maps.has(m.map_id)||!Number.isInteger(Number(m.map_index))||Number(m.map_index)<1)return{ok:false,error:'invalid map relation'};
         const rows=Array.isArray(m.player_stats)?m.player_stats:[];
+        if(rows.length>10)return{ok:false,error:'map has more than 10 KDA rows'};
         if(m.stats_available===true&&rows.length===0)return{ok:false,error:'detailed map has no player rows'};
         if(m.stats_available===false&&rows.length>0)return{ok:false,error:'compact map contains player_stats'};
-        const seen=new Set();for(const st of rows){if(!st||!Number.isFinite(Number(st.kills))||!Number.isFinite(Number(st.deaths))||!Number.isFinite(Number(st.assists)))return{ok:false,error:'invalid KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate player stats'};seen.add(k)}
+        const seen=new Set();for(const st of rows){if(!st||!validStat(st.kills)||!validStat(st.deaths)||!validStat(st.assists))return{ok:false,error:'invalid KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate player stats'};seen.add(k)}
       }
       for(const m of b.matches){
         if(!Array.isArray(m.map_ids)||!m.map_ids.length||new Set(m.map_ids).size!==m.map_ids.length)return{ok:false,error:'invalid map_ids'};
@@ -28,7 +30,7 @@
         for(let i=0;i<m.map_ids.length;i++){const mp=maps.get(m.map_ids[i]);if(!mp||mp.match_id!==m.match_id||Number(mp.map_index)!==i+1)return{ok:false,error:'match/map relation invalid'}}
         const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];
         if(sas.length>10)return{ok:false,error:'series aggregate cannot exceed 10 rows'};
-        const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||!Number.isFinite(Number(st.deaths))||!Number.isFinite(Number(st.assists)))return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
+        const seen=new Set();for(const st of sas){if(!st||!validStat(st.kills)||!validStat(st.deaths)||!validStat(st.assists))return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
       }
       return{ok:true};
     }catch(e){return{ok:false,error:e?.message||'validation failed'}}
