@@ -703,7 +703,7 @@ function settings(v){document.getElementById('toast')?.classList.remove('show');
 function playerReferenceInfo(id){
   let stats=0,matches=0,teams=0;
   for(const m of DB.maps) for(const r of (m.player_stats||[])) if(r.player_id===id) stats++;
-  for(const m of DB.matches){ if((m.player_ids||[]).includes(id))matches++; if((m.team_a||[]).includes(id)||(m.team_b||[]).includes(id))teams++; }
+  for(const m of DB.matches){ if((m.player_ids||[]).includes(id))matches++; if((m.team_a||[]).includes(id)||(m.team_b||[]).includes(id))teams++; if((m.series_aggregate_stats||[]).some(r=>r.player_id===id))matches++; }
   return {stats,matches,teams,total:stats+matches+teams};
 }
 function canPermanentlyDeletePlayer(id){const p=player(id);return !!p&&p.is_active===false&&p.deleted_permanently!==true&&playerReferenceInfo(id).total===0}
