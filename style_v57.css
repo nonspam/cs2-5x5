@@ -2467,7 +2467,7 @@ html{scroll-behavior:auto!important}
 .profile-drill-result{font-size:10px;white-space:nowrap;letter-spacing:.04em}
 .profile-drill-result.positive{color:var(--green)!important}
 .profile-drill-result.negative{color:var(--red)!important}
-.profile-drill-result.neutral{color:#7f898d!important}
+.profile-drill-result.neutral{color:#fff!important}
 @media(max-width:700px){
  .profile-drill-row{grid-template-columns:1fr auto;gap:8px}
  .profile-drill-kda{grid-column:1/-1;grid-row:2}
