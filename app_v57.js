@@ -846,7 +846,7 @@ function toggleNewMap(name){
   window.__newMaps=a;renderNewMaps();
 }
 function addCustomNewMap(){
-  const input=$('#newCustomMapName'),name=String(input?.value||'').trim().replace(/\\s+/g,' ');
+  const input=$('#newCustomMapName'),name=String(input?.value||'').trim().replace(/\s+/g,' ');
   if(!name)return toast('Введи название карты');
   if(name.length>48)return toast('Название карты не должно быть длиннее 48 символов');
   const selected=window.__newMaps||[];
