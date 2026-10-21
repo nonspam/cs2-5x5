@@ -92,3 +92,20 @@ test('deleting an unknown player fails without changing state', () => {
   assert.throws(() => applyOp(state, { kind: 'delete_player', player_id: 'missing' }), /Игрок не найден/);
   assert.deepEqual(state.players, [{ player_id: 'p1' }]);
 });
+
+test('client patch operation rejects malformed payloads without mutating state', () => {
+  for (const patch of [null, undefined, [], 'bad']) {
+    const state = { players: [{ player_id: 'p1', display_name: 'Before' }], maps: [], matches: [], aliases: {} };
+    assert.throws(
+      () => applyOp(state, { kind: 'player_patch', player_id: 'p1', patch }),
+      /Некорректные данные изменения/
+    );
+    assert.equal(state.players[0].display_name, 'Before');
+  }
+});
+
+test('client patch operation applies valid object payloads', () => {
+  const state = { players: [{ player_id: 'p1', display_name: 'Before' }], maps: [], matches: [], aliases: {} };
+  applyOp(state, { kind: 'player_patch', player_id: 'p1', patch: { display_name: 'After' } });
+  assert.equal(state.players[0].display_name, 'After');
+});
