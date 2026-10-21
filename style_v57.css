@@ -2508,3 +2508,13 @@ html{scroll-behavior:auto!important}
 .player-profile-modal .profile-match-row .kd-value.kd-neutral,
 .player-profile-modal .form-window-card .kd-neutral,
 .player-profile-modal .era-card .kd-neutral{color:#edf1ef!important}
+
+
+/* FIX 2026-10-21: recent-series rows use the series outcome as the color for the whole line. */
+.player-profile-modal .profile-match-row.positive,
+.player-profile-modal .profile-match-row.positive *{color:var(--green)!important}
+.player-profile-modal .profile-match-row.negative,
+.player-profile-modal .profile-match-row.negative *{color:var(--red)!important}
+.player-profile-modal .profile-match-row.neutral,
+.player-profile-modal .profile-match-row.neutral *{color:#edf1ef!important}
+.player-profile-modal .profile-match-row .kd-value{color:inherit!important}
