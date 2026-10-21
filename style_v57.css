@@ -2394,3 +2394,23 @@ html{scroll-behavior:auto!important}
  .match-time-point{padding:10px 8px}
  .match-time-point strong{font-size:15px}
 }
+
+
+/* MAP PLAYER FILTER — keep the native player dropdown above map artwork and chart rows. */
+.maps-page .map-lab-panel.has-map-atmosphere{
+  overflow:visible!important;
+}
+.maps-page .map-lab-panel.has-map-atmosphere > .section-head{
+  position:relative!important;
+  z-index:20!important;
+  overflow:visible!important;
+}
+.maps-page .map-lab-panel.has-map-atmosphere > .section-head .toolbar,
+.maps-page .map-lab-panel.has-map-atmosphere #mapPlayerFilter{
+  position:relative!important;
+  z-index:21!important;
+}
+.maps-page .map-lab-panel.has-map-atmosphere::before{
+  border-radius:inherit;
+  pointer-events:none!important;
+}
