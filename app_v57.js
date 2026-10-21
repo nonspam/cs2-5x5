@@ -280,17 +280,17 @@ function careerSeriesResultsForPlayer(id){
     if(!inA&&!inB)continue;
     const parts=String(m.series_score||'').match(/^(\d+)\s*:\s*(\d+)$/), sa=parts?Number(parts[1]):NaN, sb=parts?Number(parts[2]):NaN;
     let result='—';
-    if(Number.isFinite(sa)&&Number.isFinite(sb)&&sa!==sb){result=(inA?(sa>sb):(sb>sa))?'WIN':'LOSS';}
+    if(Number.isFinite(sa)&&Number.isFinite(sb)){result=sa===sb?'DRAW':((inA?(sa>sb):(sb>sa))?'WIN':'LOSS');}
     else{
-      let wins=0,losses=0;
-      for(const mp of detailed){const row=(mp.player_stats||[]).find(s=>s.player_id===id);if(!row)continue;const a=Number(mp.score?.team_a),b=Number(mp.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b)||a===b)continue;if(inA){wins+=a>b?1:0;losses+=a<b?1:0}else{wins+=b>a?1:0;losses+=b<a?1:0}}
-      if(wins!==losses&&wins+losses)result=wins>losses?'WIN':'LOSS';
+      let wins=0,losses=0,draws=0;
+      for(const mp of detailed){const row=(mp.player_stats||[]).find(s=>s.player_id===id);if(!row)continue;const a=Number(mp.score?.team_a),b=Number(mp.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))continue;if(a===b){draws++;continue}if(inA){wins+=a>b?1:0;losses+=a<b?1:0}else{wins+=b>a?1:0;losses+=b<a?1:0}}
+      if(wins+losses+draws){result=wins>losses?'WIN':losses>wins?'LOSS':draws?'DRAW':'—';}
     }
     if(result!=='—')out.push({matchId:m.match_id,result});
   }
   return out;
 }
-function careerResultsForPlayer(id){const rows=[];for(const m of activeMatches()){for(const mp of matchMaps(m)){const participated=(mp.player_stats||[]).some(s=>s.player_id===id);if(!participated)continue;const match=DB.matches.find(x=>x.match_id===mp.match_id),[ta,tb]=historicalLobbyGroups(match,mp),a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b)||a===b)continue;const inA=ta.includes(id),inB=tb.includes(id);if(!inA&&!inB)continue;rows.push({matchId:m.match_id,mapId:mp.map_id,map:mp.map,result:inA?(a>b?'WIN':'LOSS'):(b>a?'WIN':'LOSS')})}}return rows}
+function careerResultsForPlayer(id){const rows=[];for(const m of activeMatches()){for(const mp of matchMaps(m)){const participated=(mp.player_stats||[]).some(s=>s.player_id===id);if(!participated)continue;const match=DB.matches.find(x=>x.match_id===mp.match_id),[ta,tb]=historicalLobbyGroups(match,mp),a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))continue;const inA=ta.includes(id),inB=tb.includes(id);if(!inA&&!inB)continue;rows.push({matchId:m.match_id,mapId:mp.map_id,map:mp.map,result:a===b?'DRAW':(inA?(a>b?'WIN':'LOSS'):(b>a?'WIN':'LOSS'))})}}return rows}
 function scoreClass(score){const m=String(score||'').match(/^(\d+)\s*:\s*(\d+)$/);if(!m)return 'score-neutral';const a=+m[1],b=+m[2];return a>b?'score-positive':a<b?'score-negative':'score-neutral'}
 function scoreMarkup(score){const m=String(score||'').match(/^(\d+)\s*:\s*(\d+)$/);if(!m)return `<span class="score-neutral">${esc(score||'—')}</span>`;const a=Number(m[1]),b=Number(m[2]);const cls=a>b?'score-positive':a<b?'score-negative':'score-neutral';return `<span class="score-badge ${cls}">${a}:${b}</span>`}
 function diffTone(v){const n=Number(v);return n>0?'positive':n<0?'negative':'neutral'}
@@ -423,14 +423,16 @@ function toggleCompare(id){if(state.compare.includes(id)){if(state.compare.lengt
 function profileMapResult(id,mp){
  const match=DB.matches.find(x=>x.match_id===mp?.match_id);if(!match)return '—';
  const groups=historicalLobbyGroups(match,mp),inA=groups[0].includes(id),inB=groups[1].includes(id);if(!inA&&!inB)return '—';
- const a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b)||a===b)return '—';
+ const a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))return '—';
+ if(a===b)return 'DRAW';
  return (inA?(a>b):(b>a))?'WIN':'LOSS';
 }
 function profileResultClass(result){return result==='WIN'?'positive':result==='LOSS'?'negative':'neutral'}
 function profileGameRow(id,r){
  const m=DB.matches.find(x=>x.match_id===r.match_id),result=profileMapResult(id,r),n=m?seriesNumberForMatch(m):'—',hasStats=r.kills!=null&&r.deaths!=null&&r.assists!=null,kd=hasStats&&Number(r.deaths)>0?Number(r.kills)/Number(r.deaths):0;
  const k=hasStats?Number(r.kills):null,d=hasStats?Number(r.deaths):null,a=hasStats?Number(r.assists):null;
- return '<div class="profile-drill-row"><div class="profile-drill-game"><b>Игра '+esc(n)+'</b><span>'+esc(r.map||'Карта не указана')+' · '+esc(m?.format||'—')+'</span><small>'+esc(m?.series_score||'Счёт серии не указан')+'</small></div><div class="profile-drill-kda"><span>K <b>'+(k==null?'—':k)+'</b></span><span>D <b>'+(d==null?'—':d)+'</b></span><span>A <b>'+(a==null?'—':a)+'</b></span><span>K/D <b class="'+(hasStats?kdClass(k,d):'neutral')+'">'+(hasStats?fmt(kd):'—')+'</b></span></div><strong class="profile-drill-result '+profileResultClass(result)+'">'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':'НЕТ ИСХОДА')+'</strong></div>';
+ const scoreA=Number(r?.score?.team_a),scoreB=Number(r?.score?.team_b),scoreKnown=Number.isFinite(scoreA)&&Number.isFinite(scoreB),scoreText=scoreKnown?scoreA+':'+scoreB:(m?.series_score||'Счёт не указан');
+ return '<div class="profile-drill-row"><div class="profile-drill-game"><b>Игра '+esc(n)+'</b><span>'+esc(r.map||'Карта не указана')+' · '+esc(m?.format||'—')+'</span><small>Счёт <b class="'+profileResultClass(result)+'">'+esc(scoreText)+'</b> · <b class="'+profileResultClass(result)+'">'+(result==='WIN'?'WIN':result==='LOSS'?'LOSS':result==='DRAW'?'DRAW':'НЕТ ИСХОДА')+'</b></small></div><div class="profile-drill-kda"><span>K <b>'+(k==null?'—':k)+'</b></span><span>D <b>'+(d==null?'—':d)+'</b></span><span>A <b>'+(a==null?'—':a)+'</b></span><span>K/D <b class="'+(hasStats?kdClass(k,d):'neutral')+'">'+(hasStats?fmt(kd):'—')+'</b></span></div><strong class="profile-drill-result '+profileResultClass(result)+'">'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':result==='DRAW'?'НИЧЬЯ':'НЕТ ИСХОДА')+'</strong></div>';
 }
 function openPlayerDrilldown(id,kind,arg){
  const p=player(id),host=$('#playerModal');if(!p||!host)return;
