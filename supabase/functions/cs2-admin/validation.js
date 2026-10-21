@@ -7,9 +7,9 @@
   const PROVENANCE=new Set(['historical_source_order','source_order_with_full_5v5','reconstructed','manual']);
   const PLAYER_STATUS=new Set(['active','archived']);
   const isObj=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
-  const finite=n=>Number.isFinite(Number(n));
+  const finite=n=>(typeof n==='number'||(typeof n==='string'&&n.trim()!==''))&&Number.isFinite(Number(n));
   const nonNeg=n=>finite(n)&&Number(n)>=0;
-  const intNonNeg=n=>Number.isInteger(Number(n))&&Number(n)>=0;
+  const intNonNeg=n=>finite(n)&&Number.isInteger(Number(n))&&Number(n)>=0;
   const nonEmptyString=v=>typeof v==='string'&&v.trim().length>0;
   const uniq=(arr,key)=>{const s=new Set();for(const x of arr||[]){const id=x?.[key];if(!id||s.has(id))return false;s.add(id)}return true};
   function validateBase(b,opts={}){
@@ -51,7 +51,7 @@
         if(!isObj(mp.score)||!intNonNeg(mp.score.team_a)||!intNonNeg(mp.score.team_b))errors.push('invalid map score:'+mp.map_id);
         const hasMapA=Array.isArray(mp.team_a),hasMapB=Array.isArray(mp.team_b);if(hasMapA!==hasMapB)errors.push('incomplete map teams:'+mp.map_id);if(hasMapA&&hasMapB)for(const side of ['team_a','team_b']){if(mp[side].some(id=>!pids.has(id)))errors.push('unknown map team player:'+mp.map_id+':'+side)}
         if(Array.isArray(mp.team_a)&&Array.isArray(mp.team_b)&&new Set([...mp.team_a,...mp.team_b]).size!==mp.team_a.length+mp.team_b.length)errors.push('map team overlap:'+mp.map_id);
-        const rows=Array.isArray(mp.player_stats)?mp.player_stats:[];if(mp.stats_available===true&&rows.length===0)errors.push('detailed map has no rows:'+mp.map_id);if(mp.stats_available===false&&rows.length>0)errors.push('compact map contains player_stats:'+mp.map_id);
+        const rows=Array.isArray(mp.player_stats)?mp.player_stats:[];if(rows.length>10)errors.push('map has more than 10 KDA rows:'+mp.map_id);if(mp.stats_available===true&&rows.length===0)errors.push('detailed map has no rows:'+mp.map_id);if(mp.stats_available===false&&rows.length>0)errors.push('compact map contains player_stats:'+mp.map_id);
         const seen=new Set();for(const st of rows){if(!st||!nonNeg(st.kills)||!nonNeg(st.deaths)||!nonNeg(st.assists))errors.push('invalid KDA:'+mp.map_id);if(st.player_id!=null&&!pids.has(st.player_id))errors.push('unknown player:'+mp.map_id);const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))errors.push('duplicate player stats:'+mp.map_id);seen.add(k)}
       }
       for(const [alias,pid] of Object.entries(b.aliases)){if(!String(alias).trim()||typeof pid!=='string'||!pids.has(pid))errors.push('invalid alias mapping:'+alias)}
