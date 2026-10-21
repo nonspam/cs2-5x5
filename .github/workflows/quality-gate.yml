@@ -1,0 +1,30 @@
+name: CS2-5x5 quality gate
+
+on:
+  push:
+    branches: [main, 'hardening/**', 'fix/**', 'data/**']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check validation.js
+          node --check supabase_adapter.js
+          node --check supabase-config.js
+          node --check data_embedded.js
+          node --check app_v57.js
+      - name: Run state-validation regression tests
+        run: node --test tests/*.test.cjs
