@@ -40,7 +40,7 @@
         for(const side of ['team_a','team_b']){if(!Array.isArray(m[side]))errors.push('missing '+side+':'+m.match_id);else if(m[side].length>5||m[side].some(id=>!pids.has(id)))errors.push('invalid team:'+m.match_id+':'+side)}
         if(Array.isArray(m.team_a)&&Array.isArray(m.team_b)&&new Set([...m.team_a,...m.team_b]).size!==m.team_a.length+m.team_b.length)errors.push('team overlap:'+m.match_id);
         if(m.series_score!=null){const score=String(m.series_score);if(!/^\d+:\d+$/.test(score))errors.push('invalid series_score:'+m.match_id);else{const [a,c]=score.split(':').map(Number);if(a<0||c<0||a>5||c>5)errors.push('series_score out of bounds:'+m.match_id)}}
-        if(m.played_at!=null&&Number.isNaN(Date.parse(m.played_at)))errors.push('invalid played_at:'+m.match_id);
+        if(m.played_at!=null&&String(m.played_at).trim()!==''&&Number.isNaN(Date.parse(m.played_at)))errors.push('invalid played_at:'+m.match_id);
         if(m.series_number!=null&&(!Number.isInteger(Number(m.series_number))||Number(m.series_number)<1))errors.push('invalid series_number:'+m.match_id);
         const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];if(sas.length>10)errors.push('series aggregate cannot exceed 10 rows:'+m.match_id);
         const seenSeries=new Set();for(const st of sas){if(!st||!nonNeg(st.kills)||!nonNeg(st.deaths)||!nonNeg(st.assists))errors.push('invalid series KDA:'+m.match_id);if(st.player_id!=null&&!pids.has(st.player_id))errors.push('unknown series player:'+m.match_id);const k=st.player_id||'raw:'+(st.raw_name||'');if(seenSeries.has(k))errors.push('duplicate series player:'+m.match_id);seenSeries.add(k)}
