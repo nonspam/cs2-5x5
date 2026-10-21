@@ -1,0 +1,11 @@
+{
+  "name": "cs2-5x5-quality-gates",
+  "private": true,
+  "scripts": {
+    "test:unit": "node --test tests/safety_invariants.test.js",
+    "test:browser": "playwright test tests/browser_smoke.spec.js --reporter=line"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}
