@@ -428,8 +428,9 @@ function profileMapResult(id,mp){
 }
 function profileResultClass(result){return result==='WIN'?'positive':result==='LOSS'?'negative':'neutral'}
 function profileGameRow(id,r){
- const m=DB.matches.find(x=>x.match_id===r.match_id),result=profileMapResult(id,r),n=m?seriesNumberForMatch(m):'—',kd=Number(r.deaths)>0?Number(r.kills)/Number(r.deaths):0;
- return '<div class="profile-drill-row"><div class="profile-drill-game"><b>Игра '+esc(n)+'</b><span>'+esc(r.map||'Карта не указана')+' · '+esc(m?.format||'—')+'</span><small>'+esc(m?.series_score||'Счёт серии не указан')+'</small></div><div class="profile-drill-kda"><span>K <b>'+(Number(r.kills)||0)+'</b></span><span>D <b>'+(Number(r.deaths)||0)+'</b></span><span>A <b>'+(Number(r.assists)||0)+'</b></span><span>K/D <b class="'+kdClass(r.kills,r.deaths)+'">'+fmt(kd)+'</b></span></div><strong class="profile-drill-result '+profileResultClass(result)+'">'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':'НЕТ ИСХОДА')+'</strong></div>';
+ const m=DB.matches.find(x=>x.match_id===r.match_id),result=profileMapResult(id,r),n=m?seriesNumberForMatch(m):'—',hasStats=r.kills!=null&&r.deaths!=null&&r.assists!=null,kd=hasStats&&Number(r.deaths)>0?Number(r.kills)/Number(r.deaths):0;
+ const k=hasStats?Number(r.kills):null,d=hasStats?Number(r.deaths):null,a=hasStats?Number(r.assists):null;
+ return '<div class="profile-drill-row"><div class="profile-drill-game"><b>Игра '+esc(n)+'</b><span>'+esc(r.map||'Карта не указана')+' · '+esc(m?.format||'—')+'</span><small>'+esc(m?.series_score||'Счёт серии не указан')+'</small></div><div class="profile-drill-kda"><span>K <b>'+(k==null?'—':k)+'</b></span><span>D <b>'+(d==null?'—':d)+'</b></span><span>A <b>'+(a==null?'—':a)+'</b></span><span>K/D <b class="'+(hasStats?kdClass(k,d):'neutral')+'">'+(hasStats?fmt(kd):'—')+'</b></span></div><strong class="profile-drill-result '+profileResultClass(result)+'">'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':'НЕТ ИСХОДА')+'</strong></div>';
 }
 function openPlayerDrilldown(id,kind,arg){
  const p=player(id),host=$('#playerModal');if(!p||!host)return;
@@ -455,7 +456,7 @@ function openPlayerDrilldown(id,kind,arg){
   summary='<div class="profile-drill-summary"><span>Игр <b>'+rows.length+'</b></span><span>Побед <b class="positive">'+wins+'</b></span><span>Поражений <b class="negative">'+(known.length-wins)+'</b></span><span>Winrate <b>'+(known.length?Math.round(wins/known.length*100)+'%':'—')+'</b></span></div>';
  }else if(kind==='map'){
   const mapName=String(arg||''),maps=DB.maps.filter(mp=>mp.archived!==true&&activeIds.has(mp.match_id)&&mapKey(mp.map)===mapKey(mapName)&&((mp.player_stats||[]).some(s=>s.player_id===id)||(()=>{const m=DB.matches.find(x=>x.match_id===mp.match_id),g=historicalLobbyGroups(m,mp);return g[0].includes(id)||g[1].includes(id)})())).sort((a,b)=>{const ma=DB.matches.find(x=>x.match_id===a.match_id),mb=DB.matches.find(x=>x.match_id===b.match_id);return matchOrder(mb)-matchOrder(ma)||Number(b.map_index||0)-Number(a.map_index||0)});
-  const mapRows=maps.map(mp=>{const s=(mp.player_stats||[]).find(x=>x.player_id===id);return s?{...s,map:mp.map,map_id:mp.map_id,match_id:mp.match_id,score:mp.score}:null}).filter(Boolean);
+  const mapRows=maps.map(mp=>{const s=(mp.player_stats||[]).find(x=>x.player_id===id);return s?{...s,map:mp.map,map_id:mp.map_id,match_id:mp.match_id,score:mp.score}:{kills:null,deaths:null,assists:null,map:mp.map,map_id:mp.map_id,match_id:mp.match_id,score:mp.score}});
   title='Карты · '+mapName;subtitle='Только твои игры на этой карте';content=renderRows(mapRows);
   const known=maps.map(mp=>profileMapResult(id,mp)).filter(x=>x==='WIN'||x==='LOSS'),wins=known.filter(x=>x==='WIN').length;
   summary='<div class="profile-drill-summary"><span>Карт с личной статой <b>'+mapRows.length+'</b></span><span>Побед <b class="positive">'+wins+'</b></span><span>Поражений <b class="negative">'+(known.length-wins)+'</b></span><span>Winrate <b>'+(known.length?Math.round(wins/known.length*100)+'%':'—')+'</b></span></div>';
