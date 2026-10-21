@@ -122,3 +122,10 @@ test('client patch operation applies valid object payloads', () => {
   applyOp(state, { kind: 'player_patch', player_id: 'p1', patch: { display_name: 'After' } });
   assert.equal(state.players[0].display_name, 'After');
 });
+
+test('delete player refuses legacy player_ids-only references', () => {
+  const state = { players: [{ player_id: 'p1' }], aliases: {}, maps: [], matches: [{ match_id: 'm1', player_ids: ['p1'], team_a: [], team_b: [], series_aggregate_stats: [] }] };
+  assert.throws(() => applyOp(state, { kind: 'delete_player', player_id: 'p1' }), /связан с историей матчей/);
+  assert.deepEqual(state.matches[0].player_ids, ['p1']);
+  assert.equal(state.players.length, 1);
+});
