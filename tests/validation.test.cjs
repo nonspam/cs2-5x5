@@ -64,6 +64,24 @@ test('assertBase throws for invalid state instead of silently accepting it', () 
   assert.throws(() => assertBase(makeBase({ format: 'BO1', mapCount: 2 })), /BO1 must have one map/);
 });
 
+test('rejects negative KDA values on maps and series', () => {
+  const mapNegative = makeBase({
+    stats: [{ kills: -1, deaths: 1, assists: 0, raw_name: 'Guest-123', player_id: null }]
+  });
+  assert.equal(validateBase(mapNegative).ok, false);
+  assert.match(validateBase(mapNegative).error, /invalid KDA/);
+
+  const seriesNegative = makeBase();
+  seriesNegative.matches[0].series_aggregate_stats = Array.from({ length: 10 }, (_, i) => ({
+    player_id: `p${i + 1}`,
+    kills: i === 0 ? -1 : 1,
+    deaths: 1,
+    assists: 0
+  }));
+  assert.equal(validateBase(seriesNegative).ok, false);
+  assert.match(validateBase(seriesNegative).error, /invalid series KDA/);
+});
+
 test('rejects non-finite KDA values', () => {
   const result = validateBase(makeBase({
     stats: [{ kills: 'NaN', deaths: 1, assists: 0, raw_name: 'Guest-123', player_id: null }]
