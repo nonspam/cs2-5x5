@@ -2,7 +2,6 @@ name: CS2-5x5 quality gate
 
 on:
   push:
-    branches: [main, 'hardening/**', 'fix/**', 'data/**']
   pull_request:
     branches: [main]
 
