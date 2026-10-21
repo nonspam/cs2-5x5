@@ -18,6 +18,7 @@
         const seen=new Set();for(const st of rows){if(!st||!Number.isFinite(Number(st.kills))||!Number.isFinite(Number(st.deaths))||!Number.isFinite(Number(st.assists)))return{ok:false,error:'invalid KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate player stats'};seen.add(k)}
       }
       for(const m of b.matches){
+        if(Array.isArray(m.player_ids)&&(new Set(m.player_ids).size!==m.player_ids.length||m.player_ids.some(id=>!pids.has(id))))return{ok:false,error:'invalid match player_ids'};
         if(!Array.isArray(m.map_ids)||!m.map_ids.length||new Set(m.map_ids).size!==m.map_ids.length)return{ok:false,error:'invalid map_ids'};
         if(m.format==='BO1'&&m.map_ids.length!==1)return{ok:false,error:'BO1 must have one map'};
         if(m.format==='BO3'&&(m.map_ids.length<2||m.map_ids.length>3))return{ok:false,error:'BO3 must have 2-3 maps'};
