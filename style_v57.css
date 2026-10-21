@@ -2444,3 +2444,33 @@ html{scroll-behavior:auto!important}
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
 }
+
+/* Player profile: private clickable career/form/map/era drilldowns. */
+.profile-drill-trigger{cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .15s ease}
+.profile-drill-trigger:hover{border-color:rgba(200,255,61,.55)!important;background:#121719!important;transform:translateY(-1px)}
+.profile-career-grid.profile-drill-trigger{padding:2px;border-radius:10px}
+.profile-drill-back{z-index:1200!important}
+.profile-drill-modal{max-height:calc(100vh - 28px)!important;max-height:calc(100dvh - 28px)!important;display:flex;flex-direction:column;overflow:hidden}
+.profile-drill-modal .modal-head{flex:0 0 auto}
+.profile-drill-summary{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:10px;border:1px solid #2a3035;border-radius:10px;background:#0d1012}
+.profile-drill-summary span{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:11px}
+.profile-drill-summary b{color:#edf1ef;font-size:13px}
+.profile-drill-list{overflow:auto;min-height:0;display:grid;gap:7px;padding:0 2px 3px}
+.profile-drill-row{display:grid;grid-template-columns:minmax(145px,1fr) minmax(220px,1.35fr) auto;align-items:center;gap:12px;padding:11px 12px;border:1px solid #252b2f;border-radius:9px;background:#0d1012}
+.profile-drill-game{display:grid;gap:3px;min-width:0}
+.profile-drill-game>b{font-size:12px;color:#edf1ef}
+.profile-drill-game>span,.profile-drill-game>small{font-size:10px;color:#7f898d;overflow-wrap:anywhere}
+.profile-drill-kda{display:flex;flex-wrap:wrap;gap:6px 12px}
+.profile-drill-kda>span{font-size:10px;color:#7f898d;white-space:nowrap}
+.profile-drill-kda b{color:#edf1ef;font-size:12px}
+.profile-drill-result{font-size:10px;white-space:nowrap;letter-spacing:.04em}
+.profile-drill-result.positive{color:var(--green)!important}
+.profile-drill-result.negative{color:var(--red)!important}
+.profile-drill-result.neutral{color:#7f898d!important}
+@media(max-width:700px){
+ .profile-drill-row{grid-template-columns:1fr auto;gap:8px}
+ .profile-drill-kda{grid-column:1/-1;grid-row:2}
+ .profile-drill-result{grid-column:2;grid-row:1}
+ .profile-drill-modal{padding:12px!important}
+ .profile-drill-summary{gap:8px}
+}
