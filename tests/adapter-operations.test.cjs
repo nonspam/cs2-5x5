@@ -62,3 +62,33 @@ test('refuses to delete a map if it would violate the match format minimum', () 
   assert.deepEqual(state.matches[0].map_ids, ['map1', 'map2']);
   assert.equal(state.maps.length, 2);
 });
+
+test('deleting a player removes dependent stats, team slots and aliases', () => {
+  const state = {
+    players: [{ player_id: 'p1' }, { player_id: 'p2' }],
+    aliases: { oldnick: 'p1', keepnick: 'p2' },
+    maps: [{ map_id: 'map1', player_stats: [
+      { player_id: 'p1', kills: 10, deaths: 4, assists: 2 },
+      { player_id: 'p2', kills: 5, deaths: 7, assists: 1 },
+      { raw_name: 'guest', kills: 2, deaths: 8, assists: 0 }
+    ] }],
+    matches: [{ match_id: 'm1', team_a: ['p1', 'p2'], team_b: [], series_aggregate_stats: [
+      { player_id: 'p1', kills: 10, deaths: 4, assists: 2 },
+      { player_id: 'p2', kills: 5, deaths: 7, assists: 1 }
+    ] }]
+  };
+
+  applyOp(state, { kind: 'delete_player', player_id: 'p1' });
+
+  assert.deepEqual(state.players.map(x => x.player_id), ['p2']);
+  assert.deepEqual(state.aliases, { keepnick: 'p2' });
+  assert.deepEqual(state.maps[0].player_stats.map(x => x.player_id || x.raw_name), ['p2', 'guest']);
+  assert.deepEqual(state.matches[0].team_a, ['p2']);
+  assert.deepEqual(state.matches[0].series_aggregate_stats.map(x => x.player_id), ['p2']);
+});
+
+test('deleting an unknown player fails without changing state', () => {
+  const state = { players: [{ player_id: 'p1' }], aliases: {}, maps: [], matches: [] };
+  assert.throws(() => applyOp(state, { kind: 'delete_player', player_id: 'missing' }), /Игрок не найден/);
+  assert.deepEqual(state.players, [{ player_id: 'p1' }]);
+});
