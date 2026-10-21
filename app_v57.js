@@ -485,7 +485,58 @@ function openPlayerDetail(id){
   const bestMap=rankedMaps[0], worstMap=rankedMaps.length>1?rankedMaps[rankedMaps.length-1]:null;
   const knownSeriesResults=new Map(careerSeriesResultsForPlayer(id).map(q=>[q.matchId,q.result]));
   
-  const recentMatches=activeMatches().map(m=>{const maps=matchMaps(m),rs=rows.filter(r=>r.match_id===m.match_id),anchor=maps.find(mp=>mp.stats_available)||maps[0]||null,[teamA,teamB]=historicalLobbyGroups(m,anchor),inA=teamA.includes(id),inB=teamB.includes(id),aggregateHasPlayer=m.source_kind==='compact_bo3'&&(m.series_aggregate_stats||[]).some(s=>s.player_id===id);if(!inA&&!inB&&!rs.length&&!aggregateHasPlayer)return null;const k=rs.reduce((n,q)=>n+(Number(q.kills)||0),0),d=rs.reduce((n,q)=>n+(Number(q.deaths)||0),0),a=rs.reduce((n,q)=>n+(Number(q.assists)||0),0);const score=String(m?.series_score||'').match(/^(\\d+)\\s*:\\s*(\\d+)$/),sa=score?Number(score[1]):NaN,sb=score?Number(score[2]):NaN;let result=Number.isFinite(sa)&&Number.isFinite(sb)?(sa===sb?'DRAW':(inA?(sa>sb?'WIN':'LOSS'):(sb>sa?'WIN':'LOSS'))):'—';if(result==='—'&&knownSeriesResults.has(m.match_id))result=knownSeriesResults.get(m.match_id);return{m,rs,k,d,a,kd:d?k/d:0,result,hasStats:rs.length>0}}).filter(Boolean).sort((a,b)=>matchOrder(b.m)-matchOrder(a.m)||matchTime(b.m)-matchTime(a.m)).slice(0,10);
+  
+  const recentMatches=activeMatches().map(m=>{
+    const maps=matchMaps(m);
+    const rs=rows.filter(r=>r.match_id===m.match_id);
+    const anchor=maps.find(mp=>mp.stats_available)||maps[0]||null;
+    const [teamA,teamB]=historicalLobbyGroups(m,anchor);
+    const rosterIds=new Set([
+      ...(m.lobby_team_a||[]),
+      ...(m.lobby_team_b||[]),
+      ...(m.team_a||[]),
+      ...(m.team_b||[]),
+      ...maps.flatMap(mp=>[
+        ...(mp.lobby_team_a||[]),
+        ...(mp.lobby_team_b||[]),
+        ...(mp.team_a||[]),
+        ...(mp.team_b||[]),
+        ...(mp.player_stats||[]).map(s=>s.player_id)
+      ]),
+      ...(m.series_aggregate_stats||[]).map(s=>s.player_id),
+      ...teamA,
+      ...teamB
+    ].filter(Boolean));
+    const participated=rosterIds.has(id)||rs.length>0;
+    if(!participated)return null;
+
+    const inA=teamA.includes(id),inB=teamB.includes(id);
+    const aggregateHasPlayer=m.source_kind==='compact_bo3'&&
+      (m.series_aggregate_stats||[]).some(s=>s.player_id===id);
+    const k=rs.reduce((n,q)=>n+(Number(q.kills)||0),0);
+    const d=rs.reduce((n,q)=>n+(Number(q.deaths)||0),0);
+    const a=rs.reduce((n,q)=>n+(Number(q.assists)||0),0);
+    const score=String(m?.series_score||'').match(/^(\d+)\s*:\s*(\d+)$/);
+    const sa=score?Number(score[1]):NaN;
+    const sb=score?Number(score[2]):NaN;
+    let result=Number.isFinite(sa)&&Number.isFinite(sb)
+      ?(sa===sb?'DRAW':(inA?(sa>sb?'WIN':'LOSS'):(inB?(sb>sa?'WIN':'LOSS'):'—')))
+      :'—';
+    if(result==='—'&&knownSeriesResults.has(m.match_id))
+      result=knownSeriesResults.get(m.match_id);
+
+    return {
+      m,rs,k,d,a,kd:d?k/d:0,result,
+      hasStats:rs.length>0||aggregateHasPlayer
+    };
+  }).filter(Boolean)
+    .sort((a,b)=>
+      matchOrder(b.m)-matchOrder(a.m)||
+      matchTime(b.m)-matchTime(a.m)||
+      String(b.m.match_id||'').localeCompare(String(a.m.match_id||''))
+    )
+    .slice(0,10);
+
   const careerSeriesResults=careerSeriesResultsForPlayer(id), wins=careerSeriesResults.filter(q=>q.result==='WIN').length, losses=careerSeriesResults.filter(q=>q.result==='LOSS').length, draws=careerSeriesResults.filter(q=>q.result==='DRAW').length;
   const mapRows=latest.map(r=>{const n=activeMapNumber(r.map_id);return `<div class="map-history-row compact-row click-row" onclick="openMatchDetail('${esc(r.match_id)}')" title="Открыть матч"><div class="map-history-meta"><span class="map-history-index">${n?`#${n}`:''}</span><span class="map-history-sep">·</span><b class="map-history-name">${esc(r.map)}</b><span class="map-history-sep">·</span><span class="map-kda ${kdClass(r.kills,r.deaths)}">${r.kills}/${r.deaths}/${r.assists}</span></div><strong class="map-mvp-link ${kdClass(r.kills,r.deaths)}">K/D ${fmt(r.deaths?r.kills/r.deaths:0,2)}</strong></div>`}).join('');
   const matchRows=recentMatches.map(q=>{const n=q.m?seriesNumberForMatch(q.m):'',tone=q.result==='WIN'?'positive':q.result==='LOSS'?'negative':q.result==='DRAW'?'neutral':'neutral',personalTone=q.k>q.d?'positive':q.k<q.d?'negative':'neutral';return `<div class="profile-match-row click-row" onclick="openMatchDetail('${esc(q.m?.match_id||'')}')" title="Открыть матч"><div><b>СЕРИЯ ${esc(n||'—')}</b><span>${esc(q.m?.format||'')} · <b class="${tone}">${esc(q.m?.series_score||'—')}</b></span></div><strong class="series-result ${tone}">${q.result==='DRAW'?'DRAW':q.result==='WIN'?'WIN':q.result==='LOSS'?'LOSS':'—'}</strong><em class="series-personal-score ${personalTone}">${q.hasStats?`${q.k}/${q.d}/${q.a}`:'Нет подробной K/D/A'}${q.hasStats?` · ${kdMarkupValue(q.kd)} K/D`:''}</em></div>`}).join('');
