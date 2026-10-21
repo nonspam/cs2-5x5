@@ -27,7 +27,7 @@
         if(ta.length||tb.length){if(ta.length>5||tb.length>5||new Set([...ta,...tb]).size!==ta.length+tb.length||[...ta,...tb].some(pid=>!pids.has(pid)))return{ok:false,error:'invalid team assignment'}}
         for(let i=0;i<m.map_ids.length;i++){const mp=maps.get(m.map_ids[i]);if(!mp||mp.match_id!==m.match_id||Number(mp.map_index)!==i+1)return{ok:false,error:'match/map relation invalid'}}
         const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];
-        if(sas.length&&!((sas.length===10)))return{ok:false,error:'series aggregate must contain 10 rows when present'};
+        if(sas.length>10)return{ok:false,error:'series aggregate cannot exceed 10 rows'};
         const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||!Number.isFinite(Number(st.deaths))||!Number.isFinite(Number(st.assists)))return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
       }
       return{ok:true};
