@@ -2523,3 +2523,7 @@ html{scroll-behavior:auto!important}
 .player-profile-modal .profile-match-row .series-personal-score .kd-value.kd-positive{color:var(--green)!important;text-shadow:0 0 10px rgba(39,230,154,.18)}
 .player-profile-modal .profile-match-row .series-personal-score .kd-value.kd-negative{color:var(--red)!important;text-shadow:0 0 10px rgba(255,79,105,.18)}
 .player-profile-modal .profile-match-row .series-personal-score .kd-value.kd-neutral{color:#edf1ef!important;text-shadow:none}
+
+/* Cloud source-of-truth status: never present an offline snapshot as live data. */
+.cloud-status-banner{position:relative;z-index:5;width:min(96%,1400px);margin:9px auto 0;padding:10px 14px;border:1px solid rgba(243,201,105,.35);border-radius:9px;background:#1b1d1a;color:var(--amber,#f3c969);font-size:12px;line-height:1.45}
+.cloud-status-banner[hidden]{display:none!important}
