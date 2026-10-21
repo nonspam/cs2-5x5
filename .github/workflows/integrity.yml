@@ -27,3 +27,27 @@ jobs:
           node --check tests/safety_invariants.test.js
       - name: Regression tests
         run: node --test tests/safety_invariants.test.js
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser tests
+        run: |
+          npm install --no-package-lock --ignore-scripts
+          npx playwright install --with-deps chromium
+      - name: Read-only local browser smoke
+        run: |
+          python3 -m http.server 8123 --bind 127.0.0.1 >/tmp/cs2-http.log 2>&1 &
+          sleep 2
+          npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-failure
+          path: test-results/
+          if-no-files-found: ignore
