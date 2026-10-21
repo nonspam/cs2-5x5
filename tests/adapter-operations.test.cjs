@@ -28,3 +28,37 @@ test('deleting a match also deletes only its related maps', () => {
   assert.deepEqual(state.matches.map(x => x.match_id), ['m2']);
   assert.deepEqual(state.maps.map(x => x.map_id), ['m2-map1']);
 });
+
+test('deleting a map updates its match map_ids and reindexes remaining maps', () => {
+  const state = {
+    matches: [{ match_id: 'm1', format: 'BO3', map_ids: ['map1', 'map2', 'map3'] }],
+    maps: [
+      { map_id: 'map1', match_id: 'm1', map_index: 1 },
+      { map_id: 'map2', match_id: 'm1', map_index: 2 },
+      { map_id: 'map3', match_id: 'm1', map_index: 3 }
+    ],
+    players: [],
+    aliases: {}
+  };
+
+  applyOp(state, { kind: 'delete_map', map_id: 'map2' });
+
+  assert.deepEqual(state.matches[0].map_ids, ['map1', 'map3']);
+  assert.deepEqual(state.maps.map(x => [x.map_id, x.map_index]), [['map1', 1], ['map3', 2]]);
+});
+
+test('refuses to delete a map if it would violate the match format minimum', () => {
+  const state = {
+    matches: [{ match_id: 'm1', format: 'BO3', map_ids: ['map1', 'map2'] }],
+    maps: [
+      { map_id: 'map1', match_id: 'm1', map_index: 1 },
+      { map_id: 'map2', match_id: 'm1', map_index: 2 }
+    ],
+    players: [],
+    aliases: {}
+  };
+
+  assert.throws(() => applyOp(state, { kind: 'delete_map', map_id: 'map2' }), /requires at least 2 maps/);
+  assert.deepEqual(state.matches[0].map_ids, ['map1', 'map2']);
+  assert.equal(state.maps.length, 2);
+});
