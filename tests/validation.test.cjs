@@ -63,3 +63,47 @@ test('rejects orphan maps and broken aliases', () => {
 test('assertBase throws for invalid state instead of silently accepting it', () => {
   assert.throws(() => assertBase(makeBase({ format: 'BO1', mapCount: 2 })), /BO1 must have one map/);
 });
+
+test('rejects non-finite KDA values', () => {
+  const result = validateBase(makeBase({
+    stats: [{ kills: 'NaN', deaths: 1, assists: 0, raw_name: 'Guest-123', player_id: null }]
+  }));
+  assert.equal(result.ok, false);
+  assert.match(result.error, /invalid KDA/);
+});
+
+test('rejects invalid map ordering within a match', () => {
+  const base = makeBase({ format: 'BO3', mapCount: 2 });
+  base.maps[1].map_index = 1;
+  assert.equal(validateBase(base).ok, false);
+  assert.match(validateBase(base).error, /match\/map relation invalid/);
+});
+
+test('rejects reusing a map in multiple matches', () => {
+  const base = makeBase();
+  base.matches.push({
+    match_id: 'match_other',
+    format: 'BO1',
+    map_ids: ['map_1'],
+    team_a: [],
+    team_b: []
+  });
+  assert.match(validateBase(base).error, /map belongs to multiple matches/);
+});
+
+test('rejects duplicate player IDs', () => {
+  const base = makeBase();
+  base.players.push({ player_id: 'p1', name: 'Duplicate Player' });
+  assert.match(validateBase(base).error, /duplicate\/invalid id/);
+});
+
+test('rejects malformed series aggregate statistics', () => {
+  const base = makeBase();
+  base.matches[0].series_aggregate_stats = Array.from({ length: 9 }, (_, i) => ({
+    player_id: `p${i + 1}`,
+    kills: 1,
+    deaths: 1,
+    assists: 0
+  }));
+  assert.match(validateBase(base).error, /series aggregate must contain 10 rows/);
+});
