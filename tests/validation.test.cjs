@@ -177,3 +177,14 @@ test('map team stats resolve unlinked rows through unique registered player alia
   assert.ok(app.includes('owners.length===1&&owners[0].player_id===id'));
   assert.ok(app.includes('const row=rowById||rowByRaw||rowByKnownName'));
 });
+
+
+test('series team stats resolve unlinked rows by a unique registered alias and do not alias-match guest slots', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const app = fs.readFileSync(path.join(__dirname, '..', 'app_v57.js'), 'utf8');
+  assert.ok(app.includes('statByUniqueAlias'));
+  assert.ok(app.includes('owners.length===1&&owners[0].player_id===pid'));
+  assert.ok(app.includes('statById||statByExactName||statByUniqueAlias'));
+  assert.match(app, /statByUniqueAlias=statById\|\|statByExactName\|\|guest\?null:rows\.find/);
+});
