@@ -2533,3 +2533,24 @@ html{scroll-behavior:auto!important}
 #playerDrilldown .profile-drill-kda b.kd-positive{color:var(--green)!important}
 #playerDrilldown .profile-drill-kda b.kd-negative{color:var(--red)!important}
 #playerDrilldown .profile-drill-kda b.kd-neutral{color:#edf1ef!important}
+
+
+/* Final override: no colored panel, border, glow or pill behind personal K/D/A. */
+#playerDrilldown .profile-drill-kda,
+#playerDrilldown .profile-drill-kda.kd-positive,
+#playerDrilldown .profile-drill-kda.kd-negative,
+#playerDrilldown .profile-drill-kda.kd-neutral{
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:none!important;
+  box-shadow:none!important;
+  outline:0!important;
+  transition:none!important;
+}
+#playerDrilldown .profile-drill-kda b.kd-positive,
+#playerDrilldown .profile-drill-kda b.kd-negative,
+#playerDrilldown .profile-drill-kda b.kd-neutral{
+  text-shadow:none!important;
+  box-shadow:none!important;
+}
