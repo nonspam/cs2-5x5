@@ -84,3 +84,8 @@ This is a point-in-time snapshot, not a permanent guarantee. Re-run the same che
 ## Player Index regression fixtures (2026-10-22)
 
 Added `tests/player-index-golden.test.cjs` against the production `indexBreakdown()` implementation. The golden fixture locks the current result at 89.0625 for a two-map sample with K/D 1.50, +10 K-D difference, 83.75 Impact, 65 Stability, 50 volume score, and 100 form score. Additional cases protect the empty-history state, chronological last-ten form window, and Stability's explicit exclusion of zero-death rows from K/D threshold evidence. These tests preserve current semantics; they do not authorize changing weights or claim that compact aggregate coverage has been fully tested.
+
+
+### No-data Player Index handling
+
+The weighted component baseline for the `+/− per map` component is 50, but a player with zero counted maps has no evidence for a meaningful index. The production total now explicitly returns 0 when `x.maps === 0`, rather than returning the artificial baseline contribution (12.5) from an otherwise empty history. The component normalization itself is unchanged. A golden test covers the empty-history case.
