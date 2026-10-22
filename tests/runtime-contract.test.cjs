@@ -26,16 +26,16 @@ test('player profile labels recent series by current ordered active-match positi
 });
 
 test('username admin login stays server-side and all other Edge Function routes remain guarded', () => {
-  assert.match(adapter, /functions\\/v1\\/cs2-admin/,
+  assert.ok(adapter.includes('/functions/v1/cs2-admin'),
     'username login must use the guarded Edge Function');
-  assert.doesNotMatch(adapter, /client\\.rpc\\(['"]resolve_cs2_admin_login/,
+  assert.ok(!adapter.includes("client.rpc('resolve_cs2_admin_login"),
     'browser must not call the email-resolving RPC directly');
-  assert.match(adminEdge, /if\\(body\\?\\.action===["']sign_in["']\\)return await signInByLogin\\(body\\)/,
+  assert.ok(adminEdge.includes('if(body?.action==="sign_in")return await signInByLogin(body);'),
     'Edge Function must explicitly route sign-in before bearer authentication');
-  assert.match(adminEdge, /authClient\\.auth\\.signInWithPassword/,
+  assert.ok(adminEdge.includes('authClient.auth.signInWithPassword'),
     'Edge Function must verify credentials with Supabase Auth');
-  assert.match(adminEdge, /from\\(["']app_admins["']\\)/,
+  assert.ok(adminEdge.includes('from("app_admins")'),
     'Edge Function must verify that the authenticated user is an admin');
-  assert.match(adminEdge, /const user=await authUser\\(req\\);if\\(!user\\)return json\\(\\{ok:false,error:["']Unauthorized["']\\},401\\)/,
+  assert.ok(adminEdge.includes('const user=await authUser(req);if(!user)return json({ok:false,error:"Unauthorized"},401);'),
     'all non-login routes must retain explicit token/admin authorization');
 });
