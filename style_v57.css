@@ -2523,3 +2523,13 @@ html{scroll-behavior:auto!important}
 .player-profile-modal .profile-match-row .series-personal-score .kd-value.kd-positive{color:var(--green)!important;text-shadow:0 0 10px rgba(39,230,154,.18)}
 .player-profile-modal .profile-match-row .series-personal-score .kd-value.kd-negative{color:var(--red)!important;text-shadow:0 0 10px rgba(255,79,105,.18)}
 .player-profile-modal .profile-match-row .series-personal-score .kd-value.kd-neutral{color:#edf1ef!important;text-shadow:none}
+
+
+/* Player drilldowns: tint the complete personal K/D/A line using the same K/D arithmetic as the main profile. */
+#playerDrilldown .profile-drill-kda{padding:7px 9px;border:1px solid transparent;border-radius:8px;background:rgba(255,255,255,.018);transition:background .15s ease,border-color .15s ease}
+#playerDrilldown .profile-drill-kda.kd-positive{background:rgba(39,230,154,.075);border-color:rgba(39,230,154,.20)}
+#playerDrilldown .profile-drill-kda.kd-negative{background:rgba(255,79,105,.075);border-color:rgba(255,79,105,.20)}
+#playerDrilldown .profile-drill-kda.kd-neutral{background:rgba(237,241,239,.035);border-color:rgba(237,241,239,.10)}
+#playerDrilldown .profile-drill-kda b.kd-positive{color:var(--green)!important}
+#playerDrilldown .profile-drill-kda b.kd-negative{color:var(--red)!important}
+#playerDrilldown .profile-drill-kda b.kd-neutral{color:#edf1ef!important}
