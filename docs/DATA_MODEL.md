@@ -65,4 +65,17 @@ The current implementation combines six normalized components:
 
 These weights total 100%. Important limitations: the aggregate can include compact BO3 series totals, while stability/form use detailed map rows; therefore the components do not all have identical evidence coverage. Zero deaths are represented as K/D 0 in aggregate helpers, while stability threshold checks explicitly require deaths > 0. Do not alter these semantics during refactoring without an intentional metric-version change and comparison of historical player rankings.
 
-The exact helper functions remain the implementation source of truth. The metric regression tests check aggregate behavior, form windows and the presence of the current weights. Future work should add golden fixtures for several real-world edge cases and verify indexBreakdown parity with index before extracting these functions from the monolith.
+The exact helper functions remain the implementation source of truth. The public `index()` now delegates to `indexBreakdown(...).total`, removing the duplicated formula. Regression tests cover aggregate behavior, form windows, current weights and that single-source delegation. Before extracting calculation code from the monolith, add golden fixtures for compact BO3 coverage, zero-death rows, and players with no detailed map history.
+
+
+## Read-only live-state integrity snapshot
+
+Audited the single `public.cs2_app_state` row (`id = 1`) on 2026-10-22. The audit was read-only and did not modify production data.
+
+- State version: 106.
+- Catalog: 14 players, 37 matches/series, 80 maps; all 37 matches and 80 maps are active in this snapshot.
+- All 80 map IDs are linked exactly once from match `map_ids`; no missing map references, orphan maps, or map/match ID mismatches were found.
+- 800 map-stat rows were present. No duplicate non-empty `player_id` values within a map and no missing K/D/A numeric fields were found.
+- 95 stat rows have no `player_id` and 95 roster names do not resolve directly to catalog IDs. The rows are preserved as unresolved/guest identities; this audit intentionally did not create profiles or guess identity mappings.
+
+This is a point-in-time snapshot, not a permanent guarantee. Re-run the same checks after any import, bulk repair, player merge, or match edit. The catalog-ID check on roster names is a warning signal rather than proof of corruption: historical display names and guest names may legitimately differ from canonical IDs.
