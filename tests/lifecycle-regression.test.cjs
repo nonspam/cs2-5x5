@@ -45,7 +45,7 @@ test('archive and restore apply to the match and every child map, leaving other 
   assert.equal(state.matches.find(x => x.match_id === 'm1').archived, true);
   assert.ok(state.maps.filter(x => x.match_id === 'm1').every(x => x.archived === true));
   assert.equal(state.matches.find(x => x.match_id === 'm2').archived, undefined);
-  assert.equal(state.maps.find(x => x.match_id === 'm2-map1').archived, undefined);
+  assert.equal(state.maps.find(x => x.map_id === 'm2-map1').archived, undefined);
 
   applyAll(state, [
     { kind: 'match_patch', match_id: 'm1', patch: { archived: false, archived_at: null } },
