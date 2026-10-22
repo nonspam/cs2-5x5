@@ -608,8 +608,22 @@ function openMapDetail(mapId){
   const groups=(mapTeams[0].length||mapTeams[1].length)?mapTeams:lobbyGroups(match);
   const teamRows=ids=>ids.map(id=>{
     const key=normalizeName(id);
-    const row=rows.find(r=>r.player_id&&r.player_id===id)||rows.find(r=>normalizeName(r.raw_name)===key);
-    return row?{...row,name:row.name||id}:{name:player(id)?.display_name||id,kills:null,deaths:null,assists:null,kd:null};
+    const rowById=rows.find(r=>r.player_id&&r.player_id===id);
+    const rowByRaw=rows.find(r=>normalizeName(r.raw_name)===key);
+    // Guest rows can carry a known player's display name or registered alias without player_id.
+    // Only attach such a row when the name maps unambiguously to this roster player.
+    const rosterPlayer=player(id);
+    const names=[id,rosterPlayer?.display_name,...(rosterPlayer?.aliases||[])]
+      .filter(Boolean).map(normalizeName);
+    const rowByKnownName=rowById||rowByRaw?null:rows.find(r=>{
+      const raw=normalizeName(r.raw_name);
+      if(!raw||!names.includes(raw))return false;
+      const owners=DB.players.filter(p=>[p.player_id,p.display_name,...(p.aliases||[])]
+        .filter(Boolean).some(n=>normalizeName(n)===raw));
+      return owners.length===1&&owners[0].player_id===id;
+    });
+    const row=rowById||rowByRaw||rowByKnownName;
+    return row?{...row,name:rosterPlayer?.display_name||row.name||id}:{name:rosterPlayer?.display_name||id,kills:null,deaths:null,assists:null,kd:null};
   }).sort((a,b)=>{
     const ak=a.kd==null?-1:a.kd,bk=b.kd==null?-1:b.kd;
     return bk-ak||(Number(b.kills)||0)-(Number(a.kills)||0)||((Number(b.kills)||0)-(Number(b.deaths)||0))-((Number(a.kills)||0)-(Number(a.deaths)||0))||String(a.name).localeCompare(String(b.name),'ru');
