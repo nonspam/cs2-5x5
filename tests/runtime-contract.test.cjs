@@ -15,7 +15,7 @@ test('production entrypoint loads the canonical runtime files with cache-busting
 });
 
 test('player profile labels recent series by current ordered active-match position, not stale stored series_number', () => {
-  assert.match(app, /function seriesNumberForMatch\(match\)\{[^}]*return i\+1:null\}/,
+  assert.match(app, /function seriesNumberForMatch\(match\)\{[^}]*return i>=0\?i\+1:null\}/,
     'seriesNumberForMatch should derive the visible label from current ordered matches');
   assert.match(app, /const matchRows=recentMatches\.map\(q=>\{const n=q\.m\?seriesNumberForMatch\(q\.m\):''/,
     'recent-series profile rows must use the canonical visible series number');
