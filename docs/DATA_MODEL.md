@@ -89,3 +89,8 @@ Added `tests/player-index-golden.test.cjs` against the production `indexBreakdow
 ### No-data Player Index handling
 
 The weighted component baseline for the `+/− per map` component is 50, but a player with zero counted maps has no evidence for a meaningful index. The production total now explicitly returns 0 when `x.maps === 0`, rather than returning the artificial baseline contribution (12.5) from an otherwise empty history. The component normalization itself is unchanged. A golden test covers the empty-history case.
+
+
+### Form trend sample size
+
+The form value remains the average K-D difference in the current last-ten detailed-map window. The *trend* compares the first and last ten-row windows only when more than ten detailed maps exist; with 0–10 maps it is unavailable (`null` / UI dash), not an artificial zero. This avoids presenting a reused single window as a flat trend. The form value and Player Index weights are unchanged.
