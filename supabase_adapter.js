@@ -21,7 +21,7 @@
       if(result.error)throw result.error;
       data=result.data;
     }else{
-      const response=await fetch(cfg.url.replace(/\\/$/,'')+'/functions/v1/cs2-admin',{
+      const response=await fetch((cfg.url.endsWith('/')?cfg.url.slice(0,-1):cfg.url)+'/functions/v1/cs2-admin',{
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':cfg.key},
         body:JSON.stringify({action:'sign_in',login:emailOrLogin,password})
