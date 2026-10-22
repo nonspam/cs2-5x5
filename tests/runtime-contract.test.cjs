@@ -63,3 +63,8 @@ test('Player Index explanation exposes detailed-map coverage without changing th
   assert.match(app, /подробные карты: \\?\$\{rows\.length\} из \\?\$\{b\.maps\} учтённых/);
   assert.match(app, /Math\.round\(rows\.length\/b\.maps\*100\):0\}% покрытия/);
 });
+
+
+test('missing form trend stays unavailable instead of being coerced to numeric zero', () => {
+  assert.match(app, /const trendMarkup=\(value,label=''\)=>\{if\(value==null\|\|value===''\)return/);
+});
