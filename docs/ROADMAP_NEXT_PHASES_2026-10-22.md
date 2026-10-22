@@ -152,3 +152,11 @@
 - Added `docs/UNRESOLVED_GUEST_STATS_AUDIT_2026-10-22.md` with all 95 unlinked stat rows and their match/map/name/K/D/A context for manual reconciliation. No identity mappings or production statistics were changed.
 - Supabase advisors still report informational RLS/no-policy findings and SECURITY DEFINER RPC warnings. Direct privilege checks show anon cannot execute these RPCs; commit RPC checks admin membership internally. Do not loosen/tighten grants blindly: review policies and test negative authorization cases in a controlled environment.
 - Still outstanding for a truthful P0 closure: run an actual login attempt with the known admin username and a wrong password; exercise create/edit/partial-roster/cloud-save/reload/archive/restore/delete through a browser; verify the affected player profile in the deployed page; review the 95-row report against source records and manual post-import games. Source checks and CI do not substitute for those runtime tests.
+
+
+## Журнал выполнения P1 — старт 22.10.2026
+
+- Начат пакет 4: добавлен `tests/player-index-golden.test.cjs` с golden-сценарием для текущей production-функции `indexBreakdown()`, проверкой стабильности при нулевых смертях и формой на последнем окне из 10 подробных карт.
+- CI сначала поймал ошибку самого тестового стенда (функция была извлечена без внедрения зависимостей); тест исправлен, последующий quality gate прошёл: https://github.com/nonspam/cs2-5x5/actions/runs/39848216189
+- Pages build для текущего коммита запущен: https://github.com/nonspam/cs2-5x5/actions/runs/39848216289
+- Это только начало P1, не завершение этапа. Пока не менялись формула Player Index, live-данные, дизайн и поведение фильтров. Следующие шаги: добавить coverage/малую выборку в пояснения индекса без смены итогового балла; затем точечно проверить совместные фильтры, цвет результата серии vs личный K/D, выпадающие списки и дубли; после этого — безопасное выделение чистых расчётных функций из `app_v57.js` с тестами на прежнее поведение.
