@@ -139,3 +139,16 @@
 2. Пройти в браузере ключевой пользовательский путь создания/редактирования неполного матча, cloud save, reload/reopen и административные lifecycle-действия в безопасной тестовой среде.
 3. Составить полный отчёт по 95 unresolved/guest строкам (имя + серия/карта + stats), без автослияния профилей.
 4. Проверить, что новые регрессионные тесты ловят проблему, а не только проверяют наличие исходного кода; по возможности вынести чистые функции сортировки/нумерации в модуль с исполняемыми unit-тестами.
+
+
+## P0 session update — 22.10.2026 (later run)
+
+- The live state was audited read-only: 37 matches, 80 maps, 14 catalog players, 800 map-stat rows, state version 106. Map relations and stat invariants checked above passed.
+- Saved historical series number 40 exists on the last late-added series while there are 37 current records. Audit log confirms an earlier explicit chronological renumbering from 34–40 and permanent removals of some records. This is not sufficient evidence to rewrite historical numbers or to delete a match. Visible profile numbering is derived by `seriesNumberForMatch()` from current ordered active matches.
+- Updated the active `app_v57.js` cache-buster in `index.html` to `20261022_p0_series_order_guard`.
+- Added `tests/runtime-contract.test.cjs` for production entrypoint/cache-buster and visible series-number source contract; added guarded sign-in source-contract checks. The latest CI passed: https://github.com/nonspam/cs2-5x5/actions/runs/39845217496
+- GitHub Pages deployment completed successfully for the same commit: https://github.com/nonspam/cs2-5x5/actions/runs/39845216604
+- Repaired the username-login path: browser adapter no longer calls the email-resolving RPC directly; it sends the login to `cs2-admin`, where credentials are checked with Supabase Auth and the account is confirmed against `app_admins`. Other Edge Function actions still require a valid bearer session and admin identity. Deployed `cs2-admin` version 15 with JWT gateway verification disabled because the function must accept the login request before a session exists; application-level bearer/admin checks remain mandatory for all other routes.
+- Added `docs/UNRESOLVED_GUEST_STATS_AUDIT_2026-10-22.md` with all 95 unlinked stat rows and their match/map/name/K/D/A context for manual reconciliation. No identity mappings or production statistics were changed.
+- Supabase advisors still report informational RLS/no-policy findings and SECURITY DEFINER RPC warnings. Direct privilege checks show anon cannot execute these RPCs; commit RPC checks admin membership internally. Do not loosen/tighten grants blindly: review policies and test negative authorization cases in a controlled environment.
+- Still outstanding for a truthful P0 closure: run an actual login attempt with the known admin username and a wrong password; exercise create/edit/partial-roster/cloud-save/reload/archive/restore/delete through a browser; verify the affected player profile in the deployed page; review the 95-row report against source records and manual post-import games. Source checks and CI do not substitute for those runtime tests.
