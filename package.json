@@ -1,0 +1,14 @@
+{
+  "name": "cs2-5x5-analytics",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Quality checks for the CS2 5x5 analytics site",
+  "scripts": {
+    "check:syntax": "node --check validation.js && node --check supabase_adapter.js && node --check supabase-config.js && node --check data_embedded.js && node --check app_v57.js",
+    "test": "node --test tests/*.test.cjs",
+    "check": "npm run check:syntax && npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
