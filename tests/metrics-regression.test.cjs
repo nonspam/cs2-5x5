@@ -48,7 +48,7 @@ test('production metrics expose their current documented weights', () => {
   const end = app.indexOf('function eraRows(', start);
   assert.ok(start >= 0 && end > start, 'indexBreakdown function must exist');
   const source = app.slice(start, end);
-  for (const weight of ['.35*kdScore', '.25*diffScore', '.15*impact', '.10*st.score', '.10*vol', '.05*formScore']) {
+  for (const weight of ['.35*kdScore', '.25*diffScore', '.15*imp', '.10*st.score', '.10*vol', '.05*formScore']) {
     assert.ok(source.includes(weight), 'missing Player Index weight ' + weight);
   }
 });
