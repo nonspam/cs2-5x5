@@ -74,3 +74,9 @@ test('series team detail resolves guest rows by guest ID or normalized raw/displ
   assert.match(app, /const top=rows\.slice\(0,10\),team=ids=>ids\.map\(pid=>\{const guest=\(m\.guest_players\|\|\[\]\)\.find\(g=>g\.guest_id===pid\),label=guest\?\.display_name\|\|playerName\(pid\),norm=value=>String\(value\?\?''\)\.normalize\('NFKC'\)/);
   assert.match(app, /stat=rows\.find\(r=>r\.player_id===pid\)\|\|rows\.find\(r=>!r\.player_id&&\[r\.raw_name,r\.name\]\.some/);
 });
+
+
+test('series map list surfaces per-map MVP and actual stat-row coverage', () => {
+  assert.match(app, /const mapBtns=maps\.map\(\(mp,i\)=>\{const coverage=mp\.stats_available\?\(mp\.player_stats\|\|\[\]\)\.length:0/);
+  assert.match(app, /MVP: \$\{esc\(mapMvp\(mp\.map_id\)\)\} · статов: \$\{coverage\}/);
+});
