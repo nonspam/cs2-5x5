@@ -57,3 +57,15 @@ test('production metrics expose their current documented weights', () => {
 test('the public index() wrapper delegates to the canonical indexBreakdown() calculation', () => {
   assert.match(app, /function index\(id,rows=detailRows\(id\),includeCompact=true\)\{return indexBreakdown\(id,rows,includeCompact\)\.total\}/);
 });
+
+
+test('form does not invent a flat trend when fewer than two ten-map windows are available', () => {
+  const one = formForRows([{ kills: 20, deaths: 10 }]);
+  assert.equal(one.form, 10);
+  assert.equal(one.trend, null);
+  const ten = formForRows(Array.from({ length: 10 }, () => ({ kills: 10, deaths: 10 })));
+  assert.equal(ten.form, 0);
+  assert.equal(ten.trend, null);
+  const eleven = formForRows(Array.from({ length: 11 }, (_, i) => ({ kills: i + 10, deaths: 10 })));
+  assert.notEqual(eleven.trend, null);
+});
