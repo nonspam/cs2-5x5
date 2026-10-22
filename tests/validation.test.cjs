@@ -168,3 +168,12 @@ test('cloud commit response is validated before the adapter reports success', ()
   assert.match(adapter, /Supabase вернул неполный ответ после сохранения/);
   assert.match(adapter, /Number\.isFinite\(Number\(out\.version\)\)/);
 });
+
+test('map team stats resolve unlinked rows through unique registered player aliases', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const app = fs.readFileSync(path.join(__dirname, '..', 'app_v57.js'), 'utf8');
+  assert.ok(app.includes('Guest rows can carry a known player'));
+  assert.ok(app.includes('owners.length===1&&owners[0].player_id===id'));
+  assert.ok(app.includes('const row=rowById||rowByRaw||rowByKnownName'));
+});
