@@ -17,7 +17,11 @@ const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const aggregateRows = extractFunction('aggregateRows', 'impact');
 const formForRows = extractFunction('formForRows', 'form');
 const realStability = extractFunction('stability', 'detailRows');
-const realIndexBreakdown = extractFunction('indexBreakdown', 'eraRows');
+const indexSource = app.slice(app.indexOf('function indexBreakdown('), app.indexOf('function eraRows('));
+const realIndexBreakdown = (aggregate, stability, form, impact) =>
+  Function('aggregate', 'stability', 'form', 'impact', 'clamp', 'return (' + indexSource.trim() + ')')(
+    aggregate, stability, form, impact, clamp
+  );
 
 function fixtureAggregate(_id, rows, includeCompact) {
   const a = aggregateRows(rows);
@@ -28,24 +32,16 @@ function fixtureImpact(_id, rows, includeCompact) {
   const x = fixtureAggregate(_id, rows, includeCompact);
   return x.maps ? clamp(50 + 5 * ((x.kdDiff / x.maps) + 0.5 * x.apm), 0, 100) : 0;
 }
-function indexFor(rows, includeCompact = false) {
-  const aggregate = fixtureAggregate;
-  const stability = (_id, rr, _fullPool) => realStability(_id, rr, false, rr.length);
-  const form = (_id, rr) => formForRows(rr);
-  const impact = fixtureImpact;
-  return realIndexBreakdown('fixture-player', rows, includeCompact, false);
-}
-
 test('Player Index golden fixture: documented weights produce a stable, reproducible score', () => {
   const rows = [
     { kills: 20, deaths: 10, assists: 5 },
     { kills: 10, deaths: 10, assists: 2 }
   ];
-  const aggregate = fixtureAggregate;
   const stability = (_id, rr, _fullPool) => realStability(_id, rr, false, rr.length);
   const form = (_id, rr) => formForRows(rr);
-  const impact = fixtureImpact;
-  const result = realIndexBreakdown('fixture-player', rows, false, false);
+  const result = realIndexBreakdown(fixtureAggregate, stability, form, fixtureImpact)(
+    'fixture-player', rows, false, false
+  );
   assert.equal(result.kd, 1.5);
   assert.equal(result.diff, 10);
   assert.equal(result.kpm, 15);
