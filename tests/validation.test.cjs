@@ -155,6 +155,7 @@ test('app surfaces cloud-state load failures instead of silently presenting the 
   const path = require('node:path');
   const app = fs.readFileSync(path.join(__dirname, '..', 'app_v57.js'), 'utf8');
   assert.match(app, /Не удалось загрузить актуальные данные из облачной базы/);
+  assert.match(app, /state\.serverSync=false;/);
   assert.match(app, /if\(remote\)connectServerEvents\(\);else toast\(state\.storageWarning\);/);
 });
 
