@@ -157,3 +157,12 @@ test('app surfaces cloud-state load failures instead of silently presenting the 
   assert.match(app, /Не удалось загрузить актуальные данные из облачной базы/);
   assert.match(app, /if\(remote\)connectServerEvents\(\);else toast\(state\.storageWarning\);/);
 });
+
+
+test('cloud commit response is validated before the adapter reports success', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const adapter = fs.readFileSync(path.join(__dirname, '..', 'supabase_adapter.js'), 'utf8');
+  assert.match(adapter, /Supabase вернул неполный ответ после сохранения/);
+  assert.match(adapter, /Number\.isFinite\(Number\(out\.version\)\)/);
+});
