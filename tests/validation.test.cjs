@@ -125,3 +125,26 @@ test('rejects malformed series aggregate statistics', () => {
   }));
   assert.match(validateBase(base).error, /series aggregate must contain 10 rows/);
 });
+
+test('rejects unlinked guest rows without a raw name instead of silently collapsing them', () => {
+  const base = makeBase({ stats: [{ kills: 5, deaths: 4, assists: 2, player_id: null, raw_name: '  ' }] });
+  assert.match(validateBase(base).error, /guest stat missing raw_name/);
+});
+
+test('guest names are compared case-insensitively when checking duplicate rows', () => {
+  const base = makeBase({ stats: [
+    { kills: 5, deaths: 4, assists: 2, player_id: null, raw_name: 'GuestOne' },
+    { kills: 6, deaths: 4, assists: 2, player_id: null, raw_name: 'guestone' }
+  ] });
+  assert.match(validateBase(base).error, /duplicate player stats/);
+});
+
+test('rejects unlinked series aggregate rows without a raw name', () => {
+  const base = makeBase();
+  base.matches[0].series_aggregate_stats = Array.from({ length: 10 }, (_, i) => ({
+    player_id: i === 0 ? null : `p${i + 1}`,
+    raw_name: i === 0 ? '' : undefined,
+    kills: 1, deaths: 1, assists: 0
+  }));
+  assert.match(validateBase(base).error, /guest series stat missing raw_name/);
+});
