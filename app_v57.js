@@ -89,7 +89,12 @@ async function load(){
         render();
         preloadMapPhotos();
         if(remote)connectServerEvents();else toast(state.storageWarning);
-      }).catch(()=>{});
+      }).catch(error=>{
+        state.serverSync=false;
+        state.storageWarning=error?.message||'Не удалось завершить загрузку состояния из облачной базы.';
+        render();
+        toast(state.storageWarning);
+      });
   }catch(e){
     state.bootError=e?.message||'Не удалось загрузить базу';
     const v=$('#view');
