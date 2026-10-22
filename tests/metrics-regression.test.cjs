@@ -52,3 +52,8 @@ test('production metrics expose their current documented weights', () => {
     assert.ok(source.includes(weight), 'missing Player Index weight ' + weight);
   }
 });
+
+
+test('the public index() wrapper delegates to the canonical indexBreakdown() calculation', () => {
+  assert.match(app, /function index\(id,rows=detailRows\(id\),includeCompact=true\)\{return indexBreakdown\(id,rows,includeCompact\)\.total\}/);
+});
