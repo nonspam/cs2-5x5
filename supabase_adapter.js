@@ -10,7 +10,33 @@
   async function getRow(){if(!configured)throw Error('Supabase не настроен');const {data,error}=await client.from('cs2_app_state').select('id,state,version,updated_at,updated_by').eq('id',1).maybeSingle();if(error)throw error;if(!data)throw Error('В Supabase ещё нет начального состояния');return data}
   async function load(){if(!configured)return null;const row=await getRow();return {...clone(row.state),updated_at:row.updated_at,cloud_version:row.version}}
   async function isAdmin(){if(!configured)return false;const {data:{session}}=await client.auth.getSession();if(!session)return false;const {data,error}=await client.rpc('is_cs2_admin');if(error)throw error;return data===true}
-  async function signIn(login,password){if(!configured)throw Error('Supabase не настроен');let email=String(login||'').trim();if(!email)throw Error('Введите логин');if(!email.includes('@')){const {data,error}=await client.rpc('resolve_cs2_admin_login',{p_username:email});if(error)throw error;if(!data)throw Error('Неверный логин или пароль');email=data}const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;if(!data.session)throw Error('Сессия не создана');if(!(await isAdmin())){await client.auth.signOut();throw Error('Этот аккаунт не добавлен как администратор сайта.')}return data}
+  async function signIn(login,password){
+    if(!configured)throw Error('Supabase не настроен');
+    const emailOrLogin=String(login||'').trim();
+    if(!emailOrLogin)throw Error('Введите логин');
+    if(!password)throw Error('Введите пароль');
+    let data;
+    if(emailOrLogin.includes('@')){
+      const result=await client.auth.signInWithPassword({email:emailOrLogin,password});
+      if(result.error)throw result.error;
+      data=result.data;
+    }else{
+      const response=await fetch(cfg.url.replace(/\\/$/,'')+'/functions/v1/cs2-admin',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':cfg.key},
+        body:JSON.stringify({action:'sign_in',login:emailOrLogin,password})
+      });
+      const payload=await response.json().catch(()=>null);
+      if(!response.ok||!payload?.ok||!payload?.session?.access_token||!payload?.session?.refresh_token)
+        throw Error(payload?.error||'Неверный логин или пароль');
+      const result=await client.auth.setSession({access_token:payload.session.access_token,refresh_token:payload.session.refresh_token});
+      if(result.error)throw result.error;
+      data=result.data;
+    }
+    if(!data.session)throw Error('Сессия не создана');
+    if(!(await isAdmin())){await client.auth.signOut();throw Error('Этот аккаунт не добавлен как администратор сайта.')}
+    return data;
+  }
   async function signOut(){if(configured)await client.auth.signOut()}
   function scheduleRealtimeRetry(){if(!configured||realtimeRetryTimer)return;realtimeRetryTimer=setTimeout(()=>{realtimeRetryTimer=null;if(realtimeCallback&&!channel)subscribe(realtimeCallback)},3000)}
   function subscribe(onChange){if(!configured)return;realtimeCallback=onChange;if(channel)return;channel=client.channel('cs2-app-state-live').on('postgres_changes',{event:'UPDATE',schema:'public',table:'cs2_app_state',filter:'id=eq.1'},p=>realtimeCallback?.(p)).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'||status==='CLOSED'){if(channel){client.removeChannel(channel);channel=null}scheduleRealtimeRetry()}})}
