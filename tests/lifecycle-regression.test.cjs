@@ -86,3 +86,18 @@ test('editing one match or map preserves unrelated records and their statistics'
     map: state.maps.find(x => x.map_id === 'm2-map1')
   }), unrelated);
 });
+
+test('new/restored series number is based on active count, not stale IDs or saved numbers', () => {
+  const app = fs.readFileSync(path.join(__dirname, '..', 'app_v57.js'), 'utf8');
+  const helperMatch = app.match(/function nextSeriesNumber\(\)\{[^}]*\}/);
+  assert.ok(helperMatch, 'nextSeriesNumber helper must exist');
+  assert.equal(helperMatch[0], 'function nextSeriesNumber(){return activeMatches().length+1}');
+  const nextSeriesNumber = Function('activeMatches', 'return (' + helperMatch[0] + ')')(
+    () => [
+      { match_id: 'match_100', series_number: 100 },
+      { match_id: 'match_local_9999999999999', series_number: 40 },
+      { match_id: 'match_2', archived: true }
+    ].filter(m => m.archived !== true)
+  );
+  assert.equal(nextSeriesNumber(), 3, 'stale high values must not create numbering gaps');
+});
