@@ -35,8 +35,8 @@ test('formForRows uses chronological input and limits current form to last ten r
   const rows = Array.from({ length: 12 }, (_, i) => ({ kills: i + 10, deaths: 10 }));
   const result = formForRows(rows);
   assert.equal(result.n, 10);
-  assert.equal(result.form, 5.5);
-  assert.equal(result.trend, 5.5);
+  assert.equal(result.form, 6.5);
+  assert.equal(result.trend, 2);
 });
 
 test('formForRows returns explicit empty state when no rows exist', () => {
