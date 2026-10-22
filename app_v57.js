@@ -105,7 +105,7 @@ function matchOrder(m){if(!m)return 0;const rows=orderedActiveMatches();let i=ro
 function mapOrder(m){const match=DB.matches.find(x=>x.match_id===m?.match_id);return [matchOrder(match),Number(m?.map_index||0)];}
 function activeMapNumber(mapOrId){const m=typeof mapOrId==='object'&&mapOrId?mapOrId:null,id=m?.map_id??mapOrId;const activeMatchesIds=new Set(activeMatches().map(x=>x.match_id));const active=DB.maps.filter(x=>x.archived!==true&&activeMatchesIds.has(x.match_id)).slice().sort((a,b)=>matchOrder(DB.matches.find(m=>m.match_id===a.match_id))-matchOrder(DB.matches.find(m=>m.match_id===b.match_id))||Number(a.map_index||0)-Number(b.map_index||0)||String(a.map_id).localeCompare(String(b.map_id)));const i=active.findIndex(x=>x.map_id===id);return i>=0?i+1:null}
 function nextActiveMapNumber(){return activeMapCount()+1}
-function nextSeriesNumber(){const rows=activeMatches();const nums=rows.map(m=>{const explicit=Number(m?.series_number);if(Number.isInteger(explicit)&&explicit>0)return explicit;const n=Number(String(m?.match_id||'').match(/(?:_|-)(\d+)$/)?.[1]||0);return n});return Math.max(0,...nums)+1}
+function nextSeriesNumber(){return activeMatches().length+1}
 function seriesNumberForMatch(match){if(!match)return null;const rows=orderedActiveMatches();const i=rows.findIndex(x=>x?.match_id===match?.match_id);return i>=0?i+1:null}
 function latestMatch(list=activeMatches()){return list.slice().sort((a,b)=>matchOrder(a)-matchOrder(b)||String(a.match_id).localeCompare(String(b.match_id))).at(-1)||null}
 function matchMaps(match,includeArchived=false){return (match?.map_ids||[]).map(id=>DB.maps.find(x=>x.map_id===id)).filter(Boolean).filter(x=>includeArchived||x.archived!==true)}
