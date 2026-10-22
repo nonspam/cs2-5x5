@@ -81,6 +81,7 @@ async function load(){
         }else{
           // Do not silently leave the embedded release snapshot looking like live cloud data.
           // loadServerState records the underlying connection/validation error in storageWarning.
+          state.serverSync=false;
           state.storageWarning=state.storageWarning||'Не удалось загрузить актуальные данные из облачной базы. Показан встроенный снимок релиза; проверьте подключение.';
         }
         state.cloudAdmin=!!admin;
