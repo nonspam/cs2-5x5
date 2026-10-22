@@ -18,12 +18,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Check JavaScript syntax
-        run: |
-          node --check validation.js
-          node --check supabase_adapter.js
-          node --check supabase-config.js
-          node --check data_embedded.js
-          node --check app_v57.js
-      - name: Run state-validation regression tests
-        run: node --test tests/*.test.cjs
+      - name: Run syntax and regression quality gate
+        run: npm run check
+
