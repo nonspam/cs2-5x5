@@ -15,7 +15,7 @@
         const rows=Array.isArray(m.player_stats)?m.player_stats:[];
         if(m.stats_available===true&&rows.length===0)return{ok:false,error:'detailed map has no player rows'};
         if(m.stats_available===false&&rows.length>0)return{ok:false,error:'compact map contains player_stats'};
-        const seen=new Set();for(const st of rows){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate player stats'};seen.add(k)}
+        const seen=new Set();for(const st of rows){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest stat missing raw_name'};const k=st.player_id||'raw:'+String(st.raw_name).trim().toLowerCase();if(seen.has(k))return{ok:false,error:'duplicate player stats'};seen.add(k)}
       }
       for(const m of b.matches){
         if(!Array.isArray(m.map_ids)||!m.map_ids.length||new Set(m.map_ids).size!==m.map_ids.length)return{ok:false,error:'invalid map_ids'};
@@ -28,7 +28,7 @@
         for(let i=0;i<m.map_ids.length;i++){const mp=maps.get(m.map_ids[i]);if(!mp||mp.match_id!==m.match_id||Number(mp.map_index)!==i+1)return{ok:false,error:'match/map relation invalid'}}
         const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];
         if(sas.length&&!((sas.length===10)))return{ok:false,error:'series aggregate must contain 10 rows when present'};
-        const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};const k=st.player_id||'raw:'+(st.raw_name||'');if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
+        const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest series stat missing raw_name'};const k=st.player_id||'raw:'+String(st.raw_name).trim().toLowerCase();if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
       }
       return{ok:true};
     }catch(e){return{ok:false,error:e?.message||'validation failed'}}
