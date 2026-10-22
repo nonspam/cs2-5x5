@@ -81,3 +81,15 @@ test('golden fixture includes only the detailed rows passed to it; compact total
   const a = fixtureAggregate('fixture-player', detailed, false);
   assert.deepEqual({ maps: a.maps, k: a.k, d: a.d, a: a.a }, { maps: 1, k: 12, d: 8, a: 4 });
 });
+
+
+test('Player Index is zero when there are no counted maps, instead of awarding a neutral-baseline score', () => {
+  const stability = (_id, rr, _fullPool) => realStability(_id, rr, false, rr.length);
+  const form = (_id, rr) => formForRows(rr);
+  const result = realIndexBreakdown(fixtureAggregate, stability, form, fixtureImpact)(
+    'empty-player', [], false, false
+  );
+  assert.equal(result.maps, 0);
+  assert.equal(result.total, 0);
+  assert.equal(result.diffScore, 50); // component baseline remains documented; no-data total is explicitly suppressed.
+});
