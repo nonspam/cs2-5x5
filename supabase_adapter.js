@@ -55,6 +55,9 @@
       const {data,error}=await client.rpc('commit_cs2_state',{p_expected_version:Number(row.version),p_state:next,p_operation_id:'web_'+Date.now()+'_'+Math.random().toString(36).slice(2,10),p_action:entry?.action||'WEB_COMMIT',p_target:entry?.target||null,p_detail:entry?.detail||{},p_actor:user?.email||user?.id||'web',p_updated_by:user?.id||null});
       if(error)throw error;
       const out=Array.isArray(data)?data[0]:data;
+      if(!out||typeof out!=='object'||!Number.isFinite(Number(out.version))||!out.state||!Array.isArray(out.state.players)||!Array.isArray(out.state.maps)||!Array.isArray(out.state.matches)||!out.state.aliases||typeof out.state.aliases!=='object'){
+        throw Error('Supabase вернул неполный ответ после сохранения. Обновите данные перед повторной попыткой.');
+      }
       return {version:out.version,updated_at:out.updated_at,state:out.state};
     });
     commitQueue=task.catch(()=>{});
