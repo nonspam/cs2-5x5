@@ -157,6 +157,7 @@ test('app surfaces cloud-state load failures instead of silently presenting the 
   assert.match(app, /Не удалось загрузить актуальные данные из облачной базы/);
   assert.match(app, /state\.serverSync=false;/);
   assert.match(app, /if\(remote\)connectServerEvents\(\);else toast\(state\.storageWarning\);/);
+  assert.match(app, /catch\(error=>\{\s*state\.serverSync=false;\s*state\.storageWarning=error\?\.message/);
 });
 
 
