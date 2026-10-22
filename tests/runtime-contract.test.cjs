@@ -68,3 +68,9 @@ test('Player Index explanation exposes detailed-map coverage without changing th
 test('missing form trend stays unavailable instead of being coerced to numeric zero', () => {
   assert.match(app, /const trendMarkup=\(value,label=''\)=>\{if\(value==null\|\|value===''\)return/);
 });
+
+
+test('series team detail resolves guest rows by guest ID or normalized raw/display name before showing missing stats', () => {
+  assert.match(app, /const top=rows\.slice\(0,10\),team=ids=>ids\.map\(pid=>\{const guest=\(m\.guest_players\|\|\[\]\)\.find\(g=>g\.guest_id===pid\),label=guest\?\.display_name\|\|playerName\(pid\),norm=value=>String\(value\?\?''\)\.normalize\('NFKC'\)/);
+  assert.match(app, /stat=rows\.find\(r=>r\.player_id===pid\)\|\|rows\.find\(r=>!r\.player_id&&\[r\.raw_name,r\.name\]\.some/);
+});
