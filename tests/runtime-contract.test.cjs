@@ -57,3 +57,9 @@ test('map history does not fall back to every map when the selected player has n
   assert.match(app, /historyMs=\(isAll\?DB\.maps\.filter\(m=>m\.archived!==true\):ms\)\.filter\(m=>state\.mapPlayer==='all'\|\|\(m\.player_stats\|\|\[\]\)\.some\(s=>s\.player_id===state\.mapPlayer\)\)/);
   assert.doesNotMatch(app, /state\.mapPlayer==='all'\|\|!rows\.some\(x=>x\.p\.player_id===state\.mapPlayer\)/);
 });
+
+
+test('Player Index explanation exposes detailed-map coverage without changing the score formula', () => {
+  assert.match(app, /подробные карты: \\?\$\{rows\.length\} из \\?\$\{b\.maps\} учтённых/);
+  assert.match(app, /Math\.round\(rows\.length\/b\.maps\*100\):0\}% покрытия/);
+});
