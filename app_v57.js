@@ -78,6 +78,11 @@ async function load(){
           state.serverSync=true;
           state.serverVersion=remote.updated_at||null;
           applyLoadedState(remote,remote.audit);
+        }else{
+          // Do not silently leave the embedded release snapshot looking like live cloud data.
+          // loadServerState records the underlying connection/validation error in storageWarning.
+          state.serverSync=false;
+          state.storageWarning=state.storageWarning||'Не удалось загрузить актуальные данные из облачной базы. Показан встроенный снимок релиза; обновите страницу и проверьте подключение.';
         }
         state.cloudAdmin=!!admin;
         state.logged=!!admin;
