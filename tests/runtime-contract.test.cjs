@@ -39,3 +39,15 @@ test('username admin login stays server-side and all other Edge Function routes 
   assert.ok(adminEdge.includes('const user=await authUser(req);if(!user)return json({ok:false,error:"Unauthorized"},401);'),
     'all non-login routes must retain explicit token/admin authorization');
 });
+
+
+test('compact BO3 player history uses the saved aggregate K/D/A instead of rendering false zeroes', () => {
+  assert.match(app, /const compactStats=m\.source_kind==='compact_bo3'[\s\S]{0,180}\?\(m\.series_aggregate_stats\|\|\[\]\)\.find\(s=>s\.player_id===id\)/);
+  assert.match(app, /const k=rs\.length[\s\S]{0,100}\:\(Number\(compactStats\?\.kills\)\|\|0\)/);
+  assert.match(app, /const d=rs\.length[\s\S]{0,100}\:\(Number\(compactStats\?\.deaths\)\|\|0\)/);
+  assert.match(app, /const a=rs\.length[\s\S]{0,100}\:\(Number\(compactStats\?\.assists\)\|\|0\)/);
+});
+
+test('player-history K/D color is independent from the series WIN/LOSS/DRAW color', () => {
+  assert.match(app, /tone=q\.result==='WIN'\?'positive':q\.result==='LOSS'\?'negative':q\.result==='DRAW'\?'neutral':'neutral',personalTone=q\.kd>1\?'positive':q\.kd<1\?'negative':'neutral'/);
+});
