@@ -44,9 +44,9 @@ test('formForRows returns explicit empty state when no rows exist', () => {
 });
 
 test('production metrics expose their current documented weights', () => {
-  const start = app.indexOf('function index(');
-  const end = app.indexOf('function indexBreakdown(', start);
-  assert.ok(start >= 0 && end > start, 'index and indexBreakdown functions must exist');
+  const start = app.indexOf('function indexBreakdown(');
+  const end = app.indexOf('function eraRows(', start);
+  assert.ok(start >= 0 && end > start, 'indexBreakdown function must exist');
   const source = app.slice(start, end);
   for (const weight of ['.35*kdScore', '.25*diffScore', '.15*impact', '.10*st.score', '.10*vol', '.05*formScore']) {
     assert.ok(source.includes(weight), 'missing Player Index weight ' + weight);
