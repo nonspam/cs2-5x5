@@ -51,3 +51,18 @@ This document records invariants enforced by the current source. It intentionall
 `validation.js` is the shared state validator used by the browser and Node tests. Existing tests in `tests/validation.test.cjs` cover supported formats, incomplete rosters, guest rows, duplicate stat rows, orphan maps, aliases, invalid K/D/A, map ordering, cross-match map reuse, duplicate players and malformed aggregate rows.
 
 These are source-level invariants, not a guarantee that every live cloud state or UI flow has been tested. Production reconciliation must remain read-only until discrepancies are understood and a backup/rollback plan exists.
+
+## Player Index — current implementation (source: `app_v57.js`)
+
+The current implementation combines six normalized components:
+
+- 35% — K/D score: `clamp((K/D - 0.5) × 100, 0, 100)`
+- 25% — kill/death difference score per counted map: `clamp(((K-D)/max(1,maps) + 5) / 10 × 100, 0, 100)`
+- 15% — Impact, currently derived from K-D difference per map and assists per map
+- 10% — Stability, based on the share of detailed maps crossing K/D thresholds 1.0, 1.5, 2.0 and 3.0 with weights 40%, 30%, 20% and 10%
+- 10% — volume, derived from kills per counted map
+- 5% — current form, derived from K-D difference in the recent detailed-map window
+
+These weights total 100%. Important limitations: the aggregate can include compact BO3 series totals, while stability/form use detailed map rows; therefore the components do not all have identical evidence coverage. Zero deaths are represented as K/D 0 in aggregate helpers, while stability threshold checks explicitly require deaths > 0. Do not alter these semantics during refactoring without an intentional metric-version change and comparison of historical player rankings.
+
+The exact helper functions remain the implementation source of truth. The metric regression tests check aggregate behavior, form windows and the presence of the current weights. Future work should add golden fixtures for several real-world edge cases and verify indexBreakdown parity with index before extracting these functions from the monolith.
