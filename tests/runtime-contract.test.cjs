@@ -51,3 +51,9 @@ test('compact BO3 player history uses the saved aggregate K/D/A instead of rende
 test('player-history K/D color is independent from the series WIN/LOSS/DRAW color', () => {
   assert.match(app, /tone=q\.result==='WIN'\?'positive':q\.result==='LOSS'\?'negative':q\.result==='DRAW'\?'neutral':'neutral',personalTone=q\.kd>1\?'positive':q\.kd<1\?'negative':'neutral'/);
 });
+
+
+test('map history does not fall back to every map when the selected player has no row in the current map summary', () => {
+  assert.match(app, /historyMs=\(isAll\?DB\.maps\.filter\(m=>m\.archived!==true\):ms\)\.filter\(m=>state\.mapPlayer==='all'\|\|\(m\.player_stats\|\|\[\]\)\.some\(s=>s\.player_id===state\.mapPlayer\)\)/);
+  assert.doesNotMatch(app, /state\.mapPlayer==='all'\|\|!rows\.some\(x=>x\.p\.player_id===state\.mapPlayer\)/);
+});
