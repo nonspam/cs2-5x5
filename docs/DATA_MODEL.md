@@ -79,3 +79,8 @@ Audited the single `public.cs2_app_state` row (`id = 1`) on 2026-10-22. The audi
 - 95 stat rows have no `player_id` and 95 roster names do not resolve directly to catalog IDs. The rows are preserved as unresolved/guest identities; this audit intentionally did not create profiles or guess identity mappings.
 
 This is a point-in-time snapshot, not a permanent guarantee. Re-run the same checks after any import, bulk repair, player merge, or match edit. The catalog-ID check on roster names is a warning signal rather than proof of corruption: historical display names and guest names may legitimately differ from canonical IDs.
+
+
+## Player Index regression fixtures (2026-10-22)
+
+Added `tests/player-index-golden.test.cjs` against the production `indexBreakdown()` implementation. The golden fixture locks the current result at 89.0625 for a two-map sample with K/D 1.50, +10 K-D difference, 83.75 Impact, 65 Stability, 50 volume score, and 100 form score. Additional cases protect the empty-history state, chronological last-ten form window, and Stability's explicit exclusion of zero-death rows from K/D threshold evidence. These tests preserve current semantics; they do not authorize changing weights or claim that compact aggregate coverage has been fully tested.
