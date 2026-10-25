@@ -585,7 +585,7 @@ function openPlayerDetail(id){
   profile?.querySelectorAll('.form-window-card').forEach((el,i)=>{const w=windows[i];if(!w)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть игры этого отрезка');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','form',"+w.n+")");});
   profile?.querySelectorAll('.profile-map-card').forEach((el,i)=>{const w=mapWinRows[i];if(!w)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть все твои игры на карте');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','map','"+esc(w.map)+"')");});
   profile?.querySelectorAll('.era-card').forEach((el,i)=>{const e=eras[i];if(!e)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть игры этой эры');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','era',{from:"+e.from+",to:"+e.to+"})");});
-  profile?.querySelectorAll('.profile-match-row').forEach((el,i)=>{const q=recentMatches[i];if(!q)return;el.setAttribute('title','Открыть личную статистику серии');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','series','"+esc(q.m.match_id)+"')");});
+  profile?.querySelectorAll('.profile-match-row').forEach((el,i)=>{const q=recentMatches[i];if(!q?.m?.match_id)return;el.setAttribute('title','Открыть карточку серии');el.setAttribute('onclick',"openMatchDetail('"+esc(q.m.match_id)+"')");});
  }
  function closePlayerDetail(){$('#playerDrilldown')?.remove();$('#playerModal')?.remove()}
 function maps(v){
