@@ -487,31 +487,49 @@ function openPlayerDrilldown(id,kind,arg){
 function closePlayerDrilldown(){$('#playerDrilldown')?.remove()}
 
 function closeBestTeammates(){$('#bestTeammatesModal')?.remove()}
+function closeBestTeammates(){$('#bestTeammatesModal')?.remove()}
 function openBestTeammates(){
   closeBestTeammates();
-  const pairs=new Map();
+  const people=activePlayers().slice().sort((a,b)=>(a.display_name||'').localeCompare(b.display_name||'','ru'));
+  const opts=people.map(p=>'<option value="'+esc(p.player_id)+'">'+esc(p.display_name||p.player_id)+'</option>').join('');
+  document.body.insertAdjacentHTML('beforeend','<div class="modal-back best-teammates-back" id="bestTeammatesModal" onclick="if(event.target===this)closeBestTeammates()"><div class="modal panel best-teammates-modal"><div class="best-team-head"><div><div class="eyebrow">CS2 · АНАЛИТИКА СОСТАВОВ</div><h2>С кем лучше играется</h2><p class="muted">Выбери игрока — покажем, с кем он чаще выигрывал карты.</p></div><button class="close" onclick="closeBestTeammates()">×</button></div><div class="best-team-filter"><label for="bestTeammatesPlayer">ОСНОВНОЙ ИГРОК</label><select id="bestTeammatesPlayer" class="control" onchange="renderBestTeammates(this.value)">'+opts+'</select><div class="best-team-hint">Учитываются только карты с сохранённым составом и результатом. Для надёжности показываем пары от 3 общих карт.</div></div><div id="bestTeammatesContent"></div><div class="footer-note">Winrate показывает результаты карт, сыгранных вместе, но сам по себе не доказывает влияние одного игрока на другого.</div></div></div>');
+  if(people.length)renderBestTeammates(people[0].player_id);
+}
+function renderBestTeammates(selectedId){
+  const root=$('#bestTeammatesContent');if(!root)return;
+  const selected=player(selectedId);if(!selected){root.innerHTML='<div class="empty">Нет доступных игроков.</div>';return}
+  const stats=new Map();
   DB.maps.filter(mp=>mp.archived!==true&&mp.stats_available===true).forEach(mp=>{
     const match=DB.matches.find(m=>m.match_id===mp.match_id);
     if(!match||match.archived===true)return;
     const [ta,tb]=historicalLobbyGroups(match,mp);
     const sa=Number(mp.score?.team_a),sb=Number(mp.score?.team_b);
-    if(!Number.isFinite(sa)||!Number.isFinite(sb)||sa===sb)return;
-    const stats=new Set((mp.player_stats||[]).map(r=>r.player_id));
-    const side=sa>sb?'A':'B';
-    [[ta,'A'],[tb,'B']].forEach(([team,teamSide])=>{
-      const ids=[...new Set(team)].filter(id=>stats.has(id)&&player(id));
-      for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++){
-        const key=[ids[i],ids[j]].sort().join('::');
-        if(!pairs.has(key))pairs.set(key,{ids:[...ids].filter(x=>x===ids[i]||x===ids[j]).sort(),played:0,wins:0,losses:0,maps:[]});
-        const p=pairs.get(key);p.played++;
-        if(teamSide===side)p.wins++;else p.losses++;
-        p.maps.push({match_id:match.match_id,map:mp.map});
-      }
+    if(!Number.isFinite(sa)||!Number.isFinite(sb)||!((ta.includes(selectedId)&&!tb.includes(selectedId))||(tb.includes(selectedId)&&!ta.includes(selectedId))))return;
+    const team=ta.includes(selectedId)?ta:tb;
+    if(sa===sb)return;
+    const hasStats=new Set((mp.player_stats||[]).map(r=>r.player_id));
+    if(!hasStats.has(selectedId))return;
+    [...new Set(team)].filter(id=>id!==selectedId&&player(id)&&hasStats.has(id)).forEach(id=>{
+      if(!stats.has(id))stats.set(id,{id,played:0,wins:0,losses:0,maps:[],kills:0,deaths:0,assists:0});
+      const p=stats.get(id);p.played++;
+      const selectedSide=ta.includes(selectedId)?'A':'B';
+      const won=selectedSide==='A'?sa>sb:sb>sa;
+      if(won)p.wins++;else p.losses++;
+      p.maps.push({match_id:match.match_id,map:mp.map,score:sa+':'+sb,won,order:matchOrder(match)});
+      const row=(mp.player_stats||[]).find(r=>r.player_id===id);
+      p.kills+=Number(row?.kills)||0;p.deaths+=Number(row?.deaths)||0;p.assists+=Number(row?.assists)||0;
     });
   });
-  const rows=[...pairs.values()].filter(p=>p.played>=3).sort((a,b)=>(b.wins/b.played)-(a.wins/a.played)||b.played-a.played||a.ids.join().localeCompare(b.ids.join(),'ru'));
-  const content=rows.length?rows.map((p,i)=>{const a=player(p.ids[0]),b=player(p.ids[1]),wr=Math.round(p.wins/p.played*100);return '<tr><td>'+(i+1)+'</td><td><b>'+esc(a?.display_name||p.ids[0])+'</b> + <b>'+esc(b?.display_name||p.ids[1])+'</b></td><td>'+p.played+'</td><td class="positive">'+p.wins+'</td><td class="negative">'+p.losses+'</td><td><b class="'+(wr>=50?'positive':'negative')+'">'+wr+'%</b></td><td><button class="btn mini" onclick="openBestPairGames('+JSON.stringify(p.ids[0]).replace(/</g,'\\u003c')+','+JSON.stringify(p.ids[1]).replace(/</g,'\\u003c')+')">ИГРЫ</button></td></tr>'}).join(''):'<tr><td colspan="7" class="empty">Пока недостаточно общих карт для анализа (нужно минимум 3).</td></tr>';
-  document.body.insertAdjacentHTML('beforeend','<div class="modal-back" id="bestTeammatesModal" onclick="if(event.target===this)closeBestTeammates()"><div class="modal panel" style="width:min(900px,100%)"><div class="modal-head"><div><div class="eyebrow">АНАЛИТИКА СОСТАВОВ</div><h2>С кем лучше играется</h2></div><button class="close" onclick="closeBestTeammates()">×</button></div><p class="muted">Пары игроков, которые чаще играли в одной команде. Учитываются карты с сохранёнными составами и результатами; в таблицу попадают пары минимум с 3 общими картами.</p><div class="table-wrap"><table class="data-table"><thead><tr><th>#</th><th>Пара игроков</th><th>Карт вместе</th><th>Победы</th><th>Поражения</th><th>Winrate</th><th></th></tr></thead><tbody>'+content+'</tbody></table></div><div class="footer-note">Это статистическая связь, а не доказательство того, что один игрок улучшает игру другого.</div></div></div>');
+  const rows=[...stats.values()].filter(p=>p.played>=3).sort((a,b)=>(b.wins/b.played)-(a.wins/a.played)||b.played-a.played||b.wins-a.wins||(player(a.id)?.display_name||'').localeCompare(player(b.id)?.display_name||'','ru'));
+  const total=rows.reduce((n,p)=>n+p.played,0);
+  const totalWins=rows.reduce((n,p)=>n+p.wins,0);
+  const best=rows[0];
+  const cards=rows.map((p,i)=>{
+    const name=player(p.id)?.display_name||p.id,wr=Math.round(p.wins/p.played*100),kd=p.deaths?p.kills/p.deaths:(p.kills? p.kills:0);
+    const bar=Math.max(0,Math.min(100,wr));
+    return '<div class="best-pair-card"><div class="best-pair-rank">'+String(i+1).padStart(2,'0')+'</div><div class="best-pair-main"><div class="best-pair-name">'+esc(name)+'</div><div class="best-pair-sub">'+p.played+' карт вместе <span>·</span> '+p.wins+' побед / '+p.losses+' поражений</div><div class="best-pair-bar"><i style="width:'+bar+'%"></i></div></div><div class="best-pair-wr"><strong class="'+(wr>=50?'positive':'negative')+'">'+wr+'%</strong><span>WINRATE</span></div><button class="btn mini best-pair-open" onclick="openBestPairGames('+JSON.stringify(selectedId).replace(/</g,'\\u003c')+','+JSON.stringify(p.id).replace(/</g,'\\u003c')+')">ИГРЫ <span>↗</span></button></div>';
+  }).join('');
+  root.innerHTML='<div class="best-team-summary"><div class="best-team-stat"><span>НАШЛОСЬ ПАР</span><strong>'+rows.length+'</strong></div><div class="best-team-stat"><span>ЛУЧШИЙ WINRATE</span><strong class="'+(best&&best.wins/best.played>=.5?'positive':'')+'">'+(best?Math.round(best.wins/best.played*100)+'%':'—')+'</strong></div><div class="best-team-stat"><span>КАРТ ВМЕСТЕ</span><strong>'+total+'</strong></div></div><div class="best-team-list-head"><strong>СОЮЗНИКИ</strong><span>СОРТИРОВКА ПО WINRATE</span></div>'+(cards?'<div class="best-pair-list">'+cards+'</div>':'<div class="empty best-team-empty"><strong>Пока недостаточно данных</strong><span>У этого игрока пока нет союзников с 3+ общими картами и сохранённой статистикой.</span></div>');
 }
 function openBestPairGames(a,b){
   const games=DB.maps.filter(mp=>mp.archived!==true&&mp.stats_available===true&&(()=>{const m=DB.matches.find(x=>x.match_id===mp.match_id);if(!m||m.archived===true)return false;const [ta,tb]=historicalLobbyGroups(m,mp);return (ta.includes(a)&&ta.includes(b))||(tb.includes(a)&&tb.includes(b))})()).sort((x,y)=>{const mx=DB.matches.find(m=>m.match_id===x.match_id),my=DB.matches.find(m=>m.match_id===y.match_id);return matchOrder(my)-matchOrder(mx)||Number(y.map_index||0)-Number(x.map_index||0)});
