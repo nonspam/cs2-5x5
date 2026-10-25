@@ -2556,3 +2556,17 @@ html{scroll-behavior:auto!important}
   box-shadow:none!important;
 }
 
+
+/* Experimental match detail layout: larger map cards + readable series totals */
+.match-map-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.match-map-card{appearance:none;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0;min-height:132px;padding:15px;border:1px solid var(--line,#28353d);border-radius:12px;background:linear-gradient(145deg,rgba(20,30,35,.98),rgba(11,17,22,.98));color:inherit;cursor:pointer;transition:border-color .16s,transform .16s,background .16s}
+.match-map-card:hover{border-color:#8dbb55;background:linear-gradient(145deg,rgba(26,40,39,.98),rgba(12,20,24,.98));transform:translateY(-1px)}
+.match-map-number{font-size:9px;letter-spacing:.13em;font-weight:800;color:#a8d948}
+.match-map-name{font-size:18px;line-height:1.2;overflow-wrap:anywhere}
+.match-map-score{font-size:20px;font-weight:850;line-height:1.1}
+.match-map-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;margin-top:auto;font-size:10px;color:#81939b}
+.match-map-meta b{font-size:15px;color:#b9ff39}
+.match-series-total .table-wrap{max-height:460px;overflow:auto}
+.match-series-total .data-table{min-width:520px}
+@media(max-width:680px){.match-map-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.match-map-card{min-height:120px;padding:12px;gap:8px}.match-map-name{font-size:16px}.match-map-score{font-size:18px}.match-map-meta{font-size:9px}.match-series-total .section-head{align-items:flex-start;gap:8px}.match-series-total .section-head .muted{max-width:42%;text-align:right;font-size:10px}}
+@media(max-width:390px){.match-map-grid{grid-template-columns:1fr}.match-map-card{min-height:unset}.match-map-meta{font-size:10px}}
