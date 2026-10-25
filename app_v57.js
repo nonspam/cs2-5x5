@@ -149,7 +149,7 @@ async function persistChangeAwait(a,audit){
   return persistChange(a,audit);
 }
 
-function normalizeState(){const ids=new Set(activePlayers().map(p=>p.player_id));const allIds=new Set(DB.players.map(p=>p.player_id));state.selected=[...new Set(state.selected.filter(id=>ids.has(id)))];state.teamA=[...new Set(state.teamA.filter(id=>allIds.has(id)))].slice(0,5);state.teamB=[...new Set(state.teamB.filter(id=>allIds.has(id)&&!state.teamA.includes(id)))].slice(0,5)}
+function normalizeState(){const ids=new Set(activePlayers().map(p=>p.player_id));state.selected=[...new Set(state.selected.filter(id=>ids.has(id)))];state.teamA=[...new Set(state.teamA.filter(id=>ids.has(id)))].slice(0,5);state.teamB=[...new Set(state.teamB.filter(id=>ids.has(id)&&!state.teamA.includes(id)))].slice(0,5)}
 function activePlayers(){return DB.players.filter(p=>p.is_active!==false&&p.deleted_permanently!==true)}
 function player(id){return DB.players.find(p=>p.player_id===id)}
 function playerName(id){return player(id)?.display_name||id}
@@ -646,10 +646,9 @@ function playerPick(){
   const all=activePlayers().map(p=>({p,idx:index(p.player_id),imp:impact(p.player_id),st:stability(p.player_id).score})).sort((a,b)=>b.idx-a.idx); return all[0]||null;
 }
 function teamRoster(){
-  return DB.players.slice().sort((a,b)=>{
-    const aa=a.is_active===false?1:0,bb=b.is_active===false?1:0;
-    return aa-bb || String(a.display_name||a.player_id).localeCompare(String(b.display_name||b.player_id),'ru');
-  });
+  return activePlayers().slice().sort((a,b)=>
+    String(a.display_name||a.player_id).localeCompare(String(b.display_name||b.player_id),'ru')
+  );
 }
 function teamAverage(ids){return ids.length?ids.reduce((z,id)=>z+index(id),0)/ids.length:0}
 function teamImpactAvg(ids){return ids.length?ids.reduce((z,id)=>z+impact(id),0)/ids.length:0}
