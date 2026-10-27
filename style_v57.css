@@ -2693,3 +2693,13 @@ html{scroll-behavior:auto!important}
 .player-profile-modal .profile-match-row{flex:0 0 auto!important;min-height:60px!important;height:auto!important;transform:none!important;contain:layout style!important}
 .player-profile-modal .profile-match-row.click-row:hover{transform:none!important}
 @media(max-width:700px){.profile-drill-row{min-height:76px!important;grid-template-columns:minmax(0,1fr) auto!important}.profile-drill-kda{grid-column:1/-1!important;grid-row:2!important}.profile-drill-result{grid-column:2!important;grid-row:1!important}}
+
+
+/* Main chart tooltip: color the whole personal K/D/A line by K/D, and keep neutral at exactly 1.00. */
+.chart-hover-card .chart-hover-stats{padding:5px 7px!important;border:1px solid transparent!important;border-radius:6px!important;margin-bottom:7px!important;}
+.chart-hover-card .chart-hover-stats.kd-negative{color:#ff4f69!important;background:rgba(255,79,105,.10)!important;border-color:rgba(255,79,105,.30)!important;}
+.chart-hover-card .chart-hover-stats.kd-negative span,.chart-hover-card .chart-hover-stats.kd-negative b{color:#ff4f69!important;}
+.chart-hover-card .chart-hover-stats.kd-neutral{color:#f3f7f8!important;background:rgba(243,247,248,.06)!important;border-color:rgba(243,247,248,.20)!important;}
+.chart-hover-card .chart-hover-stats.kd-neutral span,.chart-hover-card .chart-hover-stats.kd-neutral b{color:#f3f7f8!important;}
+.chart-hover-card .chart-hover-stats.kd-positive{color:#27e69a!important;background:rgba(39,230,154,.09)!important;border-color:rgba(39,230,154,.28)!important;}
+.chart-hover-card .chart-hover-stats.kd-positive span,.chart-hover-card .chart-hover-stats.kd-positive b{color:#27e69a!important;}
