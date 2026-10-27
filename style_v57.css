@@ -2645,3 +2645,8 @@ html{scroll-behavior:auto!important}
  #homeChart .chart-plot-wrap>svg{min-height:300px}
  #homeChart .chart-hover-card{min-width:180px;padding:9px 10px}
 }
+
+/* Keep the line clean: individual-map targets remain interactive but not visually noisy. */
+#homeChart .chart-point{opacity:0!important}
+#homeChart .chart-point.checkpoint{opacity:.85!important}
+#homeChart .chart-hit:hover + .chart-point{opacity:1!important}
