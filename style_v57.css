@@ -2659,3 +2659,8 @@ html{scroll-behavior:auto!important}
 #homeChart .chart-hover-stats{gap:12px}
 #homeChart .chart-hover-total b{font-weight:800}
 @media(max-width:680px){#homeChart .chart-hover-card{max-width:88vw;min-width:200px}#homeChart .chart-compare-card{padding:8px}}
+
+/* Keep hover details visible for points on the lower half of the chart. */
+#homeChart .chart-plot-wrap{overflow:visible;position:relative}
+#homeChart .chart-hover-card{max-height:calc(100% - 8px);overflow-y:auto}
+#homeChart .chart-plot-wrap>svg{overflow:visible}
