@@ -2568,3 +2568,31 @@ html{scroll-behavior:auto!important}
   .teams-page .team-probability .section-head>div{width:100%}
   .teams-page .team-map-select{width:100%;min-width:0;min-height:46px;font-size:16px}
 }
+
+/* Readability pass: enlarge K/D/A figures across player-stat popups and drilldowns. */
+#playerDrilldown .profile-drill-kda,
+.player-profile-modal .profile-match-row .series-personal-score,
+.player-profile-modal .profile-match-row .series-personal-score .kd-value,
+#playerDrilldown .profile-drill-game small,
+#playerDrilldown .profile-drill-game small b{
+  font-size:14px!important;
+  line-height:1.5!important;
+  font-weight:750!important;
+}
+#playerDrilldown .profile-drill-kda span{
+  font-size:13px!important;
+  line-height:1.5!important;
+}
+#playerDrilldown .profile-drill-kda span b{
+  font-size:15px!important;
+  font-weight:900!important;
+}
+.player-profile-modal .profile-match-row .series-personal-score{
+  display:block;
+}
+@media(max-width:680px){
+  #playerDrilldown .profile-drill-kda{padding:9px 10px!important;gap:10px!important}
+  #playerDrilldown .profile-drill-kda span{font-size:12px!important}
+  #playerDrilldown .profile-drill-kda span b{font-size:14px!important}
+  .player-profile-modal .profile-match-row .series-personal-score{font-size:13px!important}
+}
