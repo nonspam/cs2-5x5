@@ -2678,3 +2678,14 @@ html{scroll-behavior:auto!important}
 .loading-line{height:3px;overflow:hidden;border-radius:3px;background:rgba(255,255,255,.08);margin-top:18px;position:relative}
 .loading-line:after{content:'';position:absolute;inset:0 auto 0 -35%;width:35%;background:var(--accent,#79e0c3);animation:live-loading 1.1s ease-in-out infinite}
 @keyframes live-loading{to{transform:translateX(390%)}}
+
+/* Chart tooltip is portaled to body; keep its visual card styling outside #homeChart scope. */
+.chart-hover-card{color:#eaf0f2;background:rgba(10,15,18,.98)!important;border:1px solid #46545b!important;border-radius:11px!important;box-shadow:0 12px 34px rgba(0,0,0,.62)!important;padding:10px!important;font-size:12px!important;line-height:1.45!important;gap:8px!important;}
+.chart-hover-card>.chart-compare-card{display:block;min-width:0;padding:10px 11px!important;border:1px solid #344149!important;border-radius:8px!important;background:#11171b!important;color:#eaf0f2!important;overflow-wrap:anywhere;}
+.chart-hover-card .chart-compare-card>strong{display:block;color:#f3f7f8!important;font-size:12px!important;font-weight:800!important;margin:0 0 7px!important;}
+.chart-hover-card .chart-hover-stats{display:flex;flex-wrap:wrap;gap:9px 12px;margin:0 0 7px;color:#a8b4ba!important;}
+.chart-hover-card .chart-hover-stats span{color:#a8b4ba!important;white-space:nowrap;}
+.chart-hover-card .chart-hover-stats b{color:#27e69a!important;font-size:14px!important;margin-left:3px;}
+.chart-hover-card .chart-hover-total{color:#c0cbd0!important;font-size:11px!important;margin-top:3px;}
+.chart-hover-card .chart-hover-total b.positive{color:#27e69a!important;}
+.chart-hover-card .chart-hover-total b.negative{color:#ff4f69!important;}
