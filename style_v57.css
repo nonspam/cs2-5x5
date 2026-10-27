@@ -2596,3 +2596,18 @@ html{scroll-behavior:auto!important}
   #playerDrilldown .profile-drill-kda span b{font-size:14px!important}
   .player-profile-modal .profile-match-row .series-personal-score{font-size:13px!important}
 }
+
+/* Match result labels should remain readable alongside enlarged K/D/A stats. */
+#playerDrilldown .profile-drill-result,
+.player-profile-modal .profile-match-row .series-result{
+  font-size:14px!important;
+  font-weight:950!important;
+  letter-spacing:.045em!important;
+  line-height:1.4!important;
+}
+@media(max-width:680px){
+  #playerDrilldown .profile-drill-result,
+  .player-profile-modal .profile-match-row .series-result{
+    font-size:13px!important;
+  }
+}
