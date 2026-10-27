@@ -2629,3 +2629,19 @@ html{scroll-behavior:auto!important}
   #playerDrilldown .profile-drill-result,
   .player-profile-modal .profile-match-row .series-result{font-size:11.5px!important}
 }
+
+/* Performance chart: wider plot and instant, readable per-map hover card. */
+#homeChart .chart-plot-wrap{position:relative;width:100%;overflow:visible}
+#homeChart .chart-plot-wrap>svg{display:block;width:100%;height:auto;min-height:390px;overflow:visible;touch-action:pan-y}
+#homeChart .chart-point{pointer-events:none;stroke:rgba(255,255,255,.72);stroke-width:1}
+#homeChart .chart-hit{fill:transparent;stroke:transparent;pointer-events:all;cursor:crosshair}
+#homeChart .chart-hover-card{position:absolute;z-index:20;min-width:210px;max-width:min(290px,80vw);padding:11px 13px;border:1px solid #46545b;border-radius:11px;background:rgba(10,15,18,.97);box-shadow:0 10px 28px rgba(0,0,0,.38);pointer-events:none;color:#eaf0f2;font-size:12px;line-height:1.45}
+#homeChart .chart-hover-card[hidden]{display:none}
+#homeChart .chart-hover-card>strong{display:block;font-size:12px;margin-bottom:8px}
+#homeChart .chart-hover-stats{display:flex;flex-wrap:wrap;gap:11px;margin-bottom:7px;color:#8e9ba1}
+#homeChart .chart-hover-stats b{font-size:14px;color:#27e69a;margin-left:3px}
+#homeChart .chart-hover-total{color:#a8b4ba;font-size:11px;margin-top:3px}
+@media(max-width:680px){
+ #homeChart .chart-plot-wrap>svg{min-height:300px}
+ #homeChart .chart-hover-card{min-width:180px;padding:9px 10px}
+}
