@@ -65,8 +65,8 @@ async function load(){
       // Keep the page in a loading state until the first cloud read finishes.
       state.cloudMode=true;
       state.serverSync=false;
-      const view=$('#view');
-      if(view)view.innerHTML='<section class="section"><div class="panel card"><div class="eyebrow">LIVE DATA</div><h2>Синхронизация статистики…</h2><p class="muted">Загружаем актуальные данные из облачной базы. Старый снимок не показывается.</p><div class="loading-line" aria-hidden="true"></div></div></section>';
+      // Keep the shell quiet while the first authoritative cloud read is pending.
+      // Do not flash a full-screen synchronization panel on every reload.
       const [remote,admin]=await Promise.all([
         loadServerState(),
         (async()=>{try{return await CS2Cloud.isAdmin()}catch{return false}})()
