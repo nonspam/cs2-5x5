@@ -2611,3 +2611,21 @@ html{scroll-behavior:auto!important}
     font-size:13px!important;
   }
 }
+
+/* Fine-tune: reduce the recently enlarged popup typography by about 1.5px. */
+#playerDrilldown .profile-drill-kda,
+.player-profile-modal .profile-match-row .series-personal-score,
+.player-profile-modal .profile-match-row .series-personal-score .kd-value,
+#playerDrilldown .profile-drill-game small,
+#playerDrilldown .profile-drill-game small b{font-size:12.5px!important}
+#playerDrilldown .profile-drill-kda span{font-size:11.5px!important}
+#playerDrilldown .profile-drill-kda span b{font-size:13.5px!important}
+#playerDrilldown .profile-drill-result,
+.player-profile-modal .profile-match-row .series-result{font-size:12.5px!important}
+@media(max-width:680px){
+  #playerDrilldown .profile-drill-kda span{font-size:10.5px!important}
+  #playerDrilldown .profile-drill-kda span b{font-size:12.5px!important}
+  .player-profile-modal .profile-match-row .series-personal-score{font-size:11.5px!important}
+  #playerDrilldown .profile-drill-result,
+  .player-profile-modal .profile-match-row .series-result{font-size:11.5px!important}
+}
