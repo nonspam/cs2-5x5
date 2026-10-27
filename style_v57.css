@@ -2664,3 +2664,9 @@ html{scroll-behavior:auto!important}
 #homeChart .chart-plot-wrap{overflow:visible;position:relative}
 #homeChart .chart-hover-card{max-height:calc(100% - 8px);overflow-y:auto}
 #homeChart .chart-plot-wrap>svg{overflow:visible}
+
+
+/* Chart tooltip hardening: viewport-anchored so comparisons and descending lines never clip below the chart. */
+#homeChart .chart-hover-card{position:fixed!important;z-index:9999!important;width:max-content;min-width:230px;max-width:min(360px,calc(100vw - 24px))!important;max-height:calc(100dvh - 24px)!important;overflow-y:auto!important;overscroll-behavior:contain;box-sizing:border-box}
+#homeChart .chart-hover-card[hidden]{display:none!important}
+#homeChart .chart-compare-card{min-width:0;overflow-wrap:anywhere}
