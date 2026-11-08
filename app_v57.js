@@ -497,8 +497,7 @@ function openPlayerDetail(id){
       ...(m.team_a||[]),
       ...(m.team_b||[]),
       ...maps.flatMap(mp=>[
-        ...(mp.lobby_team_a||[]),        ...(mp.lobby_team_b||[]),        ...(mp.team_a||[]),        ...(mp.team_b||[]),
-        ...(mp.player_stats||[]).map(s=>s.player_id)
+        ...(mp.lobby_team_a||[]),        ...(mp.lobby_team_b||[]),        ...(mp.team_a||[]),        ...(mp.team_b||[]),        ...(mp.player_stats||[]).map(s=>s.player_id)
       ]),
       ...(m.series_aggregate_stats||[]).map(s=>s.player_id),
       ...teamA,
@@ -545,6 +544,8 @@ function openPlayerDetail(id){
   const careerSeriesResults=careerSeriesResultsForPlayer(id), wins=careerSeriesResults.filter(q=>q.result==='WIN').length, losses=careerSeriesResults.filter(q=>q.result==='LOSS').length, draws=careerSeriesResults.filter(q=>q.result==='DRAW').length;
   const bestGameRows=DB.maps.filter(mp=>mp.archived!==true&&activeMatches().some(m=>m.match_id===mp.match_id)&&mapKey(mp.map)!=='').map(mp=>{const stat=(mp.player_stats||[]).find(q=>q.player_id===id);if(!stat)return null;const kills=Number(stat.kills)||0,deaths=Number(stat.deaths)||0,assists=Number(stat.assists)||0;return{...stat,map:mp.map,map_id:mp.map_id,match_id:mp.match_id,kills,deaths,assists,kd:deaths?kills/deaths:0,diff:kills-deaths};}).filter(Boolean).sort((a,b)=>b.kd-a.kd||b.diff-a.diff||b.kills-a.kills||String(a.map).localeCompare(String(b.map),'ru')).slice(0,10);
   const bestGameCards=bestGameRows.map((r,i)=>{const match=DB.matches.find(m=>m.match_id===r.match_id);return `<div class="map-history-row compact-row click-row" onclick="openMatchDetail('${esc(r.match_id)}')" title="Открыть матч"><div class="map-history-meta"><span class="map-history-index">#${i+1}</span><span class="map-history-sep">·</span><b class="map-history-name">${esc(r.map)}</b><span class="map-history-sep">·</span><span class="map-kda ${kdClass(r.kills,r.deaths)}">${r.kills}/${r.deaths}/${r.assists}</span><small class="muted">Серия ${esc(seriesNumberForMatch(match)||'—')}</small></div><strong class="map-mvp-link ${kdClass(r.kills,r.deaths)}">K/D ${fmt(r.kd,2)}</strong></div>`}).join('');
+  const togetherRows=togetherWithPlayer(id);
+  const togetherCards=togetherRows.map(r=>"<div class='profile-map-card profile-drill-trigger click-row' data-together-player='"+esc(r.player_id)+"'><div><b>"+esc(playerName(r.player_id))+"</b><small>совместных серий</small></div><strong>"+r.games+"</strong><span>игр вместе</span></div>").join('');
   const mapRows=latest.map(r=>{const n=activeMapNumber(r.map_id);return `<div class="map-history-row compact-row click-row" onclick="openMatchDetail('${esc(r.match_id)}')" title="Открыть матч"><div class="map-history-meta"><span class="map-history-index">${n?`#${n}`:''}</span><span class="map-history-sep">·</span><b class="map-history-name">${esc(r.map)}</b><span class="map-history-sep">·</span><span class="map-kda ${kdClass(r.kills,r.deaths)}">${r.kills}/${r.deaths}/${r.assists}</span></div><strong class="map-mvp-link ${kdClass(r.kills,r.deaths)}">K/D ${fmt(r.deaths?r.kills/r.deaths:0,2)}</strong></div>`}).join('');
   const matchRows=recentMatches.map(q=>{const n=q.m?seriesNumberForMatch(q.m):'',tone=q.result==='WIN'?'positive':q.result==='LOSS'?'negative':q.result==='DRAW'?'neutral':'neutral',personalTone=q.hasStats?kdClass(q.k,q.d):'kd-neutral';return `<div class="profile-match-row click-row onclick="openMatchDetail('${esc(q.m?.match_id||'')}')" title="Открыть матч"><div><b>СЕРИЯ ${esc(n||'—')}</b><span>${esc(q.m?.format||'')} · <b class="${tone}">${esc(q.m?.series_score||'—')}</b></span></div><strong class="series-result ${tone}">${q.result==='DRAW'?'DRAW':q.result==='WIN'?'WIN':q.result==='LOSS'?'LOSS':'—'}</strong><em class="series-personal-score ${personalTone}">${q.hasStats?`${q.k}/${q.d}/${q.a}`:'Нет подробной K/D/A'}${q.hasStats?` · ${kdMarkupValue(q.kd)} K/D`:''}</em></div>`}).join('');
   const mapCards=mapWinRows.map(w=>`<div class="profile-map-card"><div><b>${esc(w.map)}</b><small>${w.played} карт · <em class="positive">${w.wins}</em>-<em class="negative">${w.losses}</em></small></div><strong class="${w.played?scoreTone(w.wr*100):'neutral'}">${w.played?Math.round(w.wr*100)+'%':'—'}</strong><span>${w.played?`${fmt(w.kd,2)} K/D · ${fmt(w.kills/w.played,2)} K/map`:'нет данных'}</span></div>`).join('');
@@ -554,6 +555,7 @@ function openPlayerDetail(id){
   <section class="profile-section"><div class="section-head"><h3>Форма</h3><span class="muted">последние отрезки</span></div><div class="form-window-grid">${windows.map(w=>`<div class="form-window-card ${w.n===1?'latest':''}"><span>${w.n===1?'Последняя':`Последние ${w.n}`}</span><strong>avg ${fmt(w.avg,2)}</strong><small>${kdMarkupValue(w.kd,'K/D ')}</small></div>`).join('')||'<div class="empty">Нет подробной истории.</div>'}</div></section>
   <section class="profile-section"><div class="section-head"><h3>Карты</h3><span class="muted">эффективность по картам</span></div><div class="profile-map-highlight"><div class="inset"><span>ЛУЧШАЯ КАРТА</span><strong>${bestMap?esc(bestMap.map):'—'}</strong><small>${bestMap?`${fmt(bestMap.kd,2)} K/D · ${bestMap.played} карт`:''}</small></div><div class="inset"><span>САМАЯ СЛОЖНАЯ</span><strong>${worstMap?esc(worstMap.map):'—'}</strong><small>${worstMap?`${fmt(worstMap.kd,2)} K/D · ${worstMap.played} карт`:''}</small></div></div><div class="profile-map-grid">${mapCards||'<div class="empty">Нет статистики по картам.</div>'}</div></section>
   <section class="profile-section"><div class="section-head"><h3>Топ 10 лучших игр</h3><span class="muted">сортировка по K/D · от большего к меньшему</span></div><div class="map-history">${bestGameCards||'<div class="empty">Пока нет подробной статистики по играм.</div>'}</div></section>
+  <section class="profile-section"><div class="section-head"><h3>Играли вместе</h3><span class="muted">кто с кем и сколько серий</span></div><div class="profile-map-grid">${togetherCards||'<div class="empty">Совместных игр пока нет.</div>'}</div></section>
   <section class="profile-section"><div class="section-head"><h3>Последние серии</h3><span class="muted">до 10 серий</span></div><div class="profile-match-list">${matchRows||'<div class="empty">Нет доступной истории серий.</div>'}</div></section>
   <section class="profile-section"><div class="section-head"><h3>Последние подробные карты</h3><span class="muted">10 последних карт</span></div><div class="map-history">${mapRows||'<div class="empty">Нет подробной истории.</div>'}</div></section>
   <section class="profile-section"><div class="section-head"><h3>Эры</h3><span class="muted">по 10 карт</span></div><div class="era-grid">${eras.map(e=>`<div class="era-card"><span>Эра ${e.from}–${e.to}</span><strong>AVG ${fmt(e.avg,2)}</strong><small>${kdMarkupValue(e.kd,'K/D ')}</small></div>`).join('')||'<div class="empty">Недостаточно подробной истории.</div>'}</div></section>
@@ -568,9 +570,31 @@ function openPlayerDetail(id){
   profile?.querySelectorAll('.form-window-card').forEach((el,i)=>{const w=windows[i];if(!w)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть игры этого отрезка');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','form',"+w.n+")");});
   profile?.querySelectorAll('.profile-map-card').forEach((el,i)=>{const w=mapWinRows[i];if(!w)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть все твои игры на карте');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','map','"+esc(w.map)+"')");});
   profile?.querySelectorAll('.era-card').forEach((el,i)=>{const e=eras[i];if(!e)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть игры этой эры');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','era',{from:"+e.from+",to:"+e.to+"})");});
+  profile?.querySelectorAll('[data-together-player]').forEach(el=>{el.setAttribute('title','Открыть совместные игры');el.addEventListener('click',()=>openTogetherPlayerDetail(el.dataset.togetherPlayer));});
   profile?.querySelectorAll('.profile-match-row').forEach((el,i)=>{const q=recentMatches[i];if(!q?.m?.match_id)return;el.setAttribute('title','Открыть карточку серии');el.setAttribute('onclick',"openMatchDetail('"+esc(q.m.match_id)+"')");});
  }
  function closePlayerDetail(){$('#playerDrilldown')?.remove();$('#playerModal')?.remove()}
+function togetherWithPlayer(id){
+  const pairs=new Map();
+  for(const m of activeMatches()){
+    const groups=lobbyGroups(m);
+    for(const side of groups){
+      if(!side.includes(id))continue;
+      for(const mate of side){
+        if(mate===id||!player(mate))continue;
+        if(!pairs.has(mate))pairs.set(mate,{player_id:mate,games:0,matches:[]});
+        const p=pairs.get(mate);p.games++;p.matches.push(m.match_id);
+      }
+    }
+  }
+  return [...pairs.values()].sort((a,b)=>b.games-a.games||playerName(a.player_id).localeCompare(playerName(b.player_id),'ru'));
+}
+function openTogetherPlayerDetail(id){
+  const rows=togetherWithPlayer(id);
+  const body=rows.map(r=>"<div class='map-history-row compact-row click-row' data-together-match='"+esc(r.matches[0]||"")+"'><div class='map-history-meta'><b>"+esc(playerName(r.player_id))+"</b><span class='map-history-sep'>·</span><span>"+r.games+" совместных игр</span></div><strong>СЕРИИ "+r.games+"</strong></div>").join("");
+  document.body.insertAdjacentHTML('beforeend',"<div class='modal-back' id='togetherPlayerModal'><div class='modal panel wide'><div class='modal-head'><div><div class='eyebrow'>ИГРАЛИ ВМЕСТЕ</div><h2>"+esc(playerName(id))+"</h2><div class='muted'>Кто был с тобой в одной команде и сколько серий вы сыграли.</div></div><button class='close' onclick=\"document.getElementById('togetherPlayerModal')?.remove()\">×</button></div><section class='section'><div class='profile-match-list'>"+(body||"<div class='empty'>Совместных игр пока нет.</div>")+"</div></section></div></div>");
+  document.querySelectorAll('#togetherPlayerModal [data-together-match]').forEach(el=>el.addEventListener('click',()=>openMatchDetail(el.dataset.togetherMatch)));
+}
 function maps(v){
   const activeMaps=DB.maps.filter(m=>m.archived!==true);
   const recencyKey=m=>{const match=DB.matches.find(x=>x.match_id===m?.match_id);const played=matchTime(match);const matchId=String(match?.match_id||'');const matchNum=Number(matchId.match(/(?:_|-)(\d+)$/)?.[1]||0);const mapId=String(m?.map_id||'');const mapNum=Number(mapId.match(/(?:_|-)(\d+)$/)?.[1]||0);return [played||0,matchNum,Number(m?.map_index||0),mapNum]};
@@ -997,8 +1021,7 @@ function setNewTeamSlot(side,index,value){
 function removeNewTeamPlayer(id){let a=[...(window.__newTeamA||[])].filter(x=>x!==id),b=[...(window.__newTeamB||[])].filter(x=>x!==id);while(a.length<5)a.push('');while(b.length<5)b.push('');window.__newTeamA=a.slice(0,5);window.__newTeamB=b.slice(0,5);if(window.__newGuests?.[id])delete window.__newGuests[id];renderNewTeams();renderNewPlayerPool()}
 function addNewGuest(){const input=$('#newGuestName'),name=String(input?.value||'').trim().replace(/\s+/g,' ');if(!name)return toast('Введи ник гостя');if(name.length>64)return toast('Ник должен быть не длиннее 64 символов');const normalized=name.toLocaleLowerCase();if(Object.values(window.__newGuests||{}).some(g=>g.display_name.toLocaleLowerCase()===normalized)||activePlayers().some(p=>String(p.display_name||'').trim().toLocaleLowerCase()===normalized))return toast('Такой ник уже есть в каталоге или составе');const side=window.__newTargetTeam==='B'?'B':'A',team=side==='A'?[...(window.__newTeamA||[])]:[...(window.__newTeamB||[])];if(team.filter(Boolean).length>=5)return toast('Команда '+side+' уже заполнена 5 / 5');const id='guest_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);window.__newGuests=window.__newGuests||{};window.__newGuests[id]={guest_id:id,display_name:name};addNewPlayerToTeam(id,side);if((side==='A'?window.__newTeamA:window.__newTeamB).includes(id)){if(input)input.value='';toast(name+' добавлен в команду '+side+' без статистики')}}
 function addNewPlayerToTeam(id,side){  let a=Array.from({length:5},(_,i)=>window.__newTeamA?.[i]||''),b=Array.from({length:5},(_,i)=>window.__newTeamB?.[i]||'');  a=a.filter((x,i)=>!x||a.indexOf(x)===i); while(a.length<5)a.push('');
-  b=b.filter((x,i)=>!x||b.indexOf(x)===i); while(b.length<5)b.push('');
-  a=a.map(x=>x===id?'':x); b=b.map(x=>x===id?'':x);
+  b=b.filter((x,i)=>!x||b.indexOf(x)===i); while(b.length<5)b.push('');  a=a.map(x=>x===id?'':x); b=b.map(x=>x===id?'':x);
   const target=side==='B'?b:a;
   const idx=target.findIndex(x=>!x);
   if(idx<0)return toast(`Команда ${side} уже заполнена 5 / 5`);
