@@ -1,6 +1,6 @@
 const DB={players:[],maps:[],matches:[],aliases:{}};
 const BASE={players:[],maps:[],matches:[],aliases:{}};
-const state={tab:'home',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
+const state={tab:'home',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',togetherPlayer:'all',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
 let renderEpoch=0;let detailRowsCacheEpoch=-1;const detailRowsCache=new Map();
 let SERVER_AUDIT=[]; let SERVER_EVENT_SOURCE=null; let SERVER_REFRESH_TIMER=null; let SERVER_REFRESH_SEQ=0;
 const $=s=>document.querySelector(s);
@@ -497,8 +497,7 @@ function openPlayerDetail(id){
       ...(m.team_a||[]),
       ...(m.team_b||[]),
       ...maps.flatMap(mp=>[
-        ...(mp.lobby_team_a||[]),
-        ...(mp.lobby_team_b||[]),
+        ...(mp.lobby_team_a||[]),        ...(mp.lobby_team_b||[]),
         ...(mp.team_a||[]),
         ...(mp.team_b||[]),
         ...(mp.player_stats||[]).map(s=>s.player_id)
@@ -639,6 +638,42 @@ function teamRoster(){
 function teamAverage(ids){return ids.length?ids.reduce((z,id)=>z+index(id),0)/ids.length:0}
 function teamImpactAvg(ids){return ids.length?ids.reduce((z,id)=>z+impact(id),0)/ids.length:0}
 function teamStabilityAvg(ids){return ids.length?ids.reduce((z,id)=>z+stability(id).score,0)/ids.length:0}
+function togetherStats(filterId='all'){
+  const pairs=new Map();
+  for(const m of activeMatches()){
+    const groups=historicalLobbyGroups(m);
+    for(const side of groups){
+      const team=[...new Set(side.filter(id=>player(id)))];
+      for(let i=0;i<team.length;i++) for(let j=i+1;j<team.length;j++){
+        const pair=[team[i],team[j]].sort(),key=pair.join('::');
+        if(!pairs.has(key))pairs.set(key,{a:pair[0],b:pair[1],games:0,matches:[]});
+        const p=pairs.get(key);p.games++;p.matches.push(m.match_id);
+      }
+    }
+  }
+  let rows=[...pairs.values()];
+  if(filterId!=='all')rows=rows.filter(r=>r.a===filterId||r.b===filterId);
+  return rows.sort((x,y)=>y.games-x.games||playerName(x.a).localeCompare(playerName(y.a),'ru')||playerName(x.b).localeCompare(playerName(y.b),'ru'));
+}
+function togetherPairResult(pair){
+  let wins=0,losses=0,draws=0;
+  for(const id of pair.matches){
+    const m=DB.matches.find(x=>x.match_id===id);if(!m)continue;
+    const groups=historicalLobbyGroups(m),inA=groups[0].includes(pair.a)&&groups[0].includes(pair.b),inB=groups[1].includes(pair.a)&&groups[1].includes(pair.b);
+    const parts=String(m.series_score||'').split(':').map(Number);if(parts.length!==2||parts.some(x=>!Number.isFinite(x)))continue;
+    const x=parts[0],y=parts[1];if(x===y)draws++;else if((inA&&x>y)||(inB&&y>x))wins++;else losses++;
+  }
+  return {wins,losses,draws};
+}
+function openTogetherDetail(a,b){
+  const pair={a,b,matches:[]};
+  for(const m of activeMatches()){const groups=historicalLobbyGroups(m);if((groups[0].includes(a)&&groups[0].includes(b))||(groups[1].includes(a)&&groups[1].includes(b)))pair.matches.push(m.match_id)}
+  const result=togetherPairResult(pair),rows=pair.matches.map(id=>DB.matches.find(m=>m.match_id===id)).filter(Boolean).sort((x,y)=>matchOrder(y)-matchOrder(x));
+  const body=rows.map(m=>"<div class='together-match-row click-row' onclick=\"openMatchDetail('"+esc(m.match_id)+"');document.getElementById('togetherModal')?.remove()\"><div><b>Серия "+esc(seriesNumberForMatch(m)||'—')+"</b><span>"+esc(m.format||'—')+" · "+esc(matchMaps(m).map(x=>x.map).join(' · ')||'—')+"</span></div><strong class='"+scoreClass(m.series_score)+"'>"+esc(m.series_score||'—')+"</strong></div>").join('');
+  document.querySelector('.modal-back#togetherModal')?.remove();
+  const html="<div class='modal-back' id='togetherModal'><div class='modal panel wide'><div class='modal-head'><div><div class='eyebrow'>ИГРАЛИ ВМЕСТЕ</div><h2>"+esc(playerName(a))+" + "+esc(playerName(b))+"</h2><div class='muted'>"+pair.matches.length+" совместных серий · WIN "+result.wins+" · LOSS "+result.losses+(result.draws?" · DRAW "+result.draws:'')+"</div></div><button class='close' onclick=\"document.getElementById('togetherModal')?.remove()\">×</button></div><div class='mini-stats'><div class='mini-stat'><span>ИГР ВМЕСТЕ</span><strong>"+pair.matches.length+"</strong></div><div class='mini-stat'><span>ПОБЕД</span><strong>"+result.wins+"</strong></div><div class='mini-stat'><span>ПОРАЖЕНИЙ</span><strong>"+result.losses+"</strong></div><div class='mini-stat'><span>КАРТ</span><strong>"+rows.reduce((n,m)=>n+matchMaps(m).length,0)+"</strong></div></div><section class='section'><div class='section-head'><h3>СОВМЕСТНЫЕ СЕРИИ</h3><span class='muted'>нажми на игру для полного матча</span></div><div class='together-match-list'>"+(body||"<div class='empty'>Совместных игр не найдено.</div>")+"</div></section></div></div>";
+  document.body.insertAdjacentHTML('beforeend',html);
+}
 function teams(v){
   const roster=teamRoster(), byId=new Map(roster.map(p=>[p.player_id,p]));
   state.teamA=state.teamA.filter(id=>byId.has(id)); state.teamB=state.teamB.filter(id=>byId.has(id));
@@ -655,7 +690,13 @@ function teams(v){
 <div class="panel card team-roster-picker"><div class="section-head"><div><h3>ИГРОКИ</h3><div class="muted">Выбери команду и нажми на игрока — как в создании матча. Перетаскивание тоже работает.</div></div><div class="team-add-targets"><button type="button" class="match-target-btn team-a-target ${state.teamAddTarget==='A'?'selected':''}" onclick="state.teamAddTarget='A';render()">КОМАНДА A</button><button type="button" class="match-target-btn team-b-target ${state.teamAddTarget==='B'?'selected':''}" onclick="state.teamAddTarget='B';render()">КОМАНДА B</button></div></div><div class="team-player-pool">${roster.map(p=>`<button type="button" class="match-player-chip team-pick-chip ${state.teamA.includes(p.player_id)?'selected team-a-chip':''} ${state.teamB.includes(p.player_id)?'selected team-b-chip':''}" onclick="addToTeam('${esc(p.player_id)}')"><span>${esc(p.display_name)}</span><small>${fmt(index(p.player_id),1)} · ${p.is_active===false?'архив':'активен'}</small></button>`).join('')}</div></div><div class="team-builder-grid"><div class="panel card team-dropzone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropTeam(event,'A')"><div class="team-head"><div><h3>КОМАНДА A</h3><span class="muted">${state.teamA.length}/5 игроков</span></div><strong>${fmt(cmp.a.avgIdx,1)}</strong></div>${teamA}<div class="team-summary"><span>AVG ИНДЕКС</span><b>${fmt(cmp.a.avgIdx,1)}</b><span>Импакт</span><b>${fmt(cmp.a.imp,1)}</b><span>Стабильность</span><b>${fmt(cmp.a.st,1)}</b></div></div>
   <div class="panel card team-dropzone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropTeam(event,'B')"><div class="team-head"><div><h3>КОМАНДА B</h3><span class="muted">${state.teamB.length}/5 игроков</span></div><strong>${fmt(cmp.b.avgIdx,1)}</strong></div>${teamB}<div class="team-summary"><span>AVG ИНДЕКС</span><b>${fmt(cmp.b.avgIdx,1)}</b><span>Импакт</span><b>${fmt(cmp.b.imp,1)}</b><span>Стабильность</span><b>${fmt(cmp.b.st,1)}</b></div></div></div><div class="panel card team-probability"><div class="section-head"><div><h3>ПРОГНОЗ НА КАРТЕ</h3><div class="muted">теоретическая оценка состава по истории игроков</div></div><select id="teamMapSelect" class="control team-map-select">${mapNames.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select></div><div class="prob-bars"><div class="prob-side prob-a"><strong>${prob.ready?Math.round(prob.pA*100):'—'}%</strong><span>КОМАНДА A</span><small>${prob.a.coverage?`WR ${Math.round(prob.a.wr*100)}% · ${prob.a.coverage} карт`:'нет истории'}</small></div><div class="prob-track"><i style="width:${prob.ready?Math.round(prob.pA*100):50}%"></i></div><div class="prob-side prob-b"><strong>${prob.ready?Math.round(prob.pB*100):'—'}%</strong><span>КОМАНДА B</span><small>${prob.b.coverage?`WR ${Math.round(prob.b.wr*100)}% · ${prob.b.coverage} карт`:'нет истории'}</small></div></div><div class="prob-meta"><span>${esc(state.teamMap)} · сила A ${fmt(prob.a.power,1)} · сила B ${fmt(prob.b.power,1)}</span><span>${prob.ready?'теория состава':'собери 5×5'}</span></div></div>
   </section>`;
-  $('#teamMapSelect')?.addEventListener('change',e=>{state.teamMap=e.target.value;render()});if($('#teamMapSelect'))$('#teamMapSelect').value=state.teamMap;
+  $('#teamMapSelect')?.addEventListener('change',e=>{state.teamMap=e.target.value;render()});if($('#teamMapSelect'))$('#teamMapSelect').value=state.teamMap;  const together=togetherStats(state.togetherPlayer||'all');
+  const togetherPlayers=teamRoster().map(p=>"<option value='"+esc(p.player_id)+"'>"+esc(p.display_name)+"</option>").join('');
+  const togetherRows=together.map(r=>{const res=togetherPairResult(r);return "<div class='together-row click-row' onclick=\"openTogetherDetail('"+esc(r.a)+"','"+esc(r.b)+"')\"><div class='together-names'><b>"+esc(playerName(r.a))+"</b><span>+</span><b>"+esc(playerName(r.b))+"</b></div><strong>"+r.games+"</strong><small>игр · WIN "+res.wins+" · LOSS "+res.losses+(res.draws?" · DRAW "+res.draws:'')+"</small></div>";}).join('');
+  const togetherSection="<section class='panel card together-panel' id='togetherPanel'><div class='section-head'><div><h3>ИГРАЛИ ВМЕСТЕ</h3><div class='muted'>Кто с кем был в одной команде и сколько серий сыграли вместе.</div></div><select id='togetherPlayer' class='control together-player-select'><option value='all'>ВСЕ ИГРОКИ</option>"+togetherPlayers+"</select></div><div class='together-list'>"+(togetherRows||"<div class='empty'>Пока нет пар с совместными играми.</div>")+"</div></section>";
+  v.innerHTML=v.innerHTML.replace('</section>`;',togetherSection+'</section>`;');
+  $('#togetherPlayer')?.addEventListener('change',e=>{state.togetherPlayer=e.target.value;render()});
+  if($('#togetherPlayer'))$('#togetherPlayer').value=state.togetherPlayer||'all';
 }
 function teamRow(x,i,t){if(!x||!x.p)return'';const ms=mapPlayerStats(x.p.player_id,state.teamMap||'mirage');return`<div class="team-row draggable-player" draggable="true" data-player="${esc(x.p.player_id)}" data-team="${t}" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropTeamPlayer(event,'${esc(x.p.player_id)}','${t}');this.classList.remove('drag-over')" ondragstart="dragTeam(event,'${esc(x.p.player_id)}','${t}')" ondragend="clearTeamDrag()"><span class="rank">${i+1}</span><div><div class="name">${esc(x.p.display_name)}</div><div class="muted">Импакт ${fmt(x.imp,1)} · Стабильность ${fmt(x.st,1)}</div><div class="team-map-stat">${esc(state.teamMap||'map')} · ${ms.played?Math.round(ms.wr*100)+'% WR · '+ms.played+' карт':'нет истории'}</div></div><strong>${fmt(x.idx,1)}</strong><button class="close team-remove" onclick="event.stopPropagation();removeFromTeam('${esc(x.p.player_id)}','${t}')">×</button></div>`}
 function addToTeam(id){const fromA=state.teamA.includes(id),fromB=state.teamB.includes(id);if(fromA||fromB){toast('Игрок уже в составе');return}const key=state.teamAddTarget==='B'?'teamB':'teamA';if(state[key].length>=5){toast(`Команда ${state.teamAddTarget==='B'?'B':'A'} заполнена`);return}state[key].push(id);render()}
@@ -997,8 +1038,7 @@ document.addEventListener('keydown',globalKeyboardShortcuts);
 load();
 
 // V47.1 scroll safety: when a modal is open, wheel input over non-scrollable children
-// is routed to the modal itself, preventing nested cards/hover targets from swallowing it.
-if(document.addEventListener)document.addEventListener('wheel',e=>{
+// is routed to the modal itself, preventing nested cards/hover targets from swallowing it.if(document.addEventListener)document.addEventListener('wheel',e=>{
   const modal=e.target?.closest?.('.modal');
   if(!modal)return;
   let el=e.target;
