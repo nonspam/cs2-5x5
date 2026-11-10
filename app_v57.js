@@ -280,7 +280,14 @@ function profilePage(v){
        '<div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ / ELO</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div>'+
        '<div class="faceit-match-list">'+(matchRows(recent.slice(0,10))||'<div class="empty">Матчей пока нет.</div>')+'</div></section></div>'+
        '<aside class="faceit-side-column">'+gameHistory+activity+rankCard+'</aside></div>';
- v.innerHTML='<section class="section faceit-profile faceit-profile-v2">'+
+ v.innerHTML='<section class="section faceit-profile faceit-profile-v2 faceit-profile-layout">'+
+   '<aside class="faceit-reference-sidebar"><div class="reference-user-card">'+
+     (avatar?'<img src="'+esc(avatar)+'" alt="">':'<span class="reference-avatar-fallback">'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+
+     '<b>'+esc(p.display_name)+'</b><small>@'+esc(id)+'</small><div class="reference-user-elo"><span>ELO</span><strong>'+Math.round(elo)+'</strong></div></div>'+
+     '<div class="reference-sidebar-group"><span>МОЙ ПРОФИЛЬ</span><button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">◉ Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">▤ История матчей</button></div>'+
+     '<div class="reference-sidebar-group"><span>СТАТИСТИКА</span><button onclick="state.tab=\'analytics\';render()">▥ Общая статистика</button><button onclick="state.tab=\'seasons\';state.seasonView=\'all\';render()">◉ Сезоны</button><button onclick="state.tab=\'maps\';render()">◫ Карты</button></div>'+
+     '<div class="reference-sidebar-group"><span>АККАУНТ</span><button onclick="state.tab=\'settings\';render()">⚙ Настройки аккаунта</button></div>'+
+   '</aside><div class="faceit-reference-main">'+
    '<div class="faceit-profile-cover" style="'+(cover?'background-image:linear-gradient(0deg,rgba(8,12,18,.96),rgba(8,12,18,.12)),url(\''+esc(cover)+'\')':'')+'">'+
      (canEditProfile?'<button class="faceit-cover-edit" onclick="document.getElementById(\'profileCoverFile\').click()" aria-label="Изменить обложку">✎</button>':'')+
      '<div class="faceit-profile-identity"><div class="faceit-avatar-wrap">'+
@@ -300,7 +307,7 @@ function profilePage(v){
    (canEditProfile?'<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])">'+
    '<input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">':'')+
    body+
-   '</section>';
+   '</div></section>';
 }async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
