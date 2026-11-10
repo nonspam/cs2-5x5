@@ -3064,3 +3064,5 @@ html{scroll-behavior:auto!important}
 /* Public player profile navigation and compact match stat links. */
 .player-name-cell span[title="Открыть профиль"],.match-player-profile-link{cursor:pointer}
 .player-name-cell span[title="Открыть профиль"]:hover,.match-player-profile-link:hover{color:var(--blue);text-decoration:underline}
+
+.faceit-match-elo-delta{display:block;margin-top:2px;font-size:8px;line-height:1.15;font-weight:800;letter-spacing:.02em}
