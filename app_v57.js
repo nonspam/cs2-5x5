@@ -223,7 +223,7 @@ function profilePage(v){
    const kda=q.hasStats?[q.k,q.d,q.a].map(n=>Number.isFinite(Number(n))?Number(n):0).join('/'):'—/—/—';
    return '<button class="faceit-match-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')">'+
      '<span class="faceit-match-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span>'+
-     '<span class="faceit-match-result '+tone+'">'+(q.result==='WIN'?'ПОБЕДА':q.result==='LOSS'?'ПОРАЖЕНИЕ':'—')+'</span>'+
+     '<span class="faceit-match-result '+tone+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</span>'+
      '<span class="faceit-match-score">'+esc(q.m.series_score||'—')+'</span>'+
      '<span class="faceit-match-rating">'+avgKd+'</span>'+
      '<span class="faceit-match-kda '+personalTone+'">'+kda+'</span>'+
