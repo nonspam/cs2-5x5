@@ -43,7 +43,7 @@
     const cleanEmail=String(email||'').trim().toLowerCase();
     if(!cleanEmail||!cleanEmail.includes('@'))throw Error('Укажи корректную электронную почту');
     if(String(password||'').length<8)throw Error('Пароль должен содержать не менее 8 символов');
-    const {data,error}=await client.auth.signUp({email:cleanEmail,password});
+    const {data,error}=await client.auth.signUp({email:cleanEmail,password,options:{emailRedirectTo:window.location.origin}});
     if(error)throw error;
     return data;
   }
@@ -55,6 +55,24 @@
     if(error)throw error;
     if(!data.session||!data.user)throw Error('Не удалось создать сессию');
     return data;
+  }
+  async function sendAccountPasswordReset(email){
+    if(!configured)throw Error('Supabase не настроен');
+    const cleanEmail=String(email||'').trim().toLowerCase();
+    if(!cleanEmail||!cleanEmail.includes('@'))throw Error('Укажи электронную почту аккаунта');
+    const {error}=await client.auth.resetPasswordForEmail(cleanEmail,{redirectTo:window.location.origin});
+    if(error)throw error;
+  }
+  async function updateAccountPassword(password){
+    if(!configured)throw Error('Supabase не настроен');
+    if(String(password||'').length<8)throw Error('Пароль должен содержать не менее 8 символов');
+    const {data,error}=await client.auth.updateUser({password});
+    if(error)throw error;
+    return data;
+  }
+  function onAuthStateChange(callback){
+    if(!configured)return null;
+    return client.auth.onAuthStateChange(callback);
   }
   function scheduleRealtimeRetry(){if(!configured||realtimeRetryTimer)return;realtimeRetryTimer=setTimeout(()=>{realtimeRetryTimer=null;if(realtimeCallback&&!channel)subscribe(realtimeCallback)},3000)}
   function subscribe(onChange){if(!configured)return;realtimeCallback=onChange;if(channel)return;channel=client.channel('cs2-app-state-live').on('postgres_changes',{event:'UPDATE',schema:'public',table:'cs2_app_state',filter:'id=eq.1'},p=>realtimeCallback?.(p)).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'||status==='CLOSED'){if(channel){client.removeChannel(channel);channel=null}scheduleRealtimeRetry()}})}
@@ -143,5 +161,5 @@
   }
   function unsubscribeProfiles(){if(profileChannel&&client){client.removeChannel(profileChannel);profileChannel=null}}
 
-  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,signUpAccount,signInAccount,subscribe,unsubscribe,commit,currentUser,loadProfileContext,listUnlinkedPlayers,createPlayerAccountInvite,claimPlayerAccountInvite,publicMediaUrl,uploadProfileMedia,savePlayerProfile,subscribeProfiles,unsubscribeProfiles};
+  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,signUpAccount,signInAccount,sendAccountPasswordReset,updateAccountPassword,onAuthStateChange,subscribe,unsubscribe,commit,currentUser,loadProfileContext,listUnlinkedPlayers,createPlayerAccountInvite,claimPlayerAccountInvite,publicMediaUrl,uploadProfileMedia,savePlayerProfile,subscribeProfiles,unsubscribeProfiles};
 })();
