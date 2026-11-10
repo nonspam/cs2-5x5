@@ -156,8 +156,12 @@
         }
       }
     }catch(error){
-      accountError(error?.message||'Не удалось выполнить действие');
-      if(submit){submit.disabled=false;submit.textContent=isRegister?'СОЗДАТЬ АККАУНТ':'ВОЙТИ'}
+      if(state.accountUser&&!state.myPlayerId){
+        renderAccountAuth('',error?.message||'Не удалось выполнить действие');
+      }else{
+        accountError(error?.message||'Не удалось выполнить действие');
+        if(submit){submit.disabled=false;submit.textContent=isRegister?'СОЗДАТЬ АККАУНТ':'ВОЙТИ'}
+      }
     }finally{accountBusy=false}
   }
 
@@ -248,7 +252,7 @@
             try{await navigator.clipboard.writeText(code);$('#accountInviteCopy').textContent='СКОПИРОВАНО'}catch{$('#accountInviteGeneratedCode')?.select();$('#accountInviteCopy').textContent='ВЫДЕЛИ И СКОПИРУЙ'}
           });
         }
-        if(select){select.querySelector('option[value="'+CSS.escape(playerId)+'"]')?.remove();select.value=''}
+        if(select){[...select.options].find(option=>option.value===playerId)?.remove();select.value=''}
         toast('Приглашение создано');
       }catch(error){
         if(errorBox){errorBox.textContent=error?.message||'Не удалось создать приглашение';errorBox.hidden=false}
