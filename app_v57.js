@@ -201,6 +201,8 @@ function profilePage(v){
  const size=[5,10,20].includes(Number(state.profileWindow))?Number(state.profileWindow):20;
  const recent=all.slice(0,size);
  const sum=profileSummary(recent);
+ const recentLosses=recent.filter(q=>q.result==='LOSS').length;
+ const recentDraws=recent.filter(q=>q.result==='DRAW').length;
  const elo=1000;
  const ranked=activePlayers().map(q=>({id:q.player_id,s:profileSummary(profileMatchesForPlayer(q.player_id))}))
    .sort((x,y)=>y.s.winrate-x.s.winrate||y.s.kd-x.s.kd||x.id.localeCompare(y.id));
@@ -232,7 +234,7 @@ function profilePage(v){
    '<div class="faceit-performance-grid">'+
      '<div><span>AVG SKILL LEVEL</span><b>—</b><small>нет Elo соперников</small></div>'+
      '<div><span>ELO CHANGE</span><b class="neutral">0</b><small>стартовый Elo 1 000</small></div>'+
-     '<div><span>W / L</span><b><em class="positive">'+sum.wins+'</em> / <em class="negative">'+Math.max(0,sum.matches-sum.wins)+'</em></b><small>из выбранного окна</small></div>'+
+     '<div><span>W / L</span><b><em class="positive">'+sum.wins+'</em> / <em class="negative">'+recentLosses+'</em></b><small>из выбранного окна</small></div>'+
      '<div><span>WIN RATE</span><b>'+Math.round(sum.winrate)+'%</b><small>'+sum.matches+' матчей</small></div>'+
      '<div><span>K / D / A</span><b>'+((sum.maps)?Math.round(sum.k/sum.maps)+' / '+Math.round(sum.d/sum.maps)+' / '+Math.round(sum.a/sum.maps):'— / — / —')+'</b><small>в среднем за карту</small></div>'+
      '<div><span>K/D</span><b class="'+kdClass(sum.k,sum.d)+'">'+fmt(sum.kd)+'</b><small>за выбранное окно</small></div>'+
