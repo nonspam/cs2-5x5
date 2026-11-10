@@ -44,6 +44,11 @@ test('public player profiles are readable without login but only the linked play
   assert.ok(account.includes('!state.myPlayerId&&!state.profileTargetId'));
 });
 
+test('profile match-history rows open the matching series card', () => {
+  assert.match(app, /class="profile-match-row click-row" onclick="openMatchDetail/);
+  assert.doesNotMatch(app, /class="profile-match-row click-row onclick=/);
+});
+
 test('ordinary player accounts do not acquire administrator privileges', () => {
   assert.ok(account.includes('state.logged=!!state.cloudAdmin'));
   assert.ok(account.includes('state.cloudAdmin=await CS2Cloud.isAdmin()'));
