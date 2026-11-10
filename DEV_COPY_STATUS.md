@@ -48,3 +48,16 @@ The legacy root file `supabase_schema.sql` contains an old embedded data snapsho
 2. Complete one authenticated end-to-end UI write test using a disposable DEV-only test record. The database RPC authorization, optimistic version conflict, rollback, and audit behavior have been checked separately; the Edge Function/browser round-trip itself has not yet been exercised by automation.
 3. If a UI defect appears, fix it on `faceit-dev` and rerun the quality gate. Do not use production data for test writes.
 4. Continue FACEIT-style development only on `faceit-dev`.
+
+
+## Player account / shared profile foundation (2026-11-10)
+- DEV Auth identity is linked to the existing player record `gletcher` (Буля) through a private `player_account_links` table. This is an account-to-player relation only; it does not grant admin rights. The existing admin allow-list remains separate.
+- Added public-read / owner-update `player_profiles` rows for all 14 catalog players. The table has RLS; authenticated profile updates are restricted through the private account-link check.
+- Added the `my_player_account` security-invoker view. A simulated authenticated DEV query confirms it returns only the linked player row (`gletcher`).
+- Added the public `cs2-player-media` Storage bucket (5 MB limit; JPEG/PNG/WebP/GIF), with public reads and per-auth-user folder restrictions for upload/update/delete.
+- Enabled Realtime for `player_profiles`; all connected clients can refresh shared avatar/cover metadata when a profile changes.
+- Added a first DEV-only account page with shared avatar/cover upload, short bio, accent color, player index, existing K/D/A-derived stats, recent series, and a link to the existing full stats/history modal. The player list and player-stat modal now show the shared avatar.
+- Browser JavaScript syntax checks passed for `app_v57.js` and `supabase_adapter.js`. DEV SQL checks confirmed 14 profile rows, the `gletcher` profile, Realtime publication, public read grants, and authenticated update grants. A rollback-only authenticated update to `gletcher` succeeded; an attempted update to `donater` returned no row, confirming the owner boundary.
+- GitHub Actions quality gate passed on the latest profile UI assets commit; static profile contract checks were added after that run and will be validated by the next run.
+- No image has been uploaded yet; the avatar and cover are currently empty until the user selects files in the DEV profile editor. No browser end-to-end upload test has been performed yet.
+- All changes are isolated to `faceit-dev` and DEV Supabase project `nwujudniysolpevbtggd`. Production `main` and production Supabase were not touched.
