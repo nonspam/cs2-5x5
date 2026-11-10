@@ -3066,3 +3066,174 @@ html{scroll-behavior:auto!important}
 .player-name-cell span[title="Открыть профиль"]:hover,.match-player-profile-link:hover{color:var(--blue);text-decoration:underline}
 
 .faceit-match-elo-delta{display:block;margin-top:2px;font-size:8px;line-height:1.15;font-weight:800;letter-spacing:.02em}
+
+
+/* =========================================================
+   FACEIT REFERENCE PASS — supplied 12-screen visual direction
+   graphite / industrial / orange, compact tables, low-gloss panels
+   ========================================================= */
+:root{
+ --bg:#101112;--panel:#191a1b;--panel2:#202122;--line:#343536;
+ --text:#e9e9e9;--muted:#929394;--blue:#ef4b18;--blue2:#ff6a32;
+ --blue3:#d93d10;--green:#52d273;--red:#ef4949;--amber:#ef8b35;
+ --shadow:0 14px 38px rgba(0,0,0,.42);--glow:0 0 22px rgba(239,75,24,.13)
+}
+html{background:#101112}
+body{
+ color:#e7e7e7;
+ background:
+  linear-gradient(90deg,rgba(12,13,14,.93),rgba(12,13,14,.78) 55%,rgba(12,13,14,.91)),
+  linear-gradient(0deg,rgba(0,0,0,.45),rgba(0,0,0,.35)),
+  url('assets/maps/nuke-hero.png') center 18%/cover fixed,
+  #101112;
+ font-family:Inter,"Segoe UI",Arial,sans-serif;
+}
+body:before{
+ content:"MOST VALUABLE PLAYER";
+ position:fixed;z-index:0;pointer-events:none;left:15%;top:42%;
+ white-space:nowrap;font-size:clamp(54px,9vw,150px);font-weight:1000;
+ letter-spacing:.075em;color:rgba(220,220,220,.045);
+ transform:rotate(-3deg);text-shadow:0 1px 0 rgba(255,255,255,.02)
+}
+.app{position:relative;z-index:1;background:transparent}
+.topbar{
+ height:62px;padding:0 28px;gap:26px;
+ background:rgba(19,20,21,.94);backdrop-filter:blur(16px);
+ border-bottom:1px solid #3b3b3b;box-shadow:0 8px 28px rgba(0,0,0,.28)
+}
+.brand{min-width:175px;letter-spacing:.11em;font-size:12px;color:#ddd}
+.brand-mark,.brand-cs2{background:#e94a18;color:#fff}
+.topbar nav{gap:7px}
+.nav-group{height:100%;align-items:stretch}
+.nav-btn{
+ height:100%;padding:0 13px;color:#a5a5a5;font-size:10px;
+ letter-spacing:.07em;font-weight:800
+}
+.nav-btn:hover,.nav-btn.active{color:#fff;background:rgba(239,75,24,.07)}
+.nav-btn.active:after{
+ content:"";position:absolute;bottom:0;left:10px;right:10px;height:2px;
+ background:#ef4b18;box-shadow:0 0 12px rgba(239,75,24,.5)
+}
+.nav-icon,.gear{color:#ef6537;text-shadow:none}
+main{max-width:1600px;padding:24px 28px 44px}
+.panel,.card,.home-panel,.faceit-content-card,.faceit-perf-card,.faceit-side-card,
+.faceit-elo-progress,.faceit-match-section{
+ background:rgba(25,26,27,.91)!important;border:1px solid rgba(125,125,125,.22)!important;
+ border-radius:5px!important;box-shadow:0 12px 34px rgba(0,0,0,.28)!important
+}
+.panel:hover{border-color:rgba(239,75,24,.32)!important}
+.section-head h2,.faceit-card-title h2,.faceit-perf-head h3{color:#eee}
+.eyebrow,.faceit-kicker{color:#e85a2b!important;letter-spacing:.12em}
+.muted,.faceit-match-date,.faceit-side-title span{color:#929292!important}
+.btn,.control{
+ background:linear-gradient(#292a2b,#1d1e1f)!important;
+ border:1px solid #494949!important;color:#ddd!important;border-radius:3px!important;
+ box-shadow:none!important
+}
+.btn.primary,.btn.orange,.control.active{
+ background:#ed4b18!important;border-color:#ed4b18!important;color:#fff!important
+}
+.btn:hover,.control:hover{border-color:#ed4b18!important}
+input,select,textarea{background:#171819!important;color:#eee!important;border-color:#414243!important}
+.section{margin-top:18px}
+.section-head{margin-bottom:12px}
+.table-wrap{border:1px solid #383838;border-radius:4px;background:rgba(20,21,22,.88)}
+.data-table{border-collapse:collapse}
+.data-table th{
+ background:#222324!important;color:#a8a8a8!important;font-size:9px;
+ letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid #464646!important
+}
+.data-table td{border-bottom:1px solid rgba(255,255,255,.055)!important;color:#d0d0d0}
+.data-table tbody tr:hover{background:rgba(239,75,24,.055)!important}
+.badge,.pill{border-radius:3px!important}
+.toast{border-radius:3px}
+.home-hero,.home-hero-bg{filter:grayscale(.75)}
+.home-hero:before{background:linear-gradient(90deg,rgba(10,10,10,.94),rgba(10,10,10,.5) 65%,rgba(10,10,10,.12))!important}
+.metric-card{background:rgba(26,27,28,.92)!important;border:1px solid #3b3b3b!important}
+.metric-card strong,.metric-card b{color:#eee}
+.chart,.home-chart-panel{background:rgba(20,21,22,.78)!important}
+.chart svg{filter:saturate(.8)}
+/* Player profile — hero, orange rating accents, dense performance blocks */
+.faceit-profile-v2{max-width:1500px;margin:0 auto}
+.faceit-profile-v2 .faceit-profile-cover{
+ min-height:250px!important;border:1px solid #444!important;border-radius:4px!important;
+ background-color:#1c1d1e!important;
+ background-image:linear-gradient(0deg,rgba(12,13,14,.97),rgba(12,13,14,.18))!important;
+}
+.faceit-profile-identity{gap:20px!important;padding:24px!important}
+.faceit-avatar{border:2px solid #777!important;border-radius:50%!important}
+.faceit-player-name h1{font-size:30px!important;letter-spacing:.01em}
+.faceit-player-name span{color:#999!important}
+.faceit-rating{
+ min-width:112px;padding:12px 14px!important;background:rgba(8,9,10,.55)!important;
+ border:1px solid rgba(255,255,255,.13)!important;border-radius:3px!important
+}
+.faceit-rating strong{color:#f05a28!important;font-size:27px!important}
+.faceit-rating small,.faceit-rating span{color:#aaa!important}
+.faceit-profile-tabs-only{height:46px!important;border-bottom:1px solid #4a4a4a!important}
+.faceit-profile-tabs-only button{height:46px!important;color:#aaa!important;font-size:10px!important}
+.faceit-profile-tabs-only button.active{color:#fff!important;border-bottom:2px solid #ef4b18!important}
+.faceit-elo-progress{margin:12px 0 16px!important;padding:15px 18px!important;background:rgba(20,21,22,.88)!important}
+.faceit-elo-head h3{font-size:14px!important}
+.faceit-elo-head>strong{color:#f05a28}
+.faceit-elo-line{stroke:#f05a28!important;stroke-width:2.5!important}
+.faceit-elo-grid{stroke:#484848!important}
+.faceit-main-grid{grid-template-columns:minmax(0,1.75fr) minmax(245px,.55fr)!important;gap:14px!important}
+.faceit-main-grid>div{display:flex;flex-direction:column;gap:14px}
+.faceit-side-column{gap:12px!important}
+.faceit-perf-card,.faceit-content-card,.faceit-side-card{padding:14px!important}
+.faceit-performance-grid{gap:0!important}
+.faceit-performance-grid>div{
+ min-height:78px!important;padding:12px!important;background:transparent!important;
+ border-right:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)
+}
+.faceit-performance-grid>div>span{font-size:8px!important;color:#999!important;letter-spacing:.08em}
+.faceit-performance-grid b{font-size:21px!important;color:#eee}
+.faceit-performance-grid small{font-size:9px!important;color:#8b8b8b!important}
+.faceit-match-table-head{background:#242526!important;color:#999!important;border-bottom:1px solid #4a4a4a!important}
+.faceit-match-row{
+ min-height:48px!important;background:rgba(17,18,19,.4)!important;
+ border-bottom:1px solid rgba(255,255,255,.055)!important
+}
+.faceit-match-row:hover{background:rgba(239,75,24,.07)!important}
+.faceit-match-score{color:#eee!important}
+.faceit-match-elo-delta.positive{color:#51cf78!important}
+.faceit-match-elo-delta.negative{color:#ee5b55!important}
+.faceit-form-dot{border-radius:2px!important}
+.faceit-form-dot.win{background:#287c45!important}
+.faceit-form-dot.loss{background:#8c2929!important}
+.faceit-side-title h3{font-size:12px!important;color:#eee!important}
+.faceit-rank-card strong{color:#ef5a27!important}
+.faceit-activity-cell{border-radius:1px!important;background:#333!important}
+.faceit-activity-cell.level-1{background:#6b3b29!important}
+.faceit-activity-cell.level-2{background:#a84a25!important}
+.faceit-activity-cell.level-3{background:#d75a25!important}
+.faceit-activity-cell.level-4{background:#f06a2b!important}
+/* Full match history and match details */
+.faceit-full-history{background:rgba(21,22,23,.93)!important}
+.faceit-full-history .faceit-match-list{border-top:1px solid #424242}
+#modal .modal.panel.wide{
+ background:#191a1b!important;border:1px solid #555!important;border-radius:4px!important;
+ box-shadow:0 28px 90px rgba(0,0,0,.78)!important
+}
+#modal .modal-head{background:#222324!important;border-bottom:1px solid #444!important}
+#modal .faceit-match-section .section-head{background:#222324!important;border-color:#444!important}
+#modal .data-table th{background:#292a2b!important}
+#modal .data-table td{background:rgba(20,21,22,.6)!important}
+#modal .lobby-row{border-bottom:1px solid #393939!important}
+#modal .lobby-row:hover{background:rgba(239,75,24,.06)!important}
+@media(max-width:1050px){
+ .faceit-main-grid{grid-template-columns:1fr!important}
+ .faceit-side-column{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+ .topbar{height:58px;padding:0 12px;gap:10px}
+ .brand{min-width:auto;font-size:10px}
+ .topbar nav{max-width:calc(100vw - 125px);gap:0}
+ .nav-btn{padding:0 8px;font-size:9px}
+ main{padding:14px 10px 28px}
+ .faceit-profile-identity{flex-wrap:wrap;padding:15px!important}
+ .faceit-rating{min-width:calc(50% - 10px);flex:1}
+ .faceit-side-column{grid-template-columns:1fr!important}
+ .faceit-performance-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
