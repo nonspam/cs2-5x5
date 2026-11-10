@@ -68,3 +68,20 @@ test('browser and Edge Function expose the same supported admin operation famili
     assert.ok(edge.includes(kind), 'Edge Function missing ' + kind);
   }
 });
+
+
+test('DEV player account is linked through the shared profile APIs and avatar UI', () => {
+  const app = read('app_v57.js');
+  const adapter = read('supabase_adapter.js');
+  const html = read('index.html');
+  assert.match(app, /function profilePage\(v\)/);
+  assert.match(app, /CS2Cloud\.loadProfileContext\(\)/);
+  assert.match(app, /profileAvatarMarkup\(/);
+  assert.match(app, /handleProfileImage/);
+  assert.match(adapter, /from\('my_player_account'\)/);
+  assert.match(adapter, /from\('player_profiles'\)/);
+  assert.match(adapter, /cs2-player-media/);
+  assert.match(adapter, /subscribeProfiles/);
+  assert.match(html, /app_v57\.js\?v=player-profile-/);
+  assert.match(html, /supabase_adapter\.js\?v=player-profile-/);
+});
