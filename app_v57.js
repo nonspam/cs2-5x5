@@ -302,12 +302,17 @@ function profilePage(v){
 }async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
+  const playerId=state.myPlayerId;if(!playerId)return;
+  const oldPath=profileRecord(playerId)?.[kind+'_path']||null;
   state.profileBusy=true;toast('Загружаю изображение в облако…');
   try{
     const uploaded=await CS2Cloud.uploadProfileMedia(kind,file);
     const patch=kind==='avatar'?{avatar_path:uploaded.path}:{cover_path:uploaded.path};
-    const saved=await CS2Cloud.savePlayerProfile(state.myPlayerId,patch);
+    let saved;
+    try{saved=await CS2Cloud.savePlayerProfile(playerId,patch)}
+    catch(saveError){await CS2Cloud.deleteProfileMedia(uploaded.path).catch(()=>{});throw saveError}
     state.myProfile=saved;state.profileRows=(state.profileRows||[]).filter(q=>q.player_id!==saved.player_id).concat(saved);
+    if(oldPath&&oldPath!==uploaded.path)await CS2Cloud.deleteProfileMedia(oldPath).catch(()=>{});
     render();toast(kind==='avatar'?'Аватар обновлён для всех игроков':'Обложка обновлена для всех игроков');
   }catch(e){toast('Не удалось сохранить изображение: '+(e?.message||'ошибка'))}
   finally{state.profileBusy=false}
