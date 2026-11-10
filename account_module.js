@@ -97,7 +97,7 @@
     $('#accountClaimForm')?.addEventListener('submit',submitClaimInvite);
     $('#accountForgotPassword')?.addEventListener('click',sendPasswordReset);
     $('#accountOpenProfile')?.addEventListener('click',()=>{
-      closeAccountModal();state.tab='profile';state.profileSection='overview';render();
+      closeAccountModal();state.profileTargetId=null;state.tab='profile';state.profileSection='overview';render();
     });
     $('#accountSignOutBtn')?.addEventListener('click',signOutAccount);
     $('#accountChangePasswordBtn')?.addEventListener('click',renderPasswordChange);
@@ -341,7 +341,7 @@
 
   const originalProfilePage=profilePage;
   profilePage=function(view){
-    if(!state.myPlayerId){
+    if(!state.myPlayerId&&!state.profileTargetId){
       view.innerHTML='<section class="section"><div class="panel card account-unlinked-card"><div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</div><h2>'+(state.accountUser?'Игровой профиль ещё не привязан':'Войди в аккаунт')+'</h2><p class="muted">'+(state.accountUser?'Для доступа к личной статистике введи персональный код приглашения.':'Авторизуйся, чтобы открыть личный профиль и историю матчей.')+'</p><button class="btn primary" type="button" id="accountProfileAction">'+(state.accountUser?'ПРИВЯЗАТЬ ИГРОВОЙ ПРОФИЛЬ':'ВОЙТИ / СОЗДАТЬ АККАУНТ')+'</button></div></section>';
       $('#accountProfileAction')?.addEventListener('click',()=>openAccountAuth());
       return;
