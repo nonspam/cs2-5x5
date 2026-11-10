@@ -156,8 +156,9 @@ test('app surfaces cloud-state load failures instead of silently presenting the 
   const app = fs.readFileSync(path.join(__dirname, '..', 'app_v57.js'), 'utf8');
   assert.match(app, /Не удалось загрузить актуальные данные из облачной базы/);
   assert.match(app, /state\.serverSync=false;/);
-  assert.match(app, /if\(remote\)connectServerEvents\(\);else toast\(state\.storageWarning\);/);
-  assert.match(app, /catch\(error=>\{\s*state\.serverSync=false;\s*state\.storageWarning=error\?\.message/);
+  assert.match(app, /if\(!remote\)throw Error\(state\.storageWarning\|\|'Не удалось загрузить актуальные данные из облачной базы/);
+  assert.match(app, /if\(!validateBase\(remote\)\)throw Error\('Актуальная облачная база не прошла проверку\.'\);\s*state\.serverSync=true;/);
+  assert.match(app, /applyLoadedState\(remote,remote\.audit\);[\s\S]*connectServerEvents\(\);/);
 });
 
 
