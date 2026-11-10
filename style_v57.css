@@ -3287,3 +3287,23 @@ input,select,textarea{background:#171819!important;color:#eee!important;border-c
 .season-empty p{max-width:500px;margin:0 auto 22px;color:#999;font-size:12px;line-height:1.6}
 @media(max-width:850px){.season-lower-grid{grid-template-columns:1fr}.season-overview-strip{grid-template-columns:repeat(2,1fr)}.season-overview-strip>div:nth-child(2){border-right:0}.season-overview-strip>div:nth-child(-n+2){border-bottom:1px solid #3b3b3b}}
 @media(max-width:600px){.season-page-head{align-items:flex-start}.season-cards-grid{grid-template-columns:1fr}.season-card{min-height:190px}.season-player-head,.season-player-row{grid-template-columns:22px minmax(0,1fr) 50px 45px 42px;gap:6px}.season-overview-strip b{font-size:20px}.season-page-head h1{font-size:25px}}
+
+
+/* Reference profile rail: persistent player card and compact left navigation */
+.faceit-profile-layout{display:grid!important;grid-template-columns:226px minmax(0,1fr)!important;gap:15px!important;align-items:start}
+.faceit-reference-sidebar{position:sticky;top:78px;align-self:start;min-height:calc(100vh - 100px);padding:12px;background:rgba(19,20,21,.95);border:1px solid #414141;border-radius:4px;display:flex;flex-direction:column;gap:16px}
+.reference-user-card{padding:10px 8px 15px;text-align:center;border-bottom:1px solid #3c3c3c}
+.reference-user-card>img,.reference-avatar-fallback{width:82px;height:82px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;object-fit:cover;background:#333;border:2px solid #696969}
+.reference-avatar-fallback{font-size:30px;font-weight:900;color:#eee}
+.reference-user-card>b{display:block;font-size:13px;color:#eee}
+.reference-user-card>small{display:block;margin-top:3px;font-size:9px;color:#888}
+.reference-user-elo{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:12px;padding:9px;background:#242526;border:1px solid #3b3b3b}
+.reference-user-elo span{font-size:8px;color:#999;letter-spacing:.12em}
+.reference-user-elo strong{font-size:19px;color:#ef5a27}
+.reference-sidebar-group{display:flex;flex-direction:column;gap:3px}
+.reference-sidebar-group>span{padding:0 8px 6px;color:#777;font-size:8px;font-weight:900;letter-spacing:.13em}
+.reference-sidebar-group button{min-height:34px;padding:8px 10px;text-align:left;border:0;border-left:2px solid transparent;background:transparent;color:#aaa;font-size:10px;cursor:pointer}
+.reference-sidebar-group button:hover,.reference-sidebar-group button.active{background:rgba(239,75,24,.09);border-left-color:#ef4b18;color:#fff}
+.faceit-reference-main{min-width:0}
+@media(max-width:980px){.faceit-profile-layout{grid-template-columns:190px minmax(0,1fr)!important}.faceit-reference-sidebar{top:70px}}
+@media(max-width:760px){.faceit-profile-layout{grid-template-columns:1fr!important}.faceit-reference-sidebar{position:relative;top:auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}.reference-user-card{grid-column:1/-1;display:grid;grid-template-columns:58px 1fr;column-gap:10px;align-items:center;text-align:left}.reference-user-card>img,.reference-avatar-fallback{width:54px;height:54px;grid-row:span 3;margin:0}.reference-user-elo{grid-column:1/-1}.reference-sidebar-group{min-width:0}.reference-sidebar-group:last-child{grid-column:1/-1}}
