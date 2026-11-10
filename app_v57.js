@@ -367,9 +367,9 @@ if(document.body)observeCustomSelects();else document.addEventListener('DOMConte
 function mapStats(mapName){const ms=DB.maps.filter(m=>m.archived!==true&&m.map===mapName&&m.stats_available);let k=0,d=0,a=0,rows=0;for(const m of ms)for(const s of(m.player_stats||[])){k+=Number(s.kills)||0;d+=Number(s.deaths)||0;a+=Number(s.assists)||0;rows++}return{maps:DB.maps.filter(m=>m.archived!==true&&m.map===mapName).length,detailed:ms.length,k,d,a,kd:d?k/d:0,diff:k-d,rows}}
 function historicalLobbyGroups(match,mp=null){
   const clean=arr=>[...new Set((Array.isArray(arr)?arr:[]).filter(id=>typeof id==='string'&&id.trim()))].slice(0,5);
-  const mapA=clean(Array.isArray(mp?.lobby_team_a)?mp.lobby_team_a:mp?.team_a),mapB=clean(Array.isArray(mp?.lobby_team_b)?mp.lobby_team_b:mp?.team_b);
+  const mapA=clean(Array.isArray(mp?.lobby_team_a)&&mp.lobby_team_a.length?mp.lobby_team_a:mp?.team_a),mapB=clean(Array.isArray(mp?.lobby_team_b)&&mp.lobby_team_b.length?mp.lobby_team_b:mp?.team_b);
   if(mapA.length||mapB.length)return [mapA,mapB];
-  const explicitA=clean(Array.isArray(match?.lobby_team_a)?match.lobby_team_a:match?.team_a),explicitB=clean(Array.isArray(match?.lobby_team_b)?match.lobby_team_b:match?.team_b);
+  const explicitA=clean(Array.isArray(match?.lobby_team_a)&&match.lobby_team_a.length?match.lobby_team_a:match?.team_a),explicitB=clean(Array.isArray(match?.lobby_team_b)&&match.lobby_team_b.length?match.lobby_team_b:match?.team_b);
   if(explicitA.length||explicitB.length)return [explicitA,explicitB];
   const knownIds=rows=>[...new Set((rows||[]).map(r=>r?.player_id).filter(id=>id&&player(id)))];
   const maps=matchMaps(match).filter(x=>x.stats_available).slice().sort((a,b)=>{
