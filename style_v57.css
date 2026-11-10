@@ -3185,7 +3185,7 @@ html{scroll-behavior:auto!important}
 .season-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
 .season-panel-head h2{font-size:15px;margin:4px 0 0}
 .season-panel-head>span{font-size:9px;color:#999}
-.season-player-head,.season-player-row{display:grid;grid-template-columns:30px minmax(0,1fr) 70px 65px 55px;gap:10px;align-items:center}
+.season-player-head,.season-player-row{display:grid;grid-template-columns:30px minmax(0,1fr) 62px 58px 65px 55px;gap:10px;align-items:center}
 .season-player-head{padding:9px 8px;background:#292a2b;color:#999;font-size:8px;letter-spacing:.08em}
 .season-player-row{min-height:48px;padding:8px;border-bottom:1px solid rgba(255,255,255,.06);font-size:10px}
 .season-player-row b{color:#f05a28;font-size:14px}
@@ -3201,7 +3201,7 @@ html{scroll-behavior:auto!important}
 .season-empty h2{font-size:20px;margin:12px 0}
 .season-empty p{max-width:500px;margin:0 auto 22px;color:#999;font-size:12px;line-height:1.6}
 @media(max-width:850px){.season-lower-grid{grid-template-columns:1fr}.season-overview-strip{grid-template-columns:repeat(2,1fr)}.season-overview-strip>div:nth-child(2){border-right:0}.season-overview-strip>div:nth-child(-n+2){border-bottom:1px solid #3b3b3b}}
-@media(max-width:600px){.season-page-head{align-items:flex-start}.season-cards-grid{grid-template-columns:1fr}.season-card{min-height:190px}.season-player-head,.season-player-row{grid-template-columns:22px minmax(0,1fr) 50px 45px 42px;gap:6px}.season-overview-strip b{font-size:20px}.season-page-head h1{font-size:25px}}
+@media(max-width:600px){.season-page-head{align-items:flex-start}.season-cards-grid{grid-template-columns:1fr}.season-card{min-height:190px}.season-player-head,.season-player-row{grid-template-columns:22px minmax(0,1fr) 48px 48px 48px 42px;gap:6px}.season-overview-strip b{font-size:20px}.season-page-head h1{font-size:25px}}
 
 
 /* Reference profile rail: persistent player card and compact left navigation */
