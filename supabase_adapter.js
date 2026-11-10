@@ -103,10 +103,12 @@
   let profileChannel=null;
   async function currentUser(){if(!configured)return null;const {data,error}=await client.auth.getUser();if(error)throw error;return data.user||null}
   async function loadProfileContext(){
-    if(!configured)return {playerId:null,profiles:[]};
-    const user=await currentUser();if(!user)return {playerId:null,profiles:[]};
+    if(!configured)return {user:null,playerId:null,profiles:[]};
+    const {data:{session},error:sessionError}=await client.auth.getSession();
+    if(sessionError)throw sessionError;
+    const user=session?.user||null;
     const [account,profiles]=await Promise.all([
-      client.from('my_player_account').select('player_id').maybeSingle(),
+      user?client.from('my_player_account').select('player_id').maybeSingle():Promise.resolve({data:null,error:null}),
       client.from('player_profiles').select('player_id,avatar_path,cover_path,updated_at')
     ]);
     if(account.error)throw account.error;if(profiles.error)throw profiles.error;
