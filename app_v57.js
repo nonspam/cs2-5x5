@@ -192,16 +192,87 @@ function profileSummary(rows){
  return {matches:rows.length,wins,winrate:known.length?wins/known.length*100:0,kd:d?k/d:0,avgKills:maps?k/maps:0,avgAssists:maps?a/maps:0,maps};
 }
 function profilePage(v){
- const id=state.myPlayerId,p=id?player(id):null;if(!id||!p){v.innerHTML='<section class="section"><div class="panel card"><h2>АККАУНТ</h2><p class="muted">'+esc(state.profileError||'Профиль игрока не найден.')+'</p></div></section>';return}
- const row=state.myProfile||profileRecord(id)||{},avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.avatar_path):'',cover=row.cover_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.cover_path):'';
- const all=profileMatchesForPlayer(id),size=[5,10,20].includes(Number(state.profileWindow))?Number(state.profileWindow):20,recent=all.slice(0,size),sum=profileSummary(recent),elo=1000;
- const ranked=activePlayers().map(q=>({id:q.player_id,s:profileSummary(profileMatchesForPlayer(q.player_id))})).sort((x,y)=>y.s.winrate-x.s.winrate||y.s.kd-x.s.kd||x.id.localeCompare(y.id)),rank=Math.max(1,ranked.findIndex(q=>q.id===id)+1);
- const rows=arr=>arr.map(q=>'<button class="faceit-history-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')"><span class="faceit-result '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'">'+(q.result==='WIN'?'ПОБЕДА':q.result==='LOSS'?'ПОРАЖЕНИЕ':'МАТЧ')+'</span><span class="faceit-map"><b>'+esc(q.map)+'</b><small>'+esc(q.m.played_at||q.m.date||'Дата не указана')+' · '+esc(q.m.format||'CS2')+'</small></span><strong class="faceit-score">'+esc(q.m.series_score||'—')+'</strong><span class="faceit-player-stats '+(q.kd>1?'kd-positive':q.d>0&&q.kd<1?'kd-negative':'kd-neutral')+'">'+(q.hasStats?q.k+'/'+q.d+'/'+q.a+' · '+fmt(q.kd)+' K/D':'Нет статистики')+'</span></button>').join('');
- const form=recent.slice(0,10).map(q=>'<button class="faceit-form-dot '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'" title="'+esc(q.map+' · '+(q.m.series_score||'—'))+'" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</button>').join('');
- const body=state.profileSection==='history'?'<div class="faceit-history-panel"><div class="faceit-section-title"><h2>ИСТОРИЯ МАТЧЕЙ</h2><span>'+all.length+' матчей</span></div><div class="faceit-history-list">'+(rows(all)||'<div class="empty">Матчей пока нет.</div>')+'</div></div>':'<div class="faceit-overview"><section class="faceit-panel"><div class="faceit-section-title"><h2>ПОСЛЕДНИЕ МАТЧИ</h2><div class="faceit-window-switch">'+[5,10,20].map(n=>'<button class="'+(size===n?'active':'')+'" onclick="state.profileWindow='+n+';render()">'+n+'</button>').join('')+'</div></div><div class="faceit-form-strip">'+(form||'<span class="muted">Матчей пока нет</span>')+'</div><div class="faceit-stat-grid"><div><small>МАТЧИ</small><b>'+sum.matches+'</b></div><div><small>ПОБЕДЫ</small><b>'+sum.wins+'</b></div><div><small>WIN RATE</small><b>'+Math.round(sum.winrate)+'%</b></div><div><small>K/D</small><b>'+fmt(sum.kd)+'</b></div><div><small>AVG KILLS / MAP</small><b>'+fmt(sum.avgKills,1)+'</b></div><div><small>AVG ASSISTS / MAP</small><b>'+fmt(sum.avgAssists,1)+'</b></div></div></section><section class="faceit-panel"><div class="faceit-section-title"><h2>ПОСЛЕДНИЕ РЕЗУЛЬТАТЫ</h2><button class="faceit-text-link" onclick="state.profileSection=\'history\';render()">ВСЯ ИСТОРИЯ ›</button></div><div class="faceit-history-list">'+(rows(recent.slice(0,5))||'<div class="empty">Матчей пока нет.</div>')+'</div></section></div>';
- v.innerHTML='<section class="section faceit-profile"><div class="faceit-profile-cover" style="'+(cover?'background-image:linear-gradient(0deg,rgba(8,12,18,.95),rgba(8,12,18,.12)),url(\''+esc(cover)+'\')':'')+'"><button class="faceit-cover-edit" onclick="document.getElementById(\'profileCoverFile\').click()">✎</button><div class="faceit-profile-identity"><div class="faceit-avatar-wrap">'+(avatar?'<img class="faceit-avatar" src="'+esc(avatar)+'" alt="">':'<div class="faceit-avatar faceit-avatar-empty">'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</div>')+'<button class="faceit-avatar-edit" onclick="document.getElementById(\'profileAvatarFile\').click()">✎</button></div><div class="faceit-player-name"><h1>'+esc(p.display_name)+'</h1><span>@'+esc(id)+'</span></div><div class="faceit-rating"><small>CS2 ELO</small><strong>'+elo.toLocaleString('ru-RU')+'</strong><span>СТАРТОВЫЙ РЕЙТИНГ</span></div><div class="faceit-rating"><small>МЕСТО В ТОПЕ</small><strong>#'+rank+'</strong><span>ИЗ '+ranked.length+' ИГРОКОВ</span></div></div></div><div class="faceit-game-tabs"><button class="faceit-game-active">CS2⌄</button><span>Другие игры пока не подключены</span><div class="faceit-profile-tabs"><button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">ИТОГИ</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">ИСТОРИЯ МАТЧЕЙ</button></div></div><input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])"><input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">'+body+'</section>';
-}
-async function handleProfileImage(kind,file){
+ const id=state.myPlayerId,p=id?player(id):null;
+ if(!id||!p){v.innerHTML='<section class="section"><div class="panel card"><h2>АККАУНТ</h2><p class="muted">'+esc(state.profileError||'Профиль игрока не найден.')+'</p></div></section>';return}
+ const row=state.myProfile||profileRecord(id)||{};
+ const avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.avatar_path):'';
+ const cover=row.cover_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.cover_path):'';
+ const all=profileMatchesForPlayer(id);
+ const size=[5,10,20].includes(Number(state.profileWindow))?Number(state.profileWindow):20;
+ const recent=all.slice(0,size);
+ const sum=profileSummary(recent);
+ const elo=1000;
+ const ranked=activePlayers().map(q=>({id:q.player_id,s:profileSummary(profileMatchesForPlayer(q.player_id))}))
+   .sort((x,y)=>y.s.winrate-x.s.winrate||y.s.kd-x.s.kd||x.id.localeCompare(y.id));
+ const rank=Math.max(1,ranked.findIndex(q=>q.id===id)+1);
+ const total=profileSummary(all);
+ const wins=all.filter(q=>q.result==='WIN').length,losses=all.filter(q=>q.result==='LOSS').length;
+ const known=wins+losses+all.filter(q=>q.result==='DRAW').length;
+ const winrate=known?Math.round(wins/known*100):0;
+ const activityCells=Array.from({length:90},(_,i)=>{
+   const d=new Date();d.setDate(d.getDate()-(89-i));const key=d.toISOString().slice(0,10);
+   const count=all.filter(q=>String(q.m?.played_at||q.m?.date||q.m?.created_at||'').slice(0,10)===key).length;
+   return '<span class="faceit-activity-cell '+(count?'level-'+Math.min(4,count):'')+'" title="'+key+(count?' · '+count+' матч':'')+'"></span>';
+ }).join('');
+ const matchRows=arr=>arr.map(q=>{
+   const tone=q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw';
+   const personalTone=q.hasStats?(q.kd>1?'kd-positive':q.d>0&&q.kd<1?'kd-negative':'kd-neutral'):'kd-neutral';
+   return '<button class="faceit-match-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')">'+
+     '<span class="faceit-match-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span>'+
+     '<span class="faceit-match-result '+tone+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</span>'+
+     '<span class="faceit-match-score">'+esc(q.m.series_score||'—')+'</span>'+
+     '<span class="faceit-match-rating">'+(q.hasStats?fmt(q.kd,2):'—')+'</span>'+
+     '<span class="faceit-match-kda '+personalTone+'">'+(q.hasStats?q.k+'/'+q.d+'/'+q.a:'—/—/—')+'</span>'+
+     '<span class="faceit-match-map">'+esc(q.map)+'</span>'+
+   '</button>';
+ }).join('');
+ const performance='<div class="faceit-perf-card">'+
+   '<div class="faceit-perf-head"><div><span class="faceit-kicker">ПОСЛЕДНИЕ '+size+' МАТЧЕЙ</span><h3>Recent performance</h3></div>'+
+   '<div class="faceit-window-switch">'+[5,10,20].map(n=>'<button class="'+(size===n?'active':'')+'" onclick="state.profileWindow='+n+';render()">'+n+'</button>').join('')+'</div></div>'+
+   '<div class="faceit-performance-grid">'+
+     '<div><span>AVG SKILL LEVEL</span><b>—</b><small>нет Elo соперников</small></div>'+
+     '<div><span>ELO CHANGE</span><b class="neutral">0</b><small>стартовый Elo 1 000</small></div>'+
+     '<div><span>W / L</span><b><em class="positive">'+sum.wins+'</em> / <em class="negative">'+Math.max(0,sum.matches-sum.wins)+'</em></b><small>из выбранного окна</small></div>'+
+     '<div><span>WIN RATE</span><b>'+Math.round(sum.winrate)+'%</b><small>'+sum.matches+' матчей</small></div>'+
+     '<div><span>K / D / A</span><b>'+((sum.maps)?Math.round(sum.k/sum.maps)+' / '+Math.round(sum.d/sum.maps)+' / '+Math.round(sum.a/sum.maps):'— / — / —')+'</b><small>в среднем за карту</small></div>'+
+     '<div><span>K/D</span><b class="'+kdClass(sum.k,sum.d)+'">'+fmt(sum.kd)+'</b><small>за выбранное окно</small></div>'+
+     '<div><span>K / ROUND</span><b>—</b><small>нет round-by-round источника</small></div>'+
+     '<div><span>ADR</span><b>—</b><small>нет урона в источнике</small></div>'+
+     '<div><span>HS%</span><b>—</b><small>нет weapon/headshot источника</small></div>'+
+   '</div></div>';
+ const recentForm=recent.slice(0,10).map(q=>'<button class="faceit-form-dot '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')" title="'+esc(q.map+' · '+(q.m.series_score||'—'))+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</button>').join('');
+ const gameHistory='<div class="faceit-side-card"><div class="faceit-side-title"><h3>Game history</h3></div><div class="faceit-game-history-row"><span>CS2</span><b>'+all.length+' matches</b></div><div class="faceit-game-history-row muted-row"><span>CS:GO</span><b>—</b></div></div>';
+ const activity='<div class="faceit-side-card"><div class="faceit-side-title"><h3>Recent Activity</h3><span>Last 90 days</span></div><div class="faceit-activity-count"><b>'+all.filter(q=>{const t=matchTime(q.m);return t&&Date.now()-t<=90*86400000}).length+'</b><span>Matches Played</span></div><div class="faceit-activity-grid">'+activityCells+'</div><div class="faceit-activity-legend"><span>less</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>more</span></div></div>';
+ const rankCard='<div class="faceit-side-card faceit-rank-card"><span class="faceit-kicker">GROUP RANK</span><strong>#'+rank+'</strong><span>из '+ranked.length+' игроков · рейтинг пока стартовый</span></div>';
+ const body=state.profileSection==='history'
+   ? '<section class="faceit-content-card"><div class="faceit-card-title"><div><span class="faceit-kicker">CS2</span><h2>Match history</h2></div><span>'+all.length+' matches</span></div><div class="faceit-match-table-head"><span>DATE</span><span>RESULT</span><span>SCORE</span><span>RATING</span><span>K/D/A</span><span>MAP</span></div><div class="faceit-match-list">'+(matchRows(all)||'<div class="empty">Матчей пока нет.</div>')+'</div></section>'
+   : '<div class="faceit-main-grid"><div>'+performance+
+       '<section class="faceit-content-card"><div class="faceit-card-title"><div><span class="faceit-kicker">MATCHMAKING</span><h2>Recent matches</h2></div><button class="faceit-text-link" onclick="state.profileSection=\'history\';render()">Full match history ›</button></div>'+
+       '<div class="faceit-form-large">'+(recentForm||'<span class="muted">Матчей пока нет</span>')+'</div>'+
+       '<div class="faceit-match-table-head"><span>DATE</span><span>RESULT</span><span>SCORE</span><span>RATING</span><span>K/D/A</span><span>MAP</span></div>'+
+       '<div class="faceit-match-list">'+(matchRows(recent.slice(0,10))||'<div class="empty">Матчей пока нет.</div>')+'</div></section></div>'+
+       '<aside class="faceit-side-column">'+gameHistory+activity+rankCard+'</aside></div>';
+ v.innerHTML='<section class="section faceit-profile faceit-profile-v2">'+
+   '<div class="faceit-profile-cover" style="'+(cover?'background-image:linear-gradient(0deg,rgba(8,12,18,.96),rgba(8,12,18,.12)),url(\''+esc(cover)+'\')':'')+'">'+
+     '<button class="faceit-cover-edit" onclick="document.getElementById(\'profileCoverFile\').click()">✎</button>'+
+     '<div class="faceit-profile-identity"><div class="faceit-avatar-wrap">'+
+       (avatar?'<img class="faceit-avatar" src="'+esc(avatar)+'" alt="">':'<div class="faceit-avatar faceit-avatar-empty">'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</div>')+
+       '<button class="faceit-avatar-edit" onclick="document.getElementById(\'profileAvatarFile\').click()">✎</button></div>'+
+       '<div class="faceit-player-name"><h1>'+esc(p.display_name)+'</h1><span>@'+esc(id)+'</span></div>'+
+       '<div class="faceit-rating"><small>CS2 ELO</small><strong>'+elo.toLocaleString('ru-RU')+'</strong><span>STARTING RATING</span></div>'+
+       '<div class="faceit-rating"><small>GROUP RANK</small><strong>#'+rank+'</strong><span>TOP '+ranked.length+'</span></div>'+
+     '</div></div>'+
+   '<div class="faceit-game-tabs faceit-game-tabs-v2"><button class="faceit-game-active">CS2</button><span>Counter-Strike 2</span><div class="faceit-profile-tabs">'+
+     '<button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Summary</button>'+
+     '<button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">Match history</button>'+
+     '<button disabled>Matchmaking</button><button disabled>Leagues</button><button disabled>Tournaments</button>'+
+   '</div></div>'+
+   '<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])">'+
+   '<input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">'+
+   '<div class="faceit-season-bar"><div><span class="faceit-kicker">SEASON 9</span><b>Matchmaking</b></div><div><strong>'+elo.toLocaleString('ru-RU')+'</strong><span>Current Elo</span></div><div><strong>'+all.length+'</strong><span>Matches</span></div><div><strong>'+winrate+'%</strong><span>Win rate</span></div></div>'+
+   body+
+   '</section>';
+}async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
   state.profileBusy=true;toast('Загружаю изображение в облако…');
