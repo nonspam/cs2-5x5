@@ -351,7 +351,7 @@ function seasons(v){
  '<section class="season-panel season-history-panel"><div class="season-panel-head"><div><span class="faceit-kicker">АРХИВ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="state.tab=\'base\';render()">Все матчи →</button></div>'+
  matches.slice(-5).reverse().map(m=>'<div class="season-history-row"><span>'+esc(dateLabel(m.played_at||m.date)||'—')+'</span><b>'+esc(m.series_score||'—')+'</b><span>'+esc((m.map_ids||[]).length+' карт')+'</span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>').join('')+'</section></div></section>';
 }
-\nfunction render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');({home,base,analytics,players,compare,maps,teams,records,seasons,settings,profile:profilePage}[state.tab]||home)(v);enhanceSelects(v)}
+function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');({home,base,analytics,players,compare,maps,teams,records,seasons,settings,profile:profilePage}[state.tab]||home)(v);enhanceSelects(v)}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
    selection chrome cannot leak into the UI. The native select stays in the DOM as
