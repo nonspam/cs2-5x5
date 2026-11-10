@@ -49,7 +49,7 @@ test('browser and Edge Function keep the critical archive safety guard in sync',
   const edge = read('supabase/functions/cs2-admin/index.ts');
   for (const source of [adapter, edge]) {
     assert.match(source, /player_ids/);
-    assert.match(source, /team assignment|team assignment|team_assignment/i);
+    assert.match(source, /knownTeam/);
     assert.match(source, /guest_players/);
     assert.match(source, /series_aggregate_stats/);
     assert.match(source, /raw_name/);
