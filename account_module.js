@@ -3,6 +3,7 @@
   'use strict';
   let authMode='login';
   let pendingInviteCode='';
+  let pendingInviteEmail='';
   let accountBusy=false;
   const $=selector=>document.querySelector(selector);
   const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -129,10 +130,12 @@
       if(isRegister){
         const data=await CS2Cloud.signUpAccount(email,password);
         pendingInviteCode=code;
+        pendingInviteEmail=email.toLowerCase();
         if(data.session&&data.user){
           state.accountUser=data.user;
           await CS2Cloud.claimPlayerAccountInvite(code);
           pendingInviteCode='';
+          pendingInviteEmail='';
           await refreshAccountContext();
           closeAccountModal();
           toast('Аккаунт создан и игровой профиль привязан');
@@ -144,10 +147,14 @@
       }else{
         const data=await CS2Cloud.signInAccount(email,password);
         state.accountUser=data.user||null;
-        const codeToClaim=code||pendingInviteCode;
+        const loginEmail=email.toLowerCase();
+        const pendingMatches=!!pendingInviteCode&&pendingInviteEmail===loginEmail;
+        const codeToClaim=code||(pendingMatches?pendingInviteCode:'');
+        if(pendingInviteCode&&!pendingMatches&&!code){pendingInviteCode='';pendingInviteEmail=''}
         if(codeToClaim){
           await CS2Cloud.claimPlayerAccountInvite(codeToClaim);
           pendingInviteCode='';
+          pendingInviteEmail='';
         }
         await refreshAccountContext();
         if(state.myPlayerId){
@@ -218,6 +225,7 @@
     try{
       await CS2Cloud.claimPlayerAccountInvite(code);
       pendingInviteCode='';
+      pendingInviteEmail='';
       await refreshAccountContext();
       closeAccountModal();
       toast('Игровой профиль успешно привязан');
@@ -232,6 +240,7 @@
     accountBusy=true;
     try{
       await CS2Cloud.signOut();
+      pendingInviteCode='';pendingInviteEmail='';
       state.myPlayerId=null;state.accountUser=null;state.myProfile=null;state.profileRows=[];
       state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;state.tab='home';
       closeAccountModal();render();toast('Вы вышли из аккаунта');
@@ -242,6 +251,7 @@
   function openAccountAuth(mode){
     authMode=mode||((state.accountUser&&!state.myPlayerId)?'link':'login');
     renderAccountAuth();
+    if(pendingInviteEmail&&!state.accountUser&&$('#accountEmail')&&!$('#accountEmail').value)$('#accountEmail').value=pendingInviteEmail;
   }
 
   function renderAccountMenu(){
