@@ -848,10 +848,14 @@ function balanceTeams(){const arr=teamRoster().map(p=>({id:p.player_id,v:index(p
 function recordRows(){
   const rows=[];
   for(const p of activePlayers()) for(const r of detailRows(p.player_id)) rows.push({player:p.display_name,playerId:p.player_id,map:r.map,k:r.kills,d:r.deaths,a:r.assists,kd:r.deaths?r.kills/r.deaths:0,diff:r.kills-r.deaths,avg:r.kills,impact:impact(p.player_id,[r],false),idx:indexBreakdown(p.player_id,[r],false,true).total,mapId:r.map_id,kind:'detailed',matchId:r.match_id});
-  for(const m of activeMatches().filter(x=>x.source_kind==='compact_bo3')) for(const s of (m.series_aggregate_stats||[])){const p=player(s.player_id);if(!p)continue;if(p.is_active===false||p.deleted_permanently===true)continue;rows.push({player:p.display_name,playerId:p.player_id,map:`BO3 · ${m.series_score||'—'}`,k:s.kills,d:s.deaths,a:s.assists,kd:s.deaths?s.kills/s.deaths:0,diff:s.kills-s.deaths,avg:s.kills,impact:impact(p.player_id,[{kills:s.kills,deaths:s.deaths,assists:s.assists}],false),idx:indexBreakdown(p.player_id,[{kills:s.kills,deaths:s.deaths,assists:s.assists}],false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});}
+  for(const m of activeMatches().filter(x=>x.source_kind==='compact_bo3')) for(const p of activePlayers()){
+    const stat=statRowForPlayer(m,p.player_id,m.series_aggregate_stats||[]);
+    if(!stat)continue;
+    const k=Number(stat.kills)||0,d=Number(stat.deaths)||0,a=Number(stat.assists)||0,one=[{kills:k,deaths:d,assists:a}];
+    rows.push({player:p.display_name,playerId:p.player_id,map:`BO3 · ${m.series_score||'—'}`,k,d,a,kd:d?k/d:0,diff:k-d,avg:k,impact:impact(p.player_id,one,false),idx:indexBreakdown(p.player_id,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
+  }
   return rows;
-}
-function careerRecordRows(){
+}function careerRecordRows(){
   return activePlayers().map(p=>{const x=aggregate(p.player_id),imp=impact(p.player_id),idx=index(p.player_id);return{player:p.display_name,playerId:p.player_id,map:`Карьера · ${x.maps} карт`,k:x.k,d:x.d,a:x.a,kd:x.kd,diff:x.kdDiff,avg:x.maps?x.k/x.maps:0,impact:imp,idx,mapId:null,kind:'career'}}).filter(r=>r.k||r.d||r.a).sort((a,b)=>b.idx-a.idx);
 }
 function bo3RecordRows(){
@@ -859,69 +863,53 @@ function bo3RecordRows(){
   for(const m of activeMatches().filter(x=>x.format==='BO3')){
     const grouped=new Map();
     if(m.source_kind==='compact_bo3'){
-      for(const s of (m.series_aggregate_stats||[])){
-        if(!s.player_id) continue;
-        grouped.set(s.player_id,{k:Number(s.kills)||0,d:Number(s.deaths)||0,a:Number(s.assists)||0});
+      for(const p of activePlayers()){
+        const stat=statRowForPlayer(m,p.player_id,m.series_aggregate_stats||[]);
+        if(stat)grouped.set(p.player_id,{k:Number(stat.kills)||0,d:Number(stat.deaths)||0,a:Number(stat.assists)||0});
       }
     }else{
-      for(const mid of (m.map_ids||[])){
-        const mp=DB.maps.find(x=>x.map_id===mid);
-        for(const s of (mp?.player_stats||[])){
-          if(!s.player_id) continue;
-          const g=grouped.get(s.player_id)||{k:0,d:0,a:0};
-          g.k+=Number(s.kills)||0; g.d+=Number(s.deaths)||0; g.a+=Number(s.assists)||0; grouped.set(s.player_id,g);
+      for(const mid of(m.map_ids||[])){
+        const mp=DB.maps.find(x=>x.map_id===mid);if(!mp)continue;
+        const match=DB.matches.find(x=>x.match_id===mp.match_id)||m;
+        for(const p of activePlayers()){
+          const stat=statRowForPlayer(match,p.player_id,mp.player_stats||[]);
+          if(!stat)continue;
+          const g=grouped.get(p.player_id)||{k:0,d:0,a:0};
+          g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;
+          grouped.set(p.player_id,g);
         }
       }
     }
     for(const [pid,g] of grouped){
-      const p=player(pid); if(!p||p.is_active===false||p.deleted_permanently===true) continue;
+      const p=player(pid);if(!p||p.is_active===false||p.deleted_permanently===true)continue;
       const one=[{kills:g.k,deaths:g.d,assists:g.a}];
       rows.push({player:p.display_name,playerId:pid,map:`BO3 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/Math.max(1,m.map_ids?.length||1),impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
     }
   }
   return rows.sort((a,b)=>matchTime(activeMatches().find(m=>m.match_id===b.matchId))-matchTime(activeMatches().find(m=>m.match_id===a.matchId))||String(a.player).localeCompare(String(b.player),'ru'));
-}
-function bo5RecordRows(){
+}function bo5RecordRows(){
   const rows=[];
   for(const m of activeMatches().filter(x=>x.format==='BO5')){
     const grouped=new Map();
-    for(const mid of (m.map_ids||[])){
-      const mp=DB.maps.find(x=>x.map_id===mid);
-      for(const s of (mp?.player_stats||[])){
-        if(!s.player_id) continue;
-        const g=grouped.get(s.player_id)||{k:0,d:0,a:0};
-        g.k+=Number(s.kills)||0; g.d+=Number(s.deaths)||0; g.a+=Number(s.assists)||0; grouped.set(s.player_id,g);
+    for(const mid of(m.map_ids||[])){
+      const mp=DB.maps.find(x=>x.map_id===mid);if(!mp)continue;
+      const match=DB.matches.find(x=>x.match_id===mp.match_id)||m;
+      for(const p of activePlayers()){
+        const stat=statRowForPlayer(match,p.player_id,mp.player_stats||[]);
+        if(!stat)continue;
+        const g=grouped.get(p.player_id)||{k:0,d:0,a:0};
+        g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;
+        grouped.set(p.player_id,g);
       }
     }
     for(const [pid,g] of grouped){
-      const p=player(pid); if(!p||p.is_active===false||p.deleted_permanently===true) continue;
+      const p=player(pid);if(!p||p.is_active===false||p.deleted_permanently===true)continue;
       const one=[{kills:g.k,deaths:g.d,assists:g.a}];
       rows.push({player:p.display_name,playerId:pid,map:`BO5 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/Math.max(1,m.map_ids?.length||1),impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo5',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
     }
   }
   return rows.sort((a,b)=>matchTime(activeMatches().find(m=>m.match_id===b.matchId))-matchTime(activeMatches().find(m=>m.match_id===a.matchId))||String(a.player).localeCompare(String(b.player),'ru'));
-}
-function bo1RecordRows(){return recordRows().filter(r=>r.kind==='detailed'&&DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO1').sort((a,b)=>matchTime(DB.matches.find(m=>m.match_id===b.matchId))-matchTime(DB.matches.find(m=>m.match_id===a.matchId))||b.kd-a.kd)}
-function recordWinRate(id,filter,mapName){
-  let rows=careerResultsForPlayer(id);
-  if(filter==='bo1')rows=rows.filter(r=>DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO1');
-  else if(filter==='bo3')rows=rows.filter(r=>DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO3');
-  else if(filter==='bo5')rows=rows.filter(r=>DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO5');
-  else if(filter==='match'){const latest=latestMatch();rows=latest?rows.filter(r=>r.matchId===latest.match_id):[]}
-  else if(filter==='map'&&mapName&&mapName!=='all')rows=rows.filter(r=>r.map===mapName);
-  const played=rows.length,wins=rows.filter(r=>r.result==='WIN').length;
-  return {played,wins,rate:played?wins/played:0};
-}
-function recordAvgRows(source){
-  const by=new Map();
-  for(const r of source){const x=by.get(r.playerId)||{...r,k:0,d:0,a:0,maps:0};x.k+=Number(r.k)||0;x.d+=Number(r.d)||0;x.a+=Number(r.a)||0;x.maps+=1;by.set(r.playerId,x)}
-  return [...by.values()].map(r=>({...r,avg:r.maps?r.k/r.maps:0}));
-}
-function recordWinRows(source,filter,mapName){
-  const ids=[...new Set(source.map(r=>r.playerId))];
-  return ids.map(id=>{const base=source.find(r=>r.playerId===id)||{};const wr=recordWinRate(id,filter,mapName);return{...base,wr:wr.rate,wrPlayed:wr.played,wrWins:wr.wins}}).filter(r=>r.wrPlayed);
-}
-function records(v){
+}function records(v){
   const filter=state.recordFilter||'career',metric=state.recordMetric||'kills';
   const maps=[...new Set(DB.maps.filter(m=>m.archived!==true).map(m=>m.map))];
   let source;
