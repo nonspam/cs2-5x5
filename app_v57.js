@@ -1,6 +1,6 @@
 const DB={players:[],maps:[],matches:[],aliases:{}};
 const BASE={players:[],maps:[],matches:[],aliases:{}};
-const state={tab:'home',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,profileSection:'overview',profileWindow:20,accountMenuOpen:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
+const state={tab:'home',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,accountUser:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,profileSection:'overview',profileWindow:20,accountMenuOpen:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
 let renderEpoch=0;let detailRowsCacheEpoch=-1;const detailRowsCache=new Map();
 let SERVER_AUDIT=[]; let SERVER_EVENT_SOURCE=null; let SERVER_REFRESH_TIMER=null; let SERVER_REFRESH_SEQ=0;
 const $=s=>document.querySelector(s);
@@ -81,12 +81,14 @@ async function load(){
       if(window.CS2Cloud?.configured){
         try{
           const profileContext=await CS2Cloud.loadProfileContext();
+          state.accountUser=profileContext.user||null;
           state.myPlayerId=profileContext.playerId||null;
           state.profileRows=profileContext.profiles||[];
           state.myProfile=state.profileRows.find(q=>q.player_id===state.myPlayerId)||null;
           CS2Cloud.subscribeProfiles(async()=>{
             try{
               const fresh=await CS2Cloud.loadProfileContext();
+              state.accountUser=fresh.user||state.accountUser;
               state.profileRows=fresh.profiles||[];
               state.myProfile=state.profileRows.find(q=>q.player_id===state.myPlayerId)||null;
               if(state.tab==='profile')render();
@@ -306,7 +308,7 @@ function renderAccountMenu(){
  const root=$('#accountMenuRoot');if(!root)return;const id=state.myPlayerId,p=id?player(id):null,row=id?profileRecord(id):null,avatar=row?.avatar_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.avatar_path):'';
  root.innerHTML='<button class="account-menu-trigger" onclick="toggleAccountMenu()" aria-label="Аккаунт">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</button>'+(state.accountMenuOpen?'<div class="account-menu-backdrop" onclick="state.accountMenuOpen=false;renderAccountMenu()"></div><div class="account-menu-pop"><div class="account-menu-user"><div class="account-menu-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</div><div><b>'+esc(p?.display_name||'Аккаунт')+'</b><small>@'+esc(id||'не авторизован')+'</small></div></div><div class="account-menu-elo"><span>CS2 ELO</span><strong>1 000</strong></div><button onclick="state.tab=\'profile\';state.profileSection=\'overview\';state.accountMenuOpen=false;render()">МОЙ ПРОФИЛЬ</button><button class="muted-action" onclick="accountSignOut()">ВЫЙТИ ИЗ АККАУНТА</button></div>':'');
 }
-async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;state.tab='home';render();toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
+async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.accountUser=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;state.tab='home';render();toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
 function nav(){const items=[['home','⌂','ГЛАВНАЯ'],['analytics','▥','СТАТИСТИКА'],['base','▤','МАТЧИ'],['maps','◫','КАРТЫ'],['teams','♟','СОСТАВЫ'],['records','♜','РЕКОРДЫ']];$('#nav').innerHTML=items.map(([id,ico,n])=>'<div class="nav-group"><button class="nav-btn '+(state.tab===id?'active':'')+'" data-tab="'+id+'"><span class="nav-icon">'+ico+'</span><span>'+n+'</span></button></div>').join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render()});renderAccountMenu();$('#settingsBtn').onclick=()=>{state.tab='settings';state.accountMenuOpen=false;render()}}
 function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');({home,base,analytics,players,compare,maps,teams,records,settings,profile:profilePage}[state.tab]||home)(v);enhanceSelects(v)}
 
