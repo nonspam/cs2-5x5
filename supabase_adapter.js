@@ -63,9 +63,15 @@
     const {error}=await client.auth.resetPasswordForEmail(cleanEmail,{redirectTo:window.location.origin});
     if(error)throw error;
   }
-  async function updateAccountPassword(password){
+  async function updateAccountPassword(password,currentPassword=null){
     if(!configured)throw Error('Supabase не настроен');
     if(String(password||'').length<8)throw Error('Пароль должен содержать не менее 8 символов');
+    if(currentPassword!==null&&currentPassword!==undefined){
+      const user=await currentUser();
+      if(!user?.email)throw Error('Не удалось определить электронную почту аккаунта');
+      const verified=await client.auth.signInWithPassword({email:user.email,password:String(currentPassword)});
+      if(verified.error)throw Error('Текущий пароль указан неверно');
+    }
     const {data,error}=await client.auth.updateUser({password});
     if(error)throw error;
     return data;
