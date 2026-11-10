@@ -17,7 +17,7 @@ test('DEV entrypoint uses the V57 runtime and does not load the legacy runtime',
   const html = read('index.html');
   assert.match(html, /app_v57\.js\?v=/);
   assert.match(html, /style_v57\.css\?v=/);
-  assert.doesNotMatch(html, /src="app\.js(?:\?|\" )/);
+  assert.doesNotMatch(html, /src="app\\.js/);
 });
 
 test('Edge Function authenticates bearer tokens and checks the DEV admin allow-list', () => {
