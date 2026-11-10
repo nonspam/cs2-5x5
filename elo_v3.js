@@ -54,7 +54,7 @@
     if(score){
       const a=Number(score[1]),b=Number(score[2]);
       if(a===0&&b===0)return null;
-      return a===b?.5:(a>b?1:0);
+      return a===b ? 0.5 : (a>b ? 1 : 0);
     }
     let winsA=0,winsB=0,draws=0;
     for(const mp of (typeof matchMaps==='function'?matchMaps(match):[])){
