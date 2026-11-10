@@ -179,6 +179,7 @@
   function renderPasswordChange(){
     const body='<p class="muted">Новый пароль должен содержать не менее 8 символов.</p>'+
       '<form id="accountPasswordChangeForm" class="account-auth-form">'+
+        '<div class="field"><label for="accountCurrentPassword">ТЕКУЩИЙ ПАРОЛЬ</label><input id="accountCurrentPassword" class="control" type="password" autocomplete="current-password" required></div>'+
         '<div class="field"><label for="accountNewPassword">НОВЫЙ ПАРОЛЬ</label><input id="accountNewPassword" class="control" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></div>'+
         '<div class="field"><label for="accountNewPasswordConfirm">ПОВТОРИ ПАРОЛЬ</label><input id="accountNewPasswordConfirm" class="control" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></div>'+
         '<div class="account-auth-error" id="accountAuthError" role="alert" hidden></div>'+
@@ -192,7 +193,9 @@
       const button=$('#accountPasswordChangeForm button[type="submit"]');
       if(button){button.disabled=true;button.textContent='СОХРАНЯЮ…'}
       try{
-        await CS2Cloud.updateAccountPassword(password);
+        const currentPassword=$('#accountCurrentPassword')?.value||'';
+        if(!currentPassword){accountError('Введи текущий пароль');if(button){button.disabled=false;button.textContent='СОХРАНИТЬ ПАРОЛЬ'}return}
+        await CS2Cloud.updateAccountPassword(password,currentPassword);
         closeAccountModal();toast('Пароль успешно изменён');
       }catch(error){
         accountError(error?.message||'Не удалось изменить пароль');
