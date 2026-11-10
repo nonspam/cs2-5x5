@@ -304,19 +304,6 @@ function profilePage(v){
   }catch(e){toast('Не удалось сохранить изображение: '+(e?.message||'ошибка'))}
   finally{state.profileBusy=false}
 }
-async function saveProfileDetails(){
-  if(state.profileBusy)return;
-  const bio=String($('#profileBio')?.value||'').trim(),accent_color=$('#profileAccent')?.value||'#19d3a2';
-  if(bio.length>180)return toast('Описание должно быть не длиннее 180 символов');
-  state.profileBusy=true;
-  try{
-    const saved=await CS2Cloud.savePlayerProfile(state.myPlayerId,{bio,accent_color});
-    state.myProfile=saved;state.profileRows=(state.profileRows||[]).filter(q=>q.player_id!==saved.player_id).concat(saved);
-    render();toast('Профиль сохранён и синхронизирован');
-  }catch(e){toast('Не удалось сохранить профиль: '+(e?.message||'ошибка'))}
-  finally{state.profileBusy=false}
-}
-
 function toggleAccountMenu(){state.accountMenuOpen=!state.accountMenuOpen;renderAccountMenu()}
 function renderAccountMenu(){
  const root=$('#accountMenuRoot');if(!root)return;const id=state.myPlayerId,p=id?player(id):null,row=id?profileRecord(id):null,avatar=row?.avatar_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.avatar_path):'';
