@@ -234,6 +234,7 @@
     return {
       rating:Math.round((data.ratings.get(id)??START_RATING)*10)/10,
       matches:data.played.get(id)||0,
+      peakRating:Math.round(Math.max(START_RATING,...history.map(event=>Number(event.after)||START_RATING))*10)/10,
       lastDelta:history.at(-1)?.delta??0,
       history,
       rank:data.rankById.get(id)||null
