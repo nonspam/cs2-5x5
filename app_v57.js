@@ -184,7 +184,7 @@ function profileMatchesForPlayer(id){
   const roster=[...(m.player_ids||[]),...(m.team_a||[]),...(m.team_b||[]),...(m.lobby_team_a||[]),...(m.lobby_team_b||[]),...(m.series_aggregate_stats||[]).map(q=>q.player_id),...maps.flatMap(mp=>(mp.player_stats||[]).map(q=>q.player_id))];
   if(!roster.includes(id)&&!own.length&&!compact)return null;
   const k=own.length?own.reduce((n,q)=>n+(Number(q.kills)||0),0):Number(compact?.kills)||0,d=own.length?own.reduce((n,q)=>n+(Number(q.deaths)||0),0):Number(compact?.deaths)||0,a=own.length?own.reduce((n,q)=>n+(Number(q.assists)||0),0):Number(compact?.assists)||0;
-  return {m,maps,k,d,a,kd:d?k/d:0,result:results.get(m.match_id)||'—',hasStats:!!(own.length||compact),map:maps[0]?.map_name||maps[0]?.name||'CS2'};
+  return {m,maps,k,d,a,kd:d?k/d:0,result:results.get(m.match_id)||'—',hasStats:!!(own.length||compact),map:maps.map(mp=>mp.map||mp.map_name||mp.name).filter(Boolean).join(' · ')||'CS2'};
  }).filter(Boolean).sort((x,y)=>matchOrder(y.m)-matchOrder(x.m)||matchTime(y.m)-matchTime(x.m));
 }
 function profileSummary(rows){
