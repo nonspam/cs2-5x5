@@ -158,10 +158,10 @@ function activePlayers(){return DB.players.filter(p=>p.is_active!==false&&p.dele
 function player(id){return DB.players.find(p=>p.player_id===id)}
 function playerName(id){return player(id)?.display_name||id}
 function detailMapsFor(id){const activeIds=new Set(activeMatches().map(x=>x.match_id));return DB.maps.filter(m=>m.archived!==true&&activeIds.has(m.match_id)&&m.stats_available&&m.player_stats.some(s=>s.player_id===id))}
-function playedMapsFor(id){let n=detailMapsFor(id).length;for(const ma of activeMatches().filter(x=>x.source_kind==='compact_bo3'))if((ma.series_aggregate_stats||[]).some(s=>s.player_id===id))n+=matchMaps(ma).length;return n}
-function aggregate(id,rows=detailRows(id),includeCompact=true){let k=0,d=0,a=0;for(const r of rows){k+=r.kills;d+=r.deaths;a+=r.assists}if(includeCompact)for(const m of activeMatches().filter(x=>x.source_kind==='compact_bo3'))for(const s of(m.series_aggregate_stats||[]))if(s.player_id===id){k+=s.kills;d+=s.deaths;a+=s.assists}const maps=includeCompact?playedMapsFor(id):rows.length;return{maps,detailed:rows.length,k,d,a,kd:d?k/d:0,kdDiff:k-d,kpm:maps?k/maps:0,apm:maps?a/maps:0,dpm:maps?d/maps:0}}
+function playedMapsFor(id){let n=detailMapsFor(id).length;for(const ma of activeMatches().filter(x=>x.source_kind==='compact_bo3'))if(statRowForPlayer(ma,id,ma.series_aggregate_stats||[]))n+=matchMaps(ma).length;return n}
+function aggregate(id,rows=detailRows(id),includeCompact=true){let k=0,d=0,a=0;for(const r of rows){k+=Number(r.kills)||0;d+=Number(r.deaths)||0;a+=Number(r.assists)||0}if(includeCompact)for(const m of activeMatches().filter(x=>x.source_kind==='compact_bo3')){const s=statRowForPlayer(m,id,m.series_aggregate_stats||[]);if(s){k+=Number(s.kills)||0;d+=Number(s.deaths)||0;a+=Number(s.assists)||0}}const maps=includeCompact?playedMapsFor(id):rows.length;return{maps,detailed:rows.length,k,d,a,kd:d?k/d:0,kdDiff:k-d,kpm:maps?k/maps:0,apm:maps?a/maps:0,dpm:maps?d/maps:0}}
 function stability(id,rows=detailRows(id),fullPool=true,totalOverride=null){const detailed=rows.length;if(!detailed)return{score:0,plus:0,total:totalOverride??(fullPool?playedMapsFor(id):0),detailed:0};const total=totalOverride??(fullPool?playedMapsFor(id):detailed);const rate=t=>rows.filter(r=>r.deaths>0&&r.kills/r.deaths>=t).length/Math.max(1,total);return{score:100*(.4*rate(1)+.3*rate(1.5)+.2*rate(2)+.1*rate(3)),plus:rows.filter(r=>r.kills>=r.deaths).length,total,detailed}}
-function detailRows(id){if(detailRowsCacheEpoch===renderEpoch&&detailRowsCache.has(id))return detailRowsCache.get(id);const activeIds=new Set(activeMatches().map(x=>x.match_id));const out=DB.maps.filter(m=>m.archived!==true&&activeIds.has(m.match_id)&&m.stats_available).flatMap(m=>{const s=(m.player_stats||[]).find(x=>x.player_id===id);return s?[{...s,map:m.map,map_id:m.map_id,match_id:m.match_id,score:m.score}]:[]}).sort((a,b)=>{const ma=DB.matches.find(x=>x.match_id===a.match_id),mb=DB.matches.find(x=>x.match_id===b.match_id);return matchOrder(ma)-matchOrder(mb)||Number(a.score?.map_index||DB.maps.find(x=>x.map_id===a.map_id)?.map_index||0)-Number(b.score?.map_index||DB.maps.find(x=>x.map_id===b.map_id)?.map_index||0)});detailRowsCacheEpoch=renderEpoch;detailRowsCache.set(id,out);return out}
+function detailRows(id){if(detailRowsCacheEpoch===renderEpoch&&detailRowsCache.has(id))return detailRowsCache.get(id);const activeIds=new Set(activeMatches().map(x=>x.match_id));const out=DB.maps.filter(m=>m.archived!==true&&activeIds.has(m.match_id)&&m.stats_available).flatMap(m=>{const match=DB.matches.find(x=>x.match_id===m.match_id),s=statRowForPlayer(match,id,m.player_stats||[]);return s?[{...s,player_id:id,map:m.map,map_id:m.map_id,match_id:m.match_id,score:m.score}]:[]}).sort((a,b)=>{const ma=DB.matches.find(x=>x.match_id===a.match_id),mb=DB.matches.find(x=>x.match_id===b.match_id);return matchOrder(ma)-matchOrder(mb)||Number(a.score?.map_index||DB.maps.find(x=>x.map_id===a.map_id)?.map_index||0)-Number(b.score?.map_index||DB.maps.find(x=>x.map_id===b.map_id)?.map_index||0)});detailRowsCacheEpoch=renderEpoch;detailRowsCache.set(id,out);return out}
 function formForRows(rows){if(!rows.length)return{form:null,trend:null,n:0};const last=rows.slice(-Math.min(10,rows.length)),first=rows.slice(0,Math.min(10,rows.length));const av=r=>r.reduce((z,x)=>z+x.kills-x.deaths,0)/r.length;return{form:av(last),trend:rows.length>10?av(last)-av(first):null,n:last.length}}
 function form(id,rows=detailRows(id)){return formForRows(rows)}
 function formWindows(rows){const total=rows.length;if(!total)return[];const wanted=[1,5,10,15,25,50];const sizes=wanted.filter(n=>n<=total);if(total<25&&!sizes.includes(total))sizes.push(total);return [...new Set(sizes)].sort((a,b)=>a-b).map(n=>{const rr=rows.slice(-n),a=aggregateRows(rr);return{n,k:a.k,d:a.d,a:a.a,kd:a.kd,avg:a.maps?a.k/a.maps:0}})}
@@ -364,7 +364,7 @@ function observeCustomSelects(){
   window.__cs2CustomSelectObserver.observe(document.body,{childList:true,subtree:true});
 }
 if(document.body)observeCustomSelects();else document.addEventListener('DOMContentLoaded',observeCustomSelects,{once:true});
-function mapStats(mapName){const ms=DB.maps.filter(m=>m.archived!==true&&m.map===mapName&&m.stats_available);let k=0,d=0,a=0,rows=0;for(const m of ms)for(const s of m.player_stats)if(s.player_id){k+=s.kills;d+=s.deaths;a+=s.assists;rows++}return{maps:DB.maps.filter(m=>m.archived!==true&&m.map===mapName).length,detailed:ms.length,k,d,a,kd:d?k/d:0,diff:k-d,rows}}
+function mapStats(mapName){const ms=DB.maps.filter(m=>m.archived!==true&&m.map===mapName&&m.stats_available);let k=0,d=0,a=0,rows=0;for(const m of ms)for(const s of(m.player_stats||[])){k+=Number(s.kills)||0;d+=Number(s.deaths)||0;a+=Number(s.assists)||0;rows++}return{maps:DB.maps.filter(m=>m.archived!==true&&m.map===mapName).length,detailed:ms.length,k,d,a,kd:d?k/d:0,diff:k-d,rows}}
 function historicalLobbyGroups(match,mp=null){
   const clean=arr=>[...new Set((Array.isArray(arr)?arr:[]).filter(id=>typeof id==='string'&&id.trim()))].slice(0,5);
   const mapA=clean(Array.isArray(mp?.lobby_team_a)?mp.lobby_team_a:mp?.team_a),mapB=clean(Array.isArray(mp?.lobby_team_b)?mp.lobby_team_b:mp?.team_b);
@@ -385,8 +385,8 @@ function mapPlayerStats(id,mapName){
   const maps=DB.maps.filter(mp=>mp.archived!==true&&mp.map===mapName&&mp.stats_available);
   let played=0,wins=0,k=0,d=0,a=0;
   for(const mp of maps){
-    const row=(mp.player_stats||[]).find(x=>x.player_id===id); if(!row)continue;
-    const match=DB.matches.find(m=>m.match_id===mp.match_id); const [ta,tb]=historicalLobbyGroups(match,mp);
+    const match=DB.matches.find(m=>m.match_id===mp.match_id),row=statRowForPlayer(match,id,mp.player_stats||[]); if(!row)continue;
+    const [ta,tb]=historicalLobbyGroups(match,mp);
     const side=ta.includes(id)?'A':tb.includes(id)?'B':'';
     const sa=Number(mp.score?.team_a),sb=Number(mp.score?.team_b);
     if(!side||!Number.isFinite(sa)||!Number.isFinite(sb))continue;
@@ -428,23 +428,30 @@ function kdMarkupValue(kd,prefix=''){const n=Number(kd)||0;return `<span class="
 function careerSeriesResultsForPlayer(id){
   const out=[];
   for(const m of activeMatches()){
-    const maps=matchMaps(m), detailed=maps.filter(mp=>mp.stats_available), participated=detailed.some(mp=>(mp.player_stats||[]).some(s=>s.player_id===id))||(m.source_kind==='compact_bo3'&&(m.series_aggregate_stats||[]).some(s=>s.player_id===id));
-    if(!participated)continue;
-    const anchor=detailed[0]||maps[0]||null, [ta,tb]=historicalLobbyGroups(m,anchor), inA=ta.includes(id), inB=tb.includes(id);
-    if(!inA&&!inB)continue;
-    const parts=String(m.series_score||'').match(/^(\d+)\s*:\s*(\d+)$/), sa=parts?Number(parts[1]):NaN, sb=parts?Number(parts[2]):NaN;
+    const maps=matchMaps(m),detailed=maps.filter(mp=>mp.stats_available),anchor=detailed[0]||maps[0]||null;
+    const [ta,tb]=historicalLobbyGroups(m,anchor),inA=ta.includes(id),inB=tb.includes(id);
+    const hasStats=detailed.some(mp=>!!statRowForPlayer(m,id,mp.player_stats||[]))||(m.source_kind==='compact_bo3'&&!!statRowForPlayer(m,id,m.series_aggregate_stats||[]));
+    if((!inA&&!inB)||(!hasStats&&!inA&&!inB))continue;
+    const parts=String(m.series_score||'').match(/^(\d+)\s*:\s*(\d+)$/),sa=parts?Number(parts[1]):NaN,sb=parts?Number(parts[2]):NaN;
     let result='—';
     if(Number.isFinite(sa)&&Number.isFinite(sb)){result=sa===sb?'DRAW':((inA?(sa>sb):(sb>sa))?'WIN':'LOSS');}
     else{
       let wins=0,losses=0,draws=0;
-      for(const mp of detailed){const row=(mp.player_stats||[]).find(s=>s.player_id===id);if(!row)continue;const a=Number(mp.score?.team_a),b=Number(mp.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))continue;if(a===b){draws++;continue}if(inA){wins+=a>b?1:0;losses+=a<b?1:0}else{wins+=b>a?1:0;losses+=b<a?1:0}}
-      if(wins+losses+draws){result=wins>losses?'WIN':losses>wins?'LOSS':draws?'DRAW':'—';}
+      for(const mp of detailed){
+        const row=statRowForPlayer(m,id,mp.player_stats||[]);
+        const a=Number(mp.score?.team_a),b=Number(mp.score?.team_b);
+        if(!Number.isFinite(a)||!Number.isFinite(b))continue;
+        if(a===b){draws++;continue}
+        if(inA){wins+=a>b?1:0;losses+=a<b?1:0}
+        else{wins+=b>a?1:0;losses+=b<a?1:0}
+      }
+      if(wins+losses+draws)result=wins>losses?'WIN':losses>wins?'LOSS':draws?'DRAW':'—';
     }
     if(result!=='—')out.push({matchId:m.match_id,result});
   }
   return out;
 }
-function careerResultsForPlayer(id){const rows=[];for(const m of activeMatches()){for(const mp of matchMaps(m)){const participated=(mp.player_stats||[]).some(s=>s.player_id===id);if(!participated)continue;const match=DB.matches.find(x=>x.match_id===mp.match_id),[ta,tb]=historicalLobbyGroups(match,mp),a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))continue;const inA=ta.includes(id),inB=tb.includes(id);if(!inA&&!inB)continue;rows.push({matchId:m.match_id,mapId:mp.map_id,map:mp.map,result:a===b?'DRAW':(inA?(a>b?'WIN':'LOSS'):(b>a?'WIN':'LOSS'))})}}return rows}
+function careerResultsForPlayer(id){const rows=[];for(const m of activeMatches()){for(const mp of matchMaps(m)){const match=DB.matches.find(x=>x.match_id===mp.match_id)||m,[ta,tb]=historicalLobbyGroups(match,mp),inA=ta.includes(id),inB=tb.includes(id),participated=!!statRowForPlayer(match,id,mp.player_stats||[])||inA||inB;if(!participated||(!inA&&!inB))continue;const a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))continue;rows.push({matchId:m.match_id,mapId:mp.map_id,map:mp.map,result:a===b?'DRAW':(inA?(a>b?'WIN':'LOSS'):(b>a?'WIN':'LOSS'))})}}return rows}
 function scoreClass(score){const m=String(score||'').match(/^(\d+)\s*:\s*(\d+)$/);if(!m)return 'score-neutral';const a=+m[1],b=+m[2];return a>b?'score-positive':a<b?'score-negative':'score-neutral'}
 function scoreMarkup(score){const m=String(score||'').match(/^(\d+)\s*:\s*(\d+)$/);if(!m)return `<span class="score-neutral">${esc(score||'—')}</span>`;const a=Number(m[1]),b=Number(m[2]);const cls=a>b?'score-positive':a<b?'score-negative':'score-neutral';return `<span class="score-badge ${cls}">${a}:${b}</span>`}
 function diffTone(v){const n=Number(v);return n>0?'positive':n<0?'negative':'neutral'}
