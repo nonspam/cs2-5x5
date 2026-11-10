@@ -2839,3 +2839,90 @@ html{scroll-behavior:auto!important}
 .faceit-player-stats.kd-positive{color:#35c987;font-weight:800}
 .faceit-player-stats.kd-negative{color:#ed6574;font-weight:800}
 .faceit-player-stats.kd-neutral{color:#e9edf2;font-weight:700}
+
+/* FACEIT profile v2 — structural layout */
+.faceit-profile-v2{max-width:1360px;margin:0 auto;color:#e9edf2}
+.faceit-profile-v2 .faceit-profile-cover{min-height:300px;border-radius:6px;background-color:#111821}
+.faceit-game-tabs-v2{min-height:62px;margin-bottom:16px}
+.faceit-game-tabs-v2 .faceit-profile-tabs{gap:22px}
+.faceit-season-bar{display:grid;grid-template-columns:minmax(220px,1.4fr) repeat(3,minmax(130px,.55fr));gap:0;background:#111821;border:1px solid #293442;border-radius:6px;margin:0 0 16px;overflow:hidden}
+.faceit-season-bar>div{padding:14px 17px;border-right:1px solid #293442;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.faceit-season-bar>div:last-child{border-right:0}
+.faceit-season-bar b{font-size:14px;color:#f2f5f8}
+.faceit-season-bar strong{font-size:22px;line-height:1;color:#f0a343;font-variant-numeric:tabular-nums}
+.faceit-season-bar span:not(.faceit-kicker){font-size:9px;color:#8391a1}
+.faceit-main-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(285px,.45fr);gap:16px;align-items:start}
+.faceit-main-grid>div{min-width:0}
+.faceit-side-column{display:grid;gap:16px}
+.faceit-perf-card,.faceit-content-card,.faceit-side-card{background:#111821;border:1px solid #293442;border-radius:6px}
+.faceit-perf-card{padding:18px}
+.faceit-perf-head,.faceit-card-title,.faceit-side-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.faceit-perf-head{margin-bottom:16px}
+.faceit-perf-head h3{margin:3px 0 0;font-size:18px;color:#fff}
+.faceit-kicker{display:block;font-size:9px;color:#8491a1;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.faceit-performance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #293442;border-left:1px solid #293442}
+.faceit-performance-grid>div{min-height:84px;padding:13px 12px;border-right:1px solid #293442;border-bottom:1px solid #293442;display:flex;flex-direction:column;gap:5px}
+.faceit-performance-grid span{font-size:8px;color:#8390a0;font-weight:900;letter-spacing:.08em}
+.faceit-performance-grid b{font-size:20px;line-height:1.1;color:#eef2f6;font-variant-numeric:tabular-nums}
+.faceit-performance-grid small{font-size:8px;color:#697787;line-height:1.35}
+.faceit-content-card{margin-top:16px;overflow:hidden}
+.faceit-card-title{padding:17px 18px;border-bottom:1px solid #293442}
+.faceit-card-title h2{margin:3px 0 0;font-size:17px;color:#fff}
+.faceit-card-title>span{font-size:9px;color:#8290a0}
+.faceit-form-large{display:flex;gap:5px;padding:14px 18px;border-bottom:1px solid #293442}
+.faceit-form-large .faceit-form-dot{width:28px;height:28px}
+.faceit-match-table-head,.faceit-match-row{display:grid;grid-template-columns:78px 54px 74px 70px 105px minmax(100px,1fr);gap:12px;align-items:center}
+.faceit-match-table-head{padding:9px 18px;color:#667587;font-size:8px;font-weight:900;letter-spacing:.08em}
+.faceit-match-list{display:grid}
+.faceit-match-row{width:100%;padding:12px 18px;border:0;border-top:1px solid #293442;background:transparent;color:#e8edf3;text-align:left;cursor:pointer}
+.faceit-match-row:hover{background:#19232f}
+.faceit-match-date{font-size:9px;color:#8592a1;white-space:nowrap}
+.faceit-match-result{font-size:11px;font-weight:1000}
+.faceit-match-result.win{color:#46c58b}.faceit-match-result.loss{color:#ee6474}.faceit-match-result.draw{color:#8d99a8}
+.faceit-match-score{font-size:14px;font-variant-numeric:tabular-nums}
+.faceit-match-rating{font-size:13px;font-weight:800;color:#e9eef2}
+.faceit-match-kda{font-size:10px;font-weight:800;white-space:nowrap}
+.faceit-match-map{font-size:10px;color:#aab5c0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.faceit-side-card{padding:16px}
+.faceit-side-title{margin-bottom:13px}
+.faceit-side-title h3{margin:0;font-size:14px;color:#fff}
+.faceit-side-title span{font-size:9px;color:#7f8d9d}
+.faceit-game-history-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-top:1px solid #293442;font-size:11px}
+.faceit-game-history-row:first-of-type{border-top:0}
+.faceit-game-history-row b{color:#f0a343}
+.faceit-game-history-row.muted-row{color:#657384}
+.faceit-game-history-row.muted-row b{color:#667383}
+.faceit-activity-count{display:flex;align-items:baseline;gap:8px;margin:5px 0 12px}
+.faceit-activity-count b{font-size:25px;color:#f0a343}
+.faceit-activity-count span{font-size:9px;color:#8794a3}
+.faceit-activity-grid{display:grid;grid-template-columns:repeat(15,1fr);gap:3px}
+.faceit-activity-cell{aspect-ratio:1;border-radius:2px;background:#202b37}
+.faceit-activity-cell.level-1{background:#28563f}.faceit-activity-cell.level-2{background:#287352}.faceit-activity-cell.level-3{background:#20a26f}.faceit-activity-cell.level-4{background:#35d697}
+.faceit-activity-legend{display:flex;align-items:center;justify-content:flex-end;gap:3px;margin-top:8px;color:#657383;font-size:7px}
+.faceit-activity-legend i{display:block;width:8px;height:8px;border-radius:2px;background:#202b37}
+.faceit-activity-legend i.level-1{background:#28563f}.faceit-activity-legend i.level-2{background:#287352}.faceit-activity-legend i.level-3{background:#20a26f}.faceit-activity-legend i.level-4{background:#35d697}
+.faceit-rank-card{display:grid;gap:4px;text-align:left}
+.faceit-rank-card strong{font-size:32px;color:#f0a343;line-height:1}
+.faceit-rank-card>span:last-child{font-size:9px;color:#7f8d9d}
+.faceit-profile-v2 .faceit-text-link{font-size:9px}
+@media(max-width:1050px){
+ .faceit-main-grid{grid-template-columns:1fr}
+ .faceit-side-column{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:760px){
+ .faceit-season-bar{grid-template-columns:1fr 1fr}
+ .faceit-season-bar>div:nth-child(2){border-right:0}
+ .faceit-main-grid{grid-template-columns:1fr}
+ .faceit-side-column{grid-template-columns:1fr}
+ .faceit-performance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .faceit-match-table-head{display:none}
+ .faceit-match-row{grid-template-columns:54px 30px 58px 45px minmax(90px,1fr);gap:7px;padding:12px 12px}
+ .faceit-match-map{grid-column:5}
+ .faceit-match-kda{grid-column:5}
+ .faceit-match-rating{grid-column:4;grid-row:1/3}
+ .faceit-match-date{grid-row:1/3}
+ .faceit-match-result{grid-row:1/3}
+ .faceit-match-score{grid-row:1/3}
+ .faceit-profile-v2 .faceit-profile-tabs{gap:10px}
+ .faceit-profile-v2 .faceit-profile-tabs button{font-size:9px}
+}
