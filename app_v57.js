@@ -211,7 +211,7 @@ function profilePage(v){
  const size=[5,10,20].includes(Number(state.profileWindow))?Number(state.profileWindow):20;
  const recent=all.slice(0,size),sum=profileSummary(recent),total=profileSummary(all);
  const eloInfo=window.CS2EloV3?.player(id)||{rating:1000,matches:0,history:[]};
- const elo=eloInfo.rating,eloChange=window.CS2EloV3?.recentDelta(id,size)||0;
+ const elo=eloInfo.rating,peakElo=eloInfo.peakRating??1000,eloChange=window.CS2EloV3?.recentDelta(id,size)||0;
  const ranked=activePlayers().map(q=>({id:q.player_id,rating:window.CS2EloV3?.player(q.player_id)?.rating??1000,matches:window.CS2EloV3?.player(q.player_id)?.matches??0}))
    .sort((x,y)=>y.rating-x.rating||y.matches-x.matches||x.id.localeCompare(y.id));
  const rankIndex=ranked.findIndex(q=>q.id===id),rank=rankIndex>=0?rankIndex+1:null;
@@ -280,6 +280,7 @@ function profilePage(v){
        '<button class="faceit-avatar-edit" onclick="document.getElementById(\'profileAvatarFile\').click()">✎</button></div>'+
        '<div class="faceit-player-name"><h1>'+esc(p.display_name)+'</h1><span>@'+esc(id)+'</span></div>'+
        '<div class="faceit-rating"><small>РЕЙТИНГ ELO</small><strong>'+elo.toLocaleString('ru-RU',{maximumFractionDigits:1})+'</strong><span>'+(eloInfo.matches<10?'КАЛИБРОВКА '+eloInfo.matches+'/10':'АКТИВНЫЙ РЕЙТИНГ')+'</span></div>'+
+       '<div class="faceit-rating"><small>ПИК ELO</small><strong>'+fmt(peakElo,1)+'</strong><span>ЛУЧШИЙ РЕЙТИНГ</span></div>'+
        '<div class="faceit-rating"><small>МЕСТО В ГРУППЕ</small><strong>#'+rank+'</strong><span>ИЗ '+ranked.length+'</span></div>'+
      '</div></div>'+
    '<div class="faceit-profile-tabs faceit-profile-tabs-only">'+
@@ -1158,7 +1159,7 @@ window.openAddGame=openAddGame;window.openMatchDetail=openMatchDetail;window.clo
 function closeTopModal(){const modals=[...document.querySelectorAll('.modal-back')];if(!modals.length)return false;modals.at(-1).remove();return true}
 function globalKeyboardShortcuts(e){if(e.key==='Escape'&&closeTopModal())e.preventDefault()}
 document.addEventListener('keydown',globalKeyboardShortcuts);
-load();
+document.addEventListener('DOMContentLoaded',()=>load(),{once:true});
 
 // V47.1 scroll safety: when a modal is open, wheel input over non-scrollable children
 // is routed to the modal itself, preventing nested cards/hover targets from swallowing it.
