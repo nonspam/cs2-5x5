@@ -2829,3 +2829,8 @@ html{scroll-behavior:auto!important}
 .faceit-lobby-elo{display:block;margin-top:3px;color:#f0a343;font-size:9px;font-weight:800;letter-spacing:.04em}
 #modal .modal.wide{max-width:1080px}
 #modal .data-table th{white-space:nowrap}
+
+.faceit-stat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid #293442}
+.faceit-stat-tabs button{padding:7px 10px;border:1px solid #354252;border-radius:4px;background:#1a2430;color:#a5b1bf;font-size:9px;font-weight:900;letter-spacing:.05em}
+.faceit-stat-tabs button.active{background:#f0a343;border-color:#f0a343;color:#171d25}
+.faceit-stat-tabs button:disabled{opacity:.38;cursor:not-allowed}
