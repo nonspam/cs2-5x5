@@ -183,7 +183,7 @@ function profileMatchesForPlayer(id){
  const results=new Map(careerSeriesResultsForPlayer(id).map(q=>[q.matchId,q.result]));
  return activeMatches().map(m=>{
   const maps=matchMaps(m),own=maps.map(mp=>statRowForPlayer(m,id,mp.player_stats||[])).filter(Boolean),compact=statRowForPlayer(m,id,m.series_aggregate_stats||[]);
-  const roster=[...(m.player_ids||[]),...(m.team_a||[]),...(m.team_b||[]),...(m.lobby_team_a||[]),...(m.lobby_team_b||[]),...(m.series_aggregate_stats||[]).map(q=>q.player_id),...maps.flatMap(mp=>(mp.player_stats||[]).map(q=>q.player_id))];
+  const [rosterA,rosterB]=historicalLobbyGroups(m,null),roster=[...(m.player_ids||[]),...rosterA,...rosterB,...(m.series_aggregate_stats||[]).map(q=>q.player_id),...maps.flatMap(mp=>(mp.player_stats||[]).map(q=>q.player_id))];
   if(!roster.includes(id)&&!own.length&&!compact)return null;
   const exactOwn=own;
   const k=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.kills)||0),0):Number(compact?.kills)||0,d=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.deaths)||0),0):Number(compact?.deaths)||0,a=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.assists)||0),0):Number(compact?.assists)||0;
