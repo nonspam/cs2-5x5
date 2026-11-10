@@ -2980,3 +2980,29 @@ html{scroll-behavior:auto!important}
  #modal .modal.panel.wide{width:calc(100vw - 18px)}
  #modal .faceit-match-section .data-table{min-width:650px}
 }
+
+/* DEV final profile/history fixes */
+.faceit-profile-v2 .faceit-match-result.win{color:#35c987!important;font-weight:1000!important}
+.faceit-profile-v2 .faceit-match-result.loss{color:#ed6574!important;font-weight:1000!important}
+.faceit-profile-v2 .faceit-match-result.draw{color:#9aa7b5!important;font-weight:1000!important}
+
+/* Match statistics must use the entire available modal width. */
+#modal .modal.panel.wide{width:min(1320px,calc(100vw - 32px));max-width:1320px;padding:20px}
+#modal .faceit-match-section[data-match-section="stats"]{width:100%;display:block}
+#modal .faceit-match-section[data-match-section="stats"] .table-wrap{display:block;width:100%;max-width:none;margin:0}
+#modal .faceit-match-section[data-match-section="stats"] .data-table{display:table;width:100%;min-width:0;max-width:none;table-layout:fixed}
+#modal .faceit-match-section[data-match-section="stats"] .data-table th,
+#modal .faceit-match-section[data-match-section="stats"] .data-table td{width:auto}
+#modal .faceit-match-section[data-match-section="stats"] .data-table th:nth-child(1){width:6%}
+#modal .faceit-match-section[data-match-section="stats"] .data-table th:nth-child(2){width:42%}
+#modal .faceit-match-section[data-match-section="stats"] .data-table th:nth-child(3),
+#modal .faceit-match-section[data-match-section="stats"] .data-table th:nth-child(4),
+#modal .faceit-match-section[data-match-section="stats"] .data-table th:nth-child(5){width:12%}
+#modal .faceit-match-section[data-match-section="stats"] .data-table th:nth-child(6){width:16%}
+#modal .faceit-match-section[data-match-section="stats"] .data-table tbody tr{height:58px}
+#modal .faceit-match-section[data-match-section="stats"] .data-table th,
+#modal .faceit-match-section[data-match-section="stats"] .data-table td{padding:15px 18px}
+@media(max-width:760px){
+  #modal .modal.panel.wide{width:calc(100vw - 14px);padding:14px}
+  #modal .faceit-match-section[data-match-section="stats"] .data-table{min-width:650px}
+}
