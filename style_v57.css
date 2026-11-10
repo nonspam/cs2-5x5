@@ -2926,3 +2926,57 @@ html{scroll-behavior:auto!important}
  .faceit-profile-v2 .faceit-profile-tabs{gap:10px}
  .faceit-profile-v2 .faceit-profile-tabs button{font-size:9px}
 }
+
+/* DEV profile cleanup: Russian-only, no seasons/leagues/tournaments/game selector */
+.faceit-profile-tabs-only{height:54px;margin:0 0 16px;border-bottom:1px solid #293442}
+.faceit-profile-tabs-only button{height:54px;padding:0 18px}
+.faceit-profile-v2 .faceit-performance-grid>div{min-height:92px}
+.faceit-profile-v2 .faceit-performance-grid b{font-size:21px}
+.faceit-profile-v2 .faceit-match-result.win{color:#35c987;font-weight:1000}
+.faceit-profile-v2 .faceit-match-result.loss{color:#ed6574;font-weight:1000}
+.faceit-profile-v2 .faceit-match-result.draw{color:#9aa7b5;font-weight:1000}
+.faceit-profile-v2 .faceit-match-kda{font-size:12px;letter-spacing:.01em}
+.faceit-profile-v2 .faceit-match-rating{font-size:15px}
+.faceit-profile-v2 .faceit-match-row{min-height:58px}
+.faceit-profile-v2 .faceit-full-history{margin-top:0}
+.faceit-profile-v2 .faceit-full-history .faceit-match-list{min-height:0}
+.faceit-profile-v2 .faceit-side-column{align-content:start}
+.faceit-profile-v2 .faceit-side-card{padding:15px}
+.faceit-profile-v2 .faceit-card-title{min-height:64px}
+.faceit-profile-v2 .faceit-form-large{min-height:56px;align-items:center}
+.faceit-profile-v2 .faceit-main-grid{grid-template-columns:minmax(0,1.7fr) minmax(270px,.5fr)}
+.faceit-profile-v2 .faceit-performance-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.faceit-profile-v2 .faceit-kicker{font-size:8px}
+.faceit-profile-v2 .faceit-player-name h1{font-size:32px}
+.faceit-profile-v2 .faceit-profile-cover{min-height:285px}
+
+/* Match detail: use the whole modal instead of leaving a giant empty frame. */
+#modal .modal.panel.wide{width:min(1240px,calc(100vw - 40px));max-width:1240px}
+#modal .faceit-match-section{margin:0 0 12px;padding:0}
+#modal .faceit-match-section .section-head{padding:13px 16px;margin:0;border-bottom:1px solid #293442}
+#modal .faceit-match-section .table-wrap{width:100%;overflow-x:auto}
+#modal .faceit-match-section .data-table{width:100%;min-width:760px;table-layout:fixed}
+#modal .faceit-match-section .data-table th:nth-child(1){width:58px}
+#modal .faceit-match-section .data-table th:nth-child(2){width:38%}
+#modal .faceit-match-section .data-table th:nth-child(3),
+#modal .faceit-match-section .data-table th:nth-child(4),
+#modal .faceit-match-section .data-table th:nth-child(5){width:11%}
+#modal .faceit-match-section .data-table th:nth-child(6){width:16%}
+#modal .faceit-match-section .data-table th,
+#modal .faceit-match-section .data-table td{padding:14px 16px}
+#modal .faceit-match-section .data-table tbody tr{height:54px}
+#modal .faceit-match-section .data-table td{font-size:13px}
+#modal .faceit-match-section .data-table td.name{font-size:14px;font-weight:800}
+#modal .faceit-stat-tabs{padding:12px 16px;margin:0}
+#modal .faceit-match-section[data-match-section="overview"] .toolbar{padding:14px 16px;margin:0}
+#modal .lobby-grid{padding:14px 16px}
+#modal .lobby-row{min-height:52px}
+#modal .lobby-row b{font-size:13px}
+#modal .lobby-row>span{font-size:13px}
+#modal .lobby-row>strong{font-size:14px}
+@media(max-width:760px){
+ .faceit-profile-v2 .faceit-performance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .faceit-profile-v2 .faceit-main-grid{grid-template-columns:1fr}
+ #modal .modal.panel.wide{width:calc(100vw - 18px)}
+ #modal .faceit-match-section .data-table{min-width:650px}
+}
