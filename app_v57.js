@@ -291,7 +291,7 @@ function profilePage(v){
        '<div class="faceit-rating"><small>МЕСТО В ГРУППЕ</small><strong>#'+rank+'</strong><span>ИЗ '+ranked.length+'</span></div>'+
      '</div></div>'+
    '<div class="faceit-profile-tabs faceit-profile-tabs-only">'+
-     '<button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection='overview';render()">Итоги</button>'+
+     '<button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Итоги</button>'+
      '<button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button>'+
    '</div>'+
    eloGraphMarkup+
