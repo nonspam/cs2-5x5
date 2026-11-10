@@ -16,21 +16,27 @@ This branch is a separate development copy. Production is the `main` branch and 
 
 ## Current copy status (2026-11-10)
 - Frontend source copied from the existing project branch; DEV branding is enabled in `index.html`.
+- User confirmed the DEV site loads successfully after the missing SELECT grant was fixed.
 - Cloudflare Worker is connected to GitHub branch `faceit-dev`; Git-based deployment was verified successful.
-- `cs2-admin` Edge Function is active in the DEV project.
-- DEV schema is present, including `cs2_app_state`, `app_admins`, `app_login_aliases`, `cs2_audit_log`, and `cs2_operations`.
-- Fixed missing Data API SELECT grants on `public.cs2_app_state` for `anon` and `authenticated`. RLS remains enabled and the existing public SELECT policy remains active. Migration: `supabase/migrations/20261110_dev_cs2_state_read_grants.sql`.
-- Copied the latest read-only production state snapshot into DEV. DEV now contains 14 players, 42 matches, 93 maps, 41 aliases, 137 audit entries, version 155 (snapshot timestamp: 2026-11-09 15:43:04 UTC).
-- Snapshot passed the current browser state validation before import.
+- `cs2-admin` Edge Function is active in the DEV project. It validates its own bearer token and checks the admin allow-list even though platform JWT verification is disabled to permit the public sign-in endpoint.
+- DEV schema includes `cs2_app_state`, `app_admins`, `app_login_aliases`, `cs2_audit_log`, and `cs2_operations`.
+- `public.cs2_app_state` has RLS enabled and one SELECT policy for `anon` and `authenticated`. Direct INSERT/UPDATE is not granted to either role; writes go through the guarded admin RPC.
+- Fixed missing Data API SELECT grants on `public.cs2_app_state` for `anon` and `authenticated`. Migration: `supabase/migrations/20261110_dev_cs2_state_read_grants.sql`.
+- Added indexes for foreign-key lookup paths. Migration: `supabase/migrations/20261110_dev_foreign_key_indexes.sql`.
+- Copied the latest read-only production state snapshot into DEV. DEV contains 14 players, 42 matches, 93 maps, 41 aliases, 137 audit entries, version 155 (snapshot timestamp: 2026-11-09 15:43:04 UTC).
+- Snapshot passed the frontend's shared base validation before import; all 93 maps link to a match, match/map order is consistent, and aliases reference known players.
 - Verified the DEV row is readable under the `anon` database role and returns the same counts above.
-- DEV `app_admins` remains intentionally separate; create a separate DEV Auth admin before testing administrative writes. Never copy production passwords or service-role secrets.
+- The historical audit array was copied inside `cs2_app_state`; separate operational tables `cs2_audit_log` and `cs2_operations` start empty and will record new DEV operations.
+- DEV Auth currently has 0 users, `app_admins` has 0 entries, and `app_login_aliases` has 0 entries. Public site viewing works; admin login/actions cannot be smoke-tested until a separate DEV admin is created. Do not copy production credentials.
+- Supabase security advisor reports RLS enabled with no policies on the four admin/operational tables. This is intentional deny-by-default isolation; no public access is granted. It also flags the two SECURITY DEFINER RPCs as callable by authenticated users; both functions contain their own admin authorization check.
+- The DEV database is separate. Do not apply migrations or data changes to production.
 
 ## Important migration warning
 The legacy root file `supabase_schema.sql` contains an old embedded data snapshot. Do not execute the entire file against a new project. Apply schema migrations only, and seed from a deliberate snapshot.
 
 ## Remaining verification
-1. Confirm the latest Cloudflare deployment from `faceit-dev` includes the read-grant migration commit.
-2. Open the DEV URL with a hard refresh and verify the app loads the cloud state.
-3. Smoke-test read-only pages (home, players, maps, matches, records).
-4. Set up a separate DEV Auth administrator and test admin actions only after sign-in is configured.
+1. Verify a fresh Cloudflare deployment after the latest DEV migration commit.
+2. Run browser smoke checks on home, analytics, players, matches, maps, teams, and records. User has confirmed the site opens; interactive section-by-section checks remain.
+3. Create a separate DEV Auth user and add only that email to DEV `app_admins`; then test admin login and write flows using a disposable test record. Never copy production passwords or service-role secrets.
+4. Test add/edit/archive/restore/delete flows on DEV only, checking version conflicts and audit logging.
 5. Continue FACEIT-style development only on `faceit-dev`.
