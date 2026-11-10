@@ -3039,3 +3039,20 @@ html{scroll-behavior:auto!important}
 
 .account-auth-forgot{align-self:flex-end;padding:2px 0;border:0;background:transparent;color:var(--blue);font-size:11px;cursor:pointer}
 .account-auth-forgot:hover{text-decoration:underline}
+
+
+/* ELO V3 rating presentation */
+.faceit-elo-progress{margin:16px 0 20px;padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(135deg,rgba(40,94,148,.12),rgba(14,22,33,.35))}
+.faceit-elo-head{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.faceit-elo-head h3{margin:4px 0 0;font-size:16px}
+.faceit-elo-head>strong{font-size:25px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.faceit-elo-chart{display:block;width:100%;height:auto;max-height:110px;margin:10px 0 4px;overflow:visible}
+.faceit-elo-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:4 5}
+.faceit-elo-line{fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.faceit-elo-meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:10px}
+.faceit-elo-meta b{color:var(--text);font-variant-numeric:tabular-nums}
+.faceit-elo-empty{padding:22px 8px 8px;color:var(--muted);font-size:12px}
+.elo-value{font-variant-numeric:tabular-nums;white-space:nowrap}
+.players-table .elo-value{font-size:13px}
+.faceit-lobby-elo{display:block;margin-top:3px;color:var(--muted);font-size:9px;font-weight:600;white-space:nowrap}
+@media(max-width:700px){.faceit-elo-progress{padding:14px}.faceit-elo-meta{gap:8px 12px}.faceit-elo-head>strong{font-size:21px}}
