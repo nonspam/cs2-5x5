@@ -49,7 +49,7 @@ test('compact BO3 player history uses the saved aggregate K/D/A instead of rende
 });
 
 test('player-history K/D color is independent from the series WIN/LOSS/DRAW color', () => {
-  assert.match(app, /tone=q\.result==='WIN'\?'positive':q\.result==='LOSS'\?'negative':q\.result==='DRAW'\?'neutral':'neutral',personalTone=q\.kd>1\?'positive':q\.kd<1\?'negative':'neutral'/);
+  assert.match(app, /tone=q\.result==='WIN'\?'positive':q\.result==='LOSS'\?'negative':q\.result==='DRAW'\?'neutral':'neutral',personalTone=q\.hasStats\?kdClass\(q\.k,q\.d\):'kd-neutral'/);
 });
 
 
@@ -71,8 +71,8 @@ test('missing form trend stays unavailable instead of being coerced to numeric z
 
 
 test('series team detail resolves guest rows by guest ID or normalized raw/display name before showing missing stats', () => {
-  assert.match(app, /const top=rows\.slice\(0,10\),team=ids=>ids\.map\(pid=>\{const guest=\(m\.guest_players\|\|\[\]\)\.find\(g=>g\.guest_id===pid\),label=guest\?\.display_name\|\|playerName\(pid\),norm=value=>String\(value\?\?''\)\.normalize\('NFKC'\)/);
-  assert.match(app, /stat=rows\.find\(r=>r\.player_id===pid\)\|\|rows\.find\(r=>!r\.player_id&&\[r\.raw_name,r\.name\]\.some/);
+  assert.match(app, /const top=rows\.slice\(0,10\),team=ids=>ids\.map\(pid=>\{const guest=\(m\.guest_players\|\|\[\]\)\.find\(g=>g\.guest_id===pid\),rosterPlayer=player\(pid\),label=guest\?\.display_name\|\|rosterPlayer\?\.display_name\|\|playerName\(pid\),norm=value=>String\(value\?\?''\)\.normalize\('NFKC'\)\.trim\(\)\.toLocaleLowerCase\('ru'\)/);
+  assert.match(app, /statByUniqueAlias=statById\|\|statByExactName\|\|guest\?null:rows\.find/);
 });
 
 
