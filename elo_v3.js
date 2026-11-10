@@ -228,11 +228,26 @@
     return cache;
   }
 
+  function levelForRating(value){
+    const rating=Number(value)||START_RATING;
+    if(rating>=2001)return 10;
+    if(rating>=1751)return 9;
+    if(rating>=1531)return 8;
+    if(rating>=1351)return 7;
+    if(rating>=1201)return 6;
+    if(rating>=1051)return 5;
+    if(rating>=901)return 4;
+    if(rating>=751)return 3;
+    if(rating>=501)return 2;
+    return 1;
+  }
   function playerData(id){
     const data=calculate();
     const history=data.histories.get(id)||[];
+    const rating=Math.round((data.ratings.get(id)??START_RATING)*10)/10;
     return {
-      rating:Math.round((data.ratings.get(id)??START_RATING)*10)/10,
+      rating,
+      level:levelForRating(rating),
       matches:data.played.get(id)||0,
       peakRating:Math.round(Math.max(START_RATING,...history.map(event=>Number(event.after)||START_RATING))*10)/10,
       lastDelta:history.at(-1)?.delta??0,
