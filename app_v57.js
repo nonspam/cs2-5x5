@@ -22,7 +22,7 @@ function preloadMapPhotos(){}
 function migrateLegacyStorage(){const pairs=[['cs5_base_override','cs2_analytics_base_override'],['cs5_additions','cs2_analytics_additions'],['cs5_audit_log','cs2_analytics_audit_log']];for(const [oldKey,newKey] of pairs){try{if(localStorage.getItem(newKey)===null){const old=localStorage.getItem(oldKey);if(old!==null)localStorage.setItem(newKey,old)}if(localStorage.getItem(newKey)!==null)localStorage.removeItem(oldKey)}catch{}}}
 
 const trendMarkup=(value,label='')=>{if(value==null||value==='')return `<em class="trend-flat">— ${esc(label)}</em>`;const n=Number(value);if(!Number.isFinite(n))return `<em class="trend-flat">— ${esc(label)}</em>`;const up=n>=0;return `<em class="${up?'trend-up':'trend-down'}">${up?'↑':'↓'} ${fmt(Math.abs(n),1)}${label?` ${esc(label)}`:''}</em>`};
-const mapThumb=(name,size='')=>`<div class="map-thumb ${size}" aria-label="${esc(name||'CS2')}"><img class="map-thumb-photo" src="${mapRemoteAsset(name)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapAsset(name)}'"><img class="map-logo-mini" src="${mapLogoSrc(name)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapLogoAsset(name)}'"></div>`;
+const mapThumb=(name,size='')=>`<div class="map-thumb ${size}" aria-label="${esc(name||'Без карты')}"><img class="map-thumb-photo" src="${mapRemoteAsset(name)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapAsset(name)}'"><img class="map-logo-mini" src="${mapLogoSrc(name)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapLogoAsset(name)}'"></div>`;
 
 async function loadData(name){try{const r=await fetch('data/'+name+'.json',{cache:'no-store'});if(!r.ok)throw Error(`data/${name}.json: HTTP ${r.status}`);return r.json()}catch(e){const embedded=window.CS2_EMBEDDED_DATA?.[name];if(embedded)return embedded;throw e}}
 async function loadServerState(){if(window.CS2Cloud?.configured){try{return await CS2Cloud.load()}catch(e){state.storageWarning='Облачная база пока недоступна: '+(e?.message||'ошибка подключения') ;return null}}if(location.protocol!=='http:'&&location.protocol!=='https:')return null;try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)return null;const x=await r.json();if(!validateBase(x))throw Error('Серверная база не прошла проверку');return x}catch{return null}}
@@ -187,7 +187,7 @@ function profileMatchesForPlayer(id){
   if(!roster.includes(id)&&!own.length&&!compact)return null;
   const exactOwn=own;
   const k=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.kills)||0),0):Number(compact?.kills)||0,d=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.deaths)||0),0):Number(compact?.deaths)||0,a=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.assists)||0),0):Number(compact?.assists)||0;
-  return {m,maps,k,d,a,kd:d?k/d:0,mapCount:exactOwn.length||(compact?maps.length:0),result:results.get(m.match_id)||'—',hasStats:!!(exactOwn.length||compact),map:maps.map(mp=>mp.map||mp.map_name||mp.name).filter(Boolean).join(' · ')||'CS2'};
+  return {m,maps,k,d,a,kd:d?k/d:0,mapCount:exactOwn.length||(compact?maps.length:0),result:results.get(m.match_id)||'—',hasStats:!!(exactOwn.length||compact),map:maps.map(mp=>mp.map||mp.map_name||mp.name).filter(Boolean).join(' · ')||'Без карты'};
  }).filter(Boolean).sort((x,y)=>matchOrder(y.m)-matchOrder(x.m)||matchTime(y.m)-matchTime(x.m));
 }
 function profileSummary(rows){
