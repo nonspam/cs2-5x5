@@ -107,7 +107,7 @@
     const user=await currentUser();if(!user)return {playerId:null,profiles:[]};
     const [account,profiles]=await Promise.all([
       client.from('my_player_account').select('player_id').maybeSingle(),
-      client.from('player_profiles').select('player_id,avatar_path,cover_path,bio,accent_color,updated_at')
+      client.from('player_profiles').select('player_id,avatar_path,cover_path,updated_at')
     ]);
     if(account.error)throw account.error;if(profiles.error)throw profiles.error;
     return {user,playerId:account.data?.player_id||null,profiles:profiles.data||[]};
@@ -147,7 +147,7 @@
   }
   async function savePlayerProfile(playerId,patch){
     if(!configured)throw Error('Supabase не настроен');
-    const allowed={avatar_path:patch.avatar_path,cover_path:patch.cover_path,bio:patch.bio,accent_color:patch.accent_color};
+    const allowed={avatar_path:patch.avatar_path,cover_path:patch.cover_path};
     Object.keys(allowed).forEach(k=>{if(allowed[k]===undefined)delete allowed[k]});
     allowed.updated_at=new Date().toISOString();
     const {data,error}=await client.from('player_profiles').update(allowed).eq('player_id',playerId).select('player_id,avatar_path,cover_path,bio,accent_color,updated_at').single();
