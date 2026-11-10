@@ -80,7 +80,7 @@
   async function uploadProfileMedia(kind,file){
     if(!configured)throw Error('Облачное хранилище не настроено');
     if(!['avatar','cover'].includes(kind))throw Error('Неизвестный тип изображения');
-    if(!file||!/^image\\/(jpeg|png|webp|gif)$/.test(file.type||''))throw Error('Поддерживаются JPEG, PNG, WebP и GIF');
+    if(!file||!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type))throw Error('Поддерживаются JPEG, PNG, WebP и GIF');
     if(file.size>5*1024*1024)throw Error('Изображение должно быть не больше 5 МБ');
     const user=await currentUser();if(!user)throw Error('Сначала войди в свой аккаунт');
     const {data:account,error:accountError}=await client.from('my_player_account').select('player_id').maybeSingle();
