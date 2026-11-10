@@ -368,9 +368,10 @@ function mapStats(mapName){const ms=DB.maps.filter(m=>m.archived!==true&&m.map==
 function historicalLobbyGroups(match,mp=null){
   const clean=arr=>[...new Set((Array.isArray(arr)?arr:[]).filter(id=>typeof id==='string'&&id.trim()))].slice(0,5);
   const mapA=clean(Array.isArray(mp?.lobby_team_a)&&mp.lobby_team_a.length?mp.lobby_team_a:mp?.team_a),mapB=clean(Array.isArray(mp?.lobby_team_b)&&mp.lobby_team_b.length?mp.lobby_team_b:mp?.team_b);
-  if(mapA.length||mapB.length)return [mapA,mapB];
   const explicitA=clean(Array.isArray(match?.lobby_team_a)&&match.lobby_team_a.length?match.lobby_team_a:match?.team_a),explicitB=clean(Array.isArray(match?.lobby_team_b)&&match.lobby_team_b.length?match.lobby_team_b:match?.team_b);
-  if(explicitA.length||explicitB.length)return [explicitA,explicitB];
+  if(mapA.length===5&&mapB.length===5)return [mapA,mapB];
+  if(explicitA.length||explicitB.length)return [mapA.length===5?mapA:explicitA,mapB.length===5?mapB:explicitB];
+  if(mapA.length||mapB.length)return [mapA,mapB];
   const knownIds=rows=>[...new Set((rows||[]).map(r=>r?.player_id).filter(id=>id&&player(id)))];
   const maps=matchMaps(match).filter(x=>x.stats_available).slice().sort((a,b)=>{
     const ca=knownIds(a.player_stats).length,cb=knownIds(b.player_stats).length;
