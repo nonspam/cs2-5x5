@@ -3036,3 +3036,6 @@ html{scroll-behavior:auto!important}
 .account-unlinked-card h2{margin:10px 0}
 .account-unlinked-card p{line-height:1.6}
 @media(max-width:600px){.account-auth-modal{padding:17px}.account-auth-actions{flex-direction:column}.account-auth-actions .btn{width:100%}.account-unlinked-card{margin:20px auto;padding:20px}}
+
+.account-auth-forgot{align-self:flex-end;padding:2px 0;border:0;background:transparent;color:var(--blue);font-size:11px;cursor:pointer}
+.account-auth-forgot:hover{text-decoration:underline}
