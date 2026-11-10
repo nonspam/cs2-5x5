@@ -38,6 +38,24 @@
     return data;
   }
   async function signOut(){if(configured)await client.auth.signOut()}
+  async function signUpAccount(email,password){
+    if(!configured)throw Error('Supabase не настроен');
+    const cleanEmail=String(email||'').trim().toLowerCase();
+    if(!cleanEmail||!cleanEmail.includes('@'))throw Error('Укажи корректную электронную почту');
+    if(String(password||'').length<8)throw Error('Пароль должен содержать не менее 8 символов');
+    const {data,error}=await client.auth.signUp({email:cleanEmail,password});
+    if(error)throw error;
+    return data;
+  }
+  async function signInAccount(email,password){
+    if(!configured)throw Error('Supabase не настроен');
+    const cleanEmail=String(email||'').trim().toLowerCase();
+    if(!cleanEmail||!password)throw Error('Введи почту и пароль');
+    const {data,error}=await client.auth.signInWithPassword({email:cleanEmail,password});
+    if(error)throw error;
+    if(!data.session||!data.user)throw Error('Не удалось создать сессию');
+    return data;
+  }
   function scheduleRealtimeRetry(){if(!configured||realtimeRetryTimer)return;realtimeRetryTimer=setTimeout(()=>{realtimeRetryTimer=null;if(realtimeCallback&&!channel)subscribe(realtimeCallback)},3000)}
   function subscribe(onChange){if(!configured)return;realtimeCallback=onChange;if(channel)return;channel=client.channel('cs2-app-state-live').on('postgres_changes',{event:'UPDATE',schema:'public',table:'cs2_app_state',filter:'id=eq.1'},p=>realtimeCallback?.(p)).subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'||status==='CLOSED'){if(channel){client.removeChannel(channel);channel=null}scheduleRealtimeRetry()}})}
   function unsubscribe(){if(realtimeRetryTimer){clearTimeout(realtimeRetryTimer);realtimeRetryTimer=null}realtimeCallback=null;if(channel&&client){client.removeChannel(channel);channel=null}}
@@ -74,7 +92,25 @@
       client.from('player_profiles').select('player_id,avatar_path,cover_path,bio,accent_color,updated_at')
     ]);
     if(account.error)throw account.error;if(profiles.error)throw profiles.error;
-    return {playerId:account.data?.player_id||null,profiles:profiles.data||[]};
+    return {user,playerId:account.data?.player_id||null,profiles:profiles.data||[]};
+  }
+  async function listUnlinkedPlayers(){
+    if(!configured)throw Error('Supabase не настроен');
+    const {data,error}=await client.rpc('list_unlinked_players');
+    if(error)throw error;
+    return Array.isArray(data)?data:[];
+  }
+  async function createPlayerAccountInvite(playerId){
+    if(!configured)throw Error('Supabase не настроен');
+    const {data,error}=await client.rpc('create_player_account_invite',{p_player_id:String(playerId||'')});
+    if(error)throw error;
+    return Array.isArray(data)?data[0]:data;
+  }
+  async function claimPlayerAccountInvite(token){
+    if(!configured)throw Error('Supabase не настроен');
+    const {data,error}=await client.rpc('claim_player_account_invite',{p_token:String(token||'').trim()});
+    if(error)throw error;
+    return data;
   }
   function publicMediaUrl(path){if(!configured||!path)return '';return client.storage.from('cs2-player-media').getPublicUrl(path).data.publicUrl}
   async function uploadProfileMedia(kind,file){
@@ -107,5 +143,5 @@
   }
   function unsubscribeProfiles(){if(profileChannel&&client){client.removeChannel(profileChannel);profileChannel=null}}
 
-  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,subscribe,unsubscribe,commit,currentUser,loadProfileContext,publicMediaUrl,uploadProfileMedia,savePlayerProfile,subscribeProfiles,unsubscribeProfiles};
+  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,signUpAccount,signInAccount,subscribe,unsubscribe,commit,currentUser,loadProfileContext,listUnlinkedPlayers,createPlayerAccountInvite,claimPlayerAccountInvite,publicMediaUrl,uploadProfileMedia,savePlayerProfile,subscribeProfiles,unsubscribeProfiles};
 })();
