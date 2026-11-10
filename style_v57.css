@@ -3063,4 +3063,4 @@ html{scroll-behavior:auto!important}
 
 /* Public player profile navigation and compact match stat links. */
 .player-name-cell span[title="Открыть профиль"],.match-player-profile-link{cursor:pointer}
-.player-name-cell span[title="Открыть профиль"]:hover,.match-player-profile-link:hover{color:var(--accent);text-decoration:underline}
+.player-name-cell span[title="Открыть профиль"]:hover,.match-player-profile-link:hover{color:var(--blue);text-decoration:underline}
