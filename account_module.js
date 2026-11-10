@@ -77,6 +77,7 @@
         '<div class="account-auth-error" id="accountAuthError" role="alert" hidden></div>'+
         '<div class="account-auth-notice" id="accountAuthNotice" role="status" hidden></div>'+
         '<button class="btn primary" type="submit" id="accountAuthSubmit">'+(isRegister?'СОЗДАТЬ АККАУНТ':'ВОЙТИ')+'</button>'+
+        (isRegister?'':'<button class="account-auth-forgot" type="button" id="accountForgotPassword">Забыли пароль?</button>')+
       '</form>'+
       '<div class="account-auth-foot">Только приглашённые участники · аккаунт привязывается к одному игровому профилю</div>';
     }
@@ -92,6 +93,7 @@
 
     $('#accountAuthForm')?.addEventListener('submit',submitAccountAuth);
     $('#accountClaimForm')?.addEventListener('submit',submitClaimInvite);
+    $('#accountForgotPassword')?.addEventListener('click',sendPasswordReset);
     $('#accountOpenProfile')?.addEventListener('click',()=>{
       closeAccountModal();state.tab='profile';state.profileSection='overview';render();
     });
@@ -163,6 +165,46 @@
         if(submit){submit.disabled=false;submit.textContent=isRegister?'СОЗДАТЬ АККАУНТ':'ВОЙТИ'}
       }
     }finally{accountBusy=false}
+  }
+
+  async function sendPasswordReset(){
+    const email=$('#accountEmail')?.value.trim()||'';
+    if(!email){accountError('Сначала введи электронную почту');return}
+    const button=$('#accountForgotPassword');
+    if(button){button.disabled=true;button.textContent='ОТПРАВЛЯЮ…'}
+    try{
+      await CS2Cloud.sendAccountPasswordReset(email);
+      accountNotice('Если аккаунт с такой почтой существует, письмо для сброса пароля отправлено. Открой ссылку из письма на этом DEV-сайте.');
+    }catch(error){
+      accountError(error?.message||'Не удалось отправить письмо для сброса пароля');
+    }finally{if(button){button.disabled=false;button.textContent='Забыли пароль?'}}
+  }
+
+  function renderPasswordRecovery(){
+    const body='<p class="muted">Придумай новый пароль длиной не менее 8 символов.</p>'+
+      '<form id="accountPasswordRecoveryForm" class="account-auth-form">'+
+        '<div class="field"><label for="accountNewPassword">НОВЫЙ ПАРОЛЬ</label><input id="accountNewPassword" class="control" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></div>'+
+        '<div class="field"><label for="accountNewPasswordConfirm">ПОВТОРИ ПАРОЛЬ</label><input id="accountNewPasswordConfirm" class="control" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></div>'+
+        '<div class="account-auth-error" id="accountAuthError" role="alert" hidden></div>'+
+        '<button class="btn primary" type="submit">СОХРАНИТЬ НОВЫЙ ПАРОЛЬ</button>'+
+      '</form>';
+    accountModalShell('Восстановление пароля',body);
+    $('#accountPasswordRecoveryForm')?.addEventListener('submit',async event=>{
+      event.preventDefault();
+      const password=$('#accountNewPassword')?.value||'';
+      if(password!==($('#accountNewPasswordConfirm')?.value||'')){accountError('Пароли не совпадают');return}
+      const button=$('#accountPasswordRecoveryForm button[type="submit"]');
+      if(button){button.disabled=true;button.textContent='СОХРАНЯЮ…'}
+      try{
+        await CS2Cloud.updateAccountPassword(password);
+        closeAccountModal();
+        toast('Пароль успешно изменён');
+        await refreshAccountContext();
+      }catch(error){
+        accountError(error?.message||'Не удалось изменить пароль');
+        if(button){button.disabled=false;button.textContent='СОХРАНИТЬ НОВЫЙ ПАРОЛЬ'}
+      }
+    });
   }
 
   async function submitClaimInvite(event){
@@ -284,6 +326,10 @@
     button.addEventListener('click',openInviteManager);
     toolbar.appendChild(button);
   };
+
+  CS2Cloud.onAuthStateChange?.((event)=>{
+    if(event==='PASSWORD_RECOVERY')renderPasswordRecovery();
+  });
 
   renderAccountMenu=renderAccountMenu;
   accountSignOut=signOutAccount;
