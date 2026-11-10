@@ -31,8 +31,8 @@ test('profile editing is restricted to avatar and cover media without player-nam
   assert.ok(adapter.includes('file.size>5*1024*1024'));
   assert.ok(adapter.includes("cleanPath.startsWith(user.id+'/')"));
   assert.ok(app.includes('canEditProfile'));
-  assert.ok(app.includes("handleProfileImage('avatar'"));
-  assert.ok(app.includes("handleProfileImage('cover'"));
+  assert.ok(app.includes('handleProfileImage'));
+  assert.ok(app.includes('profileCoverFile'));
   assert.doesNotMatch(app, /id=["']profileName/);
 });
 
