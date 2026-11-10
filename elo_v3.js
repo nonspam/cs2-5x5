@@ -53,6 +53,7 @@
     const score=String(match?.series_score||'').match(/^(\d+)\s*:\s*(\d+)$/);
     if(score){
       const a=Number(score[1]),b=Number(score[2]);
+      if(a===0&&b===0)return null;
       return a===b?.5:(a>b?1:0);
     }
     let winsA=0,winsB=0,draws=0;
