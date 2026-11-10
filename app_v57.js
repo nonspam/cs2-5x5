@@ -1,6 +1,6 @@
 const DB={players:[],maps:[],matches:[],aliases:{}};
 const BASE={players:[],maps:[],matches:[],aliases:{}};
-const state={tab:'home',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
+const state={tab:'home',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,profileSection:'overview',profileWindow:20,accountMenuOpen:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
 let renderEpoch=0;let detailRowsCacheEpoch=-1;const detailRowsCache=new Map();
 let SERVER_AUDIT=[]; let SERVER_EVENT_SOURCE=null; let SERVER_REFRESH_TIMER=null; let SERVER_REFRESH_SEQ=0;
 const $=s=>document.querySelector(s);
@@ -177,62 +177,29 @@ function profileAvatarMarkup(id,size='sm'){
   const name=playerName(id),initial=esc(String(name||id||'?').trim().slice(0,1).toUpperCase());
   return `<span class="player-avatar ${esc(size)}">${url?`<img src="${esc(url)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:''}<span>${initial}</span></span>`;
 }
+function profileMatchesForPlayer(id){
+ const results=new Map(careerSeriesResultsForPlayer(id).map(q=>[q.matchId,q.result]));
+ return activeMatches().map(m=>{
+  const maps=matchMaps(m),own=maps.flatMap(mp=>(mp.player_stats||[]).filter(q=>q.player_id===id)),compact=(m.series_aggregate_stats||[]).find(q=>q.player_id===id);
+  const roster=[...(m.player_ids||[]),...(m.team_a||[]),...(m.team_b||[]),...(m.lobby_team_a||[]),...(m.lobby_team_b||[]),...(m.series_aggregate_stats||[]).map(q=>q.player_id),...maps.flatMap(mp=>(mp.player_stats||[]).map(q=>q.player_id))];
+  if(!roster.includes(id)&&!own.length&&!compact)return null;
+  const k=own.length?own.reduce((n,q)=>n+(Number(q.kills)||0),0):Number(compact?.kills)||0,d=own.length?own.reduce((n,q)=>n+(Number(q.deaths)||0),0):Number(compact?.deaths)||0,a=own.length?own.reduce((n,q)=>n+(Number(q.assists)||0),0):Number(compact?.assists)||0;
+  return {m,maps,k,d,a,kd:d?k/d:0,result:results.get(m.match_id)||'—',hasStats:!!(own.length||compact),map:maps[0]?.map_name||maps[0]?.name||'CS2'};
+ }).filter(Boolean).sort((x,y)=>matchOrder(y.m)-matchOrder(x.m)||matchTime(y.m)-matchTime(x.m));
+}
+function profileSummary(rows){
+ const known=rows.filter(q=>['WIN','LOSS','DRAW'].includes(q.result)),stats=rows.filter(q=>q.hasStats),wins=known.filter(q=>q.result==='WIN').length,k=stats.reduce((n,q)=>n+q.k,0),d=stats.reduce((n,q)=>n+q.d,0),a=stats.reduce((n,q)=>n+q.a,0);
+ return {matches:rows.length,wins,winrate:known.length?wins/known.length*100:0,kd:d?k/d:0,avgKills:stats.length?k/stats.length:0,avgAssists:stats.length?a/stats.length:0};
+}
 function profilePage(v){
-  const id=state.myPlayerId,p=id?player(id):null;
-  if(!id||!p){v.innerHTML=`<section class="section"><div class="panel card"><h2>ЛИЧНЫЙ АККАУНТ</h2><p class="muted">${esc(state.profileError||'Для этой учётной записи пока не найден профиль игрока.')}</p></div></section>`;return}
-  const row=state.myProfile||profileRecord(id)||{},avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.avatar_path):'',cover=row.cover_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.cover_path):'';
-  const x=aggregate(id),idx=index(id),fo=form(id),st=stability(id),imp=impact(id),series=careerSeriesResultsForPlayer(id);
-  const wins=series.filter(q=>q.result==='WIN').length,losses=series.filter(q=>q.result==='LOSS').length,draws=series.filter(q=>q.result==='DRAW').length;
-  const history=activeMatches().filter(m=>{
-    const maps=matchMaps(m),roster=[...(m.player_ids||[]),...(m.team_a||[]),...(m.team_b||[]),...(m.lobby_team_a||[]),...(m.lobby_team_b||[]),...(m.series_aggregate_stats||[]).map(s=>s.player_id),...maps.flatMap(mp=>[...(mp.player_stats||[]).map(s=>s.player_id),...(mp.lobby_team_a||[]),...(mp.lobby_team_b||[])])];
-    return roster.includes(id);
-  }).sort((a,b)=>matchOrder(b)-matchOrder(a)||matchTime(b)-matchTime(a)).slice(0,8);
-  const resultMap=new Map(series.map(q=>[q.matchId,q.result]));
-  const matchCards=history.map(m=>{
-    const maps=matchMaps(m),own=maps.flatMap(mp=>(mp.player_stats||[]).filter(s=>s.player_id===id));
-    const compact=(m.series_aggregate_stats||[]).find(s=>s.player_id===id);
-    const k=own.length?own.reduce((n,s)=>n+(Number(s.kills)||0),0):Number(compact?.kills)||0;
-    const d=own.length?own.reduce((n,s)=>n+(Number(s.deaths)||0),0):Number(compact?.deaths)||0;
-    const a=own.length?own.reduce((n,s)=>n+(Number(s.assists)||0),0):Number(compact?.assists)||0;
-    const result=resultMap.get(m.match_id)||'—',tone=result==='WIN'?'positive':result==='LOSS'?'negative':'neutral';
-    return `<button class="account-match-row" onclick="openMatchDetail('${esc(m.match_id)}')"><span class="account-match-main"><b>СЕРИЯ ${esc(seriesNumberForMatch(m)||'—')}</b><small>${esc(m.format||'—')} · ${esc(m.played_at||m.date||'Дата не указана')} · ${maps.length} карт</small></span><strong class="${tone}">${esc(m.series_score||'—')}</strong><span class="account-match-kda">${own.length||compact?`${k}/${d}/${a} · ${fmt(d?k/d:0)} K/D`:'Нет подробной K/D/A'}</span></button>`;
-  }).join('');
-  v.innerHTML=`
-  <section class="section account-page" style="--profile-accent:${esc(row.accent_color||'#19d3a2')}">
-    <div class="account-cover" style="${cover?`background-image:linear-gradient(180deg,rgba(5,9,12,.08),rgba(5,9,12,.88)),url('${esc(cover)}')`:''}">
-      <div class="account-cover-label">PLAYER PROFILE · CS2 ANALYTICS</div>
-      <div class="account-hero">
-        <div class="account-avatar-wrap">${avatar?`<img class="account-avatar" src="${esc(avatar)}" alt="Аватар ${esc(p.display_name)}">`:`<div class="account-avatar account-avatar-placeholder">${esc(String(p.display_name||'Б').slice(0,1).toUpperCase())}</div>`}</div>
-        <div class="account-identity"><div class="eyebrow">ЛИЧНЫЙ ПРОФИЛЬ</div><h1>${esc(p.display_name)}</h1><div class="account-nick">@${esc(id)} · Игрок</div><p>${esc(row.bio||'Добавь короткое описание своего профиля')}</p></div>
-        <div class="account-rating"><span>PLAYER INDEX</span><strong>${fmt(idx,1)}</strong><small>${activePlayers().findIndex(q=>q.player_id===id)+1} / ${activePlayers().length} в таблице</small></div>
-      </div>
-    </div>
-    <div class="account-actions">
-      <button class="btn primary" onclick="document.getElementById('profileAvatarFile').click()">ИЗМЕНИТЬ АВАТАР</button>
-      <button class="btn" onclick="document.getElementById('profileCoverFile').click()">ИЗМЕНИТЬ ОБЛОЖКУ</button>
-      <button class="btn" onclick="openPlayerDetail('${esc(id)}')">ВСЯ СТАТИСТИКА</button>
-      <input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage('avatar',this.files?.[0])">
-      <input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage('cover',this.files?.[0])">
-      <span class="account-sync-note">Аватар и обложка синхронизируются у всех игроков</span>
-    </div>
-    <div class="account-stats-grid">
-      <div class="account-stat"><span>МАТЧИ / СЕРИИ</span><strong>${series.length}</strong><small><em class="positive">${wins} побед</em> · <em class="negative">${losses} поражений</em>${draws?` · ${draws} ничьих`:''}</small></div>
-      <div class="account-stat"><span>WINRATE</span><strong>${wins+losses+draws?Math.round(wins/(wins+losses+draws)*100)+'%':'—'}</strong><small>по известным исходам</small></div>
-      <div class="account-stat"><span>K/D</span><strong class="${kdClass(x.k,x.d)}">${fmt(x.kd)}</strong><small>${x.k} убийств · ${x.d} смертей</small></div>
-      <div class="account-stat"><span>КАРТЫ</span><strong>${x.maps}</strong><small>${x.a} ассистов всего</small></div>
-      <div class="account-stat"><span>ИМПАКТ</span><strong class="${scoreTone(imp)}">${fmt(imp,1)}</strong><small>текущая модель проекта</small></div>
-      <div class="account-stat"><span>ФОРМА</span><strong class="${formTone(fo.form)}">${fmt(fo.form)}</strong><small>стабильность ${fmt(st.score,1)}</small></div>
-    </div>
-    <div class="account-columns">
-      <section class="panel card account-editor"><div class="section-head"><h3>КАСТОМИЗАЦИЯ ПРОФИЛЯ</h3><span class="muted">изменения общие</span></div>
-        <label for="profileBio">О СЕБЕ</label><textarea id="profileBio" maxlength="180" rows="3" placeholder="Расскажи пару слов о себе…">${esc(row.bio||'')}</textarea>
-        <label for="profileAccent">ЦВЕТ АКЦЕНТА</label><div class="account-color-line"><input id="profileAccent" type="color" value="${/^#[0-9a-f]{6}$/i.test(row.accent_color||'')?row.accent_color:'#19d3a2'}"><span>Цвет элементов твоего профиля</span></div>
-        <button class="btn primary" onclick="saveProfileDetails()">СОХРАНИТЬ ПРОФИЛЬ</button>
-        <small class="muted">Поддерживаются JPG, PNG, WebP и GIF до 5 МБ. Фотографии хранятся в облаке DEV.</small>
-      </section>
-      <section class="panel card account-history"><div class="section-head"><h3>ПОСЛЕДНИЕ СЕРИИ</h3><span class="muted">история аккаунта</span></div><div class="account-match-list">${matchCards||'<div class="empty">Матчи пока не найдены.</div>'}</div><button class="btn" onclick="openPlayerDetail('${esc(id)}')">ОТКРЫТЬ ПОЛНУЮ ИСТОРИЮ И СТАТИСТИКУ</button></section>
-    </div>
-  </section>`;
+ const id=state.myPlayerId,p=id?player(id):null;if(!id||!p){v.innerHTML='<section class="section"><div class="panel card"><h2>АККАУНТ</h2><p class="muted">'+esc(state.profileError||'Профиль игрока не найден.')+'</p></div></section>';return}
+ const row=state.myProfile||profileRecord(id)||{},avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.avatar_path):'',cover=row.cover_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.cover_path):'';
+ const all=profileMatchesForPlayer(id),size=[5,10,20].includes(Number(state.profileWindow))?Number(state.profileWindow):20,recent=all.slice(0,size),sum=profileSummary(recent),elo=1000;
+ const ranked=activePlayers().map(q=>({id:q.player_id,s:profileSummary(profileMatchesForPlayer(q.player_id))})).sort((x,y)=>y.s.winrate-x.s.winrate||y.s.kd-x.s.kd||x.id.localeCompare(y.id)),rank=Math.max(1,ranked.findIndex(q=>q.id===id)+1);
+ const rows=arr=>arr.map(q=>'<button class="faceit-history-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')"><span class="faceit-result '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'">'+(q.result==='WIN'?'ПОБЕДА':q.result==='LOSS'?'ПОРАЖЕНИЕ':'МАТЧ')+'</span><span class="faceit-map"><b>'+esc(q.map)+'</b><small>'+esc(q.m.played_at||q.m.date||'Дата не указана')+' · '+esc(q.m.format||'CS2')+'</small></span><strong class="faceit-score">'+esc(q.m.series_score||'—')+'</strong><span class="faceit-player-stats">'+(q.hasStats?q.k+'/'+q.d+'/'+q.a+' · '+fmt(q.kd)+' K/D':'Нет статистики')+'</span></button>').join('');
+ const form=recent.slice(0,10).map(q=>'<button class="faceit-form-dot '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'" title="'+esc(q.map+' · '+(q.m.series_score||'—'))+'" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</button>').join('');
+ const body=state.profileSection==='history'?'<div class="faceit-history-panel"><div class="faceit-section-title"><h2>ИСТОРИЯ МАТЧЕЙ</h2><span>'+all.length+' матчей</span></div><div class="faceit-history-list">'+(rows(all)||'<div class="empty">Матчей пока нет.</div>')+'</div></div>':'<div class="faceit-overview"><section class="faceit-panel"><div class="faceit-section-title"><h2>ПОСЛЕДНИЕ МАТЧИ</h2><div class="faceit-window-switch">'+[5,10,20].map(n=>'<button class="'+(size===n?'active':'')+'" onclick="state.profileWindow='+n+';render()">'+n+'</button>').join('')+'</div></div><div class="faceit-form-strip">'+(form||'<span class="muted">Матчей пока нет</span>')+'</div><div class="faceit-stat-grid"><div><small>МАТЧИ</small><b>'+sum.matches+'</b></div><div><small>ПОБЕДЫ</small><b>'+sum.wins+'</b></div><div><small>WIN RATE</small><b>'+Math.round(sum.winrate)+'%</b></div><div><small>K/D</small><b>'+fmt(sum.kd)+'</b></div><div><small>AVG KILLS</small><b>'+fmt(sum.avgKills,1)+'</b></div><div><small>AVG ASSISTS</small><b>'+fmt(sum.avgAssists,1)+'</b></div></div></section><section class="faceit-panel"><div class="faceit-section-title"><h2>ПОСЛЕДНИЕ РЕЗУЛЬТАТЫ</h2><button class="faceit-text-link" onclick="state.profileSection=\'history\';render()">ВСЯ ИСТОРИЯ ›</button></div><div class="faceit-history-list">'+(rows(recent.slice(0,5))||'<div class="empty">Матчей пока нет.</div>')+'</div></section></div>';
+ v.innerHTML='<section class="section faceit-profile"><div class="faceit-profile-cover" style="'+(cover?'background-image:linear-gradient(0deg,rgba(8,12,18,.95),rgba(8,12,18,.12)),url(\''+esc(cover)+'\')':'')+'"><button class="faceit-cover-edit" onclick="document.getElementById(\'profileCoverFile\').click()">✎</button><div class="faceit-profile-identity"><div class="faceit-avatar-wrap">'+(avatar?'<img class="faceit-avatar" src="'+esc(avatar)+'" alt="">':'<div class="faceit-avatar faceit-avatar-empty">'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</div>')+'<button class="faceit-avatar-edit" onclick="document.getElementById(\'profileAvatarFile\').click()">✎</button></div><div class="faceit-player-name"><h1>'+esc(p.display_name)+'</h1><span>@'+esc(id)+'</span></div><div class="faceit-rating"><small>CS2 ELO</small><strong>'+elo.toLocaleString('ru-RU')+'</strong><span>СТАРТОВЫЙ РЕЙТИНГ</span></div><div class="faceit-rating"><small>МЕСТО В ТОПЕ</small><strong>#'+rank+'</strong><span>ИЗ '+ranked.length+' ИГРОКОВ</span></div></div></div><div class="faceit-game-tabs"><button class="faceit-game-active">CS2⌄</button><span>Другие игры пока не подключены</span><div class="faceit-profile-tabs"><button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">ИТОГИ</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">ИСТОРИЯ МАТЧЕЙ</button></div></div><input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])"><input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">'+body+'</section>';
 }
 async function handleProfileImage(kind,file){
   if(!file)return;
@@ -260,7 +227,13 @@ async function saveProfileDetails(){
   finally{state.profileBusy=false}
 }
 
-function nav(){const items=[['home','⌂','ГЛАВНАЯ'],['analytics','▥','СТАТИСТИКА'],['base','▤','МАТЧИ'],['maps','◫','КАРТЫ'],['teams','♟','СОСТАВЫ'],['records','♜','РЕКОРДЫ']];if(state.myPlayerId)items.push(['profile','◎','МОЙ ПРОФИЛЬ']);$('#nav').innerHTML=items.map(([id,ico,n])=>{const active=state.tab===id||(['players','compare'].includes(state.tab)&&id==='analytics');return `<div class="nav-group"><button class="nav-btn ${active?'active':''}" data-tab="${id}"><span class="nav-icon">${ico}</span><span>${n}</span></button></div>`}).join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render()});$('#settingsBtn').onclick=()=>{state.tab='settings';render()}}
+function toggleAccountMenu(){state.accountMenuOpen=!state.accountMenuOpen;renderAccountMenu()}
+function renderAccountMenu(){
+ const root=$('#accountMenuRoot');if(!root)return;const id=state.myPlayerId,p=id?player(id):null,row=id?profileRecord(id):null,avatar=row?.avatar_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.avatar_path):'';
+ root.innerHTML='<button class="account-menu-trigger" onclick="toggleAccountMenu()" aria-label="Аккаунт">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</button>'+(state.accountMenuOpen?'<div class="account-menu-backdrop" onclick="state.accountMenuOpen=false;renderAccountMenu()"></div><div class="account-menu-pop"><div class="account-menu-user"><div class="account-menu-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</div><div><b>'+esc(p?.display_name||'Аккаунт')+'</b><small>@'+esc(id||'не авторизован')+'</small></div></div><div class="account-menu-elo"><span>CS2 ELO</span><strong>1 000</strong></div><button onclick="state.tab=\'profile\';state.profileSection=\'overview\';state.accountMenuOpen=false;render()">МОЙ ПРОФИЛЬ</button><button class="muted-action" onclick="accountSignOut()">ВЫЙТИ ИЗ АККАУНТА</button></div>':'');
+}
+async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.tab='home';render();toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
+function nav(){const items=[['home','⌂','ГЛАВНАЯ'],['analytics','▥','СТАТИСТИКА'],['base','▤','МАТЧИ'],['maps','◫','КАРТЫ'],['teams','♟','СОСТАВЫ'],['records','♜','РЕКОРДЫ']];$('#nav').innerHTML=items.map(([id,ico,n])=>'<div class="nav-group"><button class="nav-btn '+(state.tab===id?'active':'')+'" data-tab="'+id+'"><span class="nav-icon">'+ico+'</span><span>'+n+'</span></button></div>').join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render()});renderAccountMenu();$('#settingsBtn').onclick=()=>{state.tab='settings';state.accountMenuOpen=false;render()}}
 function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');({home,base,analytics,players,compare,maps,teams,records,settings,profile:profilePage}[state.tab]||home)(v);enhanceSelects(v)}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
