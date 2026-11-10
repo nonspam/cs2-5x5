@@ -182,10 +182,10 @@ function profileAvatarMarkup(id,size='sm'){
 function profileMatchesForPlayer(id){
  const results=new Map(careerSeriesResultsForPlayer(id).map(q=>[q.matchId,q.result]));
  return activeMatches().map(m=>{
-  const maps=matchMaps(m),own=maps.flatMap(mp=>(mp.player_stats||[]).filter(q=>q.player_id===id)),compact=(m.series_aggregate_stats||[]).find(q=>q.player_id===id);
+  const maps=matchMaps(m),own=maps.map(mp=>statRowForPlayer(m,id,mp.player_stats||[])).filter(Boolean),compact=statRowForPlayer(m,id,m.series_aggregate_stats||[]);
   const roster=[...(m.player_ids||[]),...(m.team_a||[]),...(m.team_b||[]),...(m.lobby_team_a||[]),...(m.lobby_team_b||[]),...(m.series_aggregate_stats||[]).map(q=>q.player_id),...maps.flatMap(mp=>(mp.player_stats||[]).map(q=>q.player_id))];
   if(!roster.includes(id)&&!own.length&&!compact)return null;
-  const exactOwn=own.length?own:maps.flatMap(mp=>(mp.player_stats||[])).filter(q=>q.player_id===id);
+  const exactOwn=own;
   const k=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.kills)||0),0):Number(compact?.kills)||0,d=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.deaths)||0),0):Number(compact?.deaths)||0,a=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.assists)||0),0):Number(compact?.assists)||0;
   return {m,maps,k,d,a,kd:d?k/d:0,mapCount:exactOwn.length||(compact?maps.length:0),result:results.get(m.match_id)||'—',hasStats:!!(exactOwn.length||compact),map:maps.map(mp=>mp.map||mp.map_name||mp.name).filter(Boolean).join(' · ')||'CS2'};
  }).filter(Boolean).sort((x,y)=>matchOrder(y.m)-matchOrder(x.m)||matchTime(y.m)-matchTime(x.m));
