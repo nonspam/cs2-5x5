@@ -63,5 +63,49 @@
     commitQueue=task.catch(()=>{});
     return task;
   }
-  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,subscribe,unsubscribe,commit};
+
+  let profileChannel=null;
+  async function currentUser(){if(!configured)return null;const {data,error}=await client.auth.getUser();if(error)throw error;return data.user||null}
+  async function loadProfileContext(){
+    if(!configured)return {playerId:null,profiles:[]};
+    const user=await currentUser();if(!user)return {playerId:null,profiles:[]};
+    const [account,profiles]=await Promise.all([
+      client.from('my_player_account').select('player_id').maybeSingle(),
+      client.from('player_profiles').select('player_id,avatar_path,cover_path,bio,accent_color,updated_at')
+    ]);
+    if(account.error)throw account.error;if(profiles.error)throw profiles.error;
+    return {playerId:account.data?.player_id||null,profiles:profiles.data||[]};
+  }
+  function publicMediaUrl(path){if(!configured||!path)return '';return client.storage.from('cs2-player-media').getPublicUrl(path).data.publicUrl}
+  async function uploadProfileMedia(kind,file){
+    if(!configured)throw Error('Облачное хранилище не настроено');
+    if(!['avatar','cover'].includes(kind))throw Error('Неизвестный тип изображения');
+    if(!file||!/^image\\/(jpeg|png|webp|gif)$/.test(file.type||''))throw Error('Поддерживаются JPEG, PNG, WebP и GIF');
+    if(file.size>5*1024*1024)throw Error('Изображение должно быть не больше 5 МБ');
+    const user=await currentUser();if(!user)throw Error('Сначала войди в свой аккаунт');
+    const {data:account,error:accountError}=await client.from('my_player_account').select('player_id').maybeSingle();
+    if(accountError)throw accountError;if(!account?.player_id)throw Error('К этому аккаунту не привязан профиль игрока');
+    const ext=({ 'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif' })[file.type];
+    const path=user.id+'/'+kind+'-'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+    const {error}=await client.storage.from('cs2-player-media').upload(path,file,{upsert:false,contentType:file.type,cacheControl:'3600'});
+    if(error)throw error;
+    return {path,url:publicMediaUrl(path)};
+  }
+  async function savePlayerProfile(playerId,patch){
+    if(!configured)throw Error('Supabase не настроен');
+    const allowed={avatar_path:patch.avatar_path,cover_path:patch.cover_path,bio:patch.bio,accent_color:patch.accent_color};
+    Object.keys(allowed).forEach(k=>{if(allowed[k]===undefined)delete allowed[k]});
+    allowed.updated_at=new Date().toISOString();
+    const {data,error}=await client.from('player_profiles').update(allowed).eq('player_id',playerId).select('player_id,avatar_path,cover_path,bio,accent_color,updated_at').single();
+    if(error)throw error;return data;
+  }
+  function subscribeProfiles(onChange){
+    if(!configured||profileChannel)return;
+    profileChannel=client.channel('cs2-player-profiles-live')
+      .on('postgres_changes',{event:'*',schema:'public',table:'player_profiles'},payload=>onChange?.(payload))
+      .subscribe(status=>{if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'||status==='CLOSED'){if(profileChannel){client.removeChannel(profileChannel);profileChannel=null}}});
+  }
+  function unsubscribeProfiles(){if(profileChannel&&client){client.removeChannel(profileChannel);profileChannel=null}}
+
+  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,subscribe,unsubscribe,commit,currentUser,loadProfileContext,publicMediaUrl,uploadProfileMedia,savePlayerProfile,subscribeProfiles,unsubscribeProfiles};
 })();
