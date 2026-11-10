@@ -214,7 +214,7 @@ function profilePage(v){
  const elo=eloInfo.rating,eloChange=window.CS2EloV3?.recentDelta(id,size)||0;
  const ranked=activePlayers().map(q=>({id:q.player_id,rating:window.CS2EloV3?.player(q.player_id)?.rating??1000,matches:window.CS2EloV3?.player(q.player_id)?.matches??0}))
    .sort((x,y)=>y.rating-x.rating||y.matches-x.matches||x.id.localeCompare(y.id));
- const rank=Math.max(1,ranked.findIndex(q=>q.id===id)+1);
+ const rankIndex=ranked.findIndex(q=>q.id===id),rank=rankIndex>=0?rankIndex+1:null;
  const eloHistory=(eloInfo.history||[]).slice(-20),eloSummary=window.CS2EloV3?.summary?.()||{activeSeries:0,ratedSeries:0};
  const eloGraphMarkup=(()=>{
    if(!eloHistory.length)return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><div class="faceit-elo-empty">Пока нет серий, подходящих для расчёта рейтинга.</div></section>';
@@ -263,7 +263,7 @@ function profilePage(v){
  const recentForm=recent.slice(0,10).map(q=>'<button class="faceit-form-dot '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')" title="'+esc(q.map+' · '+(q.m.series_score||'—'))+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</button>').join('');
  const gameHistory='<div class="faceit-side-card"><div class="faceit-side-title"><h3>История игры</h3></div><div class="faceit-game-history-row"><span>Матчи</span><b>'+all.length+'</b></div><div class="faceit-game-history-row"><span>Карты</span><b>'+total.maps+'</b></div></div>';
  const activity='<div class="faceit-side-card"><div class="faceit-side-title"><h3>Последняя активность</h3><span>За последние 90 дней</span></div><div class="faceit-activity-count"><b>'+all.filter(q=>{const t=matchTime(q.m);return t&&Date.now()-t<=90*86400000}).length+'</b><span>матчей сыграно</span></div><div class="faceit-activity-grid">'+activityCells+'</div><div class="faceit-activity-legend"><span>меньше</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>больше</span></div></div>';
- const rankCard='<div class="faceit-side-card faceit-rank-card"><span class="faceit-kicker">МЕСТО В ГРУППЕ</span><strong>#'+rank+'</strong><span>из '+ranked.length+' игроков</span></div>';
+ const rankCard='<div class="faceit-side-card faceit-rank-card"><span class="faceit-kicker">МЕСТО В ГРУППЕ</span><strong>'+(rank===null?'—':'#'+rank)+'</strong><span>из '+ranked.length+' активных игроков</span></div>';
  const body=state.profileSection==='history'
    ? '<section class="faceit-content-card faceit-full-history"><div class="faceit-card-title"><div><span class="faceit-kicker">ИСТОРИЯ МАТЧЕЙ</span><h2>Все матчи</h2></div><span>'+all.length+' матчей</span></div><div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div><div class="faceit-match-list">'+(matchRows(all)||'<div class="empty">Матчей пока нет.</div>')+'</div></section>'
    : '<div class="faceit-main-grid"><div>'+performance+
