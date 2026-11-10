@@ -152,7 +152,7 @@
     const allowed={avatar_path:patch.avatar_path,cover_path:patch.cover_path};
     Object.keys(allowed).forEach(k=>{if(allowed[k]===undefined)delete allowed[k]});
     allowed.updated_at=new Date().toISOString();
-    const {data,error}=await client.from('player_profiles').update(allowed).eq('player_id',playerId).select('player_id,avatar_path,cover_path,bio,accent_color,updated_at').single();
+    const {data,error}=await client.from('player_profiles').update(allowed).eq('player_id',playerId).select('player_id,avatar_path,cover_path,updated_at').single();
     if(error)throw error;return data;
   }
   function subscribeProfiles(onChange){
