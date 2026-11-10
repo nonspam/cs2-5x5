@@ -3006,3 +3006,33 @@ html{scroll-behavior:auto!important}
   #modal .modal.panel.wide{width:calc(100vw - 14px);padding:14px}
   #modal .faceit-match-section[data-match-section="stats"] .data-table{min-width:650px}
 }
+
+
+/* PLAYER ACCOUNTS — DEV foundation */
+.account-auth-modal{width:min(540px,calc(100vw - 28px));max-width:540px;padding:24px}
+.account-auth-content{display:flex;flex-direction:column;gap:16px}
+.account-auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border:1px solid var(--line);border-radius:9px;background:rgba(0,0,0,.18)}
+.account-auth-tabs button{border:0;border-radius:6px;padding:11px 8px;background:transparent;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.05em;cursor:pointer}
+.account-auth-tabs button.active{background:var(--panel2);color:var(--text);box-shadow:0 1px 5px rgba(0,0,0,.25)}
+.account-auth-intro,.account-auth-copy p{margin:0;line-height:1.55}
+.account-auth-form{display:flex;flex-direction:column;gap:13px}
+.account-auth-form .field{display:flex;flex-direction:column;gap:7px}
+.account-auth-form .field label{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--muted)}
+.account-auth-form .control{width:100%;min-height:44px;padding:11px 12px;border:1px solid var(--line);border-radius:7px;background:#080e16;color:var(--text);outline:none}
+.account-auth-form .control:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(85,169,255,.12)}
+.account-auth-form button[type="submit"]{width:100%;min-height:44px;margin-top:4px}
+.account-auth-error{padding:10px 12px;border:1px solid rgba(255,102,123,.35);border-radius:7px;background:rgba(255,102,123,.08);color:#ff9aa8;font-size:12px;line-height:1.45}
+.account-auth-notice{padding:10px 12px;border:1px solid rgba(85,169,255,.28);border-radius:7px;background:rgba(85,169,255,.07);color:#b8d9ff;font-size:12px;line-height:1.5}
+.account-auth-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.45}
+.account-auth-linked{text-align:center;padding:10px 0 2px}
+.account-auth-linked-mark{width:46px;height:46px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:rgba(80,211,155,.12);border:1px solid rgba(80,211,155,.35);color:var(--green);font-size:22px}
+.account-auth-linked h3{margin:0 0 7px;font-size:20px}
+.account-auth-linked p{margin:0 0 20px}
+.account-auth-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.account-invite-result{display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid rgba(80,211,155,.28);border-radius:9px;background:rgba(80,211,155,.06)}
+.account-invite-code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:15px;letter-spacing:.06em;font-weight:800}
+.account-invite-meta{color:var(--muted);font-size:11px}
+.account-unlinked-card{max-width:640px;margin:50px auto;padding:28px}
+.account-unlinked-card h2{margin:10px 0}
+.account-unlinked-card p{line-height:1.6}
+@media(max-width:600px){.account-auth-modal{padding:17px}.account-auth-actions{flex-direction:column}.account-auth-actions .btn{width:100%}.account-unlinked-card{margin:20px auto;padding:20px}}
