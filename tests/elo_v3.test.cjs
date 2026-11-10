@@ -55,8 +55,8 @@ test('rates a complete 5v5 series and keeps win/loss delta direction', () => {
   assert.equal(api.summary().activeSeries, 1);
   assert.equal(api.summary().ratedSeries, 1);
   assert.equal(api.match('series_1').resultA, 'WIN');
-  assert.ok(winner.delta > 0);
-  assert.ok(loser.delta < 0);
+  assert.ok(winner.lastDelta > 0);
+  assert.ok(loser.lastDelta < 0);
   assert.ok(winner.rating > 1000);
   assert.ok(loser.rating < 1000);
   assert.equal(winner.level, 4);
