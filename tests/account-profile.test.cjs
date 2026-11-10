@@ -18,8 +18,8 @@ test('account registration and login use Supabase Auth with invite-only player l
 
 test('password recovery and password changes are supported with reauthentication', () => {
   assert.ok(adapter.includes('client.auth.resetPasswordForEmail('));
-  assert.ok(adapter.includes('client.auth.updateUser({password})'));
-  assert.ok(adapter.includes('if(currentPassword!==null&&currentPassword!==undefined)'));
+  assert.ok(adapter.includes('client.auth.updateUser(updatePayload)'));
+  assert.ok(adapter.includes('if(currentPassword!==null&&currentPassword!==undefined)updatePayload.current_password=String(currentPassword)'));
   assert.ok(account.includes('accountCurrentPassword'));
   assert.ok(account.includes('CS2Cloud.updateAccountPassword(password,currentPassword)'));
   assert.ok(account.includes('CS2Cloud.updateAccountPassword(password);'));
