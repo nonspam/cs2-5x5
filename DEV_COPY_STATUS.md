@@ -50,6 +50,8 @@ The legacy root file `supabase_schema.sql` contains an old embedded data snapsho
 4. Continue FACEIT-style development only on `faceit-dev`.
 
 
+> Historical note: the 2026-11-10 account section below records an earlier experiment. The 2026-11-11 status at the end supersedes it: bio/accent editing is not part of the approved scope and is disabled at the database-permission level.
+
 ## Player account / shared profile foundation (2026-11-10)
 - DEV Auth identity is linked to the existing player record `gletcher` (Буля) through a private `player_account_links` table. This is an account-to-player relation only; it does not grant admin rights. The existing admin allow-list remains separate.
 - Added public-read / owner-update `player_profiles` rows for all 14 catalog players. The table has RLS; authenticated profile updates are restricted through the private account-link check.
@@ -61,3 +63,40 @@ The legacy root file `supabase_schema.sql` contains an old embedded data snapsho
 - GitHub Actions quality gate passed on the latest profile UI assets commit; static profile contract checks were added after that run and will be validated by the next run.
 - No image has been uploaded yet; the avatar and cover are currently empty until the user selects files in the DEV profile editor. No browser end-to-end upload test has been performed yet.
 - All changes are isolated to `faceit-dev` and DEV Supabase project `nwujudniysolpevbtggd`. Production `main` and production Supabase were not touched.
+
+
+## Current approved account / FACEIT foundation status (2026-11-11)
+
+The only approved scope is: (1) player accounts, (2) player statistics, (3) match cards/history, and (4) ELO/rating. Do not add the previously proposed extra items or unrelated platform systems.
+
+### Implemented on `faceit-dev`
+- Invite-only registration, email/password login, player-account linking, sign-out, password recovery, and password change with current-password reauthentication.
+- Account identity is separate from admin authorization. Normal linked accounts do not receive admin permissions.
+- Public player profiles can be opened from player lists and match-stat rows. Only the signed-in account linked to that player can edit the profile.
+- Profile editing is limited to avatar and cover. Player display names are not editable; bio/accent editing is not exposed.
+- Avatar/cover uploads enforce the 5 MB limit and accepted image MIME types. Failed uploads and replaced media are cleaned up; delete operations validate the authenticated user's storage folder.
+- Public profile metadata is readable to visitors. Authenticated users can update only `avatar_path`, `cover_path`, and `updated_at`; anon cannot write, and authenticated users cannot insert/delete/truncate profile rows or update bio/accent columns.
+- DEV `player_profiles` RLS update policy checks both the private player-account link and that non-null media paths belong to the current Auth user's storage folder.
+- Match-history rows open the matching match card. Match cards show full team rosters, available K/D/A, K-D difference, player ELO change, and pre-match average team ELO. Unsupported stat tabs (ADR/HS/clutch/utility etc.) are not shown.
+- Player profiles show career summary, recent performance, match history, current ELO, FACEIT-style level, peak ELO, ELO graph, and per-match ELO changes. The profile overview tab is labelled `Итоги`; there is no redundant other-game selector or profile bio/accent editor.
+- Unique alias matching is restored for historical stats. Ambiguous aliases are not assigned to a player; guest slots do not get alias-matched to registered accounts.
+- App bootstrap waits until all deferred modules (ELO and account module included) have loaded before the first render.
+
+### ELO V3 rules and current data coverage
+- Starting rating: 1000.
+- Team result contributes 85%; personal K/D/A-derived impact contributes 15%.
+- Calibration K=32 for the first 10 rated series; established K=24 after that.
+- Guests count as neutral 1000 ELO and do not get catalog profiles.
+- FACEIT CS2 level bands are used for the visible 1–10 level indicator; peak ELO includes the 1000 starting point.
+- Current DEV data: 42 active series, 93 active maps, 11 active players. ELO is currently eligible for 31/42 series. The other 11 are excluded because a complete 5v5 roster or a known result is missing; no players or stats are fabricated.
+- All 11 active players' profile summaries calculate finite values; ELO win/loss delta directions pass fixture checks.
+
+### Verification
+- GitHub quality gate: **78/78 tests passed**, including new ELO V3 fixtures, account/profile contract checks, alias matching, and match-history click behavior.
+- JavaScript syntax checks passed for `app_v57.js`, `supabase_adapter.js`, `account_module.js`, and `elo_v3.js`.
+- A rollback-only authenticated DEV SQL test confirmed the linked account sees only its own player link and can update its own profile row. Cross-user media paths and bio updates are rejected.
+- DEV profile table grants were tightened directly in the DEV database. These grant/policy changes are not yet captured in a repository migration; record them in a migration before reproducing them in another environment.
+- Production `main`, production Supabase project `agetaoekkbhbmfmhxseu`, and production data remain untouched.
+- The Cloudflare DEV Worker was verified earlier in the isolation setup, but the latest frontend commit has not been visually verified in a live browser in this work session. Do not claim end-to-end browser success until the DEV URL is checked.
+- DEV URL: https://cs2-analytics-dev.z2z2djt852.workers.dev/
+- Last code asset commit before this status note: `bc691fe0c3f49a145362c87ebf0d38497cad70b1`. Quality-gate run: https://github.com/nonspam/cs2-5x5/actions/runs/42909757237.
