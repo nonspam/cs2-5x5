@@ -147,6 +147,15 @@
     if(error)throw error;
     return {path,url:publicMediaUrl(path)};
   }
+  async function deleteProfileMedia(path){
+    if(!configured)throw Error('Облачное хранилище не настроено');
+    const user=await currentUser();if(!user)throw Error('Сначала войди в свой аккаунт');
+    const cleanPath=String(path||'');
+    if(!cleanPath.startsWith(user.id+'/'))throw Error('Нельзя удалить чужое изображение');
+    const {error}=await client.storage.from('cs2-player-media').remove([cleanPath]);
+    if(error)throw error;
+    return true;
+  }
   async function savePlayerProfile(playerId,patch){
     if(!configured)throw Error('Supabase не настроен');
     const allowed={avatar_path:patch.avatar_path,cover_path:patch.cover_path};
@@ -163,5 +172,5 @@
   }
   function unsubscribeProfiles(){if(profileChannel&&client){client.removeChannel(profileChannel);profileChannel=null}}
 
-  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,signUpAccount,signInAccount,sendAccountPasswordReset,updateAccountPassword,onAuthStateChange,subscribe,unsubscribe,commit,currentUser,loadProfileContext,listUnlinkedPlayers,createPlayerAccountInvite,claimPlayerAccountInvite,publicMediaUrl,uploadProfileMedia,savePlayerProfile,subscribeProfiles,unsubscribeProfiles};
+  window.CS2Cloud={configured,load,isAdmin,signIn,signOut,signUpAccount,signInAccount,sendAccountPasswordReset,updateAccountPassword,onAuthStateChange,subscribe,unsubscribe,commit,currentUser,loadProfileContext,listUnlinkedPlayers,createPlayerAccountInvite,claimPlayerAccountInvite,publicMediaUrl,uploadProfileMedia,deleteProfileMedia,savePlayerProfile,subscribeProfiles,unsubscribeProfiles};
 })();
