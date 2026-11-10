@@ -88,7 +88,7 @@ async function load(){
           CS2Cloud.subscribeProfiles(async()=>{
             try{
               const fresh=await CS2Cloud.loadProfileContext();
-              state.accountUser=fresh.user||state.accountUser;
+              state.accountUser=fresh.user||null;
               state.profileRows=fresh.profiles||[];
               state.myProfile=state.profileRows.find(q=>q.player_id===state.myPlayerId)||null;
               if(state.tab==='profile')render();
