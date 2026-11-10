@@ -286,7 +286,7 @@ function profilePage(v){
        (canEditProfile?'<button class="faceit-avatar-edit" onclick="document.getElementById(\'profileAvatarFile\').click()" aria-label="Изменить аватар">✎</button>':'')+'</div>'+
        '<div class="faceit-player-name"><h1>'+esc(p.display_name)+'</h1><span>@'+esc(id)+'</span></div>'+
        '<div class="faceit-rating"><small>РЕЙТИНГ ELO</small><strong>'+elo.toLocaleString('ru-RU',{maximumFractionDigits:1})+'</strong><span>'+(eloInfo.matches<10?'КАЛИБРОВКА '+eloInfo.matches+'/10':'АКТИВНЫЙ РЕЙТИНГ')+'</span></div>'+
-       '<div class="faceit-rating"><small>УРОВЕНЬ</small><strong>'+String(eloInfo.level??4)+'</strong><span>FACEIT CS2</span></div>'+
+       '<div class="faceit-rating"><small>УРОВЕНЬ</small><strong>'+String(eloInfo.level??4)+'</strong><span>ШКАЛА FACEIT</span></div>'+
        '<div class="faceit-rating"><small>ПИК ELO</small><strong>'+fmt(peakElo,1)+'</strong><span>ЛУЧШИЙ РЕЙТИНГ</span></div>'+
        '<div class="faceit-rating"><small>МЕСТО В ГРУППЕ</small><strong>#'+rank+'</strong><span>ИЗ '+ranked.length+'</span></div>'+
      '</div></div>'+
