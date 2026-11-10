@@ -51,6 +51,7 @@
         '<p class="muted">'+esc(p?.display_name||playerId)+' · '+esc(email)+'</p>'+
         '<div class="account-auth-actions">'+
           '<button class="btn primary" type="button" id="accountOpenProfile">МОЙ ПРОФИЛЬ</button>'+
+          '<button class="btn" type="button" id="accountChangePasswordBtn">СМЕНИТЬ ПАРОЛЬ</button>'+
           '<button class="btn" type="button" id="accountSignOutBtn">ВЫЙТИ</button>'+
         '</div></div>';
     }else if(user){
@@ -62,7 +63,7 @@
           '<div class="account-auth-notice" id="accountAuthNotice" role="status" hidden></div>'+
           '<button class="btn primary" type="submit">ПРИВЯЗАТЬ ПРОФИЛЬ</button>'+
         '</form>'+
-        '<div class="account-auth-foot"><span>'+esc(user.email||'')+'</span><button class="btn mini" type="button" id="accountSignOutBtn">Выйти</button></div>';
+        '<div class="account-auth-foot"><span>'+esc(user.email||'')+'</span><button class="btn mini" type="button" id="accountChangePasswordBtn">Сменить пароль</button><button class="btn mini" type="button" id="accountSignOutBtn">Выйти</button></div>';
     }else{
       const isRegister=authMode==='register';
       body='<div class="account-auth-tabs">'+
@@ -99,6 +100,7 @@
       closeAccountModal();state.tab='profile';state.profileSection='overview';render();
     });
     $('#accountSignOutBtn')?.addEventListener('click',signOutAccount);
+    $('#accountChangePasswordBtn')?.addEventListener('click',renderPasswordChange);
   }
 
   async function refreshAccountContext(){
@@ -172,6 +174,31 @@
         if(submit){submit.disabled=false;submit.textContent=isRegister?'СОЗДАТЬ АККАУНТ':'ВОЙТИ'}
       }
     }finally{accountBusy=false}
+  }
+
+  function renderPasswordChange(){
+    const body='<p class="muted">Новый пароль должен содержать не менее 8 символов.</p>'+
+      '<form id="accountPasswordChangeForm" class="account-auth-form">'+
+        '<div class="field"><label for="accountNewPassword">НОВЫЙ ПАРОЛЬ</label><input id="accountNewPassword" class="control" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></div>'+
+        '<div class="field"><label for="accountNewPasswordConfirm">ПОВТОРИ ПАРОЛЬ</label><input id="accountNewPasswordConfirm" class="control" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></div>'+
+        '<div class="account-auth-error" id="accountAuthError" role="alert" hidden></div>'+
+        '<button class="btn primary" type="submit">СОХРАНИТЬ ПАРОЛЬ</button>'+
+      '</form>';
+    accountModalShell('Смена пароля',body);
+    $('#accountPasswordChangeForm')?.addEventListener('submit',async event=>{
+      event.preventDefault();
+      const password=$('#accountNewPassword')?.value||'';
+      if(password!==($('#accountNewPasswordConfirm')?.value||'')){accountError('Пароли не совпадают');return}
+      const button=$('#accountPasswordChangeForm button[type="submit"]');
+      if(button){button.disabled=true;button.textContent='СОХРАНЯЮ…'}
+      try{
+        await CS2Cloud.updateAccountPassword(password);
+        closeAccountModal();toast('Пароль успешно изменён');
+      }catch(error){
+        accountError(error?.message||'Не удалось изменить пароль');
+        if(button){button.disabled=false;button.textContent='СОХРАНИТЬ ПАРОЛЬ'}
+      }
+    });
   }
 
   async function sendPasswordReset(){
