@@ -72,7 +72,9 @@
       const verified=await client.auth.signInWithPassword({email:user.email,password:String(currentPassword)});
       if(verified.error)throw Error('Текущий пароль указан неверно');
     }
-    const {data,error}=await client.auth.updateUser({password});
+    const updatePayload={password};
+    if(currentPassword!==null&&currentPassword!==undefined)updatePayload.current_password=String(currentPassword);
+    const {data,error}=await client.auth.updateUser(updatePayload);
     if(error)throw error;
     return data;
   }
