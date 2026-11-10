@@ -3056,3 +3056,7 @@ html{scroll-behavior:auto!important}
 .players-table .elo-value{font-size:13px}
 .faceit-lobby-elo{display:block;margin-top:3px;color:var(--muted);font-size:9px;font-weight:600;white-space:nowrap}
 @media(max-width:700px){.faceit-elo-progress{padding:14px}.faceit-elo-meta{gap:8px 12px}.faceit-elo-head>strong{font-size:21px}}
+
+.faceit-elo-info{margin-top:10px;border-top:1px solid var(--line);padding-top:9px;color:var(--muted);font-size:10px}
+.faceit-elo-info summary{cursor:pointer;color:var(--blue);font-weight:700;outline:none}
+.faceit-elo-info p{margin:8px 0 0;line-height:1.55;max-width:820px}
