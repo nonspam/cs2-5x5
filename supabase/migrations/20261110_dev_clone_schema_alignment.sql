@@ -1,0 +1,83 @@
+-- DEV clone alignment with the live production function definitions.
+-- This migration is intended ONLY for the isolated cs2-faceit-dev project.
+-- The legacy supabase_schema.sql contains an old embedded seed snapshot; do not run it wholesale.
+
+create table if not exists public.app_login_aliases (
+  username text primary key check (length(trim(username)) >= 3 and length(trim(username)) <= 64),
+  email text not null references public.app_admins(email) on update cascade on delete cascade,
+  created_at timestamptz not null default now()
+);
+alter table public.app_login_aliases enable row level security;
+revoke all on public.app_login_aliases from anon, authenticated;
+
+create or replace function public.is_cs2_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path to ''
+as $function$
+  select exists (
+    select 1 from public.app_admins as a
+    where lower(a.email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+  );
+$function$;
+revoke all on function public.is_cs2_admin() from public, anon;
+grant execute on function public.is_cs2_admin() to authenticated, service_role;
+
+create or replace function public.commit_cs2_state(
+  p_expected_version bigint,
+  p_state jsonb,
+  p_operation_id text,
+  p_action text,
+  p_target text default null,
+  p_detail jsonb default '{}'::jsonb,
+  p_actor text default null,
+  p_updated_by uuid default null
+)
+returns table(version bigint, updated_at timestamptz, state jsonb)
+language plpgsql
+security definer
+set search_path to ''
+as $function$
+declare
+  v_version bigint;
+  v_updated_at timestamptz;
+  v_state jsonb;
+  v_user uuid;
+begin
+  if p_operation_id is null or length(trim(p_operation_id)) < 8 or length(p_operation_id) > 128 then
+    raise exception 'invalid operation_id';
+  end if;
+  if p_state is null or jsonb_typeof(p_state) <> 'object' then
+    raise exception 'state must be a JSON object';
+  end if;
+  if coalesce(auth.role(), '') <> 'service_role' and not public.is_cs2_admin() then
+    raise exception 'admin access required';
+  end if;
+  if exists(select 1 from public.cs2_operations where operation_id = p_operation_id) then
+    select s.version,s.updated_at,s.state into v_version,v_updated_at,v_state
+    from public.cs2_app_state as s where s.id=1;
+    return query select v_version,v_updated_at,v_state;
+    return;
+  end if;
+  insert into public.cs2_operations(operation_id,action,target,actor,detail)
+  values(p_operation_id,coalesce(p_action,'UNKNOWN'),p_target,p_actor,coalesce(p_detail,'{}'::jsonb));
+  v_user := coalesce(p_updated_by,auth.uid());
+  update public.cs2_app_state
+  set state=p_state,version=p_expected_version+1,updated_at=now(),updated_by=v_user
+  where cs2_app_state.id=1 and cs2_app_state.version=p_expected_version
+  returning cs2_app_state.version,cs2_app_state.updated_at,cs2_app_state.state
+  into v_version,v_updated_at,v_state;
+  if not found then raise exception 'version conflict'; end if;
+  update public.cs2_operations
+  set status='committed',result=jsonb_build_object('version',v_version,'updated_at',v_updated_at)
+  where operation_id=p_operation_id;
+  insert into public.cs2_audit_log(operation_id,action,target,actor,detail,status,result)
+  values(p_operation_id,coalesce(p_action,'UNKNOWN'),p_target,p_actor,coalesce(p_detail,'{}'::jsonb),
+    'committed',jsonb_build_object('version',v_version,'updated_at',v_updated_at));
+  return query select v_version,v_updated_at,v_state;
+end;
+$function$;
+revoke all on function public.commit_cs2_state(bigint,jsonb,text,text,text,jsonb,text,uuid) from public, anon;
+grant execute on function public.commit_cs2_state(bigint,jsonb,text,text,text,jsonb,text,uuid) to authenticated, service_role;
