@@ -3060,3 +3060,7 @@ html{scroll-behavior:auto!important}
 .faceit-elo-info{margin-top:10px;border-top:1px solid var(--line);padding-top:9px;color:var(--muted);font-size:10px}
 .faceit-elo-info summary{cursor:pointer;color:var(--blue);font-weight:700;outline:none}
 .faceit-elo-info p{margin:8px 0 0;line-height:1.55;max-width:820px}
+
+/* Public player profile navigation and compact match stat links. */
+.player-name-cell span[title="Открыть профиль"],.match-player-profile-link{cursor:pointer}
+.player-name-cell span[title="Открыть профиль"]:hover,.match-player-profile-link:hover{color:var(--accent);text-decoration:underline}
