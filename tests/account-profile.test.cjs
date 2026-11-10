@@ -44,7 +44,10 @@ test('public player profiles are readable without login but only the linked play
   assert.ok(account.includes('!state.myPlayerId&&!state.profileTargetId'));
 });
 
-test('profile match-history rows open the matching series card', () => {
+test('profile match-history rows expose ELO changes and open the matching series card', () => {
+  assert.ok(app.includes('deltaForMatch(id,q.m.match_id)'));
+  assert.ok(app.includes('faceit-match-elo-delta'));
+  assert.ok(app.includes('ELO Δ'));
   assert.match(app, /class="profile-match-row click-row" onclick="openMatchDetail/);
   assert.doesNotMatch(app, /class="profile-match-row click-row onclick=/);
 });
