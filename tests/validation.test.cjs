@@ -292,5 +292,5 @@ test('requires ten aggregate rows for compact BO3 records in both validators', (
 
 test('runtime validation keeps partial local-series aggregates valid but requires full compact BO3 aggregates', () => {
   const app = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'app_v57.js'), 'utf8');
-  assert.match(app, /if\\(m\\.source_kind==='compact_bo3'&&sas\\.length!==10\\)return false/);
+  assert.ok(app.includes("if(m.source_kind==='compact_bo3'&&sas.length!==10)return false"));
 });
