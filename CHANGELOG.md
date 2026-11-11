@@ -864,3 +864,15 @@
 - M	tests/validation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:23:51+03:00 — test: simplify runtime compact series assertion
+
+- Commit: 17125cffe49e42a16fd9db66102fca32eba7c217
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/validation.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
