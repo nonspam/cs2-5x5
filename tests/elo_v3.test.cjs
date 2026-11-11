@@ -95,3 +95,111 @@ test('counts an unregistered guest as neutral 1000 ELO without creating a player
   assert.equal(api.player('p1').rating > 1000, true);
   assert.equal(api.leaderboard().length, 9);
 });
+
+
+test('keeps provisional K through the tenth rated series and switches to established K on the eleventh', () => {
+  const players = makePlayers();
+  const matches = Array.from({ length: 11 }, (_, index) => makeMatch({
+    match_id: 'series_' + (index + 1),
+    series_number: index + 1
+  }));
+  const api = createApi({ players, matches });
+
+  const tenth = api.match('series_10');
+  const eleventh = api.match('series_11');
+  const expectedTenth = Math.round(32 * 0.85 * (1 - tenth.expectedA) * 10) / 10;
+  const expectedEleventh = Math.round(24 * 0.85 * (1 - eleventh.expectedA) * 10) / 10;
+
+  assert.equal(api.summary().ratedSeries, 11);
+  assert.equal(tenth.ratingChanges.p1.delta, expectedTenth);
+  assert.equal(eleventh.ratingChanges.p1.delta, expectedEleventh);
+  assert.equal(api.player('p1').history.length, 11);
+});
+
+test('rates a BO5 as one series event rather than one event per map', () => {
+  const players = makePlayers();
+  const match = makeMatch({
+    match_id: 'bo5_series',
+    series_number: 1,
+    format: 'BO5',
+    series_score: '3:2',
+    map_ids: ['map1', 'map2', 'map3', 'map4', 'map5']
+  });
+  const api = createApi({ players, matches: [match] });
+
+  assert.equal(api.summary().activeSeries, 1);
+  assert.equal(api.summary().ratedSeries, 1);
+  assert.equal(api.match('bo5_series').resultA, 'WIN');
+  assert.equal(api.player('p1').history.length, 1);
+});
+
+test('falls back to map scores when a series score is absent', () => {
+  const players = makePlayers();
+  const match = makeMatch({
+    match_id: 'map_score_series',
+    series_number: 1,
+    format: 'BO3',
+    series_score: null,
+    map_ids: ['map1', 'map2']
+  });
+  const maps = [
+    { map_id: 'map1', match_id: 'map_score_series', score: { team_a: 9, team_b: 13 } },
+    { map_id: 'map2', match_id: 'map_score_series', score: { team_a: 13, team_b: 9 } }
+  ];
+  const api = createApi({ players, matches: [match], maps });
+
+  assert.equal(api.summary().ratedSeries, 1);
+  assert.equal(api.match('map_score_series').resultA, 'DRAW');
+  assert.equal(api.player('p1').history[0].result, 'DRAW');
+});
+
+test('series aggregate K/D/A produces the same ELO event as the sum of map-level rows', () => {
+  const players = makePlayers();
+  const match = makeMatch({
+    match_id: 'aggregate_parity',
+    series_number: 1,
+    map_ids: ['map1', 'map2']
+  });
+  const firstMapRows = players.map((player, index) => ({
+    player_id: player.player_id,
+    kills: 12 + index,
+    deaths: 8 + (index % 4),
+    assists: 3 + (index % 5)
+  }));
+  const secondMapRows = players.map((player, index) => ({
+    player_id: player.player_id,
+    kills: 15 + (index % 6),
+    deaths: 9 + (index % 3),
+    assists: 4 + (index % 4)
+  }));
+  const aggregate = players.map((player, index) => ({
+    player_id: player.player_id,
+    kills: firstMapRows[index].kills + secondMapRows[index].kills,
+    deaths: firstMapRows[index].deaths + secondMapRows[index].deaths,
+    assists: firstMapRows[index].assists + secondMapRows[index].assists
+  }));
+  const maps = [
+    { map_id: 'map1', match_id: 'aggregate_parity', player_stats: firstMapRows },
+    { map_id: 'map2', match_id: 'aggregate_parity', player_stats: secondMapRows }
+  ];
+
+  const mapApi = createApi({ players, matches: [match], maps });
+  const aggregateApi = createApi({
+    players,
+    matches: [{ ...match, series_aggregate_stats: aggregate }],
+    maps
+  });
+
+  assert.equal(
+    aggregateApi.player('p1').history[0].impact,
+    mapApi.player('p1').history[0].impact
+  );
+  assert.equal(
+    aggregateApi.player('p1').history[0].delta,
+    mapApi.player('p1').history[0].delta
+  );
+  assert.equal(
+    aggregateApi.player('p1').rating,
+    mapApi.player('p1').rating
+  );
+});
