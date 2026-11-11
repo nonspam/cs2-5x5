@@ -44,12 +44,15 @@ jobs:
           else
             FILES="$(git diff --name-status "$BEFORE_SHA" "$AFTER_SHA")"
           fi
+          if [ -z "$FILES" ]; then
+            FILES="$(git diff-tree --no-commit-id --name-status -r "$AFTER_SHA")"
+          fi
           {
             printf '\n## %s — %s\n' "$COMMIT_DATE" "$SUBJECT"
-            printf '\n- Commit: \`%s\`\n- Author: %s\n- Push actor: %s\n' "$AFTER_SHA" "$AUTHOR" "$PUSH_ACTOR"
+            printf '\n- Commit: %s\n- Author: %s\n- Push actor: %s\n' "$AFTER_SHA" "$AUTHOR" "$PUSH_ACTOR"
             printf '\n### Changed paths\n\n'
             if [ -n "$FILES" ]; then
-              while IFS= read -r line; do printf -- '- \`%s\`\n' "$line"; done <<< "$FILES"
+              while IFS= read -r line; do printf -- '- %s\n' "$line"; done <<< "$FILES"
             else
               printf -- '- No file list available.\n'
             fi
