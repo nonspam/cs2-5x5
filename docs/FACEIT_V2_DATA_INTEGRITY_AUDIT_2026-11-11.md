@@ -87,11 +87,15 @@ ELO сортирует active matches через app helper `matchOrder()`, ко
 - гости учитываются как нейтральные 1000, но сами не получают рейтинг;
 - неизвестный результат и неполный roster пропускаются.
 
-В текущем `tests/elo_v3.test.cjs` четыре теста:
+В текущем `tests/elo_v3.test.cjs` восемь тестов:
 1. базовый полный 5×5 win/loss;
 2. неполный roster не оценивается;
 3. неизвестный 0:0 result не оценивается;
-4. незарегистрированный guest нейтрален.
+4. незарегистрированный guest нейтрален;
+5. provisional K остаётся до десятой серии и переключается на established K с одиннадцатой;
+6. BO5 учитывается как одно событие серии;
+7. результат восстанавливается из map scores при отсутствии series score;
+8. series aggregate K/D/A совпадает по ELO-влиянию с суммой map-level rows.
 
 Пока нет отдельного regression coverage для:
 - перехода с provisional K на established K после 10 серий;
@@ -189,7 +193,7 @@ A read-only simulation against a clone of the live DEV state confirmed that the 
 - Deployed `index.ts` and `validation.js` were fetched back; validation source exactly matches `faceit-dev`.
 - Full current DEV state validates with v3: **14 players, 42 matches, 93 maps; zero validation errors**.
 - No SQL, data, schema, grants, policies or migration writes were performed.
-- GitHub Actions for the expanded **90-test** suite remain queued at time of this note. Manual syntax compilation passed for changed JS files. Previous completed CI was 83/83.
+- GitHub Actions for the expanded **91-test** suite remain queued at time of this note. Manual syntax compilation passed for changed JS files. Previous completed CI was 83/83.
 - Cloudflare frontend deployment and browser QA remain unverified.
 
 This is a DEV-only Edge Function deployment, not a production deployment.

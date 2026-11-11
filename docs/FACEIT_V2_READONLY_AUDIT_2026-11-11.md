@@ -198,9 +198,9 @@ Impact:
 Текущий suite состоит из 12 test files и 83 test cases:
 - account/profile: 6
 - adapter operations: 9
-- DEV readiness/security contract: 8
-- ELO V3: 4
-- embedded dataset: 1
+- DEV readiness/security contract: 9
+- ELO V3: 8
+- embedded dataset: 4
 - entrypoint/load order: 3
 - lifecycle regression: 5
 - metrics regression: 7
@@ -218,8 +218,8 @@ Static source scan для простых inline click handlers нашёл 50 у�
 
 ## Engineering addendum — 2026-11-11 (after first audit)
 
-- Expanded source tests to **90 test cases**: added ELO provisional-K transition, BO5 one-series event, map-score fallback, map/aggregate KDA parity, Edge validator acceptance of embedded data/manual team edits/blank optional dates, and player lifecycle contract checks.
-- GitHub Actions quality gate for the latest test commits is still **queued**; do not describe the 90-test suite as CI-green yet. The last completed quality gate remains 83 passed / 0 failed on commit `52e3a0b8`. Manual JS syntax compilation passed for the changed runtime, ELO, adapter, validators and test files.
+- Expanded source tests to **91 test cases**: added ELO provisional-K transition, BO5 one-series event, map-score fallback, map/aggregate KDA parity, Edge validator acceptance of embedded data/manual team edits/blank optional dates, and player lifecycle contract checks.
+- GitHub Actions quality gate for the latest test commits is still **queued**; do not describe the 91-test suite as CI-green yet. The last completed quality gate remains 83 passed / 0 failed on commit `52e3a0b8`. Manual JS syntax compilation passed for the changed runtime, ELO, adapter, validators and test files.
 - A read-only validation of the live DEV state found that deployed `cs2-admin` v2 rejected existing rows with empty `played_at` strings. The UI permits an empty date, so this blocked every full-state commit. The validator now treats blank `played_at` as absent but still rejects invalid non-empty dates.
 - `saveMatchEdit` writes `team_assignment_source='manual_edit'`; Edge validation did not allow that provenance for detailed historical series. Added it to the allowed set.
 - Player create/archive/restore did not keep `status` synchronized with `is_active`. Updated the three UI operations and added a regression contract test.
