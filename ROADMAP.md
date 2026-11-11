@@ -57,3 +57,17 @@
 - [x] Создать FACEIT_REFERENCE.md с найденными материалами, наблюдениями, workflow и handoff prompt.
 - [ ] Проверить, есть ли исходные FACEIT HTML/CSS в GitHub; если нет — запросить у пользователя повторную загрузку.
 - [ ] После получения исходников сохранить разрешённые reference материалы и конкретную карту selectors/fonts/DOM.
+
+## Срочный blocker — состояние ветки на 2026-11-11
+
+Перед UI-унификацией требуется восстановить runtime: текущий HEAD faceit-dev 25dcab8 содержит только 11 docs/workflow файлов; 195 файлов приложения отсутствуют в tree, хотя сохранены в истории commit 3b68040. Не принимать это за новый движок или завершённый merge.
+
+Следующий порядок:
+1. Восстановить runtime из 3b68040 в faceit-dev, сохранив текущие docs.
+2. Проверить DEV Supabase config, npm run check и CI.
+3. Подтвердить Cloudflare deployed SHA и пройти browser QA desktop/mobile.
+4. Спроектировать единый shell/router и реальную кликабельность разделов.
+5. Реализовать Track и полноценные Seasons; сейчас Track отсутствует как рабочая страница, Season 1 — placeholder.
+6. После DEV acceptance отдельно согласовать production merge.
+
+Read-only подробности и Supabase findings: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
