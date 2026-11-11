@@ -684,3 +684,15 @@
 - M	tests/faceit-v2-shell-dev-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:43:16+03:00 — test: verify route renderer and settings shortcut coverage
+
+- Commit: 77b605d62d7d3fba871dc18dd9585de1a2e12c2e
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
