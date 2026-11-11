@@ -408,3 +408,15 @@
 - A	docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T23:13:49+03:00 — docs: link latest FACEIT V2 read-only audit
+
+- Commit: bc336460d2a53caeffb2cdcde7b1e30bd43d34f3
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	PROJECT_MASTER.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
