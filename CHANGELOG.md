@@ -449,3 +449,15 @@
 - M	tests/account-security-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T23:58:33+03:00 — docs: confirm server-side profile media restrictions
+
+- Commit: 4bb94874ff94c49e5a24bb2610747deb0d34ad1e
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
