@@ -281,7 +281,7 @@ function profilePage(v){
        '<div class="faceit-match-list">'+(matchRows(recent.slice(0,10))||'<div class="empty">Матчей пока нет.</div>')+'</div></section></div>'+
        '<aside class="faceit-side-column">'+gameHistory+activity+rankCard+'</aside></div>';
 
- v.innerHTML='<section class="faceit-exact-shell" style="'+(cover?'background-image:linear-gradient(90deg,rgba(8,8,8,.62),rgba(8,8,8,.74)),url(\\''+esc(cover)+'\\')':'')+'">'+
+ v.innerHTML='<section class="faceit-exact-shell" style="'+(cover?'background-image:linear-gradient(90deg,rgba(8,8,8,.62),rgba(8,8,8,.74)),url(\''+esc(cover)+'\')':'')+'">'+
    '<aside class="faceit-exact-global-rail"><div class="faceit-exact-brand">◢</div><div class="faceit-exact-search">⌕ <span>Поиск</span></div><div class="faceit-exact-game">◉ <b>CS2</b></div><nav><button>▷ <span>Играть</span></button><button>♧ <span>Ранг</span></button><button>⌁ <span>Track</span></button><button>☷ <span>Лента</span></button><button>♧ <span>Клубы</span></button><button>⊕ <span>Создать клуб</span></button></nav><div class="faceit-exact-rail-bottom"><button>▧ <span>Миссии</span></button><button>♧ <span>Магазин</span></button><button class="premium">★ <span>Премиум</span></button></div></aside>'+
    '<aside class="faceit-exact-player-column"><div class="faceit-exact-player-card">'+
      '<div class="faceit-exact-avatar-frame">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
