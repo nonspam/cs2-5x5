@@ -293,7 +293,7 @@ function profilePage(v){
      '<div class="faceit-exact-game-history"><b>История игр</b><div><span class="faceit-exact-cs-icon">CS</span><span><b>CS2</b><small>'+all.length+' матчей</small></span><i>ⓘ</i></div></div>'+
    '</div>'+
    '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
-   '<main class="faceit-exact-content">'+
+   '<div class="faceit-exact-content">'+
      '<div class="faceit-exact-top-tabs"><button class="active">ИГРЫ</button><button disabled>ДРУЗЬЯ</button><button disabled>ВИДЕО</button><button disabled>ГОСТЕВАЯ КНИГА</button><button disabled>ИНВЕНТАРЬ</button><button disabled>КЛУБЫ</button><button disabled>КОМАНДЫ</button></div>'+
      '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="active">Итоги</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button disabled>Матчмейкинг</button><button disabled>Лиги</button><button disabled>Турниры</button></div>'+
      '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;Сезон · CS2</b><small>Рейтинговая статистика игрока</small></div><span>СТАТИСТИКА ИГРОКА ›</span></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
@@ -304,7 +304,7 @@ function profilePage(v){
      '<div class="faceit-exact-stat-strip"><div><b>'+fmt(sum.kd,2)+'</b><span>K/D</span></div><div><b>'+fmt(sum.avgKills,1)+'</b><span>Убийств / карта</span></div><div><b>'+fmt(sum.avgDeaths,1)+'</b><span>Смертей / карта</span></div><div><b>'+fmt(sum.avgAssists,1)+'</b><span>Помощей / карта</span></div><div><b>'+fmt(sum.winrate,1)+'%</b><span>Процент побед</span></div><div><b>'+sum.matches+'</b><span>Матчей</span></div></div>'+
      '<div class="faceit-exact-lower">'+body+'</div>'+
      (canEditProfile?'<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])"><input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">':'')+
-   '</main><aside class="faceit-exact-right-rail"><span>◉</span><span>♧</span><span>♧</span><span>⊕</span><span>♙</span></aside></section>';
+   '</div><aside class="faceit-exact-right-rail"><span>◉</span><span>♧</span><span>♧</span><span>⊕</span><span>♙</span></aside></section>';
 }async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
