@@ -396,3 +396,15 @@
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T23:13:35+03:00 — docs: record FACEIT V2 read-only technical audit
+
+- Commit: b55b3ad3f21c07949f1399aca9f61bea80fda9dc
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
