@@ -91,3 +91,18 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 
 ## Следующий шаг
 Перед переходом на другой аккаунт проверить, что FACEIT_REFERENCE.md и ссылки на него сохранены в faceit-dev; затем пользователь может начать новый чат готовым handoff prompt. В новом чате первым делом проверить, доступны ли исходные HTML/CSS вложения; если нет — попросить повторно приложить их.
+
+## 2026-11-11 — Engine / merge audit
+
+Пользователь уточнил целевое направление: единая FACEIT V2 платформа, аккаунты и кликабельная навигация по профилям, Track, Seasons, Matches и другим разделам; затем использовать уже имеющуюся базу на новом frontend shell.
+
+Ключевые результаты read-only аудита:
+- «Новое приложение» объясняется PWA manifest с display=standalone; аккаунт в runtime commit 3b68040 — модальное окно внутри vanilla JS SPA, а не отдельный frontend engine.
+- В runtime 3b68040 есть account signup/login/invite linking, профильная оболочка, matches/maps/players/records/seasons. Track не реализован как самостоятельная страница; Season 1 — placeholder; FACEIT rail содержит декоративные controls.
+- Текущий faceit-dev HEAD 25dcab8 имеет только docs/workflow. Сравнение с runtime commit 3b68040 показало 195 файлов, удалённых из актуального tree коммитом 4c4274b, но сохранённых в Git history.
+- Последний подтверждённый quality gate для 3b68040 зелёный (78 passed, 0 failed); текущий HEAD не содержит package.json и quality-gate workflow.
+- DEV Supabase уже содержит state v156: 14 players, 42 matches, 93 maps, 14 player_profiles, 1 linked account, 0 active invites. Не делать повторный импорт без необходимости.
+- DEV security/performance advisors: leaked password protection off; SECURITY DEFINER RPC warnings; 2 unindexed invite FKs; review grants/RLS before account expansion.
+- Нового engine PR для принятия не найдено; единственный open PR #2 не относится к этой миграции. main и production Supabase не трогать.
+- Подробный отчёт: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
+- Никаких runtime/DB изменений в рамках аудита не выполнено.
