@@ -768,3 +768,15 @@
 - A	docs/FACEIT_V2_BROWSER_QA_PLAN_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:51:01+03:00 — test: fix inline handler contract regex
+
+- Commit: c1bd5e7a711d86dbe035da9016756f9bd938f2c7
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
