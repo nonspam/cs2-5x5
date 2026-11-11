@@ -3472,3 +3472,43 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
 @media(max-width:1500px){.faceit-exact-shell{grid-template-columns:170px 340px minmax(0,1fr) 42px}.faceit-exact-right-rail{margin-left:0;width:auto}.faceit-exact-player-column{padding-right:22px}.faceit-exact-player-card,.faceit-exact-badges{width:240px}.faceit-exact-avatar-frame{width:240px;height:300px}.faceit-exact-content{padding-right:18px}}
 @media(max-width:1050px){.faceit-exact-shell{grid-template-columns:64px 250px minmax(0,1fr)}.faceit-exact-global-rail{padding:18px 10px}.faceit-exact-global-rail nav button span,.faceit-exact-rail-bottom button span,.faceit-exact-search span{display:none}.faceit-exact-player-column{padding:20px 10px}.faceit-exact-player-card,.faceit-exact-badges,.faceit-exact-avatar-frame{width:100%}.faceit-exact-avatar-frame{height:250px}.faceit-exact-right-rail{display:none;margin-left:0;width:auto}.faceit-exact-content{padding:16px}}
 @media(max-width:700px){.faceit-exact-shell{display:block}.faceit-exact-global-rail{display:none}.faceit-exact-player-column{padding:12px;align-items:stretch}.faceit-exact-player-card{min-height:0}.faceit-exact-avatar-frame{height:220px}.faceit-exact-badges{display:none}.faceit-exact-content{padding:10px 12px}.faceit-exact-top-tabs{overflow:auto;gap:18px}.faceit-exact-top-tabs button{font-size:9px}.faceit-exact-game-tabs{overflow:auto;gap:8px}.faceit-exact-season-numbers{gap:8px}.faceit-exact-stat-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.faceit-exact-results-head{align-items:flex-start;flex-direction:column}.faceit-exact-right-rail{display:none}}
+
+
+/* FACEIT V2 — one profile-inspired application shell */
+.faceit-exact-shell:not(.faceit-route-shell),.faceit-route-shell{grid-template-columns:170px 300px minmax(0,1fr);overflow:visible;min-height:calc(100vh - 92px)}
+.faceit-route-shell .faceit-exact-content{max-width:none;min-width:0;padding:22px 24px 30px;overflow:auto}
+.faceit-route-shell .faceit-route-content{max-width:1200px}
+.faceit-exact-global-rail nav button{cursor:pointer;border-radius:5px;padding:0 9px;transition:background .15s,color .15s}
+.faceit-exact-global-rail nav button:hover{color:#fff;background:rgba(255,255,255,.07)}
+.faceit-exact-global-rail nav button.active{color:#fff;background:rgba(255,85,0,.12);box-shadow:inset 2px 0 var(--fx-orange)}
+.faceit-exact-rail-bottom button{cursor:pointer;border-radius:5px;padding:0 9px}
+.faceit-exact-rail-bottom button:hover,.faceit-exact-rail-bottom button.active{color:#fff;background:rgba(255,85,0,.12)}
+.faceit-exact-season-title>button{border:0;background:none;color:#ddd;font-size:10px;font-weight:800;cursor:pointer}
+.faceit-exact-season-title>button:hover{color:var(--fx-orange)}
+.faceit-route-player-card,.faceit-route-account-card{width:248px;padding:8px 0 18px;color:#eee}
+.faceit-route-avatar{width:248px;height:270px;border:1px solid #4b4b4b;border-radius:12px;background:linear-gradient(145deg,#242424,#111);display:grid;place-items:center;overflow:hidden}
+.faceit-route-avatar img{width:100%;height:100%;object-fit:cover}
+.faceit-route-avatar span{font-size:64px;font-weight:800;color:#ddd}
+.faceit-route-player-card h2{font-size:19px;text-align:center;margin:13px 0;color:#f3f3f3}
+.faceit-route-elo{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;background:rgba(20,20,20,.82);border:1px solid #303030;border-radius:7px}
+.faceit-route-elo span,.faceit-route-player-meta{font-size:10px;color:#aaa}
+.faceit-route-elo b{font-size:20px;color:#fff}
+.faceit-route-player-meta{display:flex;justify-content:space-between;padding:12px 2px}
+.faceit-route-player-card>button,.faceit-route-account-card>button{width:100%;height:38px;border:1px solid #555;border-radius:5px;background:rgba(255,255,255,.04);color:#eee;font-size:10px;font-weight:800;cursor:pointer}
+.faceit-route-player-card>button:hover,.faceit-route-account-card>button:hover{border-color:var(--fx-orange);color:#fff}
+.faceit-route-account-card{margin-top:28px;padding:18px;background:rgba(15,15,15,.82);border:1px solid #303030;border-radius:9px}
+.faceit-route-account-card h2{font-size:20px;margin:12px 0}
+.faceit-route-account-card p{font-size:12px;line-height:1.6;color:#aaa;margin-bottom:18px}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-content{max-width:none;padding-right:24px}
+@media(max-width:1500px){.faceit-exact-shell:not(.faceit-route-shell),.faceit-route-shell{grid-template-columns:150px 280px minmax(0,1fr)}.faceit-route-shell .faceit-exact-content{padding-right:18px}.faceit-route-player-card,.faceit-route-account-card,.faceit-route-avatar{width:240px}}
+@media(max-width:1050px){.faceit-exact-shell:not(.faceit-route-shell),.faceit-route-shell{grid-template-columns:64px 220px minmax(0,1fr)}.faceit-route-shell .faceit-exact-global-rail{padding:18px 10px}.faceit-route-shell .faceit-exact-global-rail nav button span{display:none}.faceit-route-player-card,.faceit-route-account-card,.faceit-route-avatar{width:100%}.faceit-route-avatar{height:230px}}
+@media(max-width:700px){
+ .faceit-exact-shell:not(.faceit-route-shell),.faceit-route-shell{display:block;min-height:0}
+ .faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail,.faceit-route-shell .faceit-exact-global-rail{display:flex;flex-direction:row;align-items:center;gap:10px;min-height:0;height:auto;padding:8px 10px;overflow-x:auto;white-space:nowrap;border-right:0;border-bottom:1px solid rgba(255,255,255,.1)}
+ .faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail nav,.faceit-route-shell .faceit-exact-global-rail nav{display:flex;gap:5px;margin:0}
+ .faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail nav button,.faceit-route-shell .faceit-exact-global-rail nav button{height:36px;padding:0 9px}
+ .faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail nav button span,.faceit-route-shell .faceit-exact-global-rail nav button span{display:inline!important}
+ .faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-player-column,.faceit-route-shell .faceit-exact-player-column{display:none}
+ .faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-content,.faceit-route-shell .faceit-exact-content{padding:10px 12px;max-width:none}
+ .faceit-route-shell .faceit-exact-content{overflow:visible}
+}
