@@ -1,3 +1,27 @@
+# Актуальная контрольная точка — FACEIT V2 (2026-11-11)
+
+Эта секция новее исторических snapshots ниже и отражает текущее состояние после восстановления runtime и первого прохода объединения shell.
+
+- Repository: `nonspam/cs2-5x5`
+- Working branch: `faceit-dev` only.
+- Current docs HEAD at this checkpoint: `e401dfbbc130d1242d5318dd69e06f3b5f4779f1`.
+- Runtime recovery commit: `c8ee8cd8776bd4fc113d88a1531b5596db8fb45e` (71 selected files restored from snapshot `3b68040`).
+- FACEIT V2 shared-shell code commit: `390a580d53bda0263342b884951d47cb065388b0`.
+- DEV Supabase project ref: `nwujudniysolpevbtggd`; `supabase-config.js` checked and still points only to this DEV project.
+- Production `main` and production Supabase were not modified. No SQL migrations or database writes were executed.
+- Quality gate on code commit `390a580d`: **83 passed, 0 failed**. Run: https://github.com/nonspam/cs2-5x5/actions/runs/43091902336.
+- Current source files: `app_v57.js`, `style_v57.css`, `account_module.js`, `supabase_adapter.js`, `validation.js`, `elo_v3.js`, `data_embedded.js`.
+- The FACEIT-inspired profile shell is now the shared app shell for existing routes. Left rail routes: Overview, Players, Matches, Maps, Teams, Records, Seasons, Profile, Settings. The duplicate top navigation is disabled.
+- Profile currently exposes Overview and Match history. Non-working social/matchmaking placeholders and decorative FACEIT rail items were removed.
+- Track is not yet a working route and is intentionally not exposed. Season 1 remains a placeholder; full season lifecycle and rollover are not implemented.
+- `app_v57.js` remains a large monolith; this is an incremental shared-shell refactor, not a framework rewrite.
+- Cloudflare deployed SHA and real browser QA are **not verified**. The workers.dev URL could not be opened by the available web reader. Do not claim deployment or visual QA.
+
+Detailed implementation checkpoint: [docs/FACEIT_V2_RUNTIME_AUDIT.md](docs/FACEIT_V2_RUNTIME_AUDIT.md).  
+Product direction and acceptance criteria: [docs/FACEIT_V2_PRODUCT_BRIEF.md](docs/FACEIT_V2_PRODUCT_BRIEF.md).
+
+---
+
 # Текущее техническое состояние
 
 Изменяемый снимок. Перед использованием сверять с GitHub, CI и DEV.

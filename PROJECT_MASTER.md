@@ -70,5 +70,8 @@ GitHub Actions может автоматически записывать commit
 Источник от 2026-11-09 разобран и сопоставлен с текущей памятью. Его снимок относится к старому `main` и старому Supabase ref; использовать его только как историю. Индекс и важные оговорки: [docs/legacy-encyclopedia-2026-11-09/README.md](docs/legacy-encyclopedia-2026-11-09/README.md).
 
 
+## FACEIT V2 — актуальное продуктовое решение
+Профильный shell становится основным сайтом, а не отдельной страницей рядом со старым продуктом. Продуктовый бриф и критерии приёмки: [docs/FACEIT_V2_PRODUCT_BRIEF.md](docs/FACEIT_V2_PRODUCT_BRIEF.md). Текущий кодовый срез и проверенные/непроверенные пункты: [docs/FACEIT_V2_RUNTIME_AUDIT.md](docs/FACEIT_V2_RUNTIME_AUDIT.md). Техническая контрольная точка: [TECHNICAL_STATE.md](TECHNICAL_STATE.md).
+
 ## Критически важный FACEIT research
 Перед визуальными задачами обязательно прочитать [FACEIT_REFERENCE.md](FACEIT_REFERENCE.md). Там записано, почему попытка повторить профиль только по screenshot не сработала и почему исследование настоящего HTML/CSS FACEIT стало переломным моментом. Там же находится готовый handoff prompt для нового чата. Исходные CSS/HTML файлы предыдущего чата пока не подтверждены как сохранённые в GitHub.

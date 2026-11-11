@@ -49,3 +49,15 @@ Green CI доказывает только покрытые проверки, н
 - FACEIT-унификацию всех страниц.
 - Disabled tabs/placeholders как рабочие разделы.
 - Деплой или browser QA последнего commit.
+
+
+## FACEIT V2 shared shell — состояние 2026-11-11
+
+- `faceitAppRailMarkup()` формирует общую навигацию.
+- `navigateApp(tab)` меняет единый `state.tab`; `renderRouteShell()` размещает существующие page renderers внутри общего profile-inspired shell.
+- `profilePage` использует ту же rail; `account_module.js` помещает unlinked account flow внутрь shell.
+- Existing route renderers remain in `app_v57.js`; no domain data model rewrite was made.
+- Route inventory and known gaps: [docs/FACEIT_V2_RUNTIME_AUDIT.md](docs/FACEIT_V2_RUNTIME_AUDIT.md).
+- Product acceptance criteria: [docs/FACEIT_V2_PRODUCT_BRIEF.md](docs/FACEIT_V2_PRODUCT_BRIEF.md).
+
+Track and full season lifecycle are not implemented. Do not expose their placeholders as working navigation.
