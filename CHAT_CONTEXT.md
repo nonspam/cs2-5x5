@@ -106,3 +106,32 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - Нового engine PR для принятия не найдено; единственный open PR #2 не относится к этой миграции. main и production Supabase не трогать.
 - Подробный отчёт: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
 - Никаких runtime/DB изменений в рамках аудита не выполнено.
+
+
+## 2026-11-11 — FACEIT V2: актуальный технический статус после восстановления runtime
+
+**Актуальная ветка:** `faceit-dev`. Runtime восстановлен в этой ветке из snapshot `3b680400`, затем добавлена единая profile-inspired shell. Текущий рабочий tree содержит приложение, Supabase adapter, ELO V3, account module, SQL migrations, assets и 12 тестовых файлов. Исторический раздел Engine / merge audit выше описывает более раннее состояние branch до восстановления runtime и не должен использоваться как current status.
+
+Подтверждённые code checkpoints:
+- Runtime restore: `c8ee8cd8776bd4fc113d88a1531b5596db8fb45e`.
+- Общая shell prototype: `390a580d53bda0263342b884951d47cb065388b0`.
+- Последний code-quality checkpoint: `52e3a0b8fb9d09b59010a74f9df5c7d9d88493f7`; GitHub Actions quality gate success, 83 passed / 0 failed.
+- Последний branch HEAD на момент обновления этой заметки: проверить заново через GitHub branch API; после documentation commits project-memory workflow может добавить отдельный journal commit.
+- DEV Supabase ref остаётся `nwujudniysolpevbtggd`. На дату аудита: state v156, 14 players, 42 matches, 93 maps, 14 profiles, 1 auth user.
+- Никаких DB writes, migrations, production changes или deployments в этой фазе не выполнялось.
+
+Технические findings:
+- Runtime — vanilla JS SPA с большим `app_v57.js` (222 функции), общая оболочка пока prototype.
+- Визуальный дизайн не утверждён владельцем; дальнейшие UI changes запрещены без его HTML/CSS/reference и указаний.
+- Полный read-only runtime / Supabase / security audit: `docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md`.
+- Read-only dataset / metrics / ELO audit: `docs/FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md`.
+- В DEV все 11 series aggregate наборов совпали по K/D/A с суммой map stats; 31/42 матчей имеют полный series-level 5×5 roster, 11 имеют неполный roster.
+- Два BO3 с series_score 1:1 после двух карт трактуются текущим ELO как DRAW; бизнес-смысл не подтверждён.
+- ELO сортирует матчи через ID-based `matchOrder`, а не `played_at`; найдено одно несоответствие порядка между `match_001` и `match_002`.
+- Эти правила не менять до согласования с владельцем.
+
+## 2026-11-11 — Пользовательский формат работы
+
+Пользователь попросил вести проект более автономно и крупными этапами, не присылать уведомление после каждой мелочи. Нужно объединять аудит/изменения/тестирование в законченные блоки и писать только при существенном результате или когда требуется решение/материал от пользователя. Не просить HTML/CSS заранее: запросить их только когда конкретный раздел готов к визуальной реализации.
+
+Техническая подготовка и безопасные улучшения могут продолжаться самостоятельно. Не придумывать дизайн. Не менять `main`, production Supabase, live data или deployed environment без прямого разрешения. Пользователь остаётся владельцем продуктовых решений.
