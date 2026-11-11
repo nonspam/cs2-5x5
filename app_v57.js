@@ -221,6 +221,7 @@ function restoreAppRouteFromHistory(){
  state.tab=tab;state.accountMenuOpen=false;render();
 }
 window.addEventListener('popstate',restoreAppRouteFromHistory);
+window.addEventListener('hashchange',restoreAppRouteFromHistory);
 function faceitAppRailMarkup(){
  const items=[['home','⌂','Обзор'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['seasons','◉','Сезоны'],['profile','◉','Профиль']];
  return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
