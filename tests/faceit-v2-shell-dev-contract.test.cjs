@@ -64,7 +64,7 @@ test('every supported route has a renderer or an explicit profile special case',
 test('settings remains reachable through the persistent settings shortcut', () => {
   assert.match(html, /id="settingsBtn"/);
   assert.match(app, /function nav\(\)[\s\S]*?\$\('#settingsBtn'\)\.onclick=\(\)=>navigateApp\('settings'\)/);
-  assert.match(app, /\['settings'\]/);
+  assert.match(app, /APP_ROUTE_IDS=\[[^\]]*'settings'/);
 });
 
 test('Track is not exposed as a completed shell route', () => {
