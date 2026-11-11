@@ -10,12 +10,16 @@
       for(const m of b.matches)for(const id of(Array.isArray(m.map_ids)?m.map_ids:[])){if(used.has(id))return{ok:false,error:'map belongs to multiple matches'};used.add(id)}
       for(const m of b.maps)if(!used.has(m.map_id))return{ok:false,error:'orphan map: '+m.map_id};
       for(const [a,p] of Object.entries(b.aliases))if(!String(a).trim()||typeof p!=='string'||!pids.has(p))return{ok:false,error:'invalid alias mapping'};
+      const nameOwners=new Map();
+      const normalizeStatIdentity=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+      for(const p of b.players){const names=[p.player_id,p.display_name,p.name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([alias])=>alias)];for(const name of names){const key=normalizeStatIdentity(name);if(!key)continue;const owners=nameOwners.get(key)||new Set();owners.add(p.player_id);nameOwners.set(key,owners)}}
+      const canonicalStatKey=st=>{if(st?.player_id)return 'player:'+st.player_id;const raw=normalizeStatIdentity(st?.raw_name??st?.name),owners=nameOwners.get(raw);return owners?.size===1?'player:'+owners.values().next().value:'raw:'+raw};
       for(const m of b.maps){
         if(!mids.has(m.match_id)||!maps.has(m.map_id)||!Number.isInteger(Number(m.map_index))||Number(m.map_index)<1)return{ok:false,error:'invalid map relation'};
         const rows=Array.isArray(m.player_stats)?m.player_stats:[];
         if(m.stats_available===true&&rows.length===0)return{ok:false,error:'detailed map has no player rows'};
         if(m.stats_available===false&&rows.length>0)return{ok:false,error:'compact map contains player_stats'};
-        const seen=new Set();for(const st of rows){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest stat missing raw_name'};const k=st.player_id||'raw:'+String(st.raw_name).trim().toLowerCase();if(seen.has(k))return{ok:false,error:'duplicate player stats'};seen.add(k)}
+        const seen=new Set();for(const st of rows){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest stat missing raw_name'};const k=canonicalStatKey(st);if(seen.has(k))return{ok:false,error:'duplicate player stats'};seen.add(k)}
       }
       for(const m of b.matches){
         if(!Array.isArray(m.map_ids)||!m.map_ids.length||new Set(m.map_ids).size!==m.map_ids.length)return{ok:false,error:'invalid map_ids'};
@@ -29,7 +33,7 @@
         const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];
         if(sas.length>10)return{ok:false,error:'series aggregate cannot exceed 10 rows'};
         if(m.source_kind==='compact_bo3'&&sas.length!==10)return{ok:false,error:'compact BO3 must contain 10 series aggregate rows'};
-        const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest series stat missing raw_name'};const k=st.player_id||'raw:'+String(st.raw_name).trim().toLowerCase();if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
+        const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest series stat missing raw_name'};const k=canonicalStatKey(st);if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
 
         if(sas.length&&m.map_ids.every(id=>maps.get(id)?.stats_available===true)){
           const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
