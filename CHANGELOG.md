@@ -343,3 +343,16 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:56:25+03:00 — fix: normalize profile controls and add FACEIT V2 shell tests
+
+- Commit: f30846f0b54ee0770294438a5747303fbe9d67b0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- A	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
