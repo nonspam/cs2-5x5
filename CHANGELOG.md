@@ -756,3 +756,15 @@
 - M	ROADMAP.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:50:14+03:00 — docs: add FACEIT V2 browser QA execution plan
+
+- Commit: 3b3e0e74c893f50404eebfb12d2bb837cc06b95f
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/FACEIT_V2_BROWSER_QA_PLAN_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
