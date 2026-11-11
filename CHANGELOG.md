@@ -1044,3 +1044,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:58:21+03:00 — docs: record metrics audit CI verification
+
+- Commit: 2ba442e24e9b32b58d8339c7764a65d75e6b2fd1
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- No file list available.
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
