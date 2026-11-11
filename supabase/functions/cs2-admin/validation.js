@@ -43,7 +43,30 @@
         if(m.played_at!=null&&String(m.played_at).trim()!==''&&Number.isNaN(Date.parse(m.played_at)))errors.push('invalid played_at:'+m.match_id);
         if(m.series_number!=null&&(!Number.isInteger(Number(m.series_number))||Number(m.series_number)<1))errors.push('invalid series_number:'+m.match_id);
         const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];if(sas.length>10)errors.push('series aggregate cannot exceed 10 rows:'+m.match_id);
+        if(m.source_kind==='compact_bo3'&&sas.length!==10)errors.push('compact BO3 must contain 10 series aggregate rows:'+m.match_id);
         const seenSeries=new Set();for(const st of sas){if(!st||!nonNeg(st.kills)||!nonNeg(st.deaths)||!nonNeg(st.assists))errors.push('invalid series KDA:'+m.match_id);if(st.player_id!=null&&!pids.has(st.player_id))errors.push('unknown series player:'+m.match_id);const k=st.player_id||'raw:'+(st.raw_name||'');if(seenSeries.has(k))errors.push('duplicate series player:'+m.match_id);seenSeries.add(k)}
+        if(sas.length&&(m.map_ids||[]).length&&(m.map_ids||[]).every(id=>maps.get(id)?.stats_available===true)){
+          const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+          const owners=new Map();
+          for(const p of b.players){
+            const names=[p.player_id,p.display_name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([alias])=>alias)];
+            for(const name of names){const key=normalizeName(name);if(!key)continue;const set=owners.get(key)||new Set();set.add(p.player_id);owners.set(key,set)}
+          }
+          const statKey=row=>{
+            if(row?.player_id)return 'player:'+row.player_id;
+            const raw=normalizeName(row?.raw_name??row?.name),known=owners.get(raw);
+            return known?.size===1?'player:'+known.values().next().value:'raw:'+raw;
+          };
+          const sumRows=rows=>{
+            const totals=new Map();
+            for(const row of rows){const key=statKey(row),total=totals.get(key)||{kills:0,deaths:0,assists:0};total.kills+=Number(row.kills)||0;total.deaths+=Number(row.deaths)||0;total.assists+=Number(row.assists)||0;totals.set(key,total)}
+            return totals;
+          };
+          const mapTotals=sumRows(m.map_ids.flatMap(id=>maps.get(id)?.player_stats||[]));
+          const seriesTotals=sumRows(sas);
+          const keys=new Set([...mapTotals.keys(),...seriesTotals.keys()]);
+          for(const key of keys){const a=mapTotals.get(key)||{kills:0,deaths:0,assists:0},z=seriesTotals.get(key)||{kills:0,deaths:0,assists:0};if(Math.abs(a.kills-z.kills)>1e-9||Math.abs(a.deaths-z.deaths)>1e-9||Math.abs(a.assists-z.assists)>1e-9)errors.push('series aggregate does not match detailed maps:'+m.match_id)}
+        }
       }
       for(const mp of b.maps){
         if(!mids.has(mp.match_id)||!maps.has(mp.map_id)||!listed.has(mp.map_id)||!Number.isInteger(Number(mp.map_index))||Number(mp.map_index)<1)errors.push('invalid map relation:'+mp.map_id);
