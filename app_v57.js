@@ -225,8 +225,8 @@ function faceitAppRailMarkup(){
  const items=[['home','⌂','Обзор'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['seasons','◉','Сезоны'],['profile','◉','Профиль']];
  return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
   '<div class="faceit-exact-game">◉ <b>CS2 ANALYTICS</b></div>'+
-  '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
-  '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" data-app-route="settings">⚙ <span>Настройки</span></button></div>';
+  '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" '+(state.tab===id?'aria-current="page" ':'')+'data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
+  '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" '+(state.tab==='settings'?'aria-current="page" ':'')+'data-app-route="settings">⚙ <span>Настройки</span></button></div>';
 }
 function faceitAppPlayerColumnMarkup(){
  const id=state.myPlayerId||state.profileTargetId,p=id?player(id):null;
@@ -238,7 +238,7 @@ function faceitAppPlayerColumnMarkup(){
   '<div class="faceit-route-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
   '<h2>'+esc(p.display_name)+'</h2><div class="faceit-route-elo"><span>CS2 ELO</span><b>'+fmt(elo,0)+'</b></div>'+
   '<div class="faceit-route-player-meta"><span>@'+esc(id)+'</span><span>'+profileMatchesForPlayer(id).length+' матчей</span></div>'+
-  '<button type="button" data-app-route="profile">ОТКРЫТЬ ПРОФИЛЬ</button>'+
+  '<button type="button" data-app-route="profile" '+(state.tab==='profile'?'aria-current="page" ':'')+'>ОТКРЫТЬ ПРОФИЛЬ</button>'+
   '</div></aside>';
 }
 function bindAppShell(root){
