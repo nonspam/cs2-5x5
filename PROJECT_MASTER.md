@@ -91,3 +91,7 @@ Static map of existing SPA routes, modal workflows, account/admin features and k
 ## Security and operations
 
 DEV Supabase security/performance findings and recommended hardening work are documented in [the security audit](docs/FACEIT_V2_SECURITY_AUDIT_2026-11-11.md). Intentional RLS-deny patterns and guarded admin RPCs must not be weakened just to silence generic advisor warnings.
+
+## Database reproducibility
+
+DEV's applied migration ledger currently does not match the SQL migration files tracked on `faceit-dev`. Do not run new schema migrations or reset/recreate environments until this is reconciled. See [the migration drift report](docs/FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md).

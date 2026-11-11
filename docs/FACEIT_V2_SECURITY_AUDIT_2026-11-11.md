@@ -103,14 +103,19 @@ Do not drop these based on a single usage snapshot. Some support FK maintenance,
 - No rows were returned by the available `function_edge_logs` query for the inspected window. This is not proof that the function has never errored; it only means no matching rows were available in that source/window.
 - No schema/data/Auth/Storage changes were made in this audit.
 
+## Migration reproducibility blocker
+
+The live DEV migration ledger does not match the SQL files tracked in the repository, and the live `public.my_player_account` view is not represented in tracked SQL. Do not apply the grant-tightening or FK-index recommendations until migration history is reconciled. See [the migration drift report](FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md).
+
 ## Recommended next work
 
-1. Add a migration to narrow grants on `public.my_player_account` (after migration creation workflow is available).
-2. Add indexes for `player_account_invites.created_by` and `claimed_by`.
-3. Enable leaked-password protection in DEV Auth settings and test registration/password change.
-4. Add regression checks for admin RPC denial to non-admin authenticated users and acceptance for the configured admin.
-5. Keep intentional no-policy RLS findings documented; do not add blanket policies.
-6. Re-run advisors after the eventual migration and Auth setting change.
+1. Reconcile missing/mismatched applied migration files and add the untracked view definition to migration history.
+2. Add a migration to narrow grants on `public.my_player_account` (after migration creation workflow is available).
+3. Add indexes for `player_account_invites.created_by` and `claimed_by`.
+4. Enable leaked-password protection in DEV Auth settings and test registration/password change.
+5. Add regression checks for admin RPC denial to non-admin authenticated users and acceptance for the configured admin.
+6. Keep intentional no-policy RLS findings documented; do not add blanket policies.
+7. Re-run advisors after the eventual migration and Auth setting change.
 
 ## Sources within the project
 

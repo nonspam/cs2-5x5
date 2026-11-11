@@ -158,3 +158,11 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - `player_account_invites.created_by` and `claimed_by` FKs lack indexes; recommend a migration. Unused-index advisor findings are informational and should not trigger automatic drops.
 - Public state scan found no email-like values, auth identifiers, or password/token fields. Storage bucket public read is paired with own-UID folder write/update/delete policies.
 - No database, Auth, Storage, grants, policies or migration writes were made. Full findings: `docs/FACEIT_V2_SECURITY_AUDIT_2026-11-11.md`.
+
+
+## 2026-11-11 — DEV migration drift
+
+- Compared all 10 DEV migration ledger entries against every SQL file on `faceit-dev`. Several applied 14-digit migrations have no exact tracked file; three DEV helper SQL files use 8-digit prefixes and do not match the ledger versions. GitHub path history did not recover missing migration files.
+- Live `public.my_player_account` view is absent from all tracked SQL files. It is `security_invoker=true` and filters by `auth.uid()`, but its broad grants were noted in the security audit.
+- Do not run further schema migrations or recreate/reset environments until missing SQL is recovered from an authoritative source and the view is represented in migration history. Do not fabricate historical migration contents.
+- Report: `docs/FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md`.

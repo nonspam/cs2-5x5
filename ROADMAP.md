@@ -3,6 +3,7 @@
 - [x] Restore the last full runtime snapshot on `faceit-dev`.
 - [x] Integrate existing routes into a shared profile-inspired shell prototype (visuals remain provisional).
 - [x] Perform read-only runtime, Supabase security and data integrity audits: [security audit](docs/FACEIT_V2_SECURITY_AUDIT_2026-11-11.md).
+- [x] Identify DEV migration history drift; reconciliation is a prerequisite before further schema migrations: [migration drift report](docs/FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md).
 - [x] Inventory route and modal/workflow behavior from source: [route inventory](docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md).
 - [x] Verify the current DEV dataset and series aggregate parity; document unresolved ELO rules.
 - [x] Fix DEV Edge validation for blank optional dates and `manual_edit` provenance; deploy `cs2-admin` v3 to DEV only.
