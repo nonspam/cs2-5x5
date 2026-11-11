@@ -133,7 +133,7 @@ test('profileSummary keeps match-level winrate separate from map-level record wi
   assert.equal(result.wins, 1);
   assert.equal(result.losses, 1);
   assert.equal(result.draws, 1);
-  assert.equal(result.winrate, 100 / 3);
+  assert.ok(Math.abs(result.winrate - 100 / 3) < 1e-12);
   assert.equal(result.maps, 5);
   assert.equal(result.k, 62);
   assert.equal(result.d, 62);
