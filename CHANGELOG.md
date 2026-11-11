@@ -1008,3 +1008,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:54:57+03:00 — test: define profile winrate as match-level metric
+
+- Commit: 191f800a710d146a7b41199b81e0db978e0819c4
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
