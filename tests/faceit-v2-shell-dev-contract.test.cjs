@@ -73,10 +73,10 @@ test('Track is not exposed as a completed shell route', () => {
 });
 
 test('every inline click/change handler resolves to a declared runtime function', () => {
-  const expressions = [...app.matchAll(/\\bon(?:click|change)\\s*=\\s*["']([^"']+)["']/g)].map(match => match[1]);
-  const handlerNames = [...new Set(expressions.map(expression => expression.match(/^\\s*([A-Za-z_$][\\w$]*)\\s*\\(/)?.[1]).filter(Boolean))];
-  const functionNames = new Set([...app.matchAll(/\\b(?:async\\s+)?function\\s+([A-Za-z_$][\\w$]*)\\s*\\(/g)].map(match => match[1]));
-  const variableNames = new Set([...app.matchAll(/\\b(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*=/g)].map(match => match[1]));
+  const expressions = [...app.matchAll(/\bon(?:click|change)\s*=\s*["']([^"']+)["']/g)].map(match => match[1]);
+  const handlerNames = [...new Set(expressions.map(expression => expression.match(/^\s*([A-Za-z_$][\w$]*)\s*\(/)?.[1]).filter(Boolean))];
+  const functionNames = new Set([...app.matchAll(/\b(?:async\s+)?function\s+([A-Za-z_$][\w$]*)\s*\(/g)].map(match => match[1]));
+  const variableNames = new Set([...app.matchAll(/\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=/g)].map(match => match[1]));
   const unresolved = handlerNames.filter(name => !functionNames.has(name) && !variableNames.has(name));
   assert.deepEqual(unresolved, [], `unresolved inline handlers: ${unresolved.join(', ')}`);
   assert.ok(handlerNames.length >= 50, 'the source scan should cover the existing inline handler surface');
