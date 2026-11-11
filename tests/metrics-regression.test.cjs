@@ -118,3 +118,24 @@ test('recordWinRate preserves map-level denominator and correctly scopes format/
   assert.deepEqual(fn('p1', 'map', 'mirage'), { played: 3, wins: 2, rate: 2/3 });
   assert.deepEqual(fn('p1', 'match'), { played: 2, wins: 2, rate: 1 });
 });
+
+test('profileSummary keeps match-level winrate separate from map-level record winrate', () => {
+  const start = app.indexOf('function profileSummary(');
+  const end = app.indexOf('\nconst APP_ROUTE_IDS=', start);
+  assert.ok(start >= 0 && end > start);
+  const summarize = Function('return (' + app.slice(start, end).trim() + ')')();
+  const result = summarize([
+    { result: 'WIN', hasStats: true, k: 30, d: 20, a: 8, mapCount: 2 },
+    { result: 'LOSS', hasStats: true, k: 20, d: 30, a: 6, mapCount: 2 },
+    { result: 'DRAW', hasStats: true, k: 12, d: 12, a: 4, mapCount: 1 }
+  ]);
+  assert.equal(result.matches, 3);
+  assert.equal(result.wins, 1);
+  assert.equal(result.losses, 1);
+  assert.equal(result.draws, 1);
+  assert.equal(result.winrate, 100 / 3);
+  assert.equal(result.maps, 5);
+  assert.equal(result.k, 62);
+  assert.equal(result.d, 62);
+  assert.equal(result.kd, 1);
+});
