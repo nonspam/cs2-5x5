@@ -1,0 +1,1201 @@
+{
+  "version": "v3",
+  "matches": [
+    {
+      "match_id": "match_001",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3   0:2 mirage-dust2",
+      "map_ids": [
+        "map_001",
+        "map_002"
+      ],
+      "series_score": "0:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "пяточки",
+        "vorenxy",
+        "gletcher",
+        "эгоист",
+        "bigchungus"
+      ],
+      "team_b": [
+        "Patr1k",
+        "donater"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "Romanchestr",
+        "пяточки",
+        "vorenxy",
+        "gletcher",
+        "эгоист",
+        "bigchungus",
+        "Patr1k",
+        "donater"
+      ]
+    },
+    {
+      "match_id": "match_002",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:0    mirage-inferno",
+      "map_ids": [
+        "map_003",
+        "map_004"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "эгоист",
+        "vorenxy",
+        "пяточки",
+        "Patr1k",
+        "donater"
+      ],
+      "team_b": [
+        "bigchungus",
+        "gletcher",
+        "подушка пердушка"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "Romanchestr",
+        "эгоист",
+        "vorenxy",
+        "пяточки",
+        "Patr1k",
+        "donater",
+        "bigchungus",
+        "gletcher",
+        "подушка пердушка"
+      ]
+    },
+    {
+      "match_id": "match_003",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 1:1    mirage-anubis",
+      "map_ids": [
+        "map_005",
+        "map_006"
+      ],
+      "series_score": "1:1",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "эгоист",
+        "пяточки",
+        "bigchungus",
+        "gletcher",
+        "vorenxy"
+      ],
+      "team_b": [
+        "donater",
+        "подушка пердушка",
+        "Patr1k"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "эгоист",
+        "пяточки",
+        "bigchungus",
+        "gletcher",
+        "vorenxy",
+        "donater",
+        "подушка пердушка",
+        "Patr1k"
+      ]
+    },
+    {
+      "match_id": "match_004",
+      "source_kind": "detailed",
+      "format": "BO1",
+      "header": "bo1     train",
+      "map_ids": [
+        "map_007"
+      ],
+      "series_score": "1:0",
+      "series_stats_available": false,
+      "series_score_source": "derived_from_map_score",
+      "team_a": [
+        "gletcher",
+        "bigchungus",
+        "пяточки",
+        "donater",
+        "эгоист"
+      ],
+      "team_b": [
+        "Patr1k",
+        "vorenxy"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "bigchungus",
+        "пяточки",
+        "donater",
+        "эгоист",
+        "Patr1k",
+        "vorenxy"
+      ]
+    },
+    {
+      "match_id": "match_005",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 0:2    dus2-mirage",
+      "map_ids": [
+        "map_008",
+        "map_009"
+      ],
+      "series_score": "0:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "эгоист",
+        "vorenxy",
+        "donater",
+        "Patr1k",
+        "пяточки"
+      ],
+      "team_b": [
+        "gletcher",
+        "подушка пердушка"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "эгоист",
+        "vorenxy",
+        "donater",
+        "Patr1k",
+        "пяточки",
+        "gletcher",
+        "подушка пердушка"
+      ]
+    },
+    {
+      "match_id": "match_006",
+      "source_kind": "detailed",
+      "format": "BO1",
+      "header": "bo1   ancient",
+      "map_ids": [
+        "map_010"
+      ],
+      "series_score": "1:0",
+      "series_stats_available": false,
+      "series_score_source": "derived_from_map_score",
+      "team_a": [
+        "Patr1k",
+        "подушка пердушка",
+        "gletcher",
+        "donater",
+        "пяточки"
+      ],
+      "team_b": [
+        "эгоист",
+        "vorenxy"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "Patr1k",
+        "подушка пердушка",
+        "gletcher",
+        "donater",
+        "пяточки",
+        "эгоист",
+        "vorenxy"
+      ]
+    },
+    {
+      "match_id": "match_007",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 1:2   mirage-mirage-dust2",
+      "map_ids": [
+        "map_011",
+        "map_012",
+        "map_013"
+      ],
+      "series_score": "1:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "bigchungus",
+        "vorenxy",
+        "Patr1k",
+        "gletcher",
+        "donater"
+      ],
+      "team_b": [
+        "подушка пердушка",
+        "пяточки",
+        "эгоист"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "bigchungus",
+        "vorenxy",
+        "Patr1k",
+        "gletcher",
+        "donater",
+        "подушка пердушка",
+        "пяточки",
+        "эгоист"
+      ]
+    },
+    {
+      "match_id": "match_008",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 1:2   dust2-inferno-mirage",
+      "map_ids": [
+        "map_014",
+        "map_015",
+        "map_016"
+      ],
+      "series_score": "1:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "эгоист",
+        "vorenxy",
+        "Patr1k",
+        "подушка пердушка",
+        "пяточки"
+      ],
+      "team_b": [
+        "donater",
+        "gletcher"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "эгоист",
+        "vorenxy",
+        "Patr1k",
+        "подушка пердушка",
+        "пяточки",
+        "donater",
+        "gletcher"
+      ]
+    },
+    {
+      "match_id": "match_009",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:0 Anubis-dust2",
+      "map_ids": [
+        "map_017",
+        "map_018"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "vorenxy",
+        "gletcher",
+        "donater",
+        "эгоист",
+        "пяточки"
+      ],
+      "team_b": [
+        "подушка пердушка",
+        "Patr1k"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "vorenxy",
+        "gletcher",
+        "donater",
+        "эгоист",
+        "пяточки",
+        "подушка пердушка",
+        "Patr1k"
+      ]
+    },
+    {
+      "match_id": "match_010",
+      "source_kind": "detailed",
+      "format": "BO1",
+      "header": "bo1 mirage",
+      "map_ids": [
+        "map_019"
+      ],
+      "series_score": "1:0",
+      "series_stats_available": false,
+      "series_score_source": "derived_from_map_score",
+      "team_a": [
+        "gletcher",
+        "Patr1k",
+        "подушка пердушка",
+        "donater",
+        "vorenxy"
+      ],
+      "team_b": [
+        "эгоист"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "Patr1k",
+        "подушка пердушка",
+        "donater",
+        "vorenxy",
+        "эгоист"
+      ]
+    },
+    {
+      "match_id": "match_011",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:0   Anubis-dust2",
+      "map_ids": [
+        "map_020",
+        "map_021"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "donater",
+        "bigchungus",
+        "эгоист",
+        "vorenxy"
+      ],
+      "team_b": [
+        "Patr1k",
+        "пяточки"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "Romanchestr",
+        "gletcher",
+        "donater",
+        "bigchungus",
+        "эгоист",
+        "vorenxy",
+        "Patr1k",
+        "пяточки"
+      ]
+    },
+    {
+      "match_id": "match_012",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 1:2   vertigo-overpass-nuke",
+      "map_ids": [
+        "map_022",
+        "map_023",
+        "map_024"
+      ],
+      "series_score": "1:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "эгоист",
+        "bigchungus",
+        "пяточки",
+        "vorenxy",
+        "donater"
+      ],
+      "team_b": [
+        "Patr1k",
+        "gletcher"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "Romanchestr",
+        "эгоист",
+        "bigchungus",
+        "пяточки",
+        "vorenxy",
+        "donater",
+        "Patr1k",
+        "gletcher"
+      ]
+    },
+    {
+      "match_id": "match_013",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 1:2  mirage-dust-Anubis",
+      "map_ids": [
+        "map_025",
+        "map_026",
+        "map_027"
+      ],
+      "series_score": "1:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "пяточки",
+        "bigchungus",
+        "donater",
+        "vorenxy"
+      ],
+      "team_b": [
+        "Patr1k"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "пяточки",
+        "bigchungus",
+        "Romanchestr",
+        "donater",
+        "vorenxy",
+        "Patr1k"
+      ]
+    },
+    {
+      "match_id": "match_014",
+      "source_kind": "detailed",
+      "format": "BO1",
+      "header": "bo1 0:1  inferno",
+      "map_ids": [
+        "map_028"
+      ],
+      "series_score": "0:1",
+      "series_stats_available": false,
+      "series_score_source": "derived_from_map_score",
+      "team_a": [
+        "эгоист",
+        "vorenxy",
+        "Patr1k",
+        "donater",
+        "gletcher"
+      ],
+      "team_b": [
+        "пяточки"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "эгоист",
+        "vorenxy",
+        "Patr1k",
+        "donater",
+        "gletcher",
+        "пяточки"
+      ]
+    },
+    {
+      "match_id": "match_015",
+      "source_kind": "detailed",
+      "format": "BO1",
+      "header": "bo1 0:1 mirage",
+      "map_ids": [
+        "map_029"
+      ],
+      "series_score": "0:1",
+      "series_stats_available": false,
+      "series_score_source": "derived_from_map_score",
+      "team_a": [
+        "gletcher",
+        "bigchungus",
+        "эгоист",
+        "пяточки",
+        "donater"
+      ],
+      "team_b": [
+        "vorenxy",
+        "подушка пердушка",
+        "Patr1k"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "bigchungus",
+        "эгоист",
+        "пяточки",
+        "donater",
+        "vorenxy",
+        "подушка пердушка",
+        "Patr1k"
+      ]
+    },
+    {
+      "match_id": "match_016",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 0:2   anubis-mirage",
+      "map_ids": [
+        "map_030",
+        "map_031"
+      ],
+      "series_score": "0:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "эгоист",
+        "пяточки",
+        "Patr1k",
+        "gletcher",
+        "bigchungus"
+      ],
+      "team_b": [
+        "vorenxy",
+        "donater"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "эгоист",
+        "пяточки",
+        "Patr1k",
+        "gletcher",
+        "bigchungus",
+        "vorenxy",
+        "donater"
+      ]
+    },
+    {
+      "match_id": "match_017",
+      "source_kind": "detailed",
+      "format": "BO1",
+      "header": "bo1    1:0   mirage",
+      "map_ids": [
+        "map_032"
+      ],
+      "series_score": "1:0",
+      "series_stats_available": false,
+      "series_score_source": "derived_from_map_score",
+      "team_a": [
+        "gletcher",
+        "donater",
+        "Patr1k",
+        "эгоист",
+        "DaDa_VoVa"
+      ],
+      "team_b": [
+        "пяточки",
+        "подушка пердушка"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "donater",
+        "Patr1k",
+        "эгоист",
+        "DaDa_VoVa",
+        "пяточки",
+        "подушка пердушка"
+      ]
+    },
+    {
+      "match_id": "match_018",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3      2:0    mirage - nuke",
+      "map_ids": [
+        "map_033",
+        "map_034"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "donater",
+        "Patr1k",
+        "подушка пердушка",
+        "эгоист"
+      ],
+      "team_b": [
+        "пяточки"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "donater",
+        "Patr1k",
+        "подушка пердушка",
+        "Romanchestr",
+        "эгоист",
+        "FLAFF1X",
+        "пяточки"
+      ]
+    },
+    {
+      "match_id": "match_019",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3  2:0    nuke-dust2",
+      "map_ids": [
+        "map_035",
+        "map_036"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "vorenxy",
+        "эгоист",
+        "подушка пердушка",
+        "пяточки"
+      ],
+      "team_b": [
+        "donater",
+        "Patr1k"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "vorenxy",
+        "эгоист",
+        "подушка пердушка",
+        "пяточки",
+        "Romanchestr",
+        "donater",
+        "Patr1k"
+      ]
+    },
+    {
+      "match_id": "match_020",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 0:2   mirage-nuke",
+      "map_ids": [
+        "map_037",
+        "map_038"
+      ],
+      "series_score": "0:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "пяточки",
+        "дядя",
+        "эгоист",
+        "DaDa_VoVa"
+      ],
+      "team_b": [
+        "donater",
+        "подушка пердушка",
+        "Patr1k",
+        "gamiersanek"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "Romanchestr",
+        "gletcher",
+        "пяточки",
+        "дядя",
+        "эгоист",
+        "DaDa_VoVa",
+        "donater",
+        "подушка пердушка",
+        "Patr1k",
+        "gamiersanek"
+      ]
+    },
+    {
+      "match_id": "match_021",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:0       inferno-anubis",
+      "map_ids": [
+        "map_039",
+        "map_040"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "DaDa_VoVa",
+        "эгоист",
+        "vorenxy",
+        "Patr1k"
+      ],
+      "team_b": [
+        "gamiersanek",
+        "donater"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "DaDa_VoVa",
+        "эгоист",
+        "vorenxy",
+        "Patr1k",
+        "gamiersanek",
+        "donater",
+        "Romanchestr"
+      ]
+    },
+    {
+      "match_id": "match_022",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:0    dust2-anubis",
+      "map_ids": [
+        "map_041",
+        "map_042"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "подушка пердушка",
+        "vorenxy",
+        "DaDa_VoVa",
+        "дядя"
+      ],
+      "team_b": [
+        "donater",
+        "Patr1k",
+        "пяточки",
+        "эгоист",
+        "gamiersanek"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "подушка пердушка",
+        "vorenxy",
+        "DaDa_VoVa",
+        "дядя",
+        "donater",
+        "Patr1k",
+        "пяточки",
+        "эгоист",
+        "gamiersanek"
+      ]
+    },
+    {
+      "match_id": "match_023",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 1:2    nuke-ancient-mirage",
+      "map_ids": [
+        "map_043",
+        "map_044",
+        "map_045"
+      ],
+      "series_score": "1:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "дядя",
+        "gamiersanek",
+        "эгоист",
+        "пяточки",
+        "DaDa_VoVa"
+      ],
+      "team_b": [
+        "gletcher",
+        "donater",
+        "Patr1k",
+        "vorenxy",
+        "подушка пердушка"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "дядя",
+        "gamiersanek",
+        "эгоист",
+        "пяточки",
+        "DaDa_VoVa",
+        "gletcher",
+        "donater",
+        "Patr1k",
+        "vorenxy",
+        "подушка пердушка"
+      ]
+    },
+    {
+      "match_id": "match_024",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:1   cache-overpass-anubis",
+      "map_ids": [
+        "map_046",
+        "map_047",
+        "map_048"
+      ],
+      "series_score": "2:1",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "donater",
+        "gamiersanek",
+        "Patr1k",
+        "эгоист"
+      ],
+      "team_b": [
+        "подушка пердушка",
+        "DaDa_VoVa",
+        "пяточки",
+        "дядя"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "donater",
+        "gamiersanek",
+        "Patr1k",
+        "эгоист",
+        "подушка пердушка",
+        "DaDa_VoVa",
+        "пяточки",
+        "дядя"
+      ]
+    },
+    {
+      "match_id": "match_025",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:0  dust2-nuke",
+      "map_ids": [
+        "map_049",
+        "map_050"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "подушка пердушка",
+        "DaDa_VoVa",
+        "gamiersanek",
+        "donater"
+      ],
+      "team_b": [
+        "эгоист",
+        "дядя",
+        "Patr1k",
+        "vorenxy"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "подушка пердушка",
+        "DaDa_VoVa",
+        "gamiersanek",
+        "donater",
+        "эгоист",
+        "дядя",
+        "Patr1k",
+        "vorenxy"
+      ]
+    },
+    {
+      "match_id": "match_026",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3  0:2    mirage-inferno",
+      "map_ids": [
+        "map_051",
+        "map_052"
+      ],
+      "series_score": "0:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "Patr1k",
+        "эгоист",
+        "дядя",
+        "vorenxy"
+      ],
+      "team_b": [
+        "donater",
+        "пяточки",
+        "gamiersanek",
+        "подушка пердушка",
+        "DaDa_VoVa"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "Patr1k",
+        "эгоист",
+        "дядя",
+        "vorenxy",
+        "donater",
+        "пяточки",
+        "gamiersanek",
+        "подушка пердушка",
+        "DaDa_VoVa"
+      ]
+    },
+    {
+      "match_id": "match_027",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:1   dust2-nuke-anubis",
+      "map_ids": [
+        "map_053",
+        "map_054",
+        "map_055"
+      ],
+      "series_score": "2:1",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "vorenxy",
+        "Patr1k",
+        "gamiersanek",
+        "donater"
+      ],
+      "team_b": [
+        "DaDa_VoVa",
+        "дядя",
+        "пяточки",
+        "подушка пердушка",
+        "эгоист"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "vorenxy",
+        "Patr1k",
+        "gamiersanek",
+        "donater",
+        "DaDa_VoVa",
+        "дядя",
+        "пяточки",
+        "подушка пердушка",
+        "эгоист"
+      ]
+    },
+    {
+      "match_id": "match_028",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3 2:0  cache-nuke",
+      "map_ids": [
+        "map_056",
+        "map_057"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "bigchungus",
+        "donater",
+        "gamiersanek",
+        "Patr1k"
+      ],
+      "team_b": [
+        "эгоист",
+        "подушка пердушка",
+        "DaDa_VoVa",
+        "пяточки",
+        "дядя"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "bigchungus",
+        "donater",
+        "gamiersanek",
+        "Patr1k",
+        "эгоист",
+        "подушка пердушка",
+        "DaDa_VoVa",
+        "пяточки",
+        "дядя"
+      ]
+    },
+    {
+      "match_id": "match_029",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3  1:1    nuke-anubis",
+      "map_ids": [
+        "map_058",
+        "map_059"
+      ],
+      "series_score": "1:1",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "Patr1k",
+        "gamiersanek",
+        "donater",
+        "bigchungus"
+      ],
+      "team_b": [
+        "эгоист",
+        "подушка пердушка",
+        "дядя",
+        "DaDa_VoVa",
+        "пяточки"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "Patr1k",
+        "gamiersanek",
+        "donater",
+        "bigchungus",
+        "эгоист",
+        "подушка пердушка",
+        "дядя",
+        "DaDa_VoVa",
+        "пяточки"
+      ]
+    },
+    {
+      "match_id": "match_030",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3   2:0    mirage-nuke",
+      "map_ids": [
+        "map_060",
+        "map_061"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "bigchungus",
+        "Patr1k",
+        "donater",
+        "gamiersanek"
+      ],
+      "team_b": [
+        "пяточки",
+        "дядя",
+        "эгоист",
+        "подушка пердушка"
+      ],
+      "team_assignment_source": "historical_source_order",
+      "team_assignment_note": "Восстановлено из порядка игроков исходной записи; неполный состав сохранён как есть.",
+      "player_ids": [
+        "gletcher",
+        "bigchungus",
+        "Patr1k",
+        "donater",
+        "gamiersanek",
+        "пяточки",
+        "дядя",
+        "эгоист",
+        "подушка пердушка"
+      ]
+    },
+    {
+      "match_id": "match_031",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3    2:0  nuke-mirage",
+      "map_ids": [
+        "map_062",
+        "map_063"
+      ],
+      "series_score": "2:0",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "donater",
+        "bigchungus",
+        "gamiersanek",
+        "Patr1k"
+      ],
+      "team_b": [
+        "дядя",
+        "эгоист",
+        "Romanchestr",
+        "FLAFF1X",
+        "подушка пердушка"
+      ],
+      "team_assignment_source": "source_order_with_full_5v5",
+      "team_assignment_note": "Команды восстановлены по 5 игрокам до/после счёта на первой карте исходной записи.",
+      "player_ids": [
+        "gletcher",
+        "donater",
+        "bigchungus",
+        "gamiersanek",
+        "Patr1k",
+        "дядя",
+        "эгоист",
+        "Romanchestr",
+        "FLAFF1X",
+        "подушка пердушка"
+      ]
+    },
+    {
+      "match_id": "match_032",
+      "source_kind": "detailed",
+      "format": "BO3",
+      "header": "bo3    1:2   nuke-dust2-mirage",
+      "map_ids": [
+        "map_066",
+        "map_065",
+        "map_064"
+      ],
+      "series_score": "1:2",
+      "series_stats_available": false,
+      "series_score_source": "explicit_header",
+      "team_a": [
+        "gletcher",
+        "bigchungus",
+        "Romanchestr",
+        "дядя",
+        "эгоист"
+      ],
+      "team_b": [
+        "donater",
+        "пяточки",
+        "FLAFF1X",
+        "Patr1k",
+        "подушка пердушка"
+      ],
+      "team_assignment_source": "source_order_with_full_5v5",
+      "team_assignment_note": "Команды восстановлены по 5 игрокам до/после счёта на первой карте исходной записи.",
+      "player_ids": [
+        "gletcher",
+        "bigchungus",
+        "Romanchestr",
+        "дядя",
+        "эгоист",
+        "donater",
+        "пяточки",
+        "FLAFF1X",
+        "Patr1k",
+        "подушка пердушка"
+      ]
+    }
+  ]
+}

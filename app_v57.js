@@ -1,0 +1,1241 @@
+const DB={players:[],maps:[],matches:[],aliases:{}};
+const BASE={players:[],maps:[],matches:[],aliases:{}};
+const state={tab:'home',seasonView:'all',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,profileTargetId:null,accountUser:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,profileSection:'overview',profileWindow:20,accountMenuOpen:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
+let renderEpoch=0;let detailRowsCacheEpoch=-1;const detailRowsCache=new Map();
+let SERVER_AUDIT=[]; let SERVER_EVENT_SOURCE=null; let SERVER_REFRESH_TIMER=null; let SERVER_REFRESH_SEQ=0;
+const $=s=>document.querySelector(s);
+function toast(message){let box=document.getElementById('toast');if(!box){box=document.createElement('div');box.id='toast';box.className='toast';document.body.appendChild(box)}box.textContent=String(message||'');box.classList.add('show');clearTimeout(window.__cs2ToastTimer);window.__cs2ToastTimer=setTimeout(()=>box.classList.remove('show'),2600)}
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const fmt=(x,n=2)=>Number.isFinite(x)?x.toFixed(n):'—';
+const metricLabels={kd:'K/D',diff:'+/−',kills:'K',deaths:'D',assists:'A',avg:'AVG',impact:'Импакт',index:'Индекс игрока',form:'Форма',stability:'Стабильность'};
+const mapKey=name=>String(name||'').trim().toLowerCase();
+// IMAGE FOUNDATION — proven V46 source chain. Keep this deliberately simple.
+const mapAsset=name=>`assets/maps/${encodeURIComponent(mapKey(name))}.svg`;
+const mapRemoteAsset=name=>`https://raw.githubusercontent.com/ghostcap-gaming/cs2-map-images/main/cs2/de_${encodeURIComponent(mapKey(name))}.png`;
+const mapLogoAsset=name=>`assets/maps/logos/${encodeURIComponent(mapKey(name))}.png`;
+const mapIconRemoteAsset=name=>`https://raw.githubusercontent.com/MurkyYT/cs2-map-icons/main/images/de_${encodeURIComponent(mapKey(name))}.png`;
+// Prefer the current high-resolution Valve-extracted map icon; keep local legacy logo only as a fallback.
+const mapLogoSrc=name=>mapIconRemoteAsset(name);
+const mapBg=name=>`linear-gradient(180deg,rgba(3,9,16,.04),rgba(3,9,16,.72)),url('${mapRemoteAsset(name)}'),url('${mapAsset(name)}')`;
+function preloadMapPhotos(){}
+function migrateLegacyStorage(){const pairs=[['cs5_base_override','cs2_analytics_base_override'],['cs5_additions','cs2_analytics_additions'],['cs5_audit_log','cs2_analytics_audit_log']];for(const [oldKey,newKey] of pairs){try{if(localStorage.getItem(newKey)===null){const old=localStorage.getItem(oldKey);if(old!==null)localStorage.setItem(newKey,old)}if(localStorage.getItem(newKey)!==null)localStorage.removeItem(oldKey)}catch{}}}
+
+const trendMarkup=(value,label='')=>{if(value==null||value==='')return `<em class="trend-flat">— ${esc(label)}</em>`;const n=Number(value);if(!Number.isFinite(n))return `<em class="trend-flat">— ${esc(label)}</em>`;const up=n>=0;return `<em class="${up?'trend-up':'trend-down'}">${up?'↑':'↓'} ${fmt(Math.abs(n),1)}${label?` ${esc(label)}`:''}</em>`};
+const mapThumb=(name,size='')=>`<div class="map-thumb ${size}" aria-label="${esc(name||'Без карты')}"><img class="map-thumb-photo" src="${mapRemoteAsset(name)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapAsset(name)}'"><img class="map-logo-mini" src="${mapLogoSrc(name)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapLogoAsset(name)}'"></div>`;
+
+async function loadData(name){try{const r=await fetch('data/'+name+'.json',{cache:'no-store'});if(!r.ok)throw Error(`data/${name}.json: HTTP ${r.status}`);return r.json()}catch(e){const embedded=window.CS2_EMBEDDED_DATA?.[name];if(embedded)return embedded;throw e}}
+async function loadServerState(){if(window.CS2Cloud?.configured){try{return await CS2Cloud.load()}catch(e){state.storageWarning='Облачная база пока недоступна: '+(e?.message||'ошибка подключения') ;return null}}if(location.protocol!=='http:'&&location.protocol!=='https:')return null;try{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)return null;const x=await r.json();if(!validateBase(x))throw Error('Серверная база не прошла проверку');return x}catch{return null}}
+function applyLoadedState(candidate,audit=[]){BASE.players=JSON.parse(JSON.stringify(candidate.players));BASE.maps=JSON.parse(JSON.stringify(candidate.maps));BASE.matches=JSON.parse(JSON.stringify(candidate.matches));BASE.aliases=JSON.parse(JSON.stringify(candidate.aliases));DB.players=JSON.parse(JSON.stringify(candidate.players));DB.maps=JSON.parse(JSON.stringify(candidate.maps));DB.matches=JSON.parse(JSON.stringify(candidate.matches));DB.aliases=JSON.parse(JSON.stringify(candidate.aliases));SERVER_AUDIT=Array.isArray(candidate.audit)?JSON.parse(JSON.stringify(candidate.audit)):Array.isArray(audit)?JSON.parse(JSON.stringify(audit)):[];normalizeState();}
+async function load(){
+  try{
+    migrateLegacyStorage();
+    const embedded=window.CS2_EMBEDDED_DATA||{};
+    let candidate=(Array.isArray(embedded.players)&&Array.isArray(embedded.maps)&&Array.isArray(embedded.matches)&&embedded.aliases&&typeof embedded.aliases==='object')
+      ? {players:embedded.players,maps:embedded.maps,matches:embedded.matches,aliases:embedded.aliases}
+      : null;
+    if(!candidate){
+      const [p,m,ma,a]=await Promise.all(['players','maps','matches','aliases'].map(loadData));
+      candidate={players:p.players,maps:m.maps,matches:ma.matches,aliases:a.aliases};
+    }
+    let ov=null;
+    try{ov=JSON.parse(localStorage.getItem('cs2_analytics_base_override')||'null')}catch{ov=null}
+    if(!window.CS2Cloud?.configured&&ov&&Array.isArray(ov.players)&&Array.isArray(ov.maps)&&Array.isArray(ov.matches)&&ov.aliases&&typeof ov.aliases==='object')candidate=ov;
+    if(!validateBase(candidate))throw Error('База не прошла проверку');
+    applyLoadedState(candidate);
+    state.cloudMode=!!window.CS2Cloud?.configured;
+    state.serverSync=state.cloudMode;
+    // Cloud mode is authoritative. Do not replay stale browser-local operations
+    // against the embedded release snapshot; doing so could raise a false
+    // hydration warning even though the live Supabase state is valid.
+    if(!state.cloudMode){
+      hydrate();
+      if(!validateBase(DB))throw Error('Локальные изменения повредили базу');
+    }
+
+    if(!state.cloudMode){
+      // Local/static mode: the validated embedded snapshot is authoritative for this page.
+      render();
+      preloadMapPhotos();
+      if(state.hydrationError)toast(state.hydrationError);else if(state.storageWarning)toast(state.storageWarning);
+      return;
+    }
+
+      // Cloud is authoritative: never render the embedded release snapshot as if it were live.
+      // Keep the page in a loading state until the first cloud read finishes.
+      state.cloudMode=true;
+      state.serverSync=false;
+      // Keep the shell quiet while the first authoritative cloud read is pending.
+      // Do not flash a full-screen synchronization panel on every reload.
+      const [remote,admin]=await Promise.all([
+        loadServerState(),
+        (async()=>{try{return await CS2Cloud.isAdmin()}catch{return false}})()
+      ]);
+      if(!remote)throw Error(state.storageWarning||'Не удалось загрузить актуальные данные из облачной базы. Проверьте подключение и нажмите «Повторить».');
+      if(!validateBase(remote))throw Error('Актуальная облачная база не прошла проверку.');
+      state.serverSync=true;
+      state.serverVersion=remote.updated_at||null;
+      applyLoadedState(remote,remote.audit);
+      state.cloudAdmin=!!admin;
+      state.logged=!!admin;
+      if(window.CS2Cloud?.configured){
+        try{
+          const profileContext=await CS2Cloud.loadProfileContext();
+          state.accountUser=profileContext.user||null;
+          state.myPlayerId=profileContext.playerId||null;
+          state.profileRows=profileContext.profiles||[];
+          state.myProfile=state.profileRows.find(q=>q.player_id===state.myPlayerId)||null;
+          CS2Cloud.subscribeProfiles(async()=>{
+            try{
+              const fresh=await CS2Cloud.loadProfileContext();
+              state.accountUser=fresh.user||null;
+              state.profileRows=fresh.profiles||[];
+              state.myProfile=state.profileRows.find(q=>q.player_id===state.myPlayerId)||null;
+              if(state.tab==='profile')render();
+            }catch(e){console.warn('Profile sync:',e)}
+          });
+        }catch(e){state.profileError=e?.message||'Не удалось загрузить профиль';console.warn('Profile context:',e)}
+      }
+      render();
+      preloadMapPhotos();
+      connectServerEvents();
+  }catch(e){
+    state.bootError=e?.message||'Не удалось загрузить базу';
+    const v=$('#view');
+    if(v)v.innerHTML=`<section class="section"><div class="panel card"><div class="eyebrow">SYSTEM ERROR</div><h2>База не загружена</h2><div class="notice">${esc(state.bootError)}</div><div class="footer-note">Проверь наличие папки data рядом с index.html. Данные не были изменены.</div><button class="btn primary" onclick="location.reload()">ПОВТОРИТЬ</button></div></section>`;
+  }
+}
+async function refreshFromServer(silent=false){if(!state.serverSync)return false;const seq=++SERVER_REFRESH_SEQ;try{const x=window.CS2Cloud?.configured?await CS2Cloud.load():await (async()=>{const r=await fetch('/api/state',{cache:'no-store'});if(!r.ok)throw Error('server unavailable');return r.json()})();if(seq!==SERVER_REFRESH_SEQ)return false;if(!validateBase(x))throw Error('invalid server state');applyLoadedState(x,x.audit);state.serverVersion=x.updated_at||null;render();if(!silent)toast('Данные синхронизированы');return true}catch(e){if(seq===SERVER_REFRESH_SEQ&&!silent)toast('Не удалось синхронизировать данные');return false}}
+function connectServerEvents(){if(!state.serverSync||SERVER_EVENT_SOURCE)return;if(window.CS2Cloud?.configured){CS2Cloud.subscribe(()=>refreshFromServer(true));return}try{SERVER_EVENT_SOURCE=new EventSource('/api/events');SERVER_EVENT_SOURCE.addEventListener('update',()=>refreshFromServer(true));SERVER_EVENT_SOURCE.onerror=()=>{if(SERVER_REFRESH_TIMER)return;SERVER_REFRESH_TIMER=setInterval(()=>refreshFromServer(true),3000)}}catch{SERVER_REFRESH_TIMER=setInterval(()=>refreshFromServer(true),3000)}}
+function hydrate(){let additions=[];try{additions=window.__cs2HydrateAdditions||null}catch{additions=null}if(!Array.isArray(additions)){additions=[];try{const raw=localStorage.getItem('cs2_analytics_additions');if(raw){const parsed=JSON.parse(raw);if(Array.isArray(parsed))additions=parsed;else state.storageWarning='Хранилище cs2_analytics_additions повреждено: ожидается массив. Используется безопасное пустое состояние.'}}catch{state.storageWarning='Хранилище cs2_analytics_additions повреждено: JSON не читается. Используется безопасное пустое состояние.'}}if(!additions.length)return;const snapshot=JSON.parse(JSON.stringify(DB));try{for(const x of additions){if(!x||typeof x!=='object')throw Error('invalid local operation');if(!['map','match','player','aliases','player_patch','match_patch','map_patch','delete_map','delete_match','delete_player'].includes(x.kind))throw Error('unknown local operation');if(x.kind==='map'&&(!x.map||typeof x.map!=='object'))throw Error('map payload missing');if(x.kind==='match'&&(!x.match||typeof x.match!=='object'))throw Error('match payload missing');if(x.kind==='player'&&(!x.player||typeof x.player!=='object'))throw Error('player payload missing');if(x.kind==='aliases'&&(!x.aliases||typeof x.aliases!=='object'||Array.isArray(x.aliases)))throw Error('aliases payload missing');if(['player_patch','match_patch','map_patch'].includes(x.kind)&&(!x.patch||typeof x.patch!=='object'||Array.isArray(x.patch)))throw Error('patch payload missing');if(x.kind==='map'&&x.map)DB.maps.push(x.map);if(x.kind==='match'&&x.match)DB.matches.push(x.match);if(x.kind==='player'&&x.player)DB.players.push(x.player);if(x.kind==='aliases')Object.assign(DB.aliases,x.aliases||{});if(x.kind==='player_patch'){const p=DB.players.find(p=>p.player_id===x.player_id);if(!p)throw Error('player patch target missing');Object.assign(p,x.patch||{})}if(x.kind==='match_patch'){const m=DB.matches.find(m=>m.match_id===x.match_id);if(!m)throw Error('match patch target missing');Object.assign(m,x.patch||{})}if(x.kind==='map_patch'){const m=DB.maps.find(m=>m.map_id===x.map_id);if(!m)throw Error('map patch target missing');Object.assign(m,x.patch||{})}if(x.kind==='delete_map'){DB.maps=DB.maps.filter(m=>m.map_id!==x.map_id)}if(x.kind==='delete_match'){DB.matches=DB.matches.filter(m=>m.match_id!==x.match_id)}if(x.kind==='delete_player'){DB.players=DB.players.filter(p=>p.player_id!==x.player_id);for(const [alias,pid] of Object.entries(DB.aliases)){if(pid===x.player_id)delete DB.aliases[alias]}}}if(!validateBase(DB))throw Error('invalid hydrated base')}catch{DB.players=snapshot.players;DB.maps=snapshot.maps;DB.matches=snapshot.matches;DB.aliases=snapshot.aliases;state.hydrationError='Локальные изменения не применены: обнаружена повреждённая или несовместимая запись. Исходная база сохранена.'}}
+function validateBase(b){if(!b||!Array.isArray(b.players)||!Array.isArray(b.maps)||!Array.isArray(b.matches)||!b.aliases||typeof b.aliases!=='object')return false;try{if(!b||!Array.isArray(b.players)||!Array.isArray(b.maps)||!Array.isArray(b.matches)||!b.aliases||typeof b.aliases!=='object')return false;const uniq=(arr,key)=>{const s=new Set();for(const v of arr){const id=v&&v[key];if(!id||s.has(id))return false;s.add(id)}return true};if(!uniq(b.players,'player_id')||!uniq(b.maps,'map_id')||!uniq(b.matches,'match_id'))return false;if(b.players.some(p=>typeof p.player_id!=='string'||!/^[\p{L}\p{N}_.: -]{1,64}$/u.test(p.player_id)))return false;const pids=new Set(b.players.map(p=>p.player_id)),mids=new Set(b.matches.map(m=>m.match_id)),mapById=new Map(b.maps.map(m=>[m.map_id,m]));const listedMapIds=new Set();for(const m of b.matches)for(const id of (Array.isArray(m.map_ids)?m.map_ids:[])){if(listedMapIds.has(id))return false;listedMapIds.add(id)}for(const mp of b.maps)if(!listedMapIds.has(mp.map_id))return false;for(const [alias,pid] of Object.entries(b.aliases)){if(typeof alias!=='string'||!alias.trim()||typeof pid!=='string'||!pids.has(pid))return false}for(const m of b.maps){if(!mids.has(m.match_id)||!mapById.has(m.map_id))return false;if(!Number.isInteger(Number(m.map_index))||Number(m.map_index)<1)return false;const rows=Array.isArray(m.player_stats)?m.player_stats:[];if(m.stats_available===true&&rows.length===0)return false;if(m.stats_available===false&&rows.length>0)return false;const seen=new Set();for(const st of rows){if(!st||!Number.isFinite(Number(st.kills))||!Number.isFinite(Number(st.deaths))||!Number.isFinite(Number(st.assists)))return false;if(st.player_id!=null&&!pids.has(st.player_id))return false;const key=st.player_id||`raw:${st.raw_name||''}`;if(seen.has(key))return false;seen.add(key)}}for(const m of b.matches){if(!Array.isArray(m.map_ids)||!m.map_ids.length||new Set(m.map_ids).size!==m.map_ids.length)return false;if(m.format==='BO1'&&m.map_ids.length!==1)return false;if(m.format==='BO3'&&(m.map_ids.length<2||m.map_ids.length>3))return false;if(m.format==='BO5'&&(m.map_ids.length<3||m.map_ids.length>5))return false;if(m.format!=='BO1'&&m.format!=='BO3'&&m.format!=='BO5')return false;const ta=Array.isArray(m.team_a)?m.team_a:[],tb=Array.isArray(m.team_b)?m.team_b:[];if(ta.length||tb.length){if(ta.length>5||tb.length>5||(!ta.length&&!tb.length)||new Set([...ta,...tb]).size!==ta.length+tb.length||[...ta,...tb].some(pid=>!pids.has(pid)))return false}for(let i=0;i<m.map_ids.length;i++){const id=m.map_ids[i],mp=mapById.get(id);if(!mp||mp.match_id!==m.match_id||Number(mp.map_index)!==i+1)return false}const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];if(m.source_kind==='compact_bo3'&&sas.length!==10)return false;const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||!Number.isFinite(Number(st.deaths))||!Number.isFinite(Number(st.assists)))return false;if(st.player_id!=null&&!pids.has(st.player_id))return false;const key=st.player_id||`raw:${st.raw_name||''}`;if(seen.has(key))return false;seen.add(key)}}return true}catch{return false}}
+function activeMatches(){return DB.matches.filter(m=>m.archived!==true)}
+function activeMapCount(){const activeIds=new Set(activeMatches().map(m=>m.match_id));return DB.maps.filter(m=>m.archived!==true&&activeIds.has(m.match_id)).length}
+function matchTime(m){const t=Date.parse(m?.played_at||m?.date||m?.created_at||'');return Number.isFinite(t)?t:0}
+function legacyMatchSort(a,b){return matchTime(a)-matchTime(b)||String(a?.match_id||'').localeCompare(String(b?.match_id||''))}
+function seriesOrderSort(a,b){const aid=String(a?.match_id||''),bid=String(b?.match_id||'');const legacy=/^match_(\d+)([a-z]*)$/i,local=/^match_local_(\d+)/i;const am=aid.match(legacy),bm=bid.match(legacy);if(am&&bm)return Number(am[1])-Number(bm[1])||am[2].localeCompare(bm[2])||aid.localeCompare(bid);if(am&&!bm)return -1;if(!am&&bm)return 1;const al=aid.match(local),bl=bid.match(local);if(al&&bl)return Number(al[1])-Number(bl[1])||aid.localeCompare(bid);if(al&&!bl)return -1;if(!al&&bl)return 1;return legacyMatchSort(a,b)}
+function orderedActiveMatches(){return activeMatches().slice().sort(seriesOrderSort)}
+function matchOrder(m){if(!m)return 0;const rows=orderedActiveMatches();let i=rows.findIndex(x=>x?.match_id===m?.match_id);if(i>=0)return i+1;const all=DB.matches.slice().sort(seriesOrderSort);i=all.findIndex(x=>x?.match_id===m?.match_id);return i>=0?i+1:0}
+function mapOrder(m){const match=DB.matches.find(x=>x.match_id===m?.match_id);return [matchOrder(match),Number(m?.map_index||0)];}
+function activeMapNumber(mapOrId){const m=typeof mapOrId==='object'&&mapOrId?mapOrId:null,id=m?.map_id??mapOrId;const activeMatchesIds=new Set(activeMatches().map(x=>x.match_id));const active=DB.maps.filter(x=>x.archived!==true&&activeMatchesIds.has(x.match_id)).slice().sort((a,b)=>matchOrder(DB.matches.find(m=>m.match_id===a.match_id))-matchOrder(DB.matches.find(m=>m.match_id===b.match_id))||Number(a.map_index||0)-Number(b.map_index||0)||String(a.map_id).localeCompare(String(b.map_id)));const i=active.findIndex(x=>x.map_id===id);return i>=0?i+1:null}
+function nextActiveMapNumber(){return activeMapCount()+1}
+function nextSeriesNumber(){return activeMatches().length+1}
+function seriesNumberForMatch(match){if(!match)return null;const rows=orderedActiveMatches();const i=rows.findIndex(x=>x?.match_id===match?.match_id);return i>=0?i+1:null}
+function latestMatch(list=activeMatches()){return list.slice().sort((a,b)=>matchOrder(a)-matchOrder(b)||String(a.match_id).localeCompare(String(b.match_id))).at(-1)||null}
+function matchMaps(match,includeArchived=false){return (match?.map_ids||[]).map(id=>DB.maps.find(x=>x.map_id===id)).filter(Boolean).filter(x=>includeArchived||x.archived!==true)}
+function latestDetailedMap(match){return matchMaps(match).filter(x=>x.stats_available).at(-1)||null}
+function mapScoreText(m){return m?.score&&Number.isFinite(Number(m.score.team_a))&&Number.isFinite(Number(m.score.team_b))?`${m.score.team_a}:${m.score.team_b}`:'—'}
+function formatDuration(value){const n=Number(value);if(!Number.isFinite(n)||n<=0)return '';const mins=Math.round(n),h=Math.floor(mins/60),m=mins%60;return h?`${h} ч${m?` ${m} мин`:''}`:`${m} мин`}
+function timeStamp(value){if(!value)return null;const d=new Date(value);return Number.isFinite(d.getTime())?d:null}
+function dateLabel(value){const d=timeStamp(value);return d?d.toLocaleDateString('ru-RU',{day:'2-digit',month:'long',year:'numeric'}):''}
+function clockLabel(value){const d=timeStamp(value);return d?d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit',hour12:false}):''}
+function shortDateLabel(value){const d=timeStamp(value);return d?d.toLocaleDateString('ru-RU',{day:'2-digit',month:'short'}).replace(/ г\.?$/,''):''}
+function seriesTimeInfo(m){const duration=formatDuration(m?.duration_minutes),end=timeStamp(m?.played_at);if(!duration&&!end)return '';const start=end&&Number(m?.duration_minutes)>0?new Date(end.getTime()-Number(m.duration_minutes)*60000):null;const crossesDay=!!(start&&end&&start.toDateString()!==end.toDateString());let html='<div class="match-time-summary">';if(duration)html+='<div class="match-time-duration"><span>ВРЕМЯ СЕРИИ</span><strong>'+esc(duration)+'</strong></div>';if(end){html+='<div class="match-time-points">';if(start)html+='<div class="match-time-point"><span>НАЧАЛО</span><strong>'+esc(clockLabel(start.toISOString()))+'</strong>'+(crossesDay?'<small>'+esc(shortDateLabel(start.toISOString()))+'</small>':'')+'</div>';html+='<div class="match-time-point"><span>ЗАВЕРШЕНИЕ</span><strong>'+esc(clockLabel(end.toISOString()))+'</strong>'+(crossesDay?'<small>'+esc(shortDateLabel(end.toISOString()))+'</small>':'')+'</div></div>';}return html+'</div>';}
+function durationChip(value){const label=formatDuration(value);return label?`<span class="duration-chip">${esc(label)}</span>`:''}
+function safeJsonArray(key){try{const raw=localStorage.getItem(key);if(!raw)return[];const v=JSON.parse(raw);if(!Array.isArray(v)){state.storageWarning=`Хранилище ${key} повреждено: ожидается массив. Используется безопасное пустое состояние.`;return[]}return v}catch{state.storageWarning=`Хранилище ${key} повреждено: JSON не читается. Используется безопасное пустое состояние.`;return[]}}
+function auditLog(){return state.serverSync?SERVER_AUDIT.slice():safeJsonArray('cs2_analytics_audit_log')}
+function logAudit(action,target,detail={}){const entry={id:'audit_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),action,target,detail};if(state.serverSync){SERVER_AUDIT.push(entry);SERVER_AUDIT=SERVER_AUDIT.slice(-500);return}const log=auditLog();log.push(entry);localStorage.setItem('cs2_analytics_audit_log',JSON.stringify(log.slice(-500)))}
+function additions(){return state.serverSync?[]:safeJsonArray('cs2_analytics_additions')}
+function persistAdditions(a){if(state.serverSync){const xhr=new XMLHttpRequest();xhr.open('POST','/api/commit',false);xhr.setRequestHeader('Content-Type','application/json');xhr.send(JSON.stringify({operations:a.map((op,i)=>({...op,_sync_id:`${Date.now()}_${i}_${Math.random().toString(36).slice(2,8)}`}) )}));if(xhr.status<200||xhr.status>=300)throw Error('server commit failed');return}const next=JSON.stringify(a);const prev=localStorage.getItem('cs2_analytics_additions');try{localStorage.setItem('cs2_analytics_additions',next);if(localStorage.getItem('cs2_analytics_additions')!==next)throw Error('storage verification failed')}catch(e){try{if(prev===null)localStorage.removeItem('cs2_analytics_additions');else localStorage.setItem('cs2_analytics_additions',prev)}catch{};throw e}}
+function persistChange(a,audit){if(state.serverSync){if(window.CS2Cloud?.configured){const entry=audit?{id:'audit_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),action:audit.action,target:audit.target,detail:audit.detail||{}}:null;state.serverBusy=true;CS2Cloud.commit(a,entry).then(data=>{state.serverBusy=false;state.serverVersion=data.updated_at||null;if(entry){SERVER_AUDIT.push(entry);SERVER_AUDIT=SERVER_AUDIT.slice(-500)}}).catch(e=>{state.serverBusy=false;toast('Облачное сохранение не удалось: '+(e?.message||'ошибка'));refreshFromServer(true)});return true}const ops=a.map((op,i)=>({...op,_sync_id:`${Date.now()}_${i}_${Math.random().toString(36).slice(2,8)}`}));const entry=audit?{id:'audit_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),action:audit.action,target:audit.target,detail:audit.detail||{}}:null;const xhr=new XMLHttpRequest();xhr.open('POST','/api/commit',false);xhr.setRequestHeader('Content-Type','application/json');xhr.send(JSON.stringify({operations:ops,audit:entry}));if(xhr.status<200||xhr.status>=300)throw Error('server commit failed');if(entry){SERVER_AUDIT.push(entry);SERVER_AUDIT=SERVER_AUDIT.slice(-500)}return true}const nextAdd=JSON.stringify(a);const prevAdd=localStorage.getItem('cs2_analytics_additions');const prevAudit=localStorage.getItem('cs2_analytics_audit_log');let nextAudit=prevAudit;if(audit){const log=auditLog();log.push({id:'audit_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),action:audit.action,target:audit.target,detail:audit.detail||{}});nextAudit=JSON.stringify(log.slice(-500))}try{localStorage.setItem('cs2_analytics_additions',nextAdd);if(audit)localStorage.setItem('cs2_analytics_audit_log',nextAudit);if(localStorage.getItem('cs2_analytics_additions')!==nextAdd|| (audit&&localStorage.getItem('cs2_analytics_audit_log')!==nextAudit))throw Error('storage verification failed')}catch(e){try{if(prevAdd===null)localStorage.removeItem('cs2_analytics_additions');else localStorage.setItem('cs2_analytics_additions',prevAdd);if(prevAudit===null)localStorage.removeItem('cs2_analytics_audit_log');else localStorage.setItem('cs2_analytics_audit_log',prevAudit)}catch{};throw e}}
+
+async function persistChangeAwait(a,audit){
+  if(state.serverSync&&window.CS2Cloud?.configured){
+    const entry=audit?{id:'audit_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),at:new Date().toISOString(),action:audit.action,target:audit.target,detail:audit.detail||{}}:null;
+    state.serverBusy=true;
+    try{
+      const data=await CS2Cloud.commit(a,entry);
+      state.serverVersion=data.updated_at||null;
+      if(entry){SERVER_AUDIT.push(entry);SERVER_AUDIT=SERVER_AUDIT.slice(-500)}
+      return data;
+    }finally{state.serverBusy=false}
+  }
+  return persistChange(a,audit);
+}
+
+function normalizeState(){const ids=new Set(activePlayers().map(p=>p.player_id));state.selected=[...new Set(state.selected.filter(id=>ids.has(id)))];state.teamA=[...new Set(state.teamA.filter(id=>ids.has(id)))].slice(0,5);state.teamB=[...new Set(state.teamB.filter(id=>ids.has(id)&&!state.teamA.includes(id)))].slice(0,5)}
+function activePlayers(){return DB.players.filter(p=>p.is_active!==false&&p.deleted_permanently!==true)}
+function player(id){return DB.players.find(p=>p.player_id===id)}
+function playerName(id){return player(id)?.display_name||id}
+function detailMapsFor(id){const activeIds=new Set(activeMatches().map(x=>x.match_id));return DB.maps.filter(m=>{if(m.archived===true||!activeIds.has(m.match_id)||!m.stats_available)return false;const match=DB.matches.find(x=>x.match_id===m.match_id);return !!statRowForPlayer(match,id,m.player_stats||[])})}
+function playedMapsFor(id){let n=detailMapsFor(id).length;for(const ma of activeMatches().filter(x=>x.source_kind==='compact_bo3'))if(statRowForPlayer(ma,id,ma.series_aggregate_stats||[]))n+=matchMaps(ma).length;return n}
+function aggregate(id,rows=detailRows(id),includeCompact=true){let k=0,d=0,a=0;for(const r of rows){k+=Number(r.kills)||0;d+=Number(r.deaths)||0;a+=Number(r.assists)||0}if(includeCompact)for(const m of activeMatches().filter(x=>x.source_kind==='compact_bo3')){const s=statRowForPlayer(m,id,m.series_aggregate_stats||[]);if(s){k+=Number(s.kills)||0;d+=Number(s.deaths)||0;a+=Number(s.assists)||0}}const maps=includeCompact?playedMapsFor(id):rows.length;return{maps,detailed:rows.length,k,d,a,kd:d?k/d:0,kdDiff:k-d,kpm:maps?k/maps:0,apm:maps?a/maps:0,dpm:maps?d/maps:0}}
+function stability(id,rows=detailRows(id),fullPool=true,totalOverride=null){const detailed=rows.length;if(!detailed)return{score:0,plus:0,total:totalOverride??(fullPool?playedMapsFor(id):0),detailed:0};const total=totalOverride??(fullPool?playedMapsFor(id):detailed);const rate=t=>rows.filter(r=>r.deaths>0&&r.kills/r.deaths>=t).length/Math.max(1,total);return{score:100*(.4*rate(1)+.3*rate(1.5)+.2*rate(2)+.1*rate(3)),plus:rows.filter(r=>r.kills>=r.deaths).length,total,detailed}}
+function detailRows(id){if(detailRowsCacheEpoch===renderEpoch&&detailRowsCache.has(id))return detailRowsCache.get(id);const activeIds=new Set(activeMatches().map(x=>x.match_id));const out=DB.maps.filter(m=>m.archived!==true&&activeIds.has(m.match_id)&&m.stats_available).flatMap(m=>{const match=DB.matches.find(x=>x.match_id===m.match_id),s=statRowForPlayer(match,id,m.player_stats||[]);return s?[{...s,player_id:id,map:m.map,map_id:m.map_id,match_id:m.match_id,score:m.score}]:[]}).sort((a,b)=>{const ma=DB.matches.find(x=>x.match_id===a.match_id),mb=DB.matches.find(x=>x.match_id===b.match_id);return matchOrder(ma)-matchOrder(mb)||Number(a.score?.map_index||DB.maps.find(x=>x.map_id===a.map_id)?.map_index||0)-Number(b.score?.map_index||DB.maps.find(x=>x.map_id===b.map_id)?.map_index||0)});detailRowsCacheEpoch=renderEpoch;detailRowsCache.set(id,out);return out}
+function formForRows(rows){if(!rows.length)return{form:null,trend:null,n:0};const last=rows.slice(-Math.min(10,rows.length)),first=rows.slice(0,Math.min(10,rows.length));const av=r=>r.reduce((z,x)=>z+x.kills-x.deaths,0)/r.length;return{form:av(last),trend:rows.length>10?av(last)-av(first):null,n:last.length}}
+function form(id,rows=detailRows(id)){return formForRows(rows)}
+function formWindows(rows){const total=rows.length;if(!total)return[];const wanted=[1,5,10,15,25,50];const sizes=wanted.filter(n=>n<=total);if(total<25&&!sizes.includes(total))sizes.push(total);return [...new Set(sizes)].sort((a,b)=>a-b).map(n=>{const rr=rows.slice(-n),a=aggregateRows(rr);return{n,k:a.k,d:a.d,a:a.a,kd:a.kd,avg:a.maps?a.k/a.maps:0}})}
+function aggregateRows(rows){let k=0,d=0,a=0;for(const r of rows){k+=Number(r.kills)||0;d+=Number(r.deaths)||0;a+=Number(r.assists)||0}return{maps:rows.length,k,d,a,kd:d?k/d:0,kdDiff:k-d}}
+function impact(id,rows=detailRows(id),includeCompact=true){const x=aggregate(id,rows,includeCompact);if(!x.maps)return 0;const netPerMap=x.kdDiff/x.maps,assistsPerMap=x.apm;return clamp(50+6*netPerMap+2*(assistsPerMap-4),0,100)}
+function index(id,rows=detailRows(id),includeCompact=true){return indexBreakdown(id,rows,includeCompact).total}
+function indexBreakdown(id,rows=detailRows(id),includeCompact=true,localStability=false){const x=aggregate(id,rows,includeCompact),st=stability(id,rows,!localStability),fo=form(id,rows),kdScore=clamp((x.kd-.5)*100,0,100),diffScore=clamp(((x.kdDiff/Math.max(1,x.maps))+5)/10*100,0,100),vol=clamp((x.kpm-10)*10,0,100),formScore=fo.form==null?0:clamp((fo.form+5)/10*100,0,100),imp=impact(id,rows,includeCompact),total=x.maps?(.35*kdScore+.25*diffScore+.15*imp+.10*st.score+.10*vol+.05*formScore):0;return{total,kdScore,diffScore,impact:imp,stability:st.score,volume:vol,formScore,kd:x.kd,diff:x.kdDiff,kpm:x.kpm,form:fo.form,trend:fo.trend,maps:x.maps}}
+function eraRows(id){const rows=detailRows(id),out=[];for(let i=0;i<rows.length;i+=10){const rr=rows.slice(i,i+10),b=indexBreakdown(id,rr,false,true),a=aggregate(id,rr,false);out.push({from:i+1,to:i+rr.length,maps:rr.length,kd:a.kd,avg:a.maps?a.k/a.maps:0,idx:b.total})}return out}
+function indexReasons(id){const rows=detailRows(id),b=indexBreakdown(id,rows,true),last=rows.at(-1),prev=rows.length>1?rows.slice(0,-1):rows,prevB=indexBreakdown(id,prev,true);if(!last)return[];const careerKD=b.kd, lastKD=last.deaths?last.kills/last.deaths:0, lastDiff=last.kills-last.deaths, avgDiff=rows.reduce((z,r)=>z+r.kills-r.deaths,0)/Math.max(1,rows.length),reasons=[];reasons.push(`${lastKD>=careerKD?'✓':'✕'} K/D последней подробных карты: ${fmt(lastKD)} · карьерный ${fmt(careerKD)}`);reasons.push(`${lastDiff>=avgDiff?'✓':'✕'} +/− последней карты: ${lastDiff>0?'+':''}${lastDiff} · средний ${avgDiff>0?'+':''}${fmt(avgDiff,1)}`);reasons.push(`${b.impact>=prevB.impact?'✓':'✕'} Импакт ${fmt(b.impact,1)} · до последней карты ${fmt(prevB.impact,1)}`);reasons.push(`${b.formScore>=prevB.formScore?'✓':'✕'} Форма ${fmt(b.form,1)} · тренд ${b.trend>=0?'+':''}${fmt(b.trend,1)}`);reasons.push(`${b.stability>=prevB.stability?'✓':'✕'} Стабильность ${fmt(b.stability,1)} · до последней карты ${fmt(prevB.stability,1)}`);return reasons}
+function openWhyIndex(id){const p=player(id),b=indexBreakdown(id),rows=detailRows(id),avg=rows.length?rows.reduce((z,r)=>z+r.kills,0)/rows.length:0,kmap=rows.length?b.kpm:0,dmap=rows.length?rows.reduce((z,r)=>z+r.deaths,0)/rows.length:0,amap=rows.length?rows.reduce((z,r)=>z+r.assists,0)/rows.length:0;const items=[['K/D',`Текущий K/D игрока: ${fmt(b.kd)}. Чем выше отношение убийств к смертям, тем выше эта часть индекса.`,`${fmt(b.kd)} · вес 35%`],['+/− / карта',`Средняя разница убийств и смертей за карту: ${fmt(b.diff/Math.max(1,b.maps),1)}.`,`${fmt(b.diff/Math.max(1,b.maps),1)} · вес 25%`],['Импакт',`Сводный показатель влияния по доступным K/D/A-данным.`,`${fmt(b.impact,1)} · вес 15%`],['Стабильность',`Показывает, насколько ровно игрок держит результат по картам.`,`${fmt(b.stability,1)} · вес 10%`],['K/карта',`Средние убийства за подробную карту: ${fmt(kmap,2)}.`,`${fmt(kmap,2)} · вес 10%`],['Форма',`Изменение текущей формы относительно предыдущего отрезка.`,`${fmt(b.form??0,1)} · вес 5%`]];const calc=[['K/D',b.kdScore,.35],['+/− / карта',b.diffScore,.25],['Импакт',b.impact,.15],['Стабильность',b.stability,.10],['K/карта',b.volume,.10],['Форма',b.formScore,.05]];document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="whyIndexModal"><div class="modal panel wide"><div class="modal-head"><div><div class="eyebrow">СПРАВОЧНИК МЕТРИК</div><h2>ПОЧЕМУ ИНДЕКС ${fmt(b.total,1)}</h2><div class="muted">${esc(p?.display_name||id)} · реальные значения этой базы · подробные карты: ${rows.length} из ${b.maps} учтённых (${b.maps?Math.round(rows.length/b.maps*100):0}% покрытия)</div></div><button class="close" onclick="$('#whyIndexModal')?.remove()">×</button></div><div class="why-guide">${items.map(r=>`<div class="why-guide-row"><div><b>${r[0]}</b><span>${r[1]}</span></div><strong>${r[2]}</strong></div>`).join('')}</div><div class="notice"><b>Как получается ${fmt(b.total,1)}:</b> каждую часть переводим в шкалу 0–100, умножаем на её вес и складываем: ${calc.map(x=>`${x[0]} ${fmt(x[1],1)} × ${Math.round(x[2]*100)}% = ${fmt(x[1]*x[2],1)}`).join(' · ')}. Итог = <b>${fmt(b.total,1)}</b>.</div><section class="section"><h3>ЧТО ОЗНАЧАЮТ ОСТАЛЬНЫЕ ПОКАЗАТЕЛИ</h3><div class="why-guide"><div class="why-guide-row"><div><b>AVG</b><span>Средние убийства за подробную карту.</span></div><strong>${fmt(avg,2)}</strong></div><div class="why-guide-row"><div><b>K / D / A</b><span>Сырые убийства, смерти и ассисты.</span></div><strong>${fmt(kmap,2)} / ${fmt(dmap,2)} / ${fmt(amap,2)}</strong></div><div class="why-guide-row"><div><b>+/−</b><span>Убийства минус смерти.</span></div><strong>${b.diff>0?'+':''}${fmt(b.diff,1)}</strong></div><div class="why-guide-row"><div><b>K/map · D/map · A/map</b><span>Средние K, D и A на подробную карту.</span></div><strong>${fmt(kmap,2)} · ${fmt(dmap,2)} · ${fmt(amap,2)}</strong></div><div class="why-guide-row"><div><b>Trend</b><span>Движение формы между отрезками: плюс означает улучшение, минус — ухудшение.</span></div><strong>${b.trend>=0?'+':''}${fmt(b.trend,1)}</strong></div><div class="why-guide-row"><div><b>Volume</b><span>Компонент объёма: больше убийств на карту повышает нормированный балл объёма.</span></div><strong>${fmt(b.volume,1)} · 10%</strong></div><div class="why-guide-row"><div><b>Result Effectiveness</b><span>В текущем Player Index эта часть представлена нормированным K/D.</span></div><strong>${fmt(b.kdScore,1)} · 35%</strong></div><div class="why-guide-row"><div><b>Map Factor</b><span>Контекст карты. В текущей формуле отдельного веса Map Factor нет, поэтому искусственно его не добавляем.</span></div><strong>контекст</strong></div></div></section></div></div>`)}
+
+function profileRecord(id){return (state.profileRows||[]).find(x=>x.player_id===id)||null}
+function profileAvatarMarkup(id,size='sm'){
+  const row=profileRecord(id),path=row?.avatar_path,url=path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(path):'';
+  const name=playerName(id),initial=esc(String(name||id||'?').trim().slice(0,1).toUpperCase());
+  return `<span class="player-avatar ${esc(size)}">${url?`<img src="${esc(url)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:''}<span>${initial}</span></span>`;
+}
+function profileMatchesForPlayer(id){
+ const results=new Map(careerSeriesResultsForPlayer(id).map(q=>[q.matchId,q.result]));
+ return activeMatches().map(m=>{
+  const maps=matchMaps(m),own=maps.map(mp=>statRowForPlayer(m,id,mp.player_stats||[])).filter(Boolean),compact=statRowForPlayer(m,id,m.series_aggregate_stats||[]);
+  const [rosterA,rosterB]=historicalLobbyGroups(m,null),roster=[...(m.player_ids||[]),...rosterA,...rosterB,...(m.series_aggregate_stats||[]).map(q=>q.player_id),...maps.flatMap(mp=>(mp.player_stats||[]).map(q=>q.player_id))];
+  if(!roster.includes(id)&&!own.length&&!compact)return null;
+  const exactOwn=own;
+  const k=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.kills)||0),0):Number(compact?.kills)||0,d=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.deaths)||0),0):Number(compact?.deaths)||0,a=exactOwn.length?exactOwn.reduce((n,q)=>n+(Number(q.assists)||0),0):Number(compact?.assists)||0;
+  return {m,maps,k,d,a,kd:d?k/d:0,mapCount:exactOwn.length||(compact?maps.length:0),result:results.get(m.match_id)||'—',hasStats:!!(exactOwn.length||compact),map:maps.map(mp=>mp.map||mp.map_name||mp.name).filter(Boolean).join(' · ')||'Без карты'};
+ }).filter(Boolean).sort((x,y)=>matchOrder(y.m)-matchOrder(x.m)||matchTime(y.m)-matchTime(x.m));
+}
+function profileSummary(rows){
+ const known=rows.filter(q=>['WIN','LOSS','DRAW'].includes(q.result));
+ const stats=rows.filter(q=>q.hasStats&&Number.isFinite(Number(q.k))&&Number.isFinite(Number(q.d))&&Number.isFinite(Number(q.a)));
+ const wins=known.filter(q=>q.result==='WIN').length;
+ const k=stats.reduce((n,q)=>n+Number(q.k),0);
+ const d=stats.reduce((n,q)=>n+Number(q.d),0);
+ const a=stats.reduce((n,q)=>n+Number(q.a),0);
+ const maps=stats.reduce((n,q)=>n+(Number.isFinite(Number(q.mapCount))?Number(q.mapCount):0),0);
+ const safeAvg=v=>maps>0&&Number.isFinite(v)?v/maps:0;
+ return {matches:rows.length,wins,losses:known.filter(q=>q.result==='LOSS').length,draws:known.filter(q=>q.result==='DRAW').length,winrate:known.length?wins/known.length*100:0,k,d,a,kd:d>0?k/d:0,avgKills:safeAvg(k),avgDeaths:safeAvg(d),avgAssists:safeAvg(a),maps};
+}
+function profilePage(v){
+ const id=state.profileTargetId||state.myPlayerId,p=id?player(id):null,canEditProfile=!!id&&id===state.myPlayerId;
+ if(!id||!p){v.innerHTML='<section class="section"><div class="panel card"><h2>АККАУНТ</h2><p class="muted">'+esc(state.profileError||'Профиль игрока не найден.')+'</p></div></section>';return}
+ const row=profileRecord(id)||(canEditProfile?state.myProfile:null)||{};
+ const avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.avatar_path):'';
+ const cover=row.cover_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.cover_path):'';
+ const all=profileMatchesForPlayer(id);
+ const size=[5,10,20].includes(Number(state.profileWindow))?Number(state.profileWindow):20;
+ const recent=all.slice(0,size),sum=profileSummary(recent),total=profileSummary(all);
+ const eloInfo=window.CS2EloV3?.player(id)||{rating:1000,matches:0,history:[]};
+ const elo=eloInfo.rating,peakElo=eloInfo.peakRating??1000,eloChange=window.CS2EloV3?.recentDelta(id,size)||0;
+ const ranked=activePlayers().map(q=>({id:q.player_id,index:index(q.player_id),kd:aggregate(q.player_id).kd,rating:window.CS2EloV3?.player(q.player_id)?.rating??1000,matches:window.CS2EloV3?.player(q.player_id)?.matches??0}))
+   .sort((x,y)=>y.index-x.index||y.kd-x.kd||y.rating-x.rating||x.id.localeCompare(y.id));
+ const rankIndex=ranked.findIndex(q=>q.id===id),rank=rankIndex>=0?rankIndex+1:null;
+ const eloHistory=(eloInfo.history||[]).slice(-20),eloSummary=window.CS2EloV3?.summary?.()||{activeSeries:0,ratedSeries:0};
+ const eloGraphMarkup=(()=>{
+   if(!eloHistory.length)return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><div class="faceit-elo-empty">Пока нет серий, подходящих для расчёта рейтинга.</div></section>';
+   const values=eloHistory.map(q=>Number(q.after)||1000),min=Math.min(...values)-8,max=Math.max(...values)+8,range=Math.max(1,max-min),w=500,h=104,pad=10;
+   const points=values.map((value,i)=>{
+     const x=values.length===1?w/2:pad+(w-pad*2)*i/(values.length-1);
+     const y=h-pad-(h-pad*2)*(value-min)/range;
+     return x.toFixed(1)+','+y.toFixed(1);
+   }).join(' ');
+   return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3 · ПРОГРЕСС</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><svg class="faceit-elo-chart" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="График изменения ELO"><line x1="'+pad+'" y1="'+(h/2)+'" x2="'+(w-pad)+'" y2="'+(h/2)+'" class="faceit-elo-grid"/><polyline points="'+points+'" class="faceit-elo-line"/></svg><div class="faceit-elo-meta"><span>Учтено серий: <b>'+eloInfo.matches+'</b></span><span>Расчёт доступен: <b>'+eloSummary.ratedSeries+' / '+eloSummary.activeSeries+'</b></span><span>Начальный рейтинг: 1 000</span></div><details class="faceit-elo-info"><summary>Как считается ELO V3</summary><p>Командный результат даёт 85% изменения, личный импакт — 15%. Импакт считается по K/D/A за карту относительно среднего по команде. Победа всегда повышает рейтинг, поражение всегда снижает. Первые 10 учтённых серий используется K=32, далее K=24. Учитываются серии с полными составами 5 на 5 и известным исходом; незарегистрированный гость считается нейтральным игроком с 1 000 ELO.</p></details></section>';
+ })();
+ const winrate=total.matches?Math.round(total.winrate):0;
+ const activityCells=Array.from({length:90},(_,i)=>{
+   const d=new Date();d.setDate(d.getDate()-(89-i));const key=d.toISOString().slice(0,10);
+   const count=all.filter(q=>String(q.m?.played_at||q.m?.date||q.m?.created_at||'').slice(0,10)===key).length;
+   return '<span class="faceit-activity-cell '+(count?'level-'+Math.min(4,count):'')+'" title="'+key+(count?' · '+count+' матч':'')+'"></span>';
+ }).join('');
+ const matchRows=arr=>arr.map(q=>{
+   const tone=q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw';
+   const personalTone=q.hasStats?(q.kd>1?'kd-positive':q.d>0&&q.kd<1?'kd-negative':'kd-neutral'):'kd-neutral';
+   const avgKd=q.hasStats&&Number.isFinite(q.kd)?fmt(q.kd):'—';
+   const kda=q.hasStats?[q.k,q.d,q.a].map(n=>Number.isFinite(Number(n))?Number(n):0).join('/'):'—/—/—';
+   const eloDelta=window.CS2EloV3?.deltaForMatch(id,q.m.match_id)??null,eloTone=eloDelta==null?'neutral':eloDelta>0?'positive':eloDelta<0?'negative':'neutral';
+   const eloText=eloDelta==null?'ELO —':(eloDelta>0?'+':'')+fmt(eloDelta,1)+' ELO';
+   return '<button class="faceit-match-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')">'+
+     '<span class="faceit-match-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span>'+
+     '<span class="faceit-match-result '+tone+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</span>'+
+     '<span class="faceit-match-score">'+esc(q.m.series_score||'—')+'<small class="faceit-match-elo-delta '+eloTone+'">'+eloText+'</small></span>'+
+     '<span class="faceit-match-rating">'+avgKd+'</span>'+
+     '<span class="faceit-match-kda '+personalTone+'">'+kda+'</span>'+
+     '<span class="faceit-match-map">'+esc(q.map)+'</span>'+
+   '</button>';
+ }).join('');
+ const performance='<div class="faceit-perf-card">'+
+   '<div class="faceit-perf-head"><div><span class="faceit-kicker">ПОСЛЕДНИЕ '+size+' МАТЧЕЙ</span><h3>Последние показатели</h3></div>'+
+   '<div class="faceit-window-switch">'+[5,10,20].map(n=>'<button class="'+(size===n?'active':'')+'" onclick="state.profileWindow='+n+';render()">'+n+'</button>').join('')+'</div></div>'+
+   '<div class="faceit-performance-grid">'+
+     '<div><span>СРЕДНИЙ УРОВЕНЬ</span><b>—</b><small>рейтинг соперников пока не рассчитывается</small></div>'+
+     '<div><span>ИЗМЕНЕНИЕ ELO</span><b class="'+(eloChange>0?'positive':eloChange<0?'negative':'neutral')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><small>за последние '+Math.min(size,eloInfo.matches)+' учтённых серий</small></div>'+
+     '<div><span>ПОБЕДЫ / ПОРАЖЕНИЯ</span><b><em class="positive">'+sum.wins+'</em> / <em class="negative">'+sum.losses+'</em></b><small>'+sum.matches+' матчей</small></div>'+
+     '<div><span>ВИНРЕЙТ</span><b>'+fmt(sum.winrate,1)+'%</b><small>за выбранные матчи</small></div>'+
+     '<div><span>СРЕДНИЕ K / D / A</span><b>'+fmt(sum.avgKills,1)+' / '+fmt(sum.avgDeaths,1)+' / '+fmt(sum.avgAssists,1)+'</b><small>за карту · '+sum.maps+' карт</small></div>'+
+     '<div><span>СРЕДНИЙ K/D</span><b class="'+kdClass(sum.k,sum.d)+'">'+fmt(sum.kd)+'</b><small>за выбранные матчи</small></div>'+
+     '<div><span>УБИЙСТВ ЗА КАРТУ</span><b>'+fmt(sum.avgKills,1)+'</b><small>реальные данные</small></div>'+
+     '<div><span>ПОМОЩИ ЗА КАРТУ</span><b>'+fmt(sum.avgAssists,1)+'</b><small>реальные данные</small></div>'+
+     '<div><span>СМЕРТЕЙ ЗА КАРТУ</span><b>'+fmt(sum.avgDeaths,1)+'</b><small>реальные данные</small></div>'+
+   '</div></div>';
+ const careerSummary='<div class="faceit-perf-card faceit-career-card"><div class="faceit-perf-head"><div><span class="faceit-kicker">ВСЯ КАРЬЕРА</span><h3>Итоги</h3></div><span>'+total.matches+' матчей</span></div><div class="faceit-performance-grid">'+
+   '<div><span>МАТЧИ</span><b>'+total.matches+'</b><small>'+total.maps+' карт сыграно</small></div>'+
+   '<div><span>ВИНРЕЙТ</span><b>'+fmt(total.winrate,1)+'%</b><small>'+total.wins+' побед · '+total.losses+' поражений</small></div>'+
+   '<div><span>СРЕДНИЙ K/D</span><b>'+fmt(total.kd)+'</b><small>за всю карьеру</small></div>'+
+   '<div><span>СРЕДНИЕ K / D / A</span><b>'+fmt(total.avgKills,1)+' / '+fmt(total.avgDeaths,1)+' / '+fmt(total.avgAssists,1)+'</b><small>за карту</small></div>'+
+ '</div></div>';
+ const recentForm=recent.slice(0,10).map(q=>'<button class="faceit-form-dot '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')" title="'+esc(q.map+' · '+(q.m.series_score||'—'))+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</button>').join('');
+ const gameHistory='<div class="faceit-side-card"><div class="faceit-side-title"><h3>История игры</h3></div><div class="faceit-game-history-row"><span>Матчи</span><b>'+all.length+'</b></div><div class="faceit-game-history-row"><span>Карты</span><b>'+total.maps+'</b></div></div>';
+ const activity='<div class="faceit-side-card"><div class="faceit-side-title"><h3>Последняя активность</h3><span>За последние 90 дней</span></div><div class="faceit-activity-count"><b>'+all.filter(q=>{const t=matchTime(q.m);return t&&Date.now()-t<=90*86400000}).length+'</b><span>матчей сыграно</span></div><div class="faceit-activity-grid">'+activityCells+'</div><div class="faceit-activity-legend"><span>меньше</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>больше</span></div></div>';
+ const rankCard='<div class="faceit-side-card faceit-rank-card"><span class="faceit-kicker">МЕСТО ПО ИНДЕКСУ</span><strong>'+(rank===null?'—':'#'+rank)+'</strong><span>из '+ranked.length+' активных игроков · ELO отдельно</span></div>';
+ const body=state.profileSection==='history'
+   ? '<section class="faceit-content-card faceit-full-history"><div class="faceit-card-title"><div><span class="faceit-kicker">ИСТОРИЯ МАТЧЕЙ</span><h2>Все матчи</h2></div><span>'+all.length+' матчей</span></div><div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ / ELO</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div><div class="faceit-match-list">'+(matchRows(all)||'<div class="empty">Матчей пока нет.</div>')+'</div></section>'
+   : '<div class="faceit-main-grid"><div>'+careerSummary+performance+
+       '<section class="faceit-content-card"><div class="faceit-card-title"><div><span class="faceit-kicker">МАТЧИ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="state.profileSection=\'history\';render()">Полная история →</button></div>'+
+       '<div class="faceit-form-large">'+(recentForm||'<span class="muted">Матчей пока нет</span>')+'</div>'+
+       '<div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ / ELO</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div>'+
+       '<div class="faceit-match-list">'+(matchRows(recent.slice(0,10))||'<div class="empty">Матчей пока нет.</div>')+'</div></section></div>'+
+       '<aside class="faceit-side-column">'+gameHistory+activity+rankCard+'</aside></div>';
+
+ v.innerHTML='<section class="faceit-exact-shell" style="'+(cover?'background-image:linear-gradient(90deg,rgba(8,8,8,.62),rgba(8,8,8,.74)),url(\''+esc(cover)+'\')':'')+'">'+
+   '<aside class="faceit-exact-global-rail"><div class="faceit-exact-brand">◢</div><div class="faceit-exact-search">⌕ <span>Поиск</span></div><div class="faceit-exact-game">◉ <b>CS2</b></div><nav><button>▷ <span>Играть</span></button><button>♧ <span>Ранг</span></button><button>⌁ <span>Track</span></button><button>☷ <span>Лента</span></button><button>♧ <span>Клубы</span></button><button>⊕ <span>Создать клуб</span></button></nav><div class="faceit-exact-rail-bottom"><button>▧ <span>Миссии</span></button><button>♧ <span>Магазин</span></button><button class="premium">★ <span>Премиум</span></button></div></aside>'+
+   '<aside class="faceit-exact-player-column"><div class="faceit-exact-player-card">'+
+     '<div class="faceit-exact-avatar-frame">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
+     '<h1>'+esc(p.display_name)+' <small>✥</small></h1>'+
+     '<div class="faceit-exact-player-actions">'+(canEditProfile?'<button onclick="document.getElementById(\'profileAvatarFile\').click()">✎ РЕД. ПРОФИЛЬ</button>':'')+'<button onclick="navigator.clipboard?.writeText(location.href)">♧ ПОДЕЛИТЬ</button></div>'+
+     '<div class="faceit-exact-season-link"><span>ТЕКУЩИЙ РЕЙТИНГ</span><b>CS2 · ELO</b><strong>'+Math.round(elo).toLocaleString('ru-RU')+' <small>→</small></strong></div>'+
+     '<div class="faceit-exact-player-meta"><b>Игрок платформы</b><span>@'+esc(id)+'</span><span>Матчей: '+all.length+'</span></div>'+
+     '<div class="faceit-exact-country"><span>◉</span> Игрок CS2</div>'+
+     '<div class="faceit-exact-game-history"><b>История игр</b><div><span class="faceit-exact-cs-icon">CS</span><span><b>CS2</b><small>'+all.length+' матчей</small></span><i>ⓘ</i></div></div>'+
+   '</div>'+
+   '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
+   '<div class="faceit-exact-content">'+
+     '<div class="faceit-exact-top-tabs"><button class="active">ИГРЫ</button><button disabled>ДРУЗЬЯ</button><button disabled>ВИДЕО</button><button disabled>ГОСТЕВАЯ КНИГА</button><button disabled>ИНВЕНТАРЬ</button><button disabled>КЛУБЫ</button><button disabled>КОМАНДЫ</button></div>'+
+     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="active">Итоги</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button disabled>Матчмейкинг</button><button disabled>Лиги</button><button disabled>Турниры</button></div>'+
+     '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;CS2 · РЕЙТИНГ</b><small>Рейтинговая статистика игрока</small></div><span>СТАТИСТИКА ИГРОКА ›</span></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
+     '<section class="faceit-exact-results"><div class="faceit-exact-results-head"><b>Недавние результаты</b><span>Последние матчи ('+all.length+') · изменение ELO <b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b></span></div>'+
+       '<div class="faceit-exact-result-line"><span>Изменение ELO</span><b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><span class="faceit-exact-wl"><b>🟩 '+sum.wins+'</b> / <b>🟥 '+sum.losses+'</b></span></div>'+eloGraphMarkup+
+       '<div class="faceit-exact-form">'+(recentForm||'<span>Пока нет сыгранных матчей</span>')+'</div></section>'+
+     '<div class="faceit-exact-stats-heading"><b>Показатели игрока</b><span>Реальная статистика матчей</span></div>'+
+     '<div class="faceit-exact-stat-strip"><div><b>'+fmt(sum.kd,2)+'</b><span>K/D</span></div><div><b>'+fmt(sum.avgKills,1)+'</b><span>Убийств / карта</span></div><div><b>'+fmt(sum.avgDeaths,1)+'</b><span>Смертей / карта</span></div><div><b>'+fmt(sum.avgAssists,1)+'</b><span>Помощей / карта</span></div><div><b>'+fmt(sum.winrate,1)+'%</b><span>Процент побед</span></div><div><b>'+sum.matches+'</b><span>Матчей</span></div></div>'+
+     '<div class="faceit-exact-lower">'+body+'</div>'+
+     (canEditProfile?'<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])"><input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">':'')+
+   '</div><aside class="faceit-exact-right-rail"><span>◉</span><span>♧</span><span>♧</span><span>⊕</span><span>♙</span></aside></section>';
+}async function handleProfileImage(kind,file){
+  if(!file)return;
+  if(state.profileBusy)return;
+  const playerId=state.myPlayerId;if(!playerId)return;
+  const oldPath=profileRecord(playerId)?.[kind+'_path']||null;
+  state.profileBusy=true;toast('Загружаю изображение в облако…');
+  try{
+    const uploaded=await CS2Cloud.uploadProfileMedia(kind,file);
+    const patch=kind==='avatar'?{avatar_path:uploaded.path}:{cover_path:uploaded.path};
+    let saved;
+    try{saved=await CS2Cloud.savePlayerProfile(playerId,patch)}
+    catch(saveError){await CS2Cloud.deleteProfileMedia(uploaded.path).catch(()=>{});throw saveError}
+    state.myProfile=saved;state.profileRows=(state.profileRows||[]).filter(q=>q.player_id!==saved.player_id).concat(saved);
+    if(oldPath&&oldPath!==uploaded.path)await CS2Cloud.deleteProfileMedia(oldPath).catch(()=>{});
+    render();toast(kind==='avatar'?'Аватар обновлён для всех игроков':'Обложка обновлена для всех игроков');
+  }catch(e){toast('Не удалось сохранить изображение: '+(e?.message||'ошибка'))}
+  finally{state.profileBusy=false}
+}
+function toggleAccountMenu(){state.accountMenuOpen=!state.accountMenuOpen;renderAccountMenu()}
+function renderAccountMenu(){
+ const root=$('#accountMenuRoot');if(!root)return;const id=state.myPlayerId,p=id?player(id):null,row=id?profileRecord(id):null,avatar=row?.avatar_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.avatar_path):'',elo=id?(window.CS2EloV3?.player(id)?.rating??1000):1000;
+ root.innerHTML='<button class="account-menu-trigger" onclick="toggleAccountMenu()" aria-label="Аккаунт">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</button>'+(state.accountMenuOpen?'<div class="account-menu-backdrop" onclick="state.accountMenuOpen=false;renderAccountMenu()"></div><div class="account-menu-pop"><div class="account-menu-user"><div class="account-menu-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</div><div><b>'+esc(p?.display_name||'Аккаунт')+'</b><small>@'+esc(id||'не авторизован')+'</small></div></div><div class="account-menu-elo"><span>ELO</span><strong>'+fmt(elo,0)+'</strong></div><button onclick="state.tab=\'profile\';state.profileSection=\'overview\';state.accountMenuOpen=false;render()">МОЙ ПРОФИЛЬ</button><button class="muted-action" onclick="accountSignOut()">ВЫЙТИ ИЗ АККАУНТА</button></div>':'');
+}
+async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.accountUser=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;state.tab='home';render();toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
+function nav(){const items=[['home','⌂','ГЛАВНАЯ'],['analytics','▥','СТАТИСТИКА'],['base','▤','МАТЧИ'],['maps','◫','КАРТЫ'],['teams','♟','СОСТАВЫ'],['records','♜','РЕКОРДЫ'],['seasons','◉','СЕЗОНЫ']];$('#nav').innerHTML=items.map(([id,ico,n])=>'<div class="nav-group"><button class="nav-btn '+(state.tab===id?'active':'')+'" data-tab="'+id+'"><span class="nav-icon">'+ico+'</span><span>'+n+'</span></button></div>').join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render()});renderAccountMenu();$('#settingsBtn').onclick=()=>{state.tab='settings';state.accountMenuOpen=false;render()}}
+
+function seasons(v){
+ const matches=activeMatches().slice().sort((a,b)=>matchTime(a)-matchTime(b));
+ const maps=DB.maps.filter(m=>m.archived!==true&&matches.some(x=>x.match_id===m.match_id));
+ const players=activePlayers().map(p=>{
+   const rows=profileMatchesForPlayer(p.player_id),sum=profileSummary(rows),elo=window.CS2EloV3?.player(p.player_id)||{rating:1000,matches:0},idx=index(p.player_id);
+   return {p,sum,elo,idx};
+ }).sort((a,b)=>b.idx-a.idx||b.sum.kd-a.sum.kd||(b.elo.rating||1000)-(a.elo.rating||1000));
+ const totalWins=players.reduce((n,x)=>n+x.sum.wins,0),totalKnown=players.reduce((n,x)=>n+x.sum.wins+x.sum.losses,0);
+ const selected=state.seasonView||'all';
+ if(selected==='season1'){
+   v.innerHTML='<section class="season-page"><div class="season-page-head"><button class="season-back" onclick="state.seasonView=\'all\';render()">← ВСЕ СЕЗОНЫ</button><span class="faceit-kicker">СЕЗОН 1 · ПОДГОТОВКА</span><h1>Первый сезон</h1><p>Соревновательный сезон будет запущен отдельно. Текущая история матчей сохранена и доступна во вкладке «Вся история».</p></div><div class="season-empty panel"><div class="season-empty-mark">01</div><h2>Сезон ещё не начался</h2><p>Рейтинговая таблица и статистика сезона появятся после старта. Текущие матчи не будут автоматически перенесены в сезон.</p><button class="btn primary" onclick="state.seasonView=\'all\';render()">Вернуться к истории</button></div></section>';return;
+ }
+ const cards=players.slice(0,5).map((x,i)=>'<div class="season-player-row"><span class="season-rank">'+(i+1)+'</span><span class="season-player-name">'+esc(x.p.display_name)+'</span><b>'+fmt(x.idx,1)+'</b><span>'+Math.round(x.elo.rating||1000)+'</span><span>'+x.sum.matches+' матч.</span><strong>'+fmt(x.sum.kd,2)+'</strong></div>').join('');
+ v.innerHTML='<section class="season-page">'+
+ '<div class="season-page-head"><div><span class="faceit-kicker">CS2 · COMPETITIVE</span><h1>Сезоны</h1><p>Соревновательная история и рейтинги игроков</p></div><div class="season-head-total"><b>'+matches.length+'</b><span>матчей в истории</span></div></div>'+
+ '<div class="season-overview-strip"><div><span>ВСЕГО МАТЧЕЙ</span><b>'+matches.length+'</b></div><div><span>СЫГРАНО КАРТ</span><b>'+maps.length+'</b></div><div><span>АКТИВНЫХ ИГРОКОВ</span><b>'+players.length+'</b></div><div><span>ОБЩИЙ ВИНРЕЙТ</span><b>'+(totalKnown?fmt(totalWins/totalKnown*100,1)+'%':'—')+'</b></div></div>'+
+ '<div class="season-cards-grid">'+
+ '<button class="season-card season-card-all" onclick="state.seasonView=\'all\';render()"><div class="season-card-top"><span>ИСТОРИЯ</span><span class="season-card-mark">∞</span></div><div class="season-card-label">ВСЁ ВРЕМЯ</div><strong>'+matches.length+'</strong><small>матчей · '+maps.length+' карт</small><div class="season-card-bottom"><span>ОБЩАЯ СТАТИСТИКА</span><b>ОТКРЫТЬ →</b></div></button>'+
+ '<button class="season-card season-card-upcoming" onclick="state.seasonView=\'season1\';render()"><div class="season-card-top"><span>ПРЕДСТОЯЩИЙ</span><span class="season-card-mark">01</span></div><div class="season-card-label">СЕЗОН 1</div><strong>—</strong><small>Скоро · сезонный рейтинг</small><div class="season-card-bottom"><span>ПОДГОТОВКА</span><b>ПОДРОБНЕЕ →</b></div></button>'+
+ '</div>'+
+ '<div class="season-lower-grid"><section class="season-panel"><div class="season-panel-head"><div><span class="faceit-kicker">ALL TIME</span><h2>Лидеры общей истории</h2></div><span>'+players.length+' игроков</span></div><div class="season-player-head"><span>#</span><span>ИГРОК</span><span>ИНДЕКС</span><span>МАТЧИ</span><span>K/D</span></div>'+(cards||'<p class="muted">Нет игроков для отображения.</p>')+'</section>'+
+ '<section class="season-panel season-history-panel"><div class="season-panel-head"><div><span class="faceit-kicker">АРХИВ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="state.tab=\'base\';render()">Все матчи →</button></div>'+
+ matches.slice(-5).reverse().map(m=>'<div class="season-history-row"><span>'+esc(dateLabel(m.played_at||m.date)||'—')+'</span><b>'+esc(m.series_score||'—')+'</b><span>'+esc((m.map_ids||[]).length+' карт')+'</span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>').join('')+'</section></div></section>';
+}
+function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');({home,base,analytics,players,compare,maps,teams,records,seasons,settings,profile:profilePage}[state.tab]||home)(v);enhanceSelects(v)}
+
+/* V33: replace native select popups with a small dark/lime menu so browser/OS blue
+   selection chrome cannot leak into the UI. The native select stays in the DOM as
+   the source of truth for existing onchange handlers and accessibility. */
+function enhanceSelects(root=document){
+  root.querySelectorAll('select').forEach(sel=>{
+    if(sel.dataset.customSelect==='1')return;
+    const wrap=document.createElement('div');wrap.className='custom-select';
+    const trigger=document.createElement('button');trigger.type='button';trigger.className='control custom-select-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
+    const menu=document.createElement('div');menu.className='custom-select-menu';menu.setAttribute('role','listbox');
+    const sync=()=>{
+      const opt=sel.options[sel.selectedIndex];
+      trigger.textContent=opt?.textContent||'';
+      menu.querySelectorAll('[data-value]').forEach(b=>b.classList.toggle('selected',b.dataset.value===sel.value));
+      trigger.setAttribute('aria-label',opt?.textContent||'');
+    };
+    const close=()=>{wrap.__setOpen?.(false);if(wrap.__scrollBehaviorPrev!==undefined){const prev=wrap.__scrollBehaviorPrev;delete wrap.__scrollBehaviorPrev;document.documentElement.style.scrollBehavior=prev}};
+    [...sel.options].forEach(opt=>{
+      const b=document.createElement('div');b.className='custom-select-option';b.dataset.value=opt.value;b.textContent=opt.textContent;b.setAttribute('role','option');
+      const commit=()=>{const keepScroll=wrap.__openScrollY??window.scrollY,html=document.documentElement,prevAnchor=html.style.overflowAnchor;html.style.overflowAnchor='none';sel.value=opt.value;sync();close();window.scrollTo({top:keepScroll,left:0,behavior:'auto'});window.__cs2SelectScrollLockY=keepScroll;sel.dispatchEvent(new Event('change',{bubbles:true}));requestAnimationFrame(()=>{window.scrollTo({top:keepScroll,left:0,behavior:'auto'});requestAnimationFrame(()=>{window.scrollTo({top:keepScroll,left:0,behavior:'auto'});html.style.overflowAnchor=prevAnchor;setTimeout(()=>{if(window.__cs2SelectScrollLockY===keepScroll)window.__cs2SelectScrollLockY=null},250)})})};b.onpointerdown=e=>{e.preventDefault();commit()};b.onclick=e=>e.preventDefault();b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();commit()}};
+      menu.appendChild(b);
+    });
+    const placeMenu=()=>{if(!wrap.classList.contains('open'))return;const r=trigger.getBoundingClientRect(),gap=6,mw=Math.min(Math.max(r.width,140),window.innerWidth-18),left=Math.max(9,Math.min(r.left,window.innerWidth-mw-9)),top=r.bottom+gap,available=Math.max(120,window.innerHeight-top-9),mh=Math.min(320,window.innerHeight*.55,available);menu.style.left=`${left}px`;menu.style.top=`${top}px`;menu.style.width=`${mw}px`;menu.style.maxHeight=`${Math.max(120,mh)}px`};
+    const setOpen=open=>{const host=wrap.closest('.panel,.card,.home-panel');if(open){const prev=window.__cs2OpenSelect;if(prev&&prev!==wrap)prev.__setOpen?.(false);window.__cs2OpenSelect=wrap;wrap.__scrollBehaviorPrev=document.documentElement.style.scrollBehavior;document.documentElement.style.scrollBehavior='auto';wrap.classList.add('open');host?.classList.add('custom-select-open-host');trigger.setAttribute('aria-expanded','true');wrap.__openScrollY=window.scrollY;placeMenu();}else{wrap.classList.remove('open');host?.classList.remove('custom-select-open-host');trigger.setAttribute('aria-expanded','false');if(window.__cs2OpenSelect===wrap)window.__cs2OpenSelect=null;}};wrap.__setOpen=setOpen;let pointerHandled=false;trigger.onpointerdown=e=>{if(e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();pointerHandled=true;setOpen(!wrap.classList.contains('open'));};trigger.onclick=e=>{e.stopPropagation();if(pointerHandled){pointerHandled=false;return;}setOpen(!wrap.classList.contains('open'));};
+    trigger.onkeydown=e=>{if(e.key==='Escape'){close();trigger.focus()}else if(e.key==='ArrowDown'||e.key==='Enter'||e.key===' '){e.preventDefault();if(!wrap.classList.contains('open'))trigger.click()}};
+    sel.addEventListener('change',sync);
+    wrap._placeMenu=placeMenu;
+    sel.dataset.customSelect='1';sel.classList.add('native-select-proxy');
+    const parent=sel.parentNode;if(!parent)return;parent.insertBefore(wrap,sel);wrap.append(trigger,menu,sel);
+    sync();
+    // The selector's existing onchange handler remains attached to sel.
+  });
+}
+if(!window.__cs2SelectScrollLock){window.__cs2SelectScrollLock=true;window.addEventListener('scroll',()=>{const y=window.__cs2SelectScrollLockY;if(y==null)return;if(Math.abs(window.scrollY-y)>1)window.scrollTo({top:y,left:0,behavior:'auto'})},{capture:true,passive:true})}
+if(!window.__cs2CustomSelectClose){
+  window.__cs2CustomSelectClose=true;
+  document.addEventListener('click',()=>window.__cs2OpenSelect?.__setOpen?.(false));
+  window.addEventListener('resize',()=>document.querySelectorAll('.custom-select.open').forEach(x=>x._placeMenu?.()));
+  window.addEventListener('scroll',()=>document.querySelectorAll('.custom-select.open').forEach(x=>x._placeMenu?.()),true);
+}
+function observeCustomSelects(){
+  if(window.__cs2CustomSelectObserver||!document.body||!window.MutationObserver)return;
+  window.__cs2CustomSelectObserver=new MutationObserver(muts=>{
+    for(const m of muts)for(const node of m.addedNodes){
+      if(node.nodeType!==1)continue;
+      if(node.matches?.('select'))enhanceSelects(node.parentElement||document);
+      else if(node.querySelector?.('select'))enhanceSelects(node);
+    }
+  });
+  window.__cs2CustomSelectObserver.observe(document.body,{childList:true,subtree:true});
+}
+if(document.body)observeCustomSelects();else document.addEventListener('DOMContentLoaded',observeCustomSelects,{once:true});
+function mapStats(mapName){const ms=DB.maps.filter(m=>m.archived!==true&&m.map===mapName&&m.stats_available);let k=0,d=0,a=0,rows=0;for(const m of ms)for(const s of(m.player_stats||[])){k+=Number(s.kills)||0;d+=Number(s.deaths)||0;a+=Number(s.assists)||0;rows++}return{maps:DB.maps.filter(m=>m.archived!==true&&m.map===mapName).length,detailed:ms.length,k,d,a,kd:d?k/d:0,diff:k-d,rows}}
+function historicalLobbyGroups(match,mp=null){
+  const clean=arr=>[...new Set((Array.isArray(arr)?arr:[]).filter(id=>typeof id==='string'&&id.trim()))].slice(0,5);
+  const mapA=clean(Array.isArray(mp?.lobby_team_a)&&mp.lobby_team_a.length?mp.lobby_team_a:mp?.team_a),mapB=clean(Array.isArray(mp?.lobby_team_b)&&mp.lobby_team_b.length?mp.lobby_team_b:mp?.team_b);
+  const explicitA=clean(Array.isArray(match?.lobby_team_a)&&match.lobby_team_a.length?match.lobby_team_a:match?.team_a),explicitB=clean(Array.isArray(match?.lobby_team_b)&&match.lobby_team_b.length?match.lobby_team_b:match?.team_b);
+  if(mapA.length===5&&mapB.length===5)return [mapA,mapB];
+  if(explicitA.length||explicitB.length)return [mapA.length===5?mapA:explicitA,mapB.length===5?mapB:explicitB];
+  if(mapA.length||mapB.length)return [mapA,mapB];
+  const knownIds=rows=>[...new Set((rows||[]).map(r=>r?.player_id).filter(id=>id&&player(id)))];
+  const maps=matchMaps(match).filter(x=>x.stats_available).slice().sort((a,b)=>{
+    const ca=knownIds(a.player_stats).length,cb=knownIds(b.player_stats).length;
+    return cb-ca||Number(a.map_index||0)-Number(b.map_index||0);
+  });
+  const primary=maps[0]?knownIds(maps[0].player_stats):[];
+  const agg=knownIds(match?.series_aggregate_stats||[]);
+  const source=[...primary,...agg.filter(id=>!primary.includes(id))];
+  return [source.slice(0,5),source.slice(5,10)];
+}
+function mapPlayerStats(id,mapName){
+  const maps=DB.maps.filter(mp=>mp.archived!==true&&mp.map===mapName&&mp.stats_available);
+  let played=0,wins=0,k=0,d=0,a=0;
+  for(const mp of maps){
+    const match=DB.matches.find(m=>m.match_id===mp.match_id),row=statRowForPlayer(match,id,mp.player_stats||[]); if(!row)continue;
+    const [ta,tb]=historicalLobbyGroups(match,mp);
+    const side=ta.includes(id)?'A':tb.includes(id)?'B':'';
+    const sa=Number(mp.score?.team_a),sb=Number(mp.score?.team_b);
+    if(!side||!Number.isFinite(sa)||!Number.isFinite(sb))continue;
+    played++; if((side==='A'&&sa>sb)||(side==='B'&&sb>sa))wins++;
+    k+=Number(row.kills)||0; d+=Number(row.deaths)||0; a+=Number(row.assists)||0;
+  }
+  const kd=d?k/d:0, raw=played?wins/played:null, smooth=(wins+1)/(played+2), idx=index(id);
+  // Map strength is deliberately conservative for small samples: map history is primary,
+  // Player Index is a secondary stabilizer, and confidence grows with the number of maps.
+  const confidence=clamp(played/10,0,1);
+  const wrBase=raw==null ? 0.5 : smooth;
+  const idxContext=clamp((idx-50)/50,-1,1);
+  const power=clamp(50 + (wrBase-.5)*42*confidence + idxContext*8*(1-confidence*.65),0,100);
+  return {played,wins,losses:Math.max(0,played-wins),wr:raw==null ? 0.5 : raw,smoothWr:smooth,k,d,a,kd,power,confidence};
+}
+function teamMapProbability(ids,mapName){
+  const players=ids.map(id=>({id,stats:mapPlayerStats(id,mapName)}));
+  if(!players.length)return{power:0,coverage:0,wr:null,confidence:0,players};
+  const power=players.reduce((z,x)=>z+x.stats.power,0)/players.length;
+  const played=players.reduce((z,x)=>z+x.stats.played,0),wins=players.reduce((z,x)=>z+x.stats.wins,0);
+  const confidence=players.reduce((z,x)=>z+x.stats.confidence,0)/players.length;
+  return{power,coverage:played,wr:played?wins/played:null,confidence,players};
+}
+function matchupProbability(teamA,teamB,mapName){
+  const a=teamMapProbability(teamA,mapName),b=teamMapProbability(teamB,mapName),ready=teamA.length===5&&teamB.length===5;
+  const delta=a.power-b.power;
+  const pA=ready?1/(1+Math.pow(10,-delta/16)):.5;
+  return{a,b,pA,pB:1-pA,delta,ready};
+}
+function mapWinRateRows(id){
+  const preferred=['mirage','dust2','anubis','nuke','inferno','cache','overpass','ancient','train','vertigo'];
+  const names=[...new Set(DB.maps.filter(m=>m.archived!==true).map(m=>m.map))];
+  return names.map(map=>({map,...mapPlayerStats(id,map)})).sort((a,b)=>{const ia=preferred.indexOf(a.map.toLowerCase()),ib=preferred.indexOf(b.map.toLowerCase());return (ia<0?999:ia)-(ib<0?999:ib)||a.map.localeCompare(b.map)});
+}
+function record(metric,dir='max'){const arr=[];for(const p of activePlayers())for(const r of detailRows(p.player_id))arr.push({p:p.display_name,r,val:metric==='kills'?r.kills:metric==='kd'?(r.deaths?r.kills/r.deaths:0):r.kills-r.deaths});arr.sort((a,b)=>dir==='max'?b.val-a.val:a.val-b.val);return arr[0]}
+function kdMarkup(k,d){const kd=Number(d)>0?Number(k)/Number(d):0;const cls=Math.abs(kd-1)<1e-9?'kd-neutral':kd>1?'kd-positive':'kd-negative';return `<span class="kd-value ${cls}">${fmt(kd)}</span>`}
+function kdClass(k,d){const kd=Number(d)>0?Number(k)/Number(d):0;return Math.abs(kd-1)<1e-9?'kd-neutral':kd>1?'kd-positive':'kd-negative'}
+function kdMarkupValue(kd,prefix=''){const n=Number(kd)||0;return `<span class="kd-value ${Math.abs(n-1)<1e-9?'kd-neutral':n>1?'kd-positive':'kd-negative'}">${prefix}${fmt(n,2)}</span>`}
+function careerSeriesResultsForPlayer(id){
+  const out=[];
+  for(const m of activeMatches()){
+    const maps=matchMaps(m),detailed=maps.filter(mp=>mp.stats_available),anchor=detailed[0]||maps[0]||null;
+    const [ta,tb]=historicalLobbyGroups(m,anchor),inA=ta.includes(id),inB=tb.includes(id);
+    const hasStats=detailed.some(mp=>!!statRowForPlayer(m,id,mp.player_stats||[]))||(m.source_kind==='compact_bo3'&&!!statRowForPlayer(m,id,m.series_aggregate_stats||[]));
+    if((!inA&&!inB)||(!hasStats&&!inA&&!inB))continue;
+    const parts=String(m.series_score||'').match(/^(\d+)\s*:\s*(\d+)$/),sa=parts?Number(parts[1]):NaN,sb=parts?Number(parts[2]):NaN;
+    let result='—';
+    if(Number.isFinite(sa)&&Number.isFinite(sb)){result=sa===sb?'DRAW':((inA?(sa>sb):(sb>sa))?'WIN':'LOSS');}
+    else{
+      let wins=0,losses=0,draws=0;
+      for(const mp of detailed){
+        const row=statRowForPlayer(m,id,mp.player_stats||[]);
+        const a=Number(mp.score?.team_a),b=Number(mp.score?.team_b);
+        if(!Number.isFinite(a)||!Number.isFinite(b))continue;
+        if(a===b){draws++;continue}
+        if(inA){wins+=a>b?1:0;losses+=a<b?1:0}
+        else{wins+=b>a?1:0;losses+=b<a?1:0}
+      }
+      if(wins+losses+draws)result=wins>losses?'WIN':losses>wins?'LOSS':draws?'DRAW':'—';
+    }
+    if(result!=='—')out.push({matchId:m.match_id,result});
+  }
+  return out;
+}
+function careerResultsForPlayer(id){const rows=[];for(const m of activeMatches()){for(const mp of matchMaps(m)){const match=DB.matches.find(x=>x.match_id===mp.match_id)||m,[ta,tb]=historicalLobbyGroups(match,mp),inA=ta.includes(id),inB=tb.includes(id),participated=!!statRowForPlayer(match,id,mp.player_stats||[])||inA||inB;if(!participated||(!inA&&!inB))continue;const a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))continue;rows.push({matchId:m.match_id,mapId:mp.map_id,map:mp.map,result:a===b?'DRAW':(inA?(a>b?'WIN':'LOSS'):(b>a?'WIN':'LOSS'))})}}return rows}
+function scoreClass(score){const m=String(score||'').match(/^(\d+)\s*:\s*(\d+)$/);if(!m)return 'score-neutral';const a=+m[1],b=+m[2];return a>b?'score-positive':a<b?'score-negative':'score-neutral'}
+function scoreMarkup(score){const m=String(score||'').match(/^(\d+)\s*:\s*(\d+)$/);if(!m)return `<span class="score-neutral">${esc(score||'—')}</span>`;const a=Number(m[1]),b=Number(m[2]);const cls=a>b?'score-positive':a<b?'score-negative':'score-neutral';return `<span class="score-badge ${cls}">${a}:${b}</span>`}
+function diffTone(v){const n=Number(v);return n>0?'positive':n<0?'negative':'neutral'}
+function scoreTone(v){const n=Number(v);return n>=60?'positive':n<50?'negative':'neutral'}
+function formTone(v){const n=Number(v);return n>0?'positive':n<0?'negative':'neutral'}
+function indexTone(v){const n=Number(v);return n>=80?'index-high':n>=65?'index-good':n>=50?'index-mid':n>=35?'index-low':'index-bad'}
+function normalizeStatName(value){return String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ')}
+function statByUniqueAliasForPlayer(rows,pid){
+  const known=player(pid);if(!known)return null;
+  const normalize=normalizeStatName;
+  const aliases=[pid,known.display_name,...(known.aliases||[]),...Object.entries(DB.aliases||{}).filter(([,target])=>target===pid).map(([alias])=>alias)].map(normalize).filter(Boolean);
+  const candidates=(rows||[]).filter(row=>!row.player_id&&aliases.includes(normalize(row.raw_name||row.name)));
+  if(candidates.length!==1)return null;
+  const raw=normalize(candidates[0].raw_name||candidates[0].name);
+  const owners=(DB.players||[]).filter(owner=>{
+    const names=[owner.player_id,owner.display_name,...(owner.aliases||[]),...Object.entries(DB.aliases||{}).filter(([,target])=>target===owner.player_id).map(([alias])=>alias)];
+    return names.some(name=>normalize(name)===raw);
+  });
+  return owners.length===1&&owners[0].player_id===pid?candidates[0]:null;
+}
+function statRowForPlayer(match,pid,rows=null){
+  if(!match||!pid)return null;
+  const source=rows||seriesAggregateRows(match,match.archived===true);
+  const statById=source.find(row=>row.player_id===pid);
+  const known=player(pid);
+  const exactName=normalizeStatName(known?.display_name);
+  const statByExactName=exactName?source.find(row=>!row.player_id&&normalizeStatName(row.raw_name||row.name)===exactName):null;
+  const statByUniqueAlias=statById||statByExactName?null:statByUniqueAliasForPlayer(source,pid);
+  return statById||statByExactName||statByUniqueAlias||null;
+}
+function seriesAggregateRows(match,includeArchived=false){const maps=matchMaps(match,includeArchived),src=match.source_kind==='compact_bo3'?(match.series_aggregate_stats||[]):maps.flatMap(mp=>mp.stats_available?(mp.player_stats||[]):[]),by=new Map();for(const r of src){const id=r.player_id||`raw:${normalizeStatName(r.raw_name||'')}`;if(!by.has(id))by.set(id,{player_id:r.player_id||null,raw_name:r.raw_name||'',kills:0,deaths:0,assists:0});const x=by.get(id);x.kills+=Number(r.kills)||0;x.deaths+=Number(r.deaths)||0;x.assists+=Number(r.assists)||0}return [...by.values()].map(x=>({...x,name:x.player_id?playerName(x.player_id):(x.raw_name||'Неопознанный игрок'),kd:x.deaths?x.kills/x.deaths:0,diff:x.kills-x.deaths})).sort((a,b)=>b.kd-a.kd||b.kills-a.kills)}
+function mapMvp(mapId){const mp=DB.maps.find(x=>x.map_id===mapId);if(!mp||!mp.stats_available)return '—';const r=(mp.player_stats||[]).slice().sort((a,b)=>(b.deaths?b.kills/b.deaths:0)-(a.deaths?a.kills/a.deaths:0)||b.kills-a.kills)[0];return r?(r.player_id?playerName(r.player_id):(r.raw_name||'Игрок')):'—'}
+function lobbyGroups(match){
+  const maps=matchMaps(match,match?.archived===true);
+  const rosterCount=mp=>{
+    const a=Array.isArray(mp?.lobby_team_a)?mp.lobby_team_a:Array.isArray(mp?.team_a)?mp.team_a:[];
+    const b=Array.isArray(mp?.lobby_team_b)?mp.lobby_team_b:Array.isArray(mp?.team_b)?mp.team_b:[];
+    return a.length+b.length;
+  };
+  const primary=maps.slice().sort((a,b)=>rosterCount(b)-rosterCount(a)||Number(a.map_index||0)-Number(b.map_index||0)).find(mp=>rosterCount(mp)>0);
+  return historicalLobbyGroups(match,primary||null);
+}
+function home(v){
+  const active=activePlayers();
+  const ps=active.map(p=>({p,x:aggregate(p.player_id),idx:index(p.player_id),imp:impact(p.player_id),fo:form(p.player_id),st:stability(p.player_id)})).sort((a,b)=>b.idx-a.idx);
+  const top=ps.slice(0,5),matches=activeMatches().slice().sort((a,b)=>matchOrder(a)-matchOrder(b)||String(a.match_id).localeCompare(String(b.match_id))),lastMatch=latestMatch(matches),lastMaps=matchMaps(lastMatch);
+  const activeMaps=DB.maps.filter(x=>x.archived!==true),audit=auditLog().slice(-8).reverse(),recent=matches.slice(-6).reverse();
+  const lastRows=homeLastRows(lastMatch), latestMap=lastMaps.filter(x=>x&&x.stats_available).at(-1)||lastMaps.at(-1);
+  const best=lastRows.slice().sort((a,b)=>b.diff-a.diff)[0],worst=lastRows.slice().sort((a,b)=>a.diff-b.diff)[0];
+  const winner=homeResult(lastMatch), latestDate=lastMatch?.played_at||lastMatch?.date||lastMatch?.created_at||'';
+  const key=ps[0]||null;
+  v.innerHTML=`
+  <section class="home-shell home-rebuild">
+    <aside class="home-left">
+      <section class="panel home-panel last-match-panel">
+        <div class="section-head"><div><h2>Последняя игра</h2><div class="muted">Обновляется автоматически</div></div><button class="text-link" onclick="state.tab='base';render()">Все игры ›</button></div>
+        <div class="last-match-head">
+          <div class="last-map-strip">${lastMaps.map(mp=>mapThumb(mp?.map||'CS2','small')).join('')}</div>
+          <div class="last-match-meta"><strong>${esc(lastMaps.map(x=>x.map).join(' · ')||'Нет игры')}</strong>${latestDate?`<span>${esc(latestDate)}</span>`:''}<span>${esc(lastMatch?.format||'—')}</span></div>
+        </div>
+        <div class="scoreline"><strong class="last-map-name">${esc(latestMap?.map||'—')}</strong><b class="${scoreClass(mapScoreText(latestMap))}">${esc(mapScoreText(latestMap))}</b><span class="muted">Серия ${esc(lastMatch?.series_score||'—')}</span></div>
+        <div class="last-table-wrap">${lastRows.length?`<table class="home-last-table"><thead><tr><th>Игрок</th><th>K</th><th>D</th><th>A</th><th>K/D</th></tr></thead><tbody>${lastRows.map(r=>`<tr><td>${esc(r.name)}</td><td>${r.kills}</td><td>${r.deaths}</td><td>${r.assists}</td><td>${kdMarkupValue(r.kd)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">Покарточной статистики нет.</div>'}</div>
+        ${lastMatch?`<div class="last-match-footer"><span>Лучший: <b>${esc(best?.name||'—')}</b></span><span>Худший: <b>${esc(worst?.name||'—')}</b></span><span>Детально: <b>${lastRows.length}/10</b></span><span>Карт в серии: <b>${lastMaps.length}</b></span></div>`:''}
+      </section>
+      <section class="panel home-panel recent-games-panel home-recent-left"><div class="section-head"><div><h2>Последние игры</h2><div class="muted">Последние 6 · новые записи сверху</div></div><button class="text-link" onclick="state.tab='base';render()">Все ›</button></div><div class="recent-games">${recent.map(m=>{const mm=matchMaps(m),sc=m.series_score||'—',meta=[m.format].filter(Boolean).join(' · ');return `<div class="recent-game click-row" onclick="openMatchDetail('${esc(m.match_id)}')">${mapThumb(mm[0]?.map||'—','small')}<div><b>${esc(mm.map(x=>x.map).join(' · '))}</b><span>${esc(meta)}</span></div><strong class="${scoreClass(sc)}">${esc(sc)}</strong></div>`}).join('')||'<div class="empty">Нет матчей.</div>'}</div></section>
+    </aside>
+    <section class="home-center">
+      <section class="panel home-hero home-rebuild-hero">
+        <img class="hero-image" src="https://raw.githubusercontent.com/ghostcap-gaming/cs2-map-images/main/cs2/de_train.png" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" onerror="this.onerror=null;this.src='assets/maps/train.svg'">
+        <div class="hero-copy"><h1>Добро пожаловать в<br><strong>CS2 ANALYTICS</strong></h1><p>Твоя статистика. Твой анализ. Твоя история игр.</p></div>
+        <div class="hero-counters"><div><b>${activeMapCount()}</b><span>Карт</span></div><div><b>${activePlayers().length}</b><span>Игроков</span></div><div><b>${new Set(activeMaps.map(x=>mapKey(x.map))).size}</b><span>Типов карт</span></div></div>
+      </section>
+      <section class="home-metrics">
+        <div class="panel metric-card"><div class="metric-head"><span>★</span><b>Индекс игрока</b><i>i</i></div><strong class="${key?indexTone(key.idx):'neutral'}">${key?fmt(key.idx,1):'—'}</strong><div class="metric-foot"><span>${esc(key?.p.display_name||'—')}</span>${trendMarkup(key?.fo.trend)}</div></div>
+        <div class="panel metric-card"><div class="metric-head"><span>✦</span><b>Импакт</b><i>i</i></div><strong class="${key?scoreTone(key.imp):'neutral'}">${key?fmt(key.imp,1):'—'}</strong><div class="metric-foot"><span>${esc(key?.p.display_name||'—')}</span>${trendMarkup(key?.fo.trend)}</div></div>
+        <div class="panel metric-card"><div class="metric-head"><span>◎</span><b>K/D</b><i>i</i></div><strong class="${key?kdClass(key.x.k,key.x.d):'neutral'}">${key?fmt(key.x.kd):'—'}</strong><div class="metric-foot"><span>${esc(key?.p.display_name||'—')}</span>${trendMarkup(key?.fo.trend,'форма')}</div></div>
+        <div class="panel metric-card"><div class="metric-head"><span>★</span><b>+/−</b><i>i</i></div><strong class="${key?diffTone(key.x.kdDiff):'neutral'}">${key?(key.x.kdDiff>0?'+':'')+fmt(key.x.kdDiff,0):'—'}</strong><div class="metric-foot"><span>${esc(key?.p.display_name||'—')}</span>${trendMarkup(key?.fo.trend,'форма')}</div></div>
+      </section>
+      <section class="panel home-chart-panel"><div class="section-head"><div><h2>Динамика показателей</h2><div class="muted">Выбери игроков и метрику</div></div><select id="homeMetric" class="control">${Object.entries(metricLabels).map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select></div><div id="playerPicker" class="player-picker"></div><div id="focusBar" class="focus-bar"></div><div id="homeChart"></div></section>
+
+    </section>
+    <aside class="home-right">
+      <section class="panel home-panel top-players-panel"><div class="section-head"><div><h2>Топ игроков</h2><div class="muted">По Индексу игрока</div></div><button class="text-link" onclick="state.tab='analytics';render()">Все ›</button></div>${top.map((q,i)=>`<div class="top-player-row"><strong class="place">${i+1}</strong><div><b>${esc(q.p.display_name)}</b><span>Индекс ${fmt(q.idx,1)}</span></div>${trendMarkup(q.fo.trend)}</div>`).join('')||'<div class="empty">Нет игроков.</div>'}</section>
+      <section class="panel home-panel"><div class="section-head"><div><h2>Последние новости</h2><div class="muted">Автоматическая лента</div></div><button class="text-link" onclick="state.tab='settings';render()">Все ›</button></div>${homeNews(lastMatch,latestMap,audit,top).slice(0,4).map(n=>`<div class="news-item"><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>`).join('')||'<div class="empty">Пока тихо.</div>'}</section>
+      <section class="panel home-info"><h3>Анализируй.<br>Улучшайся.</h3><p>Смотри не только на K/D — отслеживай форму, стабильность, импакт и историю по картам.</p></section>
+    </aside>
+  </section>`;
+  $('#homeMetric').value=state.metric;$('#homeMetric').onchange=e=>{const scrollY=window.scrollY,html=document.documentElement,prevBehavior=html.style.scrollBehavior,prevAnchor=html.style.overflowAnchor;html.style.scrollBehavior='auto';html.style.overflowAnchor='none';state.metric=e.target.value;state.focused=null;drawHomeChart();window.scrollTo({top:scrollY,left:0,behavior:'auto'});requestAnimationFrame(()=>{window.scrollTo({top:scrollY,left:0,behavior:'auto'});requestAnimationFrame(()=>{window.scrollTo({top:scrollY,left:0,behavior:'auto'});html.style.scrollBehavior=prevBehavior;html.style.overflowAnchor=prevAnchor})})};renderPlayerPicker();drawHomeChart()
+}
+function homeLastRows(match){
+  if(!match)return[];
+  const sortRows=rows=>rows.slice().sort((a,b)=>b.kd-a.kd||b.diff-a.diff||b.kills-a.kills||String(a.name).localeCompare(String(b.name),'ru'));
+  if(match.source_kind==='compact_bo3')return sortRows((match.series_aggregate_stats||[]).map(s=>({name:s.player_id?playerName(s.player_id):(s.raw_name||'Неопознанный игрок'),kills:s.kills,deaths:s.deaths,assists:s.assists,kd:s.deaths?s.kills/s.deaths:0,diff:s.kills-s.deaths})));
+  const m=latestDetailedMap(match);
+  return sortRows((m?.player_stats||[]).map(s=>({name:s.player_id?playerName(s.player_id):(s.raw_name||'Неопознанный игрок'),kills:s.kills,deaths:s.deaths,assists:s.assists,kd:s.deaths?s.kills/s.deaths:0,diff:s.kills-s.deaths})));
+}
+function homeResult(match){if(!match)return null;const raw=String(match.series_score||'');const m=raw.match(/(\d+)\s*:\s*(\d+)/);if(!m)return null;return Number(m[1])>Number(m[2])?'win':Number(m[1])<Number(m[2])?'loss':'draw'}
+function homeNews(lastMatch,lastMap,audit,top){const out=[];const visibleAudit=(audit||[]).find(x=>!/^REBUILD_|^MIGRATE_|^SYSTEM_/i.test(String(x?.action||'')));if(lastMap)out.push({title:'Новая игра в базе',text:`${lastMap.map} · ${lastMatch?.series_score||'счёт не указан'}`});if(visibleAudit)out.push({title:'Обновление статистики',text:`${visibleAudit.action} · ${visibleAudit.target}`});if(top[0])out.push({title:'Текущий лидер индекса',text:`${top[0].p.display_name} · ${fmt(top[0].idx,1)}`});if(lastMatch)out.push({title:'Последняя серия',text:`${lastMatch.map_ids.length} карт · ${lastMatch.format||'матч'}`});return out}
+
+function lastMatchSummary(match){
+  const maps=match.map_ids.map(id=>DB.maps.find(x=>x.map_id===id)).filter(Boolean);
+  const compact=match.source_kind==='compact_bo3';
+  if(compact){
+    const rows=(match.series_aggregate_stats||[]).filter(s=>s.player_id).map(s=>({...s,name:playerName(s.player_id),diff:s.kills-s.deaths,kd:s.deaths?s.kills/s.deaths:0})).sort((a,b)=>b.diff-a.diff);
+    return `<div class="mini-stats"><div class="mini-stat"><span>СЧЁТ СЕРИИ</span><strong>${esc(match.series_score||'—')}</strong></div><div class="mini-stat"><span>КАРТЫ</span><strong>${maps.length}</strong></div><div class="mini-stat"><span>ДАННЫЕ</span><strong>${rows.length}/10</strong></div><div class="mini-stat"><span>ЛУЧШИЙ +/−</span><strong>${rows[0]?esc(rows[0].name):'—'}</strong></div></div><div class="notice section">${esc(maps.map(x=>x.map).join(' · '))}. По этой серии источник хранит только сумму K/D/A серии; покарточный split намеренно не создаётся.</div>`;
+  }
+  const scored=maps.filter(x=>x.score).map(x=>`${x.map} ${x.score}`).join(' · ');
+  const m=maps.filter(x=>x.stats_available).at(-1)||maps.at(-1), rows=(m?.player_stats||[]).map(s=>({...s,name:s.player_id?playerName(s.player_id):(s.raw_name||'Неопознанный игрок'),diff:s.kills-s.deaths,kd:s.deaths?s.kills/s.deaths:0})).sort((a,b)=>b.diff-a.diff);
+  return `<div class="mini-stats"><div class="mini-stat"><span>СЧЁТ</span><strong>${esc(mapScoreText(m)||match.series_score||'—')}</strong></div><div class="mini-stat"><span>КАРТА</span><strong>${esc(m?.map||'—')}</strong></div><div class="mini-stat"><span>СТАТИСТИКА</span><strong>${rows.length}/10</strong></div><div class="mini-stat"><span>ЛУЧШИЙ +/−</span><strong>${rows[0]?esc(rows[0].name):'—'}</strong></div></div><div class="notice section">${esc(scored||'Счёт карты не указан')}</div>`;
+}
+
+function lastGameTable(){
+  const match=latestMatch();
+  if(!match)return'<div class="empty">Нет данных</div>';
+  if(match.source_kind==='compact_bo3'){
+    const rows=(match.series_aggregate_stats||[]).map(s=>({...s,name:s.player_id?playerName(s.player_id):(s.raw_name||'Неопознанный игрок'),kd:s.deaths?s.kills/s.deaths:0,diff:s.kills-s.deaths})).sort((a,b)=>b.diff-a.diff);
+    return `<div class="table-wrap"><table class="data-table"><thead><tr><th>Игрок</th><th>K</th><th>D</th><th>A</th><th>K/D</th></tr></thead><tbody>${rows.map(s=>`<tr><td class="name">${esc(s.name)}</td><td>${s.kills}</td><td>${s.deaths}</td><td>${s.assists}</td><td>${fmt(s.kd)}</td></tr>`).join('')}</tbody></table></div><div class="footer-note">Серия ${esc(match.series_score||'—')} · ${esc(match.map_ids.map(id=>DB.maps.find(x=>x.map_id===id)?.map||'—').join(' · '))} · сумму K/D/A серии из источника.</div>`;
+  }
+  const m=latestDetailedMap(match);
+  if(!m)return'<div class="empty">Нет данных по последней карте</div>';
+  if(!m.stats_available)return`<div class="notice">${esc(m.map.toUpperCase())} · покарточный K/D/A отсутствует.</div>`;
+  return`<div class="table-wrap"><table class="data-table"><thead><tr><th>Игрок</th><th>K</th><th>D</th><th>A</th><th>K/D</th><th>+/−</th></tr></thead><tbody>${(m.player_stats||[]).map(s=>`<tr><td class="name">${esc(s.player_id?playerName(s.player_id):(s.raw_name||'Неопознанный игрок'))}</td><td>${s.kills}</td><td>${s.deaths}</td><td>${s.assists}</td><td>${fmt(s.kills/s.deaths)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function colorFor(i,n){const palette=['#00E5FF','#FF8A00','#FFD000','#B8A07A','#7C3AED','#1D4ED8','#EC4899','#65A30D','#334155','#EF4444','#7C2D12','#94A3B8','#F8FAFC','#14B8A6'];return palette[i%palette.length]}
+function playerColor(id,i,n){const fixed={gletcher:'#00E5FF',DaDa_VoVa:'#FF7A00',donater:'#FFD400','подушка пердушка':'#D6B98C',vorenxy:'#A855F7',Patr1k:'#1677FF',bigchungus:'#FF3FA4',gamiersanek:'#A3E635','эгоист':'#64748B','пяточки':'#FF1744','дядя':'#8B5A2B',Romanchestr:'#9CA3AF',FLAFF1X:'#FFFFFF'};return fixed[id]||colorFor(i,n)}
+function renderPlayerPicker(){const box=$('#playerPicker');if(!box)return;const active=activePlayers();const indexById=new Map(active.map((p,i)=>[p.player_id,i]));box.innerHTML=active.map(p=>{const on=state.selected.includes(p.player_id),focused=state.focused===p.player_id,i=indexById.get(p.player_id)||0;return `<button class="player-chip ${on?'selected':''} ${focused?'focused':''}" onclick="togglePlayer('${p.player_id}')"><span class="chip-dot" style="background:${playerColor(p.player_id,i,active.length)}"></span>${esc(p.display_name)}<span class="chip-check">${on?'✓':''}</span></button>`}).join('')+`<button class="player-chip ghost" onclick="selectAllPlayers()">ВСЕ</button><button class="player-chip ghost" onclick="clearPlayers()">СБРОС</button>`}
+function refreshHomeDynamics(){renderPlayerPicker();drawHomeChart()}
+function togglePlayer(id){if(state.selected.includes(id)){state.selected=state.selected.filter(x=>x!==id);if(state.focused===id)state.focused=null}else{state.selected.push(id)}refreshHomeDynamics()}
+function selectAllPlayers(){state.selected=activePlayers().map(p=>p.player_id);state.focused=null;refreshHomeDynamics()}
+function clearPlayers(){state.selected=[];state.focused=null;refreshHomeDynamics()}
+function focusPlayer(id){state.focused=state.focused===id?null:id;drawHomeChart()}
+function metricValue(id,r,metric){if(!r)return 0;if(metric==='kd')return r.deaths?r.kills/r.deaths:0;if(metric==='diff')return r.kills-r.deaths;if(metric==='kills')return r.kills;if(metric==='deaths')return r.deaths;if(metric==='assists')return r.assists;if(metric==='avg'){const rows=detailRows(id);let k=0;for(const x of rows){k+=Number(x.kills)||0;if(x===r)break}return rows.length?k/Math.max(1,rows.indexOf(r)+1):0}if(metric==='impact')return impact(id,[r],false);if(metric==='index')return indexBreakdown(id,[r],false,true).total;if(metric==='form')return form(id,[r]).form??0;if(metric==='stability')return stability(id,[r],false).score;return 0}
+function elapsedMapsFor(id,mapId){const target=DB.maps.find(m=>m.map_id===mapId);if(!target)return 0;const activeIds=new Set(activeMatches().map(m=>m.match_id));const idx=DB.maps.findIndex(m=>m.map_id===mapId);if(idx<0)return 0;let n=0;for(let i=0;i<=idx;i++){const m=DB.maps[i];if(m.archived===true||!activeIds.has(m.match_id))continue;if(m.stats_available&&m.player_stats.some(s=>s.player_id===id))n++;else if(!m.stats_available){const ma=DB.matches.find(x=>x.match_id===m.match_id);if((ma?.series_aggregate_stats||[]).some(s=>s.player_id===id))n++}}return n}
+function seriesFor(id,metric){const rows=detailRows(id),out=[];let k=0,d=0,a=0;for(let i=0;i<rows.length;i++){const r=rows[i],rk=Number(r.kills)||0,rd=Number(r.deaths)||0,ra=Number(r.assists)||0;k+=rk;d+=rd;a+=ra;let val;if(metric==='kd')val=d?k/d:0;else if(metric==='diff')val=k-d;else if(metric==='kills')val=k;else if(metric==='deaths')val=d;else if(metric==='assists')val=a;else if(metric==='avg')val=k/(i+1);else{const sub=rows.slice(0,i+1);if(metric==='impact')val=impact(id,sub,false);else if(metric==='index')val=index(id,sub,false);else if(metric==='form')val=form(id,sub).form??0;else if(metric==='stability')val=stability(id,sub,true,elapsedMapsFor(id,r.map_id)).score;else val=metricValue(id,r,metric)}out.push({n:i+1,val,map:r.map,kills:rk,deaths:rd,assists:ra,match_id:r.match_id,map_id:r.map_id,score:r.score||r.map_score||'',cumulative:{kills:k,deaths:d,assists:a,kd:d?k/d:0}})}return out}
+function drawHomeChart(){const box=$('#homeChart');if(!box)return;const metric=state.metric,ids=(state.focused?[state.focused]:state.selected).filter(Boolean);const active=activePlayers(),colors=Object.fromEntries(active.map((p,i)=>[p.player_id,playerColor(p.player_id,i,active.length)]));const series=ids.map(id=>({id,pts:seriesFor(id,metric)}));if(!series.some(s=>s.pts.length)){box.innerHTML='<div class="empty">Нет детальных данных для выбранных игроков.</div>';return}const W=1440,H=440,padL=64,padR=28,padT=24,padB=48,maxN=Math.max(...series.map(s=>s.pts.length)),all=series.flatMap(s=>s.pts.map(p=>p.val));let min=Math.min(...all),max=Math.max(...all);if(['index','stability','impact'].includes(metric)){min=0;max=100}else{if(metric==='kd'){min=Math.min(0,min);max=Math.max(2,max)}if(metric==='diff')min=Math.min(0,min)}if(min===max){min-=1;max+=1}const x=n=>padL+(W-padL-padR)*((n-1)/Math.max(1,maxN-1)),y=v=>H-padB-(H-padB-padT)*((v-min)/(max-min));let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${metricLabels[metric]}">`;for(let i=0;i<=5;i++){const val=min+(max-min)*i/5,yy=y(val);svg+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" class="chart-grid soft"/><text x="8" y="${yy+4}" class="chart-label">${fmt(val,metric==='kd'?2:1)}</text>`}const tickStep=maxN<=60?10:(maxN<=100?10:Math.ceil(maxN/10/10)*10);const ticks=[1,...Array.from({length:Math.floor((maxN-1)/tickStep)},(_,i)=>(i+1)*tickStep)].filter((n,i,a)=>n<=maxN&&a.indexOf(n)===i);for(const n of ticks){const xx=x(n);svg+=`<line x1="${xx}" y1="${padT}" x2="${xx}" y2="${H-padB}" class="chart-grid tick"/><text x="${xx}" y="${H-18}" text-anchor="middle" class="chart-label">${n}</text>`}svg+=`<text x="${W-padR}" y="${H-18}" text-anchor="end" class="chart-label">детальные карты</text>`;series.forEach(s=>{const pts=s.pts.map(p=>`${x(p.n)},${y(p.val)}`).join(' ');const opacity=state.focused&&state.focused!==s.id?.22:1;svg+=`<polyline points="${pts}" class="line ${state.focused===s.id?'line-focus':''}" style="stroke:${colors[s.id]};opacity:${opacity}" onclick="focusPlayer('${s.id}')"/>`;const checkpoints=s.pts.map(p=>{const current=metric==='kd'?fmt(p.kills/(p.deaths||1),2):'';const tip=`${playerName(s.id)} · Карта ${p.n}: ${p.map||'без названия'}\\nЗа карту K/D/A: ${p.kills}/${p.deaths}/${p.assists} · K/D ${current||fmt(p.kills/(p.deaths||1),2)}\\nИтого после карты: ${p.cumulative.kills}/${p.cumulative.deaths}/${p.cumulative.assists} · K/D ${fmt(p.cumulative.kd,2)}\\n${metricLabels[metric]}: ${fmt(p.val,metric==='kd'?2:1)}`;return `<circle cx="${x(p.n)}" cy="${y(p.val)}" r="2.5" fill="${colors[s.id]}" class="chart-point" data-player="${esc(s.id)}" data-map-index="${p.n-1}"><title>${esc(tip)}</title></circle><circle cx="${x(p.n)}" cy="${y(p.val)}" r="19" class="chart-hit" data-player="${esc(s.id)}" data-map-index="${p.n-1}" aria-label="Показать статистику карты ${p.n}"></circle>`}).join('');svg+=checkpoints;const last=s.pts[s.pts.length-1];svg+=`<circle cx="${x(last.n)}" cy="${y(last.val)}" r="4" fill="${colors[s.id]}" class="dot" onclick="focusPlayer('${s.id}')"><title>${esc(playerName(s.id))} · ${last.n} карт · ${metricLabels[metric]}: ${fmt(last.val,metric==='kd'?2:1)}</title></circle>`});svg+='</svg>';const legend=series.map(s=>{const p=active.find(p=>p.player_id===s.id),last=s.pts.at(-1);return`<button class="legend-item ${state.focused===s.id?'active':''}" onclick="focusPlayer('${s.id}')"><i style="background:${colors[s.id]}"></i>${esc(p?.display_name||s.id)}<strong>${fmt(last.val,metric==='kd'?2:1)}</strong></button>`}).join('');box.innerHTML=`<div class="chart"><div class="chart-title-row"><strong>${metricLabels[metric]}</strong><span class="muted">1–${maxN} подробных карт · наведи на любую точку</span></div><div class="chart-plot-wrap">${svg}<div class="chart-hover-card" id="chartHoverCard" hidden></div></div><div class="legend">${legend}</div><div class="muted chart-note">Наведи на точку — подробности карты появятся сразу. Для точного выбора увеличена зона наведения.</div></div>`;const plot=box.querySelector('.chart-plot-wrap'),tipBox=box.querySelector('#chartHoverCard');if(plot&&tipBox){let activeMapIndex=-1;const showPoint=(el,ev)=>{const mapIndex=Number(el.dataset.mapIndex),ss=series.find(z=>z.id===el.dataset.player),base=ss?.pts[mapIndex];if(!base)return;activeMapIndex=mapIndex;const selected=series.filter(z=>z.pts[mapIndex]);tipBox.innerHTML=selected.length>1?selected.map(z=>{const p=z.pts[mapIndex];return `<div class="chart-compare-card"><strong>${esc(playerName(z.id))} · ${esc(p.map||base.map||'карта')} #${p.n}</strong><div class="chart-hover-stats ${kdClass(p.kills,p.deaths)}"><span>K <b>${p.kills}</b></span><span>D <b>${p.deaths}</b></span><span>A <b>${p.assists}</b></span><span>K/D <b>${fmt(p.kills/(p.deaths||1),2)}</b></span></div><div class="chart-hover-total">Итого: ${p.cumulative.kills}/${p.cumulative.deaths}/${p.cumulative.assists} · K/D ${fmt(p.cumulative.kd,2)} · +/− <b class="${p.cumulative.kills-p.cumulative.deaths>=0?'positive':'negative'}">${p.cumulative.kills-p.cumulative.deaths>0?'+':''}${p.cumulative.kills-p.cumulative.deaths}</b></div><div class="chart-hover-total">${metricLabels[metric]}: ${fmt(p.val,metric==='kd'?2:1)}</div></div>`}).join(''):(()=>{const p=base;return `<div class="chart-compare-card"><strong>${esc(playerName(ss.id))} · Карта ${p.n}: ${esc(p.map||'без названия')}</strong><div class="chart-hover-stats ${kdClass(p.kills,p.deaths)}"><span>K <b>${p.kills}</b></span><span>D <b>${p.deaths}</b></span><span>A <b>${p.assists}</b></span><span>K/D <b>${fmt(p.kills/(p.deaths||1),2)}</b></span></div><div class="chart-hover-total">Итого: ${p.cumulative.kills}/${p.cumulative.deaths}/${p.cumulative.assists} · K/D ${fmt(p.cumulative.kd,2)} · +/− <b class="${p.cumulative.kills-p.cumulative.deaths>=0?'positive':'negative'}">${p.cumulative.kills-p.cumulative.deaths>0?'+':''}${p.cumulative.kills-p.cumulative.deaths}</b></div><div class="chart-hover-total">${metricLabels[metric]}: ${fmt(p.val,metric==='kd'?2:1)}</div></div>`})() ;const gap=12;const vw=document.documentElement.clientWidth||window.innerWidth;const vh=document.documentElement.clientHeight||window.innerHeight;tipBox.style.position='fixed';tipBox.style.zIndex='2147483647';tipBox.style.display='block';tipBox.style.left='0px';tipBox.style.top='0px';tipBox.style.visibility='hidden';tipBox.style.maxHeight=Math.max(120,vh-24)+'px';tipBox.style.maxWidth=Math.max(190,Math.min(360,vw-24))+'px';tipBox.hidden=false;const rect=tipBox.getBoundingClientRect(),tw=Math.min(rect.width,vw-24),th=Math.min(rect.height,vh-24);let left=ev.clientX+gap,top=ev.clientY+gap;if(left+tw>vw-8)left=ev.clientX-tw-gap;if(top+th>vh-8)top=ev.clientY-th-gap;left=Math.max(8,Math.min(left,vw-tw-8));top=Math.max(8,Math.min(top,vh-th-8));tipBox.style.left=left+'px';tipBox.style.top=top+'px';tipBox.style.visibility='visible'};plot.querySelectorAll('.chart-hit').forEach(el=>{el.setAttribute('r','19');el.addEventListener('pointerenter',ev=>showPoint(el,ev));el.addEventListener('pointermove',ev=>showPoint(el,ev));el.addEventListener('focus',ev=>showPoint(el,{clientX:plot.getBoundingClientRect().left+plot.clientWidth/2,clientY:plot.getBoundingClientRect().top+40}))});let hideTipTimer=null;const keepTip=()=>{if(hideTipTimer){clearTimeout(hideTipTimer);hideTipTimer=null}};plot.querySelectorAll('.chart-hit').forEach(el=>{el.addEventListener('pointerenter',keepTip);el.addEventListener('pointermove',keepTip)});document.body.appendChild(tipBox);tipBox.style.pointerEvents='none';plot.addEventListener('pointerleave',()=>{keepTip();hideTipTimer=setTimeout(()=>{tipBox.hidden=true;activeMapIndex=-1},220)});}const fb=$('#focusBar');if(fb)fb.innerHTML=state.focused?`<span>Фокус: <strong>${esc(playerName(state.focused))}</strong></span><button class="btn mini" onclick="state.focused=null;drawHomeChart();renderPlayerPicker()">ПОКАЗАТЬ ВСЕ ВЫБРАННЫЕ</button>`:''}
+function setMatchTab(tab){const modal=$('#modal');if(!modal)return;modal.querySelectorAll('[data-match-section]').forEach(el=>el.hidden=el.dataset.matchSection!==tab);modal.querySelectorAll('[data-match-tab]').forEach(el=>el.classList.toggle('active',el.dataset.matchTab===tab))}
+function openMatchDetail(id){const m=DB.matches.find(x=>x.match_id===id);if(!m)return;const drill=$('#playerDrilldown');if(drill)drill.style.display='none';const maps=matchMaps(m,m.archived===true),rows=seriesAggregateRows(m,m.archived===true),groups=lobbyGroups(m);const top=rows.slice(0,10),team=ids=>ids.map(pid=>{const guest=(m.guest_players||[]).find(g=>g.guest_id===pid),rosterPlayer=player(pid),label=guest?.display_name||rosterPlayer?.display_name||playerName(pid),norm=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' '),statById=rows.find(r=>r.player_id===pid),statByExactName=rows.find(r=>(!r.player_id||r.player_id===pid)&&norm(r.raw_name||r.name)===norm(label)),statByUniqueAlias=statById||statByExactName||guest?null:rows.find(r=>{const raw=norm(r.raw_name||r.name);if(!raw||r.player_id)return false;const owners=(DB.players||[]).filter(owner=>{const names=[owner.player_id,owner.display_name,...(owner.aliases||[]),...Object.entries(DB.aliases||{}).filter(([,target])=>target===owner.player_id).map(([alias])=>alias)];return names.some(name=>norm(name)===raw)});return owners.length===1&&owners[0].player_id===pid}),stat=statById||statByExactName||statByUniqueAlias;return stat?{...stat,id:pid,name:label||stat.name,hasStats:true}:{id:pid,player_id:null,name:label||'Гость',kills:null,deaths:null,assists:null,kd:null,hasStats:false}}).sort((a,b)=>(b.kd??-1)-(a.kd??-1)||(Number(b.kills)||0)-(Number(a.kills)||0)||String(a.name).localeCompare(String(b.name),'ru'));const lobby=groups[0].length||groups[1].length?`<div class="lobby-grid"><div><h3 class="lobby-team-title"><span>КОМАНДА A</span><small>${groups[0].length}/5 игроков · ELO ${fmt(window.CS2EloV3?.match(id)?.avgA??NaN,0)}</small></h3>${team(groups[0]).map(r=>`<div class="lobby-row"><b>${esc(r.name)}<small class="faceit-lobby-elo">${(()=>{const ratingId=String(r.id||'').startsWith('archived_')?String(r.id).slice(9):r.id,delta=window.CS2EloV3?.deltaForMatch(ratingId,id),after=window.CS2EloV3?.ratingAtMatch(ratingId,id);return !player(ratingId)?'ГОСТЬ':delta==null?'ELO не рассчитан':fmt(after,0)+' ELO · '+(delta>0?'+':'')+fmt(delta,1)})()}</small></b><span>${r.kills==null?'—/—/—':`${r.kills}/${r.deaths}/${r.assists}`}</span><strong>${r.kills==null?'—':kdMarkup(r.kills,r.deaths)}</strong></div>`).join('')||'<div class="empty">нет игроков</div>'}</div><div><h3 class="lobby-team-title"><span>КОМАНДА B</span><small>${groups[1].length}/5 игроков · ELO ${fmt(window.CS2EloV3?.match(id)?.avgB??NaN,0)}</small></h3>${team(groups[1]).map(r=>`<div class="lobby-row"><b>${esc(r.name)}<small class="faceit-lobby-elo">${(()=>{const ratingId=String(r.id||'').startsWith('archived_')?String(r.id).slice(9):r.id,delta=window.CS2EloV3?.deltaForMatch(ratingId,id),after=window.CS2EloV3?.ratingAtMatch(ratingId,id);return !player(ratingId)?'ГОСТЬ':delta==null?'ELO не рассчитан':fmt(after,0)+' ELO · '+(delta>0?'+':'')+fmt(delta,1)})()}</small></b><span>${r.kills==null?'—/—/—':`${r.kills}/${r.deaths}/${r.assists}`}</span><strong>${r.kills==null?'—':kdMarkup(r.kills,r.deaths)}</strong></div>`).join('')||'<div class="empty">нет игроков</div>'}</div></div>`:'<div class="empty">В источнике нет игроков для распределения.</div>';const mapBtns=maps.map((mp,i)=>{const coverage=mp.stats_available?(mp.player_stats||[]).length:0;return `<button class="btn mini" onclick="openMapDetail('${esc(mp.map_id)}')">${i+1}. ${esc(mp.map)} · ${scoreMarkup(mapScoreText(mp))} · MVP: ${esc(mapMvp(mp.map_id))} · статов: ${coverage}</button>`}).join('');document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide"><div class="modal-head match-modal-head"><div><div class="eyebrow">${esc(m.format||'МАТЧ')}</div><h2>${scoreMarkup(m.series_score||'Матч')}</h2><div class="match-date-label">${esc(dateLabel(m.played_at)||'Дата не указана')}</div></div>${seriesTimeInfo(m)}<button class="close" onclick="closeModal()">×</button></div><div class="faceit-match-tabs"><button class="active" data-match-tab="overview" onclick="setMatchTab(&#39;overview&#39;)">ОБЗОР</button><button data-match-tab="stats" onclick="setMatchTab(&#39;stats&#39;)">СТАТИСТИКА</button></div><section class="section faceit-match-section" data-match-section="stats" hidden><div class="section-head"><h3>СТАТИСТИКА</h3><span class="muted">вся серия · доступные показатели</span></div><div class="faceit-stat-tabs"><button class="active">ОБЩАЯ</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>#</th><th>Игрок</th><th>K</th><th>D</th><th>A</th><th>+/−</th><th>K/D</th><th>ELO Δ</th></tr></thead><tbody>${top.map((r,i)=>{const diff=Number(r.kills)-Number(r.deaths),pid=r.player_id||activePlayers().find(p=>statByUniqueAliasForPlayer([r],p.player_id))?.player_id||null,eloDelta=pid?window.CS2EloV3?.deltaForMatch(pid,id)??null:null,eloText=eloDelta==null?'—':(eloDelta>0?'+':'')+fmt(eloDelta,1);return `<tr><td>${i+1}</td><td class="name">${pid?`<span class="match-player-profile-link" onclick="closeModal();openPublicPlayerProfile('${esc(pid)}')">${esc(r.name)}</span>`:esc(r.name)}</td><td>${r.kills}</td><td>${r.deaths}</td><td>${r.assists}</td><td class="${diff>0?'positive':diff<0?'negative':'neutral'}">${diff>0?'+':''}${diff}</td><td>${kdMarkup(r.kills,r.deaths)}</td><td class="${eloDelta==null?'neutral':eloDelta>0?'positive':eloDelta<0?'negative':'neutral'}">${eloText}</td></tr>`}).join('')||'<tr><td colspan="8" class="empty">Нет агрегированной статистики.</td></tr>'}</tbody></table></div></section><section class="section faceit-match-section" data-match-section="overview"><div class="section-head"><h3>КАРТЫ СЕРИИ</h3></div><div class="toolbar">${mapBtns||'<div class="empty">Нет карт.</div>'}</div></section><section class="section faceit-match-section" data-match-section="overview">${lobby}</section>${state.logged?`<div class="toolbar"><button class="btn" onclick="openEditMatch('${esc(id)}')">РЕДАКТИРОВАТЬ</button><button class="btn danger" onclick="deleteMatch('${esc(id)}')">УДАЛИТЬ</button></div>`:''}</div></div>`)}
+function base(v){
+  const allMaps=DB.maps.filter(m=>state.showArchived||m.archived!==true), matchById=new Map(DB.matches.map(m=>[m.match_id,m]));
+  const activeSeries=DB.matches.filter(m=>state.showArchived||m.archived!==true), orderedSeries=activeSeries.slice().sort((a,b)=>matchOrder(a)-matchOrder(b)||String(a.match_id).localeCompare(String(b.match_id))), seriesRank=new Map(orderedSeries.map((m,i)=>[m.match_id,i+1]));
+  const mapRank=new Map(allMaps.slice().sort((a,b)=>(seriesRank.get(a.match_id)||0)-(seriesRank.get(b.match_id)||0)||Number(a.map_index||0)-Number(b.map_index||0)).map((m,i)=>[m.map_id,i+1]));
+  const activeMaps=allMaps.map(mp=>({mp,match:matchById.get(mp.match_id)})).filter(x=>x.match),idNum=v=>{const m=String(v||'').match(/(?:_|-)(\d+)$/);return m?Number(m[1]):0};
+  const rows=activeMaps.slice().sort((a,b)=>(mapRank.get(b.mp.map_id)||0)-(mapRank.get(a.mp.map_id)||0)|| (seriesRank.get(b.match.match_id)||0)-(seriesRank.get(a.match.match_id)||0)||Number(b.mp.map_index||0)-Number(a.mp.map_index||0));
+  const seriesRows=activeSeries.slice().sort((a,b)=>(seriesRank.get(b.match_id)||0)-(seriesRank.get(a.match_id)||0)||idNum(b.match_id)-idNum(a.match_id)),isMaps=state.baseMode!=='series',trashCount=DB.matches.filter(m=>m.archived===true).length;
+  const body=isMaps?rows.map(q=>{const mp=q.mp,m=q.match,n=mapRank.get(mp.map_id)||'—';return `<tr class="click-row" onclick="openMapDetail('${esc(mp.map_id)}')"><td class="name">ИГРА ${n} · ${esc(mp.map)}</td><td>СЕРИЯ ${seriesRank.get(m.match_id)||'—'}</td><td>${esc(m.format||'—')}${durationChip(mp.duration_minutes)?`<div>${durationChip(mp.duration_minutes)}</div>`:''}</td><td>${scoreMarkup(mapScoreText(mp)||m.series_score||'—')}</td>${state.logged?`<td><button class="btn mini danger" onclick="event.stopPropagation();deleteMatch('${esc(m.match_id)}')">УДАЛИТЬ</button></td>`:''}</tr>`}).join(''):seriesRows.map((m,i)=>{const maps=(m.map_ids||[]).map(id=>DB.maps.find(x=>x.map_id===id)).filter(Boolean);return `<tr class="click-row" onclick="openMatchDetail('${esc(m.match_id)}')"><td class="name">СЕРИЯ ${seriesRows.length-i}</td><td>${esc(m.format||'—')}${durationChip(m.duration_minutes)?`<div>${durationChip(m.duration_minutes)}</div>`:''}</td><td>${maps.map(x=>esc(x.map)).join(' · ')}</td><td>${scoreMarkup(m.series_score||'—')}</td>${state.logged?`<td><button class="btn mini" onclick="event.stopPropagation();openEditMatch('${esc(m.match_id)}')">РЕДАКТИРОВАТЬ</button> <button class="btn mini danger" onclick="event.stopPropagation();deleteMatch('${esc(m.match_id)}')">УДАЛИТЬ</button></td>`:''}</tr>`}).join('');
+  const head=isMaps?`<tr><th>ИГРА / КАРТА</th><th>СЕРИЯ</th><th>ФОРМАТ</th><th>СЧЁТ</th>${state.logged?'<th></th>':''}</tr>`:`<tr><th>СЕРИЯ</th><th>ФОРМАТ</th><th>КАРТЫ</th><th>СЧЁТ</th>${state.logged?'<th></th>':''}</tr>`;
+  v.innerHTML=`<section class="section base-page"><div class="section-head"><div><h2>${isMaps?'СТАТИСТИКА ИГР':'СТАТИСТИКА СЕРИЙ'}</h2><div class="muted">${isMaps?`${activeMapCount()} карт · ${seriesRows.length} серий.`:`${seriesRows.length} серий · ${activeMapCount()} карт.`}</div></div><div class="toolbar"><button class="btn ${isMaps?'primary':''}" onclick="state.baseMode='maps';render()">ВСЕ ИГРЫ · ${activeMapCount()}</button><button class="btn ${!isMaps?'primary':''}" onclick="state.baseMode='series';render()">СЕРИИ · ${seriesRows.length}</button>${state.logged?'<button class="btn primary" onclick="openAddGame()">+ ДОБАВИТЬ ИГРУ</button>':''}${state.logged?`<button class="btn" onclick="openTrash()">🗑 КОРЗИНА${trashCount?` · ${trashCount}`:''}</button>`:''}</div></div><div class="panel card"><div class="table-wrap"><table class="data-table"><thead>${head}</thead><tbody>${body||'<tr><td colspan="8"><div class="empty">Нет записей.</div></td></tr>'}</tbody></table></div></div></section>`;
+}
+
+function analytics(v){players(v)}
+function players(v){const ps=activePlayers().map(p=>({p,x:aggregate(p.player_id),st:stability(p.player_id),fo:form(p.player_id),imp:impact(p.player_id),idx:index(p.player_id),elo:window.CS2EloV3?.player(p.player_id)?.rating??1000,eloMatches:window.CS2EloV3?.player(p.player_id)?.matches??0})).sort((a,b)=>b.idx-a.idx||b.x.kd-b.x.kd||b.x.kdDiff-a.x.kdDiff||b.elo-a.elo||a.p.display_name.localeCompare(b.p.display_name,'ru'));v.innerHTML=`<section class="section"><div class="section-head"><div><h2>ЦЕНТР ИГРОКОВ</h2><div class="muted">Место по индексу игрока · ELO показывается отдельно</div></div></div><div class="panel card"><div class="table-wrap"><table class="data-table players-table"><thead><tr><th class="player-rank-head">#</th><th>Игрок</th><th>ELO</th><th>Серии ELO</th><th>Карты</th><th>K</th><th>D</th><th>A</th><th>K/D</th><th>+/−</th><th>Импакт</th><th>Форма</th><th>Стабильность</th><th>Индекс игрока</th></tr></thead><tbody>${ps.map((q,i)=>`<tr class="click-row" onclick="openPlayerDetail('${q.p.player_id}')"><td class="player-rank-cell"><span>${i+1}</span></td><td class="name"><span class="player-name-cell">${profileAvatarMarkup(q.p.player_id,'xs')}<span title="Открыть профиль" onclick="event.stopPropagation();openPublicPlayerProfile('${q.p.player_id}')">${esc(q.p.display_name)}</span></span></td><td><strong class="elo-value">${fmt(q.elo,1)}</strong></td><td>${q.eloMatches}</td><td>${q.x.maps}</td><td>${q.x.k}</td><td>${q.x.d}</td><td>${q.x.a}</td><td>${kdMarkup(q.x.k,q.x.d)}</td><td class="${q.x.kdDiff>=0?'positive':'negative'}">${q.x.kdDiff>0?'+':''}${fmt(q.x.kdDiff,0)}</td><td><span class="${scoreTone(q.imp)}">${fmt(q.imp,1)}</span></td><td><span class="${formTone(q.fo.form)}">${fmt(q.fo.form)}</span></td><td><span class="${scoreTone(q.st.score)}">${fmt(q.st.score,1)}</span></td><td><strong class="${indexTone(q.idx)} index-score">${fmt(q.idx,1)}</strong></td></tr>`).join('')}</tbody></table></div></div></section>`}
+function compare(v){const active=activePlayers(), selected=state.compare.filter(id=>active.some(p=>p.player_id===id));if(!selected.length)state.compare=active.slice(0,2).map(p=>p.player_id);const ids=state.compare.filter(id=>active.some(p=>p.player_id===id));const qs=ids.map(id=>({p:player(id),x:aggregate(id),idx:index(id),imp:impact(id),fo:form(id),st:stability(id)}));const metricRows=[['ELO',q=>window.CS2EloV3?.player(q.p.player_id)?.rating??1000,1],['K/D',q=>q.x.kd,2],['AVG',q=>q.x.maps?q.x.k/q.x.maps:0,2],['K',q=>q.x.k,0],['D',q=>q.x.d,0],['A',q=>q.x.a,0],['+/−',q=>q.x.kdDiff,0],['Импакт',q=>q.imp,1],['Стабильность',q=>q.st.score,1],['Форма',q=>q.fo.form,1],['Индекс игрока',q=>q.idx,1],['Карты',q=>q.x.maps,0]];v.innerHTML=`<section class="section"><div class="section-head"><div><h2>СРАВНЕНИЕ ИГРОКОВ</h2><div class="muted">Выбери от 1 до 5 игроков. Сравнение описывает данные базы, а не прогнозирует исход игры.</div></div><div class="toolbar"><button class="btn" onclick="state.compare=active.map(p=>p.player_id);render()">ВСЕ</button><button class="btn" onclick="state.compare=active.slice(0,2).map(p=>p.player_id);render()">СБРОС</button></div></div><div class="panel card"><div class="player-picker compare-picker">${active.map(p=>`<button class="player-chip ${ids.includes(p.player_id)?'selected':''}" onclick="toggleCompare('${p.player_id}')">${esc(p.display_name)} ${ids.includes(p.player_id)?'✓':''}</button>`).join('')}</div></div><div class="panel card section"><div class="table-wrap"><table class="data-table compare-table"><thead><tr><th>Метрика</th>${qs.map(q=>`<th>${esc(q.p.display_name)}</th>`).join('')}</tr></thead><tbody>${metricRows.map(([name,fn,n])=>`<tr><td class="name">${name}</td>${qs.map(q=>{const val=fn(q);let tone='';if(name==='K/D')tone=kdClass(q.x.k,q.x.d);else if(name==='+/−')tone=diffTone(val);else if(name==='Импакт'||name==='Стабильность'||name==='Индекс игрока')tone=scoreTone(val);else if(name==='Форма')tone=formTone(val);return `<td><span class="${tone}">${fmt(val,n)}</span></td>`}).join('')}</tr>`).join('')}</tbody></table></div></div><div class="grid2 section"><div class="panel card"><div class="section-head"><h3>ТЕКУЩАЯ ФОРМА</h3><span class="muted">последние карты</span></div>${qs.map(q=>`<div class="compare-row"><b>${esc(q.p.display_name)}</b><span>${fmt(q.fo.form)} ${q.fo.trend==null?'—':q.fo.trend>=0?'↑':'↓'} · ${q.fo.n} карт</span></div>`).join('')}</div><div class="panel card"><div class="section-head"><h3>СТАБИЛЬНОСТЬ</h3><span class="muted">разброс результата</span></div>${qs.map(q=>`<div class="compare-row"><b>${esc(q.p.display_name)}</b><span>${fmt(q.st.score,1)} · ${q.st.plus}/${q.st.detailed} подробно в плюс</span></div>`).join('')}</div></div></section>`}
+function toggleCompare(id){if(state.compare.includes(id)){if(state.compare.length>1)state.compare=state.compare.filter(x=>x!==id)}else if(state.compare.length<5)state.compare.push(id);else toast('Максимум 5 игроков');render()}
+function profileMapResult(id,mp){
+ const match=DB.matches.find(x=>x.match_id===mp?.match_id);if(!match)return '—';
+ const groups=historicalLobbyGroups(match,mp),inA=groups[0].includes(id),inB=groups[1].includes(id);if(!inA&&!inB)return '—';
+ const a=Number(mp?.score?.team_a),b=Number(mp?.score?.team_b);if(!Number.isFinite(a)||!Number.isFinite(b))return '—';
+ if(a===b)return 'DRAW';
+ return (inA?(a>b):(b>a))?'WIN':'LOSS';
+}
+function profileResultClass(result){return result==='WIN'?'positive':result==='LOSS'?'negative':'neutral'}
+function profileGameRow(id,r){
+ const m=DB.matches.find(x=>x.match_id===r.match_id),result=profileMapResult(id,r),n=m?seriesNumberForMatch(m):'—',hasStats=r.kills!=null&&r.deaths!=null&&r.assists!=null,kd=hasStats&&Number(r.deaths)>0?Number(r.kills)/Number(r.deaths):0;
+ const k=hasStats?Number(r.kills):null,d=hasStats?Number(r.deaths):null,a=hasStats?Number(r.assists):null;
+ const scoreA=Number(r?.score?.team_a),scoreB=Number(r?.score?.team_b),scoreKnown=Number.isFinite(scoreA)&&Number.isFinite(scoreB),scoreText=scoreKnown?scoreA+':'+scoreB:(m?.series_score||'Счёт не указан');
+ const statTone=hasStats?kdClass(k,d):'kd-neutral';
+ return '<div class="profile-drill-row click-row" onclick="openMatchDetail(\''+esc(r.match_id||'')+'\')" title="Открыть карточку матча"><div class="profile-drill-game"><b>Игра '+esc(n)+'</b><span>'+esc(r.map||'Карта не указана')+' · '+esc(m?.format||'—')+'</span><small>Счёт <b class="'+profileResultClass(result)+'">'+esc(scoreText)+'</b> · <b class="'+profileResultClass(result)+'">'+(result==='WIN'?'WIN':result==='LOSS'?'LOSS':result==='DRAW'?'DRAW':'НЕТ ИСХОДА')+'</b></small></div><div class="profile-drill-kda '+statTone+'"><span>K <b class="'+statTone+'">'+(k==null?'—':k)+'</b></span><span>D <b class="'+statTone+'">'+(d==null?'—':d)+'</b></span><span>A <b class="'+statTone+'">'+(a==null?'—':a)+'</b></span><span>K/D <b class="'+(hasStats?kdClass(k,d):'kd-neutral')+'">'+(hasStats?fmt(kd):'—')+'</b></span></div><strong class="profile-drill-result '+profileResultClass(result)+'">'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':result==='DRAW'?'НИЧЬЯ':'НЕТ ИСХОДА')+'</strong></div>';
+}
+function openPlayerDrilldown(id,kind,arg){
+ const p=player(id),host=$('#playerModal');if(!p||!host)return;
+ const allRows=detailRows(id),activeIds=new Set(activeMatches().map(m=>m.match_id));let title='Карьерный итог',subtitle='Все серии, в которых участвовал игрок',content='',summary='';
+ const renderRows=rows=>rows.length?rows.map(r=>profileGameRow(id,r)).join(''):'<div class="empty">Для этого отрезка нет подробной статистики K/D/A.</div>';
+ if(kind==='career'||kind==='series'){
+  const matches=activeMatches().filter(m=>matchMaps(m).some(mp=>(mp.player_stats||[]).some(s=>s.player_id===id))||(m.source_kind==='compact_bo3'&&(m.series_aggregate_stats||[]).some(s=>s.player_id===id))).filter(m=>kind!=='series'||m.match_id===arg).sort((a,b)=>matchOrder(b)-matchOrder(a));
+  title=kind==='series'?'Статистика игрока · серия':'Карьерный итог';subtitle=kind==='series'?'Только личная статистика выбранной серии':'История всех серий с личными показателями';
+  const resultRows=careerSeriesResultsForPlayer(id);
+  const cards=matches.map(m=>{
+   const maps=matchMaps(m),own=maps.flatMap(mp=>(mp.player_stats||[]).filter(s=>s.player_id===id).map(s=>({...s,map:mp.map,map_id:mp.map_id,match_id:m.match_id,score:mp.score})));
+   let k=own.reduce((z,s)=>z+(Number(s.kills)||0),0),d=own.reduce((z,s)=>z+(Number(s.deaths)||0),0),a=own.reduce((z,s)=>z+(Number(s.assists)||0),0);
+   if(!own.length&&m.source_kind==='compact_bo3'){const s=(m.series_aggregate_stats||[]).find(x=>x.player_id===id);if(s){k=Number(s.kills)||0;d=Number(s.deaths)||0;a=Number(s.assists)||0}}
+   const res=resultRows.find(x=>x.matchId===m.match_id)?.result||'—',n=seriesNumberForMatch(m),kd=d?k/d:0,scoreClassName=profileResultClass(res);
+   const statTone=kdClass(k,d);
+   return '<div class="profile-drill-row click-row" onclick="openMatchDetail(\''+esc(m.match_id)+'\')" title="Открыть карточку матча"><div class="profile-drill-game"><b>Серия '+esc(n||'—')+'</b><span>'+esc(m.format||'—')+' · '+(own.length?own.length+' карт':'агрегированная статистика')+'</span><small>Счёт <b class="'+scoreClassName+'">'+esc(m.series_score||'Счёт не указан')+'</b> · '+esc(dateLabel(m.played_at||m.date)||'дата не указана')+'</small></div><div class="profile-drill-kda '+statTone+'"><span>K <b class="'+statTone+'">'+k+'</b></span><span>D <b class="'+statTone+'">'+d+'</b></span><span>A <b class="'+statTone+'">'+a+'</b></span><span>K/D <b class="'+statTone+'">'+fmt(kd)+'</b></span></div><strong class="profile-drill-result '+scoreClassName+'">'+(res==='WIN'?'ПОБЕДА':res==='LOSS'?'ПОРАЖЕНИЕ':res==='DRAW'?'НИЧЬЯ':'НЕТ ИСХОДА')+'</strong></div>';
+  }).join('');
+  content=cards||'<div class="empty">Нет серий с личной статистикой.</div>';
+  const known=resultRows.filter(x=>['WIN','LOSS','DRAW'].includes(x.result)),wins=known.filter(x=>x.result==='WIN').length,losses=known.filter(x=>x.result==='LOSS').length,draws=known.filter(x=>x.result==='DRAW').length;
+  summary='<div class="profile-drill-summary"><span>Серий <b>'+matches.length+'</b></span><span>Победы <b class="positive">'+wins+'</b></span><span>Поражения <b class="negative">'+losses+'</b></span><span>Ничьи <b class="neutral">'+draws+'</b></span><span>Winrate <b>'+(known.length?Math.round(wins/known.length*100)+'%':'—')+'</b></span></div>';
+ }else if(kind==='form'){
+  const n=Math.max(1,Number(arg)||1),rows=allRows.slice(-n).reverse();title=n===1?'Форма · последняя игра':'Форма · последние '+n+' игр';subtitle='Каждая строка — одна карта и только твои K/D/A, K/D и результат';content=renderRows(rows);
+  const known=rows.map(r=>profileMapResult(id,r)).filter(x=>['WIN','LOSS','DRAW'].includes(x)),wins=known.filter(x=>x==='WIN').length,losses=known.filter(x=>x==='LOSS').length,draws=known.filter(x=>x==='DRAW').length;
+  summary='<div class="profile-drill-summary"><span>Игр <b>'+rows.length+'</b></span><span>Побед <b class="positive">'+wins+'</b></span><span>Поражений <b class="negative">'+losses+'</b></span><span>Ничьих <b class="neutral">'+draws+'</b></span><span>Winrate <b>'+(known.length?Math.round(wins/known.length*100)+'%':'—')+'</b></span></div>';
+ }else if(kind==='map'){
+  const mapName=String(arg||''),maps=DB.maps.filter(mp=>mp.archived!==true&&activeIds.has(mp.match_id)&&mapKey(mp.map)===mapKey(mapName)&&((mp.player_stats||[]).some(s=>s.player_id===id)||(()=>{const m=DB.matches.find(x=>x.match_id===mp.match_id),g=historicalLobbyGroups(m,mp);return g[0].includes(id)||g[1].includes(id)})())).sort((a,b)=>{const ma=DB.matches.find(x=>x.match_id===a.match_id),mb=DB.matches.find(x=>x.match_id===b.match_id);return matchOrder(mb)-matchOrder(ma)||Number(b.map_index||0)-Number(a.map_index||0)});
+  const mapRows=maps.map(mp=>{const s=(mp.player_stats||[]).find(x=>x.player_id===id);return s?{...s,map:mp.map,map_id:mp.map_id,match_id:mp.match_id,score:mp.score}:{kills:null,deaths:null,assists:null,map:mp.map,map_id:mp.map_id,match_id:mp.match_id,score:mp.score}});
+  title='Карты · '+mapName;subtitle='Только твои игры на этой карте';content=renderRows(mapRows);
+  const known=maps.map(mp=>profileMapResult(id,mp)).filter(x=>['WIN','LOSS','DRAW'].includes(x)),wins=known.filter(x=>x==='WIN').length,losses=known.filter(x=>x==='LOSS').length,draws=known.filter(x=>x==='DRAW').length;
+  summary='<div class="profile-drill-summary"><span>Карт с личной статой <b>'+mapRows.length+'</b></span><span>Побед <b class="positive">'+wins+'</b></span><span>Поражений <b class="negative">'+losses+'</b></span><span>Ничьих <b class="neutral">'+draws+'</b></span><span>Winrate <b>'+(known.length?Math.round(wins/known.length*100)+'%':'—')+'</b></span></div>';
+ }else if(kind==='era'){
+  const from=Math.max(1,Number(arg?.from)||1),to=Math.max(from,Number(arg?.to)||from),rows=allRows.slice(from-1,to).reverse();title='Эра '+from+'–'+Math.min(to,allRows.length);subtitle='Игры этого карьерного отрезка';content=renderRows(rows);
+  const known=rows.map(r=>profileMapResult(id,r)).filter(x=>['WIN','LOSS','DRAW'].includes(x)),wins=known.filter(x=>x==='WIN').length,losses=known.filter(x=>x==='LOSS').length,draws=known.filter(x=>x==='DRAW').length;
+  summary='<div class="profile-drill-summary"><span>Игр <b>'+rows.length+'</b></span><span>Побед <b class="positive">'+wins+'</b></span><span>Поражений <b class="negative">'+losses+'</b></span><span>Ничьих <b class="neutral">'+draws+'</b></span><span>Winrate <b>'+(known.length?Math.round(wins/known.length*100)+'%':'—')+'</b></span></div>';
+ }
+ $('#playerDrilldown')?.remove();
+ document.body.insertAdjacentHTML('beforeend','<div class="modal-back profile-drill-back" id="playerDrilldown"><div class="modal panel wide profile-drill-modal"><div class="modal-head"><div><div class="eyebrow">ЛИЧНАЯ СТАТИСТИКА · '+esc(p.display_name)+'</div><h2>'+esc(title)+'</h2><div class="muted">'+esc(subtitle)+'</div></div><button class="close" onclick="closePlayerDrilldown()">×</button></div>'+summary+'<div class="profile-drill-list">'+content+'</div></div></div>');
+}
+function closePlayerDrilldown(){$('#playerDrilldown')?.remove()}
+
+function openPublicPlayerProfile(id){
+ const p=player(id);if(!p)return;
+ state.profileTargetId=id;state.tab='profile';state.profileSection='overview';state.accountMenuOpen=false;render();
+}
+function openPlayerDetail(id){
+  const p=player(id); if(!p)return;
+  const x=aggregate(id),st=stability(id),fo=form(id),imp=impact(id),idx=index(id),rows=detailRows(id);
+  const detailTotal=aggregate(id,rows,false), detailKd=detailTotal.d?detailTotal.k/detailTotal.d:0, avgKills=detailTotal.maps?detailTotal.k/detailTotal.maps:0;
+  const windows=formWindows(rows), eras=eraRows(id), mapWinRows=mapWinRateRows(id);
+  const latest=rows.slice().reverse().slice(0,10);
+  const active=activePlayers().map(q=>({id:q.player_id,idx:index(q.player_id)})).sort((a,b)=>b.idx-a.idx||a.id.localeCompare(b.id,'ru'));
+  const rank=active.findIndex(q=>q.id===id)+1;
+  const percentile=active.length?Math.round((1-(Math.max(0,rank-1)/Math.max(1,active.length))*0.85)*100):0;
+  const rankedMaps=mapWinRows.filter(q=>q.played).slice().sort((a,b)=>b.kd-a.kd||b.played-a.played);
+  const bestMap=rankedMaps[0], worstMap=rankedMaps.length>1?rankedMaps[rankedMaps.length-1]:null;
+  const knownSeriesResults=new Map(careerSeriesResultsForPlayer(id).map(q=>[q.matchId,q.result]));
+  
+  
+  const recentMatches=activeMatches().map(m=>{
+    const maps=matchMaps(m);
+    const rs=rows.filter(r=>r.match_id===m.match_id);
+    const anchor=maps.find(mp=>mp.stats_available)||maps[0]||null;
+    const [teamA,teamB]=historicalLobbyGroups(m,anchor);
+    const rosterIds=new Set([
+      ...(m.lobby_team_a||[]),
+      ...(m.lobby_team_b||[]),
+      ...(m.team_a||[]),
+      ...(m.team_b||[]),
+      ...maps.flatMap(mp=>[
+        ...(mp.lobby_team_a||[]),
+        ...(mp.lobby_team_b||[]),
+        ...(mp.team_a||[]),
+        ...(mp.team_b||[]),
+        ...(mp.player_stats||[]).map(s=>s.player_id)
+      ]),
+      ...(m.series_aggregate_stats||[]).map(s=>s.player_id),
+      ...teamA,
+      ...teamB
+    ].filter(Boolean));
+    const participated=rosterIds.has(id)||rs.length>0;
+    if(!participated)return null;
+
+    const inA=teamA.includes(id),inB=teamB.includes(id);
+    const compactStats=m.source_kind==='compact_bo3'
+      ?(m.series_aggregate_stats||[]).find(s=>s.player_id===id)
+      :null;
+    const aggregateHasPlayer=!!compactStats;
+    const k=rs.length
+      ?rs.reduce((n,q)=>n+(Number(q.kills)||0),0)
+      :(Number(compactStats?.kills)||0);
+    const d=rs.length
+      ?rs.reduce((n,q)=>n+(Number(q.deaths)||0),0)
+      :(Number(compactStats?.deaths)||0);
+    const a=rs.length
+      ?rs.reduce((n,q)=>n+(Number(q.assists)||0),0)
+      :(Number(compactStats?.assists)||0);
+    const score=String(m?.series_score||'').match(/^(\d+)\s*:\s*(\d+)$/);
+    const sa=score?Number(score[1]):NaN;
+    const sb=score?Number(score[2]):NaN;
+    let result=Number.isFinite(sa)&&Number.isFinite(sb)
+      ?(sa===sb?'DRAW':(inA?(sa>sb?'WIN':'LOSS'):(inB?(sb>sa?'WIN':'LOSS'):'—')))
+      :'—';
+    if(result==='—'&&knownSeriesResults.has(m.match_id))
+      result=knownSeriesResults.get(m.match_id);
+
+    return {
+      m,rs,k,d,a,kd:d?k/d:0,result,
+      hasStats:rs.length>0||aggregateHasPlayer
+    };
+  }).filter(Boolean)
+    .sort((a,b)=>
+      matchOrder(b.m)-matchOrder(a.m)||
+      matchTime(b.m)-matchTime(a.m)||
+      String(b.m.match_id||'').localeCompare(String(a.m.match_id||''))
+    )
+    .slice(0,10);
+
+  const careerSeriesResults=careerSeriesResultsForPlayer(id), wins=careerSeriesResults.filter(q=>q.result==='WIN').length, losses=careerSeriesResults.filter(q=>q.result==='LOSS').length, draws=careerSeriesResults.filter(q=>q.result==='DRAW').length;
+  const bestGameRows=DB.maps.filter(mp=>mp.archived!==true&&activeMatches().some(m=>m.match_id===mp.match_id)&&mapKey(mp.map)!=='').map(mp=>{const stat=(mp.player_stats||[]).find(q=>q.player_id===id);if(!stat)return null;const kills=Number(stat.kills)||0,deaths=Number(stat.deaths)||0,assists=Number(stat.assists)||0;return{...stat,map:mp.map,map_id:mp.map_id,match_id:mp.match_id,kills,deaths,assists,kd:deaths?kills/deaths:0,diff:kills-deaths};}).filter(Boolean).sort((a,b)=>b.kd-a.kd||b.diff-a.diff||b.kills-a.kills||String(a.map).localeCompare(String(b.map),'ru')).slice(0,10);
+  const bestGameCards=bestGameRows.map((r,i)=>{const match=DB.matches.find(m=>m.match_id===r.match_id);return `<div class="map-history-row compact-row click-row" onclick="openMatchDetail('${esc(r.match_id)}')" title="Открыть матч"><div class="map-history-meta"><span class="map-history-index">#${i+1}</span><span class="map-history-sep">·</span><b class="map-history-name">${esc(r.map)}</b><span class="map-history-sep">·</span><span class="map-kda ${kdClass(r.kills,r.deaths)}">${r.kills}/${r.deaths}/${r.assists}</span><small class="muted">Серия ${esc(seriesNumberForMatch(match)||'—')}</small></div><strong class="map-mvp-link ${kdClass(r.kills,r.deaths)}">K/D ${fmt(r.kd,2)}</strong></div>`}).join('');
+  const mapRows=latest.map(r=>{const n=activeMapNumber(r.map_id);return `<div class="map-history-row compact-row click-row" onclick="openMatchDetail('${esc(r.match_id)}')" title="Открыть матч"><div class="map-history-meta"><span class="map-history-index">${n?`#${n}`:''}</span><span class="map-history-sep">·</span><b class="map-history-name">${esc(r.map)}</b><span class="map-history-sep">·</span><span class="map-kda ${kdClass(r.kills,r.deaths)}">${r.kills}/${r.deaths}/${r.assists}</span></div><strong class="map-mvp-link ${kdClass(r.kills,r.deaths)}">K/D ${fmt(r.deaths?r.kills/r.deaths:0,2)}</strong></div>`}).join('');
+  const matchRows=recentMatches.map(q=>{const n=q.m?seriesNumberForMatch(q.m):'',tone=q.result==='WIN'?'positive':q.result==='LOSS'?'negative':q.result==='DRAW'?'neutral':'neutral',personalTone=q.hasStats?kdClass(q.k,q.d):'kd-neutral';return `<div class="profile-match-row click-row" onclick="openMatchDetail('${esc(q.m?.match_id||'')}')" title="Открыть матч"><div><b>СЕРИЯ ${esc(n||'—')}</b><span>${esc(q.m?.format||'')} · <b class="${tone}">${esc(q.m?.series_score||'—')}</b></span></div><strong class="series-result ${tone}">${q.result==='DRAW'?'DRAW':q.result==='WIN'?'WIN':q.result==='LOSS'?'LOSS':'—'}</strong><em class="series-personal-score ${personalTone}">${q.hasStats?`${q.k}/${q.d}/${q.a}`:'Нет подробной K/D/A'}${q.hasStats?` · ${kdMarkupValue(q.kd)} K/D`:''}</em></div>`}).join('');
+  const mapCards=mapWinRows.map(w=>`<div class="profile-map-card"><div><b>${esc(w.map)}</b><small>${w.played} карт · <em class="positive">${w.wins}</em>-<em class="negative">${w.losses}</em></small></div><strong class="${w.played?scoreTone(w.wr*100):'neutral'}">${w.played?Math.round(w.wr*100)+'%':'—'}</strong><span>${w.played?`${fmt(w.kd,2)} K/D · ${fmt(w.kills/w.played,2)} K/map`:'нет данных'}</span></div>`).join('');
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="playerModal"><div class="modal panel wide player-profile-modal"><div class="modal-head"><div><div class="eyebrow">ПРОФИЛЬ ИГРОКА</div><div class="profile-modal-title">${profileAvatarMarkup(id,'sm')}<h2>${esc(p.display_name)}</h2></div><div class="career-summary">Место #${rank||'—'} · ${detailTotal.maps} карт · ${detailTotal.k} K / ${detailTotal.d} D / ${detailTotal.a} A · K/D ${fmt(detailKd)} · AVG K ${fmt(avgKills,2)}</div></div><div class="profile-head-actions"><button class="btn mini" onclick="state.compare=[...new Set([...state.compare,'${esc(id)}'])].slice(0,5);closePlayerDetail();state.tab='compare';render()">СРАВНИТЬ</button><button class="close" onclick="closePlayerDetail()">×</button></div></div>
+  <section class="profile-hero-grid"><div class="panel inset profile-rating"><div class="muted">ИНДЕКС ИГРОКА</div><div class="profile-rating-value">${fmt(idx,1)}</div><div class="profile-rating-meta">${rank?`#${rank} из ${active.length}`:'—'} · ${percentile} перцентиль</div><button class="btn mini why-below" onclick="openWhyIndex('${esc(id)}')">РАЗОБРАТЬ РЕЙТИНГ</button></div><div class="profile-stat-grid"><div class="inset"><span>K/D</span><strong class="${kdClass(detailTotal.k,detailTotal.d)}">${fmt(detailKd)}</strong></div><div class="inset"><span>+/−</span><strong class="${diffTone(detailTotal.k-detailTotal.d)}">${detailTotal.k-detailTotal.d>0?'+':''}${fmt(detailTotal.k-detailTotal.d,0)}</strong></div><div class="inset"><span>AVG K</span><strong>${fmt(avgKills,2)}</strong></div><div class="inset"><span>AVG D</span><strong>${fmt(detailTotal.maps?detailTotal.d/detailTotal.maps:0,2)}</strong></div><div class="inset"><span>AVG A</span><strong>${fmt(detailTotal.maps?detailTotal.a/detailTotal.maps:0,2)}</strong></div><div class="inset"><span>ИМПАКТ</span><strong class="${scoreTone(imp)}">${fmt(imp,1)}</strong></div><div class="inset"><span>ELO</span><strong class="elo-value">${fmt(window.CS2EloV3?.player(id)?.rating??1000,1)}</strong></div><div class="inset"><span>ФОРМА</span><strong class="${formTone(fo.form)}">${fmt(fo.form)}</strong></div><div class="inset"><span>СТАБИЛЬНОСТЬ</span><strong class="${scoreTone(st.score)}">${fmt(st.score,1)}</strong></div></div></section>
+  <section class="profile-section"><div class="section-head"><h3>Карьерный итог</h3><span class="muted">по всем сыгранным картам</span></div><div class="profile-career-grid"><div><span>КАРТЫ</span><strong>${detailTotal.maps}</strong></div><div><span>ПОБЕДЫ / ПОРАЖЕНИЯ</span><strong><em class="positive">${wins}</em> / <em class="negative">${losses}</em> / <em class="neutral">${draws}</em></strong><small class="career-record-note">${careerSeriesResults.length} серий с известным исходом</small></div><div><span>WINRATE</span><strong class="${wins+losses+draws?scoreTone(wins/(wins+losses+draws)*100):'neutral'}">${wins+losses+draws?Math.round(wins/(wins+losses+draws)*100)+'%':'—'}</strong></div><div><span>KILLS</span><strong>${detailTotal.k}</strong></div><div><span>DEATHS</span><strong>${detailTotal.d}</strong></div><div><span>ASSISTS</span><strong>${detailTotal.a}</strong></div></div></section>
+  <section class="profile-section"><div class="section-head"><h3>Форма</h3><span class="muted">последние отрезки</span></div><div class="form-window-grid">${windows.map(w=>`<div class="form-window-card ${w.n===1?'latest':''}"><span>${w.n===1?'Последняя':`Последние ${w.n}`}</span><strong>avg ${fmt(w.avg,2)}</strong><small>${kdMarkupValue(w.kd,'K/D ')}</small></div>`).join('')||'<div class="empty">Нет подробной истории.</div>'}</div></section>
+  <section class="profile-section"><div class="section-head"><h3>Карты</h3><span class="muted">эффективность по картам</span></div><div class="profile-map-highlight"><div class="inset"><span>ЛУЧШАЯ КАРТА</span><strong>${bestMap?esc(bestMap.map):'—'}</strong><small>${bestMap?`${fmt(bestMap.kd,2)} K/D · ${bestMap.played} карт`:''}</small></div><div class="inset"><span>САМАЯ СЛОЖНАЯ</span><strong>${worstMap?esc(worstMap.map):'—'}</strong><small>${worstMap?`${fmt(worstMap.kd,2)} K/D · ${worstMap.played} карт`:''}</small></div></div><div class="profile-map-grid">${mapCards||'<div class="empty">Нет статистики по картам.</div>'}</div></section>
+  <section class="profile-section"><div class="section-head"><h3>Топ 10 лучших игр</h3><span class="muted">сортировка по K/D · от большего к меньшему</span></div><div class="map-history">${bestGameCards||'<div class="empty">Пока нет подробной статистики по играм.</div>'}</div></section>
+  <section class="profile-section"><div class="section-head"><h3>Последние серии</h3><span class="muted">до 10 серий</span></div><div class="profile-match-list">${matchRows||'<div class="empty">Нет доступной истории серий.</div>'}</div></section>
+  <section class="profile-section"><div class="section-head"><h3>Последние подробные карты</h3><span class="muted">10 последних карт</span></div><div class="map-history">${mapRows||'<div class="empty">Нет подробной истории.</div>'}</div></section>
+  <section class="profile-section"><div class="section-head"><h3>Эры</h3><span class="muted">по 10 карт</span></div><div class="era-grid">${eras.map(e=>`<div class="era-card"><span>Эра ${e.from}–${e.to}</span><strong>AVG ${fmt(e.avg,2)}</strong><small>${kdMarkupValue(e.kd,'K/D ')}</small></div>`).join('')||'<div class="empty">Недостаточно подробной истории.</div>'}</div></section>
+  </div></div>`);
+
+  const profile=$('#playerModal');
+  const career=profile?.querySelector('.profile-career-grid');
+  if(career){
+    const cells=career.children;
+    [1,2].forEach(i=>{const cell=cells[i];if(!cell)return;cell.classList.add('profile-drill-trigger');cell.setAttribute('title',i===1?'Открыть серии с победами и поражениями':'Открыть карьерную историю и винрейт');cell.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','career')");});
+  }
+  profile?.querySelectorAll('.form-window-card').forEach((el,i)=>{const w=windows[i];if(!w)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть игры этого отрезка');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','form',"+w.n+")");});
+  profile?.querySelectorAll('.profile-map-card').forEach((el,i)=>{const w=mapWinRows[i];if(!w)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть все твои игры на карте');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','map','"+esc(w.map)+"')");});
+  profile?.querySelectorAll('.era-card').forEach((el,i)=>{const e=eras[i];if(!e)return;el.classList.add('profile-drill-trigger');el.setAttribute('title','Открыть игры этой эры');el.setAttribute('onclick',"openPlayerDrilldown('"+esc(id)+"','era',{from:"+e.from+",to:"+e.to+"})");});
+  profile?.querySelectorAll('.profile-match-row').forEach((el,i)=>{const q=recentMatches[i];if(!q?.m?.match_id)return;el.setAttribute('title','Открыть карточку серии');el.setAttribute('onclick',"openMatchDetail('"+esc(q.m.match_id)+"')");});
+ }
+ function closePlayerDetail(){$('#playerDrilldown')?.remove();$('#playerModal')?.remove()}
+function maps(v){
+  const activeMaps=DB.maps.filter(m=>m.archived!==true);
+  const recencyKey=m=>{const match=DB.matches.find(x=>x.match_id===m?.match_id);const played=matchTime(match);const matchId=String(match?.match_id||'');const matchNum=Number(matchId.match(/(?:_|-)(\d+)$/)?.[1]||0);const mapId=String(m?.map_id||'');const mapNum=Number(mapId.match(/(?:_|-)(\d+)$/)?.[1]||0);return [played||0,matchNum,Number(m?.map_index||0),mapNum]};
+  const latestMapKey=name=>activeMaps.filter(m=>mapKey(m.map)===mapKey(name)).reduce((best,m)=>{const k=recencyKey(m);for(let i=0;i<k.length;i++){if(k[i]!==best[i])return k[i]>best[i]?k:best}return best},[0,0,0,0]);
+  const names=[...new Set(activeMaps.map(m=>m.map))].sort((a,b)=>{const sa=mapStats(a),sb=mapStats(b);if(sb.maps!==sa.maps)return sb.maps-sa.maps;const ra=latestMapKey(a),rb=latestMapKey(b);for(let i=0;i<rb.length;i++){if(rb[i]!==ra[i])return rb[i]-ra[i]}return a.localeCompare(b)}), rows=names.map(n=>({...mapStats(n),map:n}));
+  const selected=state.map==='all'?'all':(names.includes(state.map)?state.map:(names[0]||'all'));
+  v.innerHTML=`<section class="section maps-page">
+    <div class="section-head"><div><h2>КАРТЫ</h2><div class="muted">${activeMapCount()} карт в активной базе · ${names.length} типов карт. Выбери карту — ниже переключаются её статистика, лаборатория и история.</div></div><div class="toolbar"><select id="mapSelect" class="control"><option value="all">Все карты</option>${names.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select></div></div>
+    <div class="map-card-grid">${rows.map((r,i)=>`<button class="map-card ${r.map===selected?'selected':''}" data-map-rank="${i+1}" onclick="state.map=state.map==='${esc(r.map)}'?'all':'${esc(r.map)}';state.mapPlayer='all';render()"><div class="map-card-image"><img class="map-card-photo" src="${mapRemoteAsset(r.map)}" alt="${esc(r.map)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapAsset(r.map)}'"><span class="map-card-image-shade"></span><img class="map-logo" src="${mapLogoSrc(r.map)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${mapLogoAsset(r.map)}'"></div><div class="map-card-body"><div><b>${esc(r.map)}</b><small>${r.maps} игр · ${r.detailed} подробно</small></div><strong class="${kdClass(r.k,r.d)}">${fmt(r.kd)}</strong></div><div class="map-card-foot"><span>+/− <b class="${diffTone(r.diff)}">${r.diff>0?'+':''}${r.diff}</b></span><span>${r.k} K · ${r.d} D · ${r.a} A</span></div></button>`).join('')}</div>
+    <div class="panel card map-selected-head ${selected!=='all'?'has-map-atmosphere':''}" ${selected!=='all'?`style="--map-bg:url('${mapRemoteAsset(selected)}'),url('${mapAsset(selected)}')"`:''}><div class="section-head"><div><h3>ВЫБРАННАЯ КАРТА · ${esc(selected||'—')}</h3><div class="muted">${selected==='all'?'Сводка по всем картам. Выбери карту для отдельного Map Lab.':'Карточка и все блоки ниже относятся только к выбранной карте.'}</div></div><span class="pill">${selected?mapStats(selected).maps:0} игр</span></div></div>
+    <div id="mapLab" class="section"></div></section>`;
+  $('#mapSelect').value=selected;
+  $('#mapSelect').onchange=e=>{state.map=e.target.value;render()};
+  renderMapLab(selected);
+}
+function renderMapLab(mapName){const box=$('#mapLab');if(!box)return;const isAll=mapName==='all',ms=DB.maps.filter(m=>m.archived!==true&&(!isAll&&m.map===mapName)).sort((a,b)=>Number(b.map_index)-Number(a.map_index)),detailed=ms.filter(m=>m.stats_available),allDetailed=DB.maps.filter(m=>m.archived!==true&&m.stats_available),scopedDetailed=isAll?allDetailed:detailed,rows=activePlayers().map(p=>{const rs=scopedDetailed.flatMap(m=>(m.player_stats||[]).filter(s=>s.player_id===p.player_id)),k=rs.reduce((z,s)=>z+Number(s.kills||0),0),d=rs.reduce((z,s)=>z+Number(s.deaths||0),0),a=rs.reduce((z,s)=>z+Number(s.assists||0),0);return{p,k,d,a,kd:d?k/d:null,n:rs.length,diff:k-d}}).filter(x=>x.n),historyMs=(isAll?DB.maps.filter(m=>m.archived!==true):ms).filter(m=>state.mapPlayer==='all'||(m.player_stats||[]).some(s=>s.player_id===state.mapPlayer)).slice().sort((a,b)=>{const ma=DB.matches.find(x=>x.match_id===a.match_id),mb=DB.matches.find(x=>x.match_id===b.match_id);return matchOrder(mb)-matchOrder(ma)||Number(b.map_index||0)-Number(a.map_index||0)}),history=historyMs.slice(0,11).map(m=>{const n=activeMapNumber(m.map_id);return `<div class="map-history-row all-map-history-row" onclick="openMapDetail('${esc(m.map_id)}')"><div><b><span class="map-history-index">${n?`#${n}`:''}</span><span class="map-history-name">${esc(m.map)}</span></b></div><strong>${mapScoreText(m)!=='—'?scoreMarkup(mapScoreText(m)):'—'}</strong></div>`}).join('');const selectedPlayer=state.mapPlayer==='all'?'':(rows.some(x=>x.p.player_id===state.mapPlayer)?state.mapPlayer:'');box.innerHTML=`<div class="panel card map-lab-panel ${!isAll?'has-map-atmosphere':''}" ${!isAll?`style="--map-bg:url('${mapRemoteAsset(mapName)}'),url('${mapAsset(mapName)}')"`:''}><div class="section-head"><div><h3>ЛАБОРАТОРИЯ КАРТ · ${esc(isAll?'ВСЕ КАРТЫ':mapName.toUpperCase())}</h3><div class="muted">${isAll?`${allDetailed.length} подробных карт по всей базе`:`${ms.length} игр · ${detailed.length} подробно`}</div></div><div class="toolbar"><select id="mapPlayerFilter" class="control"><option value="all">Все игроки</option>${activePlayers().map(p=>`<option value="${esc(p.player_id)}">${esc(p.display_name)}</option>`).join('')}</select></div></div><div class="map-heat">${rows.sort((a,b)=>(b.kd||0)-(a.kd||0)).map(x=>`<div class="heat-row ${x.p.player_id===selectedPlayer?'selected':''}" onclick="state.mapPlayer='${esc(x.p.player_id)}';renderMapLab('${esc(mapName)}')"><span>${esc(x.p.display_name)}</span><div class="heat-bar"><i style="width:${clamp((x.kd||0)/2*100,3,100)}%"></i></div><strong>${kdMarkup(x.k,x.d)}</strong><small>${x.n} карт · ${x.diff>0?'+':''}${x.diff}</small></div>`).join('')||'<div class="empty">Нет детальных K/D/A в выбранном диапазоне.</div>'}</div>${selectedPlayer?`<section class="section selected-player-card"><div class="selected-player-copy"><span class="eyebrow">ВЫБРАННЫЙ ИГРОК</span><h3>${esc(playerName(selectedPlayer))}</h3><div class="muted">${rows.find(x=>x.p.player_id===selectedPlayer)?.n||0} подробных карт</div></div></section>`:`<section class="section notice map-all-notice"><strong>Все игроки</strong><div>Выбраны все игроки. Выберите конкретного игрока в списке, чтобы открыть его данные.</div></section>`}<div class="section"><div class="section-head"><h3>ИСТОРИЯ ${isAll?'ВСЕХ КАРТ':'КАРТЫ'}</h3><span class="muted">${historyMs.length?`#${activeMapNumber(historyMs[Math.min(10,historyMs.length-1)].map_id)||'—'}–#${activeMapNumber(historyMs[0].map_id)||'—'}`:'нет карт'}</span></div><div class="map-history">${history||'<div class="empty">Нет сыгранных карт.</div>'}</div></div></div>`;$('#mapPlayerFilter').value=selectedPlayer||'all';$('#mapPlayerFilter').onchange=e=>{state.mapPlayer=e.target.value;renderMapLab(mapName)}}
+function openMapDetail(mapId){
+  const m=DB.maps.find(x=>x.map_id===mapId); if(!m)return;
+  const match=DB.matches.find(x=>x.match_id===m.match_id);
+  const rows=(m.player_stats||[]).map(s=>({...s,name:s.player_id?playerName(s.player_id):(s.raw_name||'Неопознанный игрок'),kd:s.deaths?s.kills/s.deaths:0,diff:s.kills-s.deaths})).sort((a,b)=>b.kd-a.kd||b.kills-a.kills);
+  const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
+  const mapTeams=historicalLobbyGroups(match,m);
+  const groups=(mapTeams[0].length||mapTeams[1].length)?mapTeams:lobbyGroups(match);
+  const teamRows=ids=>ids.map(id=>{
+    const key=normalizeName(id);
+    const rowById=rows.find(r=>r.player_id&&r.player_id===id);
+    const rowByRaw=rows.find(r=>normalizeName(r.raw_name)===key);
+    // Guest rows can carry a known player's display name or registered alias without player_id.
+    // Only attach such a row when the name maps unambiguously to this roster player.
+    const rosterPlayer=player(id);
+    const names=[id,rosterPlayer?.display_name,...(rosterPlayer?.aliases||[])]
+      .filter(Boolean).map(normalizeName);
+    const rowByKnownName=rowById||rowByRaw?null:rows.find(r=>{
+      const raw=normalizeName(r.raw_name);
+      if(!raw||!names.includes(raw))return false;
+      const owners=DB.players.filter(p=>[p.player_id,p.display_name,...(p.aliases||[])]
+        .filter(Boolean).some(n=>normalizeName(n)===raw));
+      return owners.length===1&&owners[0].player_id===id;
+    });
+    const row=rowById||rowByRaw||rowByKnownName;
+    return row?{...row,name:rosterPlayer?.display_name||row.name||id}:{name:rosterPlayer?.display_name||id,kills:null,deaths:null,assists:null,kd:null};
+  }).sort((a,b)=>{
+    const ak=a.kd==null?-1:a.kd,bk=b.kd==null?-1:b.kd;
+    return bk-ak||(Number(b.kills)||0)-(Number(a.kills)||0)||((Number(b.kills)||0)-(Number(b.deaths)||0))-((Number(a.kills)||0)-(Number(a.deaths)||0))||String(a.name).localeCompare(String(b.name),'ru');
+  });
+  const teamPanel=groups[0].length||groups[1].length?'<section class="section"><div class="section-head"><h3>СТАТИСТИКА КОМАНД</h3><span class="muted">K/D/A · K/D</span></div><div class="lobby-grid"><div><h3 class="lobby-team-title"><span>КОМАНДА A</span><small>'+groups[0].length+'/5 игроков</small></h3>'+teamRows(groups[0]).map(r=>'<div class="lobby-row"><b>'+esc(r.name)+'</b><span>'+(r.kills==null?'—/—/—':r.kills+'/'+r.deaths+'/'+r.assists)+'</span><strong>'+(r.kills==null?'—':kdMarkup(r.kills,r.deaths))+'</strong></div>').join('')+'</div><div><h3 class="lobby-team-title"><span>КОМАНДА B</span><small>'+groups[1].length+'/5 игроков</small></h3>'+teamRows(groups[1]).map(r=>'<div class="lobby-row"><b>'+esc(r.name)+'</b><span>'+(r.kills==null?'—/—/—':r.kills+'/'+r.deaths+'/'+r.assists)+'</span><strong>'+(r.kills==null?'—':kdMarkup(r.kills,r.deaths))+'</strong></div>').join('')+'</div></div></section>':'<section class="section"><div class="empty">Составы команд для этой карты не записаны.</div></section>';
+  const title=`${m.map} ${mapScoreText(m)}`;const mapDuration=durationChip(m.duration_minutes);
+  const body=m.stats_available?`<div class="table-wrap"><table class="data-table"><thead><tr><th>#</th><th>Игрок</th><th>K</th><th>D</th><th>A</th><th>K/D</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td class="name">${esc(r.name)}</td><td>${r.kills}</td><td>${r.deaths}</td><td>${r.assists}</td><td>${kdMarkup(r.kills,r.deaths)}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty">Нет покарточной статистики.</div>`;
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="mapModal"><div class="modal panel wide"><div class="modal-head"><div><div class="eyebrow">ПОДРОБНОСТИ КАРТЫ</div><h2>${esc(title)}</h2><div class="muted">${mapDuration?`${mapDuration} · `:''}${esc(match?.match_id||'—')}${(match?.played_at||match?.date)?` · ${dateLabel(match.played_at||match.date)}`:''} · ${esc(match?.format||'—')}</div></div><button class="close" onclick="$('#mapModal')?.remove()">×</button></div><div class="mini-stats"><div class="mini-stat"><span>КАРТА</span><strong>${esc(m.map)}</strong></div><div class="mini-stat"><span>СЧЁТ</span><strong>${scoreMarkup(mapScoreText(m))}</strong></div><div class="mini-stat"><span>ИГРОКОВ</span><strong>${rows.length}/10</strong></div><div class="mini-stat"><span>ДЛИТЕЛЬНОСТЬ</span><strong>${formatDuration(m.duration_minutes)||'—'}</strong></div><div class="mini-stat"><span>СТАТУС</span><strong>${m.stats_available?'ПОДРОБНЫЕ':'КОМПАКТНАЯ СЕРИЯ'}</strong></div></div><section class="section"><div class="section-head"><h3>ТОП-10 ИГРОКОВ</h3><span class="muted">K/D/A · сортировка по K/D</span></div>${body}</section>${teamPanel}</div></div>`);
+}
+function teamComparison(){
+  const calc=ids=>{const q=ids.map(id=>({id,idx:index(id),imp:impact(id),st:stability(id).score}));return{n:q.length,idx:q.reduce((z,x)=>z+x.idx,0),avgIdx:q.length?q.reduce((z,x)=>z+x.idx,0)/q.length:0,imp:q.length?q.reduce((z,x)=>z+x.imp,0)/q.length:0,st:q.length?q.reduce((z,x)=>z+x.st,0)/q.length:0,coverage:q.reduce((z,x)=>z+playedMapsFor(x.id),0)/Math.max(q.length,1)}};
+  return {a:calc(state.teamA),b:calc(state.teamB)};
+}
+function playerPick(){
+  const all=activePlayers().map(p=>({p,idx:index(p.player_id),imp:impact(p.player_id),st:stability(p.player_id).score})).sort((a,b)=>b.idx-a.idx); return all[0]||null;
+}
+function teamRoster(){
+  return activePlayers().slice().sort((a,b)=>
+    String(a.display_name||a.player_id).localeCompare(String(b.display_name||b.player_id),'ru')
+  );
+}
+function teamAverage(ids){return ids.length?ids.reduce((z,id)=>z+index(id),0)/ids.length:0}
+function teamImpactAvg(ids){return ids.length?ids.reduce((z,id)=>z+impact(id),0)/ids.length:0}
+function teamStabilityAvg(ids){return ids.length?ids.reduce((z,id)=>z+stability(id).score,0)/ids.length:0}
+function teams(v){
+  const roster=teamRoster(), byId=new Map(roster.map(p=>[p.player_id,p]));
+  state.teamA=state.teamA.filter(id=>byId.has(id)); state.teamB=state.teamB.filter(id=>byId.has(id));
+  state.teamA=state.teamA.filter((id,i,a)=>!state.teamB.includes(id)||a.indexOf(id)===i);
+  state.teamB=state.teamB.filter((id,i,a)=>!state.teamA.includes(id)||a.indexOf(id)===i);
+  const allSelected=[...state.teamA,...state.teamB], pool=roster.filter(p=>!allSelected.includes(p.player_id));
+  const cmp={a:{avgIdx:teamAverage(state.teamA),imp:teamImpactAvg(state.teamA),st:teamStabilityAvg(state.teamA)},b:{avgIdx:teamAverage(state.teamB),imp:teamImpactAvg(state.teamB),st:teamStabilityAvg(state.teamB)}};
+  const mapNames=[...new Set(DB.maps.filter(m=>m.archived!==true).map(m=>m.map))];if(!mapNames.includes(state.teamMap))state.teamMap=mapNames[0]||'mirage';const prob=matchupProbability(state.teamA,state.teamB,state.teamMap);const diff=Math.abs(cmp.a.avgIdx-cmp.b.avgIdx);
+  const rosterRows='';
+  const teamSlot=(id,i,t)=>id?teamRow({p:player(id),idx:index(id),imp:impact(id),st:stability(id).score},i,t):`<div class="team-slot-empty" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropTeamSlot(event,'${t}',${i})"><span>${i+1}</span><b>Перетащи игрока сюда</b></div>`;
+  const teamA=[0,1,2,3,4].map(i=>teamSlot(state.teamA[i],i,'A')).join('');
+  const teamB=[0,1,2,3,4].map(i=>teamSlot(state.teamB[i],i,'B')).join('');
+  v.innerHTML=`<section class="section teams-page"><div class="section-head"><div><h2>СОСТАВЫ</h2><div class="muted">10 пустых слотов. Собери оба состава полностью сам: игроки из базы и архивные игроки доступны для перетаскивания.</div></div><div class="toolbar"><button class="btn" onclick="randomTeams()">СЛУЧАЙНО</button><button class="btn primary" onclick="balanceTeams()">БАЛАНС</button><button class="btn" onclick="state.teamA=[];state.teamB=[];state.teamChange=null;render()">ОЧИСТИТЬ</button></div></div>
+<div class="panel card team-roster-picker"><div class="section-head"><div><h3>ИГРОКИ</h3><div class="muted">Выбери команду и нажми на игрока — как в создании матча. Перетаскивание тоже работает.</div></div><div class="team-add-targets"><button type="button" class="match-target-btn team-a-target ${state.teamAddTarget==='A'?'selected':''}" onclick="state.teamAddTarget='A';render()">КОМАНДА A</button><button type="button" class="match-target-btn team-b-target ${state.teamAddTarget==='B'?'selected':''}" onclick="state.teamAddTarget='B';render()">КОМАНДА B</button></div></div><div class="team-player-pool">${roster.map(p=>`<button type="button" class="match-player-chip team-pick-chip ${state.teamA.includes(p.player_id)?'selected team-a-chip':''} ${state.teamB.includes(p.player_id)?'selected team-b-chip':''}" onclick="addToTeam('${esc(p.player_id)}')"><span>${esc(p.display_name)}</span><small>${fmt(index(p.player_id),1)} · ${p.is_active===false?'архив':'активен'}</small></button>`).join('')}</div></div><div class="team-builder-grid"><div class="panel card team-dropzone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropTeam(event,'A')"><div class="team-head"><div><h3>КОМАНДА A</h3><span class="muted">${state.teamA.length}/5 игроков</span></div><strong>${fmt(cmp.a.avgIdx,1)}</strong></div>${teamA}<div class="team-summary"><span>AVG ИНДЕКС</span><b>${fmt(cmp.a.avgIdx,1)}</b><span>Импакт</span><b>${fmt(cmp.a.imp,1)}</b><span>Стабильность</span><b>${fmt(cmp.a.st,1)}</b></div></div>
+  <div class="panel card team-dropzone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropTeam(event,'B')"><div class="team-head"><div><h3>КОМАНДА B</h3><span class="muted">${state.teamB.length}/5 игроков</span></div><strong>${fmt(cmp.b.avgIdx,1)}</strong></div>${teamB}<div class="team-summary"><span>AVG ИНДЕКС</span><b>${fmt(cmp.b.avgIdx,1)}</b><span>Импакт</span><b>${fmt(cmp.b.imp,1)}</b><span>Стабильность</span><b>${fmt(cmp.b.st,1)}</b></div></div></div><div class="panel card team-probability"><div class="section-head"><div><h3>ПРОГНОЗ НА КАРТЕ</h3><div class="muted">теоретическая оценка состава по истории игроков</div></div><select id="teamMapSelect" class="control team-map-select">${mapNames.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select></div><div class="prob-bars"><div class="prob-side prob-a"><strong>${prob.ready?Math.round(prob.pA*100):'—'}%</strong><span>КОМАНДА A</span><small>${prob.a.coverage?`WR ${Math.round(prob.a.wr*100)}% · ${prob.a.coverage} карт`:'нет истории'}</small></div><div class="prob-track"><i style="width:${prob.ready?Math.round(prob.pA*100):50}%"></i></div><div class="prob-side prob-b"><strong>${prob.ready?Math.round(prob.pB*100):'—'}%</strong><span>КОМАНДА B</span><small>${prob.b.coverage?`WR ${Math.round(prob.b.wr*100)}% · ${prob.b.coverage} карт`:'нет истории'}</small></div></div><div class="prob-meta"><span>${esc(state.teamMap)} · сила A ${fmt(prob.a.power,1)} · сила B ${fmt(prob.b.power,1)}</span><span>${prob.ready?'теория состава':'собери 5×5'}</span></div></div>
+  </section>`;
+  $('#teamMapSelect')?.addEventListener('change',e=>{state.teamMap=e.target.value;render()});if($('#teamMapSelect'))$('#teamMapSelect').value=state.teamMap;
+}
+function teamRow(x,i,t){if(!x||!x.p)return'';const ms=mapPlayerStats(x.p.player_id,state.teamMap||'mirage');return`<div class="team-row draggable-player" draggable="true" data-player="${esc(x.p.player_id)}" data-team="${t}" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="dropTeamPlayer(event,'${esc(x.p.player_id)}','${t}');this.classList.remove('drag-over')" ondragstart="dragTeam(event,'${esc(x.p.player_id)}','${t}')" ondragend="clearTeamDrag()"><span class="rank">${i+1}</span><div><div class="name">${esc(x.p.display_name)}</div><div class="muted">Импакт ${fmt(x.imp,1)} · Стабильность ${fmt(x.st,1)}</div><div class="team-map-stat">${esc(state.teamMap||'map')} · ${ms.played?Math.round(ms.wr*100)+'% WR · '+ms.played+' карт':'нет истории'}</div></div><strong>${fmt(x.idx,1)}</strong><button class="close team-remove" onclick="event.stopPropagation();removeFromTeam('${esc(x.p.player_id)}','${t}')">×</button></div>`}
+function addToTeam(id){const fromA=state.teamA.includes(id),fromB=state.teamB.includes(id);if(fromA||fromB){toast('Игрок уже в составе');return}const key=state.teamAddTarget==='B'?'teamB':'teamA';if(state[key].length>=5){toast(`Команда ${state.teamAddTarget==='B'?'B':'A'} заполнена`);return}state[key].push(id);render()}
+function removeFromTeam(id,t){const key=t==='A'?'teamA':'teamB';state[key]=state[key].filter(x=>x!==id);render()}
+function dragTeam(e,id,t){e.dataTransfer.setData('text/plain',JSON.stringify({id,t}));e.dataTransfer.effectAllowed='move';document.querySelectorAll('.team-dropzone').forEach(x=>x.classList.add('drag-ready'))}
+function dragRoster(e,id){e.dataTransfer.setData('text/plain',JSON.stringify({id,t:'ROSTER'}));e.dataTransfer.effectAllowed='move';document.querySelectorAll('.team-dropzone').forEach(x=>x.classList.add('drag-ready'))}
+function dropTeamPlayer(e,targetId,targetTeam){e.preventDefault();e.stopPropagation();clearTeamDrag();let data;try{data=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{return}if(!data?.id||data.id===targetId)return;const beforeA=teamAverage(state.teamA),beforeB=teamAverage(state.teamB);if(data.t==='ROSTER'){const fromA=state.teamA.indexOf(data.id),fromB=state.teamB.indexOf(data.id);if(fromA>=0)state.teamA.splice(fromA,1);if(fromB>=0)state.teamB.splice(fromB,1);const to=targetTeam==='A'?state.teamA:state.teamB;const old=to.indexOf(targetId);if(old>=0)to[old]=data.id;else if(to.length<5)to.push(data.id);else return toast('Команда заполнена');}else{const from=data.t==='A'?'teamA':'teamB',to=targetTeam==='A'?'teamA':'teamB';const i1=state[from].indexOf(data.id),i2=state[to].indexOf(targetId);if(i1<0||i2<0)return;state[from][i1]=targetId;state[to][i2]=data.id;}
+const afterA=teamAverage(state.teamA),afterB=teamAverage(state.teamB);state.teamChange={from:data.id,to:targetId,beforeA,beforeB,afterA,afterB};toast(`${playerName(data.id)} ↔ ${playerName(targetId)}`);render()}
+function dropTeamSlot(e,targetTeam,indexSlot){e.preventDefault();clearTeamDrag();let data;try{data=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{return}if(!data?.id)return;const target=targetTeam==='A'?state.teamA:state.teamB;const beforeA=teamAverage(state.teamA),beforeB=teamAverage(state.teamB);let fromA=state.teamA.indexOf(data.id),fromB=state.teamB.indexOf(data.id);if(fromA>=0)state.teamA.splice(fromA,1);if(fromB>=0)state.teamB.splice(fromB,1);const targetExisting=target[indexSlot];if(targetExisting&&targetExisting!==data.id){if(target.length>=5){if(targetExisting)target[indexSlot]=data.id; if(data.t==='A')state.teamA.push(targetExisting); else if(data.t==='B')state.teamB.push(targetExisting); else state.teamB.length<5?state.teamB.push(targetExisting):state.teamA.push(targetExisting);}else target[indexSlot]=data.id}else{if(target.length>=5)return toast('Команда заполнена');target.splice(Math.min(indexSlot,target.length),0,data.id)}
+state.teamA=state.teamA.slice(0,5);state.teamB=state.teamB.slice(0,5);state.teamChange={from:data.id,to:targetExisting||null,beforeA,beforeB,afterA:teamAverage(state.teamA),afterB:teamAverage(state.teamB)};toast(`${playerName(data.id)} добавлен в команду ${targetTeam}`);render()}
+function clearTeamDrag(){document.querySelectorAll('.team-dropzone,.team-slot-empty,.team-row').forEach(x=>x.classList.remove('drag-ready','drag-over'))}
+function dropTeam(e,target){e.preventDefault();clearTeamDrag();let data;try{data=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{return}if(!data?.id)return;const to=target==='A'?'teamA':'teamB',fromA=state.teamA.indexOf(data.id),fromB=state.teamB.indexOf(data.id);if(state[to].includes(data.id))return;if(state[to].length>=5)return toast('Команда заполнена — используй пустой слот или перетащи на игрока');if(fromA>=0)state.teamA.splice(fromA,1);if(fromB>=0)state.teamB.splice(fromB,1);state[to].push(data.id);state.teamChange={from:data.id,to:null,beforeA:null,beforeB:null,afterA:null,afterB:null};toast(`${playerName(data.id)} перемещён в команду ${target}`);render()}
+function randomTeams(){const ids=teamRoster().map(p=>p.player_id).sort(()=>Math.random()-.5).slice(0,10);state.teamA=ids.slice(0,5);state.teamB=ids.slice(5,10);render()}
+function balanceTeams(){const arr=teamRoster().map(p=>({id:p.player_id,v:index(p.player_id)})).sort((a,b)=>b.v-a.v).slice(0,10);let A=[],B=[],sa=0,sb=0;for(const x of arr){if(A.length<5&&(sa<=sb||B.length>=5)){A.push(x.id);sa+=x.v}else{B.push(x.id);sb+=x.v}}state.teamA=A;state.teamB=B;render()}
+function recordRows(){
+  const rows=[];
+  for(const p of activePlayers()) for(const r of detailRows(p.player_id)) rows.push({player:p.display_name,playerId:p.player_id,map:r.map,k:r.kills,d:r.deaths,a:r.assists,kd:r.deaths?r.kills/r.deaths:0,diff:r.kills-r.deaths,avg:r.kills,impact:impact(p.player_id,[r],false),idx:indexBreakdown(p.player_id,[r],false,true).total,mapId:r.map_id,kind:'detailed',matchId:r.match_id});
+  for(const m of activeMatches().filter(x=>x.source_kind==='compact_bo3')) for(const p of activePlayers()){
+    const stat=statRowForPlayer(m,p.player_id,m.series_aggregate_stats||[]);
+    if(!stat)continue;
+    const k=Number(stat.kills)||0,d=Number(stat.deaths)||0,a=Number(stat.assists)||0,mapCount=Math.max(1,(m.map_ids||[]).length),one=[{kills:k/mapCount,deaths:d/mapCount,assists:a/mapCount}];
+    rows.push({player:p.display_name,playerId:p.player_id,map:`BO3 · ${m.series_score||'—'}`,k,d,a,kd:d?k/d:0,diff:k-d,avg:k/mapCount,impact:impact(p.player_id,one,false),idx:indexBreakdown(p.player_id,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
+  }
+  return rows;
+}function careerRecordRows(){
+  return activePlayers().map(p=>{const x=aggregate(p.player_id),imp=impact(p.player_id),idx=index(p.player_id);return{player:p.display_name,playerId:p.player_id,map:`Карьера · ${x.maps} карт`,k:x.k,d:x.d,a:x.a,kd:x.kd,diff:x.kdDiff,avg:x.maps?x.k/x.maps:0,impact:imp,idx,mapId:null,kind:'career'}}).filter(r=>r.k||r.d||r.a).sort((a,b)=>b.idx-a.idx);
+}
+function bo3RecordRows(){
+  const rows=[];
+  for(const m of activeMatches().filter(x=>x.format==='BO3')){
+    const grouped=new Map();
+    if(m.source_kind==='compact_bo3'){
+      for(const p of activePlayers()){
+        const stat=statRowForPlayer(m,p.player_id,m.series_aggregate_stats||[]);
+        if(stat)grouped.set(p.player_id,{k:Number(stat.kills)||0,d:Number(stat.deaths)||0,a:Number(stat.assists)||0});
+      }
+    }else{
+      for(const mid of(m.map_ids||[])){
+        const mp=DB.maps.find(x=>x.map_id===mid);if(!mp)continue;
+        const match=DB.matches.find(x=>x.match_id===mp.match_id)||m;
+        for(const p of activePlayers()){
+          const stat=statRowForPlayer(match,p.player_id,mp.player_stats||[]);
+          if(!stat)continue;
+          const g=grouped.get(p.player_id)||{k:0,d:0,a:0};
+          g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;
+          grouped.set(p.player_id,g);
+        }
+      }
+    }
+    for(const [pid,g] of grouped){
+      const p=player(pid);if(!p||p.is_active===false||p.deleted_permanently===true)continue;
+      const mapCount=Math.max(1,m.map_ids?.length||1),one=[{kills:g.k/mapCount,deaths:g.d/mapCount,assists:g.a/mapCount}];
+      rows.push({player:p.display_name,playerId:pid,map:`BO3 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/mapCount,impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
+    }
+  }
+  return rows.sort((a,b)=>matchTime(activeMatches().find(m=>m.match_id===b.matchId))-matchTime(activeMatches().find(m=>m.match_id===a.matchId))||String(a.player).localeCompare(String(b.player),'ru'));
+}function bo5RecordRows(){
+  const rows=[];
+  for(const m of activeMatches().filter(x=>x.format==='BO5')){
+    const grouped=new Map();
+    for(const mid of(m.map_ids||[])){
+      const mp=DB.maps.find(x=>x.map_id===mid);if(!mp)continue;
+      const match=DB.matches.find(x=>x.match_id===mp.match_id)||m;
+      for(const p of activePlayers()){
+        const stat=statRowForPlayer(match,p.player_id,mp.player_stats||[]);
+        if(!stat)continue;
+        const g=grouped.get(p.player_id)||{k:0,d:0,a:0};
+        g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;
+        grouped.set(p.player_id,g);
+      }
+    }
+    for(const [pid,g] of grouped){
+      const p=player(pid);if(!p||p.is_active===false||p.deleted_permanently===true)continue;
+      const mapCount=Math.max(1,m.map_ids?.length||1),one=[{kills:g.k/mapCount,deaths:g.d/mapCount,assists:g.a/mapCount}];
+      rows.push({player:p.display_name,playerId:pid,map:`BO5 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/mapCount,impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo5',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
+    }
+  }
+  return rows.sort((a,b)=>matchTime(activeMatches().find(m=>m.match_id===b.matchId))-matchTime(activeMatches().find(m=>m.match_id===a.matchId))||String(a.player).localeCompare(String(b.player),'ru'));
+}function records(v){
+  const filter=state.recordFilter||'career',metric=state.recordMetric||'kills';
+  const maps=[...new Set(DB.maps.filter(m=>m.archived!==true).map(m=>m.map))];
+  let source;
+  if(filter==='career') source=careerRecordRows();
+  else if(filter==='bo1') source=bo1RecordRows();
+  else if(filter==='bo3') source=bo3RecordRows();
+  else if(filter==='bo5') source=bo5RecordRows();
+  else if(filter==='match'){const m=latestMatch();source=m?(m.source_kind==='compact_bo3'?bo3RecordRows().filter(r=>r.matchId===m.match_id):recordRows().filter(r=>r.matchId===m.match_id)):[]}
+  else if(filter==='map')source=state.recordMap&&state.recordMap!=='all'?recordRows().filter(r=>r.kind==='detailed'&&r.map===state.recordMap):recordRows().filter(r=>r.kind==='detailed');
+  else source=recordRows().filter(r=>r.kind==='detailed');
+  const key=metric==='kd'?'kd':metric==='diff'?'diff':metric==='assists'?'a':metric==='deaths'?'d':metric==='impact'?'impact':metric==='index'?'idx':'k';
+  const sorted=source.slice().sort((a,b)=>(b[key]??0)-(a[key]??0)||String(a.player).localeCompare(String(b.player),'ru')).slice(0,10);
+  const label=filter==='match'?'последний матч':filter==='map'?'выбранная карта':filter==='bo5'?'серии BO5':filter==='bo3'?'серии BO3':filter==='bo1'?'BO1':filter==='career'?'карьера':'подробные карты';
+  const avgRows=(filter==='career'?activePlayers().map(p=>{const x=aggregate(p.player_id);return{player:p.display_name,playerId:p.player_id,map:`Карьера · ${x.maps} карт`,k:x.k,d:x.d,a:x.a,kd:x.kd,diff:x.kdDiff,avg:x.maps?x.k/x.maps:0,maps:x.maps,impact:impact(p.player_id),idx:index(p.player_id),mapId:null,kind:'career'}}).filter(r=>r.maps>0):recordAvgRows(source)).sort((a,b)=>b.avg-a.avg||b.maps-a.maps||String(a.player).localeCompare(String(b.player),'ru')).slice(0,10);
+  const winRowsAll=recordWinRows(source,filter,state.recordMap||'all');
+  const minPlayed=Math.min(3,Math.max(1,...winRowsAll.map(r=>r.wrPlayed||0)));
+  const eligible=winRowsAll.filter(r=>r.wrPlayed>=minPlayed);
+  const winRows=(eligible.length?eligible:winRowsAll).sort((a,b)=>b.wr-a.wr||b.wrPlayed-a.wrPlayed||String(a.player).localeCompare(String(b.player),'ru')).slice(0,10);
+  const block=(title,arr,val,clickable=true)=>`<div class="panel card record-block"><div class="section-head"><h3>${title}</h3><span class="muted">ТОП 10 · ${label}</span></div>${arr.map((r,i)=>`<div class="record-row ${clickable?'click-row':''}" ${clickable?`onclick="${r.matchId?`openMatchDetail('${esc(r.matchId)}')`:r.mapId?`openMapDetail('${esc(r.mapId)}')`:`openPlayerDetail('${esc(r.playerId)}')`}"`:''}><strong>${i+1}</strong><span><b>${esc(r.player)}</b><small>${esc(r.kind==='bo3'||r.kind==='bo5'?`${r.kind.toUpperCase()} · ${r.seriesScore||'—'}`:r.map)}</small></span><em>${val(r)}</em></div>`).join('')||'<div class="empty">Нет данных для выбранного фильтра.</div>'}</div>`;
+  const maxK=source.slice().sort((a,b)=>b.k-a.k).slice(0,10),bestKD=source.slice().sort((a,b)=>b.kd-a.kd).slice(0,10),bestDiff=source.slice().sort((a,b)=>b.diff-a.diff).slice(0,10),bestA=source.slice().sort((a,b)=>b.a-a.a).slice(0,10),bestImpact=source.slice().sort((a,b)=>b.impact-a.impact).slice(0,10),bestIndex=source.slice().sort((a,b)=>b.idx-a.idx).slice(0,10);
+  v.innerHTML=`<section class="section records-page"><div class="section-head"><div><h2>РЕКОРДЫ</h2><div class="muted">Каждый режим строит свой собственный рейтинг: карьера, серии BO1/BO3/BO5, последний матч или конкретная карта.</div></div><div class="toolbar"><select id="recordFilter" class="control"><option value="career">КАРЬЕРА</option><option value="bo1">BO1</option><option value="bo3">BO3 СЕРИИ</option><option value="bo5">BO5 СЕРИИ</option><option value="match">ПОСЛЕДНИЙ МАТЧ</option><option value="map">КАРТА</option></select><select id="recordMetric" class="control"><option value="kills">УБИЙСТВА</option><option value="deaths">СМЕРТИ</option><option value="kd">K/D</option><option value="diff">+/−</option><option value="assists">ASSISTS</option><option value="impact">ИМПАКТ</option><option value="index">ИНДЕКС ИГРОКА</option></select><select id="recordMap" class="control"><option value="all">Все карты</option>${maps.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')}</select></div></div><div class="panel card section"><div class="section-head"><h3>ВЫБРАННЫЙ РЕКОРД · ${metric==='impact'?'ИМПАКТ':metric==='index'?'ИНДЕКС ИГРОКА':metric.toUpperCase()}</h3><span class="muted">${source.length} записей</span></div>${block('ТОП 10',sorted,r=>metric==='kd'?kdMarkup(r.k,r.d):metric==='diff'?(r.diff>0?'+':'')+fmt(r.diff,0):metric==='assists'?r.a:metric==='deaths'?r.d:metric==='impact'?fmt(r.impact,1):metric==='index'?fmt(r.idx,1):r.k)}</div><div class="records-grid">${block('МАКСИМУМ УБИЙСТВ',maxK,r=>r.k)}${block('ЛУЧШИЙ K/D',bestKD,r=>kdMarkup(r.k,r.d))}${block('ЛУЧШИЙ AVG',avgRows,r=>`${fmt(r.avg,2)} · ${r.maps||0} карт`)}${block('ЛУЧШИЙ +/−',bestDiff,r=>(r.diff>0?'+':'')+fmt(r.diff,0))}${block('ЛУЧШИЙ АССИСТ',bestA,r=>r.a)}${block('ТОП СМЕРТЕЙ',source.slice().sort((a,b)=>b.d-a.d).slice(0,10),r=>r.d)}${block('ЛУЧШИЙ ИНДЕКС',bestIndex,r=>fmt(r.idx,1))}${block('ЛУЧШИЙ ИМПАКТ',bestImpact,r=>fmt(r.impact,1))}${block('ЛУЧШИЙ WINRATE',winRows,r=>`${Math.round(r.wr*100)}% · ${r.wrPlayed} карт`,false)}</div></section>`;
+  $('#recordFilter').value=filter;$('#recordMetric').value=metric;$('#recordMap').value=state.recordMap||'all';
+  $('#recordFilter').onchange=e=>{state.recordFilter=e.target.value;if(e.target.value!=='map')state.recordMap='all';render()};
+  $('#recordMetric').onchange=e=>{state.recordMetric=e.target.value;render()};
+  $('#recordMap').onchange=e=>{state.recordMap=e.target.value;if(e.target.value!=='all')state.recordFilter='map';render()};
+}
+async function login(){const u=($('#loginUser')?.value||'').trim(),pw=$('#loginPass')?.value||'',msg=$('#loginError');if(state.cloudMode){try{await CS2Cloud.signIn(u,pw);const context=await CS2Cloud.loadProfileContext();state.accountUser=context.user||null;state.myPlayerId=context.playerId||null;state.profileRows=context.profiles||[];state.myProfile=state.profileRows.find(row=>row.player_id===state.myPlayerId)||null;state.logged=true;state.cloudAdmin=true;if(msg)msg.remove();toast('Авторизация успешна');render()}catch(e){if(msg){msg.textContent=e?.message||'Не удалось войти';msg.hidden=false}else toast(e?.message||'Не удалось войти');$('#loginPass')?.focus();$('#loginPass')?.select?.()}return}if(state.serverSync){state.logged=true;state.cloudAdmin=false;if(msg)msg.remove();toast('Локальная админка открыта');render();return}if(msg){msg.textContent='Для изменений запусти общий сервер или настрой Supabase Auth';msg.hidden=false}else toast('Для изменений запусти общий сервер или настрой Supabase Auth')}
+function settings(v){document.getElementById('toast')?.classList.remove('show');state.teamChange=null;state.whatIfOut='';state.whatIfIn='';if(!state.logged){if(state.serverSync&&!state.cloudMode){v.innerHTML=`<div class="panel login"><div class="eyebrow">АДМИН</div><h2>Локальная админка</h2><p class="muted">Экземпляр работает через локальный/общий сервер. Отдельный пароль здесь не используется: доступ ограничивается самим сервером.</p><button class="btn primary" onclick="login()">ОТКРЫТЬ АДМИНКУ</button></div>`;return}v.innerHTML=`<div class="panel login"><div class="eyebrow">АДМИН</div><h2>Вход администратора</h2><div class="field"><label>EMAIL</label><input id="loginUser" type="email" autocomplete="username" placeholder="admin@example.com"></div><div class="field"><label>ПАРОЛЬ</label><input id="loginPass" type="password" autocomplete="current-password"></div><button class="btn primary" onclick="login()">ВОЙТИ</button><div id="loginError" class="login-error" role="alert" hidden>Не удалось войти.</div><div class="footer-note">В облачном режиме вход проверяется через Supabase Auth и список администраторов.</div></div>`;const loginUser=$('#loginUser'),loginPass=$('#loginPass');[loginUser,loginPass].forEach(el=>el?.addEventListener('keydown',e=>{if(e.key==='Enter')login()}));return}const al=auditLog().slice(-12).reverse();v.innerHTML=`<section class="section"><div class="section-head"><h2>⚙ НАСТРОЙКИ / АДМИН</h2><button class="btn" onclick="accountSignOut()">ВЫЙТИ</button></div><div class="grid2"><div class="panel card"><h3>БАЗА</h3><p class="muted">Игроки: ${activePlayers().length} · Матчи: ${activeMatches().length} · Карты: ${DB.maps.filter(m=>m.archived!==true).length}</p><div class="toolbar"><button class="btn primary" onclick="openAddGame()">+ ДОБАВИТЬ ИГРУ</button><button class="btn" onclick="openPlayerAdmin()">ИГРОКИ / ПСЕВДОНИМЫ</button><button class="btn" onclick="openTrash()">🗑 КОРЗИНА${DB.matches.filter(m=>m.archived===true).length?` · ${DB.matches.filter(m=>m.archived===true).length}`:''}</button></div><div class="field"><label>РЕЗЕРВНАЯ КОПИЯ</label><div class="toolbar"><button class="btn" onclick="exportBackup()">ЭКСПОРТ</button><label class="btn">ИМПОРТ<input type="file" accept="application/json" hidden onchange="importBackup(this.files[0])"></label></div></div></div><div class="panel card"><h3>ПРАВИЛА</h3><div class="notice">Исторические игроки архивируются, а не удаляются. Компактная BO3 сохраняет только series сумму K/D/A серии. Derived показатели пересчитываются из активной базы.</div></div></div><div class="panel card section"><div class="section-head"><h3>ИСТОРИЯ ИЗМЕНЕНИЙ</h3><span class="muted">последние ${al.length}</span></div>${al.length?al.map(x=>`<div class="news-item"><b>${esc(x.action)} · ${esc(x.target)}</b><span>${esc(x.at)} · ${esc(JSON.stringify(x.detail))}</span></div>`).join(''):'<div class="empty">История пока пуста.</div>'}</div></section>`}
+function playerReferenceInfo(id){
+  let stats=0,matches=0,teams=0;
+  for(const m of DB.maps) for(const r of (m.player_stats||[])) if(r.player_id===id) stats++;
+  for(const m of DB.matches){ if((m.player_ids||[]).includes(id))matches++; if((m.team_a||[]).includes(id)||(m.team_b||[]).includes(id))teams++; if((m.series_aggregate_stats||[]).some(r=>r.player_id===id))matches++; }
+  return {stats,matches,teams,total:stats+matches+teams};
+}
+function canPermanentlyDeletePlayer(id){const p=player(id);return !!p&&p.is_active===false&&p.deleted_permanently!==true&&playerReferenceInfo(id).total===0}
+function playerAdminRowsHtml(){
+  const statsFor=id=>{const x=aggregate(id);return `${x.maps} карт · K/D ${fmt(x.kd)} · +/− ${x.kdDiff>0?'+':''}${fmt(x.kdDiff,0)}`};
+  return DB.players.filter(p=>p.deleted_permanently!==true).slice().sort((a,b)=>Number(b.is_active!==false)-Number(a.is_active!==false)||String(a.display_name).localeCompare(String(b.display_name),'ru')).map(p=>{
+    const ref=playerReferenceInfo(p.player_id),canDelete=p.is_active===false&&p.deleted_permanently!==true;
+    return `<div class="admin-player-row ${p.is_active===false?'is-archived':''}" data-player-row="${esc((p.display_name||'')+' '+(p.player_id||'')+' '+(p.aliases||[]).join(' '))}">
+      <div class="admin-player-main"><div class="admin-player-name"><strong>${esc(p.display_name)}</strong>${p.is_active===false?'<span class="pill muted-pill">архив</span>':''}</div><div class="admin-player-meta"><span>${esc(p.player_id)}</span><span>${esc(statsFor(p.player_id))}</span><span>алиасы: ${p.aliases?.length||0}</span>${p.is_active===false&&ref.total?`<span>история: ${ref.total}</span>`:''}</div></div>
+      <div class="admin-player-aliases">${(p.aliases||[]).slice(0,4).map(a=>`<span class="admin-alias">${esc(a)}</span>`).join('')}${(p.aliases||[]).length>4?`<span class="admin-alias more">+${p.aliases.length-4}</span>`:''}</div>
+      <div class="admin-player-actions"><button class="btn mini" onclick="editPlayer('${esc(p.player_id)}')">ИЗМЕНИТЬ</button>${p.is_active===false?`<button class="btn mini" onclick="restorePlayer('${esc(p.player_id)}')">ВОССТАНОВИТЬ</button><button class="btn mini danger" onclick="purgeArchivedPlayer('${esc(p.player_id)}')">УДАЛИТЬ НАВСЕГДА</button>`:`<button class="btn mini danger" onclick="archivePlayer('${esc(p.player_id)}')">УДАЛИТЬ</button>`}</div>
+    </div>`
+  }).join('');
+}
+function applyPlayerAdminFilter(){
+  const search=$('#playerAdminSearch'),list=$('#playerAdminList');
+  const q=(search?.value||'').trim().toLocaleLowerCase('ru-RU');
+  list?.querySelectorAll('[data-player-row]').forEach(r=>{r.hidden=!!q&&!String(r.dataset.playerRow||'').toLocaleLowerCase('ru-RU').includes(q)});
+}
+function refreshPlayerAdmin(){
+  const admin=document.querySelector('.player-admin-modal'),list=$('#playerAdminList'),search=$('#playerAdminSearch');
+  if(!admin||!list)return openPlayerAdmin();
+  const q=search?.value||'',scroll=list.scrollTop||0;
+  list.innerHTML=playerAdminRowsHtml()||'<div class="empty">Игроков пока нет.</div>';
+  const count=admin.querySelector('[data-player-admin-count]');
+  if(count)count.textContent=`${activePlayers().length} активных · ${DB.players.filter(p=>p.deleted_permanently!==true).length} в списке`;
+  if(search)search.value=q;
+  applyPlayerAdminFilter();
+  list.scrollTop=scroll;
+}
+function openSiteConfirm(title,message,confirmLabel,onConfirm){
+  document.querySelector('.site-confirm-back')?.remove();
+  window.__siteConfirmAction=onConfirm;
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back site-confirm-back" id="siteConfirm"><div class="modal panel site-confirm-modal">
+    <div class="modal-head"><div><div class="eyebrow">ПОДТВЕРЖДЕНИЕ</div><h2>${esc(title)}</h2></div><button class="close" onclick="cancelSiteConfirm()">×</button></div>
+    <div class="site-confirm-copy">${esc(message)}</div>
+    <div class="toolbar site-confirm-actions"><button class="btn" onclick="cancelSiteConfirm()">ОТМЕНА</button><button class="btn danger" onclick="confirmSiteAction()">${esc(confirmLabel||'ПОДТВЕРДИТЬ')}</button></div>
+  </div></div>`);
+}
+function cancelSiteConfirm(){window.__siteConfirmAction=null;document.querySelector('.site-confirm-back')?.remove();}
+async function confirmSiteAction(){const action=window.__siteConfirmAction;window.__siteConfirmAction=null;document.querySelector('.site-confirm-back')?.remove();if(action)await action();}
+function openPlayerAdmin(){
+  if(!state.logged)return toast('Требуется режим администратора');
+  const rows=playerAdminRowsHtml();
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide admin-modal player-admin-modal">
+    <div class="modal-head"><div><div class="eyebrow">АДМИН · ИГРОКИ</div><h2>ИГРОКИ И ПСЕВДОНИМЫ</h2><div class="muted">Одна строка = один игрок. ID остаётся стабильным, никнейм и псевдонимы можно менять.</div></div><button class="close" onclick="closeModal()">×</button></div>
+    <div class="admin-inline-add"><div><label>ID игрока</label><input id="newPid" autocomplete="off" placeholder="player_new"></div><div><label>Никнейм</label><input id="newPname" autocomplete="off" placeholder="Новый игрок"></div><div><label>Псевдоним (необязательно)</label><input id="newAlias" autocomplete="off" placeholder="raw nickname"></div><button class="btn primary" onclick="savePlayerAdmin()">+ ДОБАВИТЬ</button></div>
+    <div class="admin-list-toolbar"><strong>Игроки <span class="muted" data-player-admin-count>${activePlayers().length} активных · ${DB.players.filter(p=>p.deleted_permanently!==true).length} в списке</span></strong><input id="playerAdminSearch" placeholder="Поиск по нику, ID или псевдониму…"></div>
+    <div class="admin-player-list" id="playerAdminList">${rows||'<div class="empty">Игроков пока нет.</div>'}</div>
+  </div></div>`);
+  $('#playerAdminSearch')?.addEventListener('input',applyPlayerAdminFilter);
+}
+async function savePlayerAdmin(){const id=$('#newPid').value.trim(),name=$('#newPname').value.trim(),alias=$('#newAlias').value.trim();if(!id||!name)return toast('Нужны player_id и display name');if(!/^[\p{L}\p{N}_.: -]{1,64}$/u.test(id))return toast('player_id: буквы, цифры, пробел, _, ., :, - (до 64 символов)');if(DB.players.some(p=>p.player_id===id))return toast('Такой player_id уже есть');if(alias&&DB.aliases[alias])return toast('Этот alias уже привязан к другому игроку');const p={player_id:id,display_name:name,aliases:alias?[alias]:[],is_active:true,deletion_policy:'archive_if_historical',history_locked:false,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};const a=additions();a.push({kind:'player',player:p},{kind:'aliases',aliases:alias?{[alias]:id}:{}});try{await persistChangeAwait(a,{action:'CREATE_PLAYER',target:id,detail:{display_name:name,alias}})}catch(e){return toast('Не удалось сохранить игрока: '+(e?.message||'ошибка сохранения'))}DB.players.push(p);if(alias)DB.aliases[alias]=id;closeModal();toast('Игрок создан');render()}
+function editPlayer(id){
+  const p=player(id);if(!p)return;
+  closeModal();
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel admin-modal player-edit-modal">
+    <div class="modal-head"><div><div class="eyebrow">ИГРОК · ${esc(p.player_id)}</div><h2>ИЗМЕНИТЬ ИГРОКА</h2><div class="muted">Меняем отображаемый никнейм; player_id остаётся неизменным, чтобы история не терялась.</div></div><button class="close" onclick="closeModal()">×</button></div>
+    <div class="admin-edit-grid"><div class="field"><label>ТЕКУЩИЙ НИКНЕЙМ</label><input id="editPname" value="${esc(p.display_name)}" autocomplete="off"></div><div class="field"><label>ДОБАВИТЬ ПСЕВДОНИМ</label><input id="editAlias" placeholder="raw nickname" autocomplete="off"></div></div>
+    <div class="admin-readonly"><span>Player ID</span><strong>${esc(p.player_id)}</strong></div>
+    <div class="admin-alias-box"><label>ТЕКУЩИЕ ПСЕВДОНИМЫ</label><div class="admin-alias-list">${(p.aliases||[]).map(a=>`<span class="admin-alias">${esc(a)}</span>`).join('')||'<span class="muted">нет алиасов</span>'}</div></div>
+    <div class="toolbar"><button class="btn" onclick="closeModal();openPlayerAdmin()">← К СПИСКУ</button><button class="btn primary" onclick="savePlayerEdit('${esc(id)}')">СОХРАНИТЬ ИЗМЕНЕНИЯ</button></div>
+  </div></div>`);
+}
+async function savePlayerEdit(id){const p=player(id);if(!p)return;const name=$('#editPname').value.trim(),alias=$('#editAlias').value.trim();if(!name)return toast('Нужен display name');if(alias&&DB.aliases[alias]&&DB.aliases[alias]!==id)return toast('Этот alias уже привязан к другому игроку');const nextAliases=alias?[...(p.aliases||[]),alias].filter((x,i,a)=>a.indexOf(x)===i):[...(p.aliases||[])];const patch={display_name:name,updated_at:new Date().toISOString(),aliases:nextAliases};const a=additions();if(alias)a.push({kind:'aliases',aliases:{[alias]:id}});a.push({kind:'player_patch',player_id:id,patch});try{await persistChangeAwait(a,{action:'EDIT_PLAYER',target:id,detail:{display_name:name,alias}})}catch(e){return toast('Не удалось сохранить изменения: '+(e?.message||'ошибка сохранения'))}Object.assign(p,patch);if(alias)DB.aliases[alias]=id;closeModal();toast('Игрок обновлён');render()}
+async function restorePlayer(id){const p=player(id);if(!p)return;const updated_at=new Date().toISOString(),patch={is_active:true,updated_at},a=additions();a.push({kind:'player_patch',player_id:id,patch});try{await persistChangeAwait(a,{action:'RESTORE_PLAYER',target:id})}catch(e){return toast('Не удалось восстановить игрока: '+(e?.message||'ошибка сохранения'))}Object.assign(p,patch);closeModal();toast('Игрок восстановлен');render()}
+async function archivePlayer(id){const p=player(id);if(!p)return;openSiteConfirm('УБРАТЬ ИГРОКА В АРХИВ',`Игрок «${p.display_name}» исчезнет из активных составов, но его история и псевдонимы останутся доступны в архиве.`,'УБРАТЬ В АРХИВ',async()=>{const updated_at=new Date().toISOString(),patch={is_active:false,updated_at},a=additions();a.push({kind:'player_patch',player_id:id,patch});try{await persistChangeAwait(a,{action:'ARCHIVE_PLAYER',target:id})}catch(e){return toast('Не удалось архивировать игрока: '+(e?.message||'ошибка сохранения'))}Object.assign(p,patch);normalizeState();refreshPlayerAdmin();toast('Игрок архивирован')})}
+async function purgeArchivedPlayer(id){const p=player(id);if(!p||p.is_active!==false)return toast('Сначала архивируй игрока.');openSiteConfirm('УДАЛИТЬ ИГРОКА НАВСЕГДА',`Игрок «${p.display_name}» будет удалён из каталога и псевдонимов. Его старая статистика сохранится как обезличенная историческая запись, чтобы не ломать матчи.`,'УДАЛИТЬ НАВСЕГДА',async()=>{const a=[{kind:'delete_player',player_id:id}];let data=null;try{data=await persistChangeAwait(a,{action:'DELETE_PLAYER_PERMANENT',target:id,detail:{display_name:p.display_name,history_links:playerReferenceInfo(id).total}})}catch(e){return toast('Не удалось удалить игрока: '+(e?.message||'ошибка сохранения'))}if(data?.state){applyLoadedState(data.state,data.state.audit)}else{DB.players=DB.players.filter(x=>x.player_id!==id);for(const [alias,pid] of Object.entries(DB.aliases)){if(pid===id)delete DB.aliases[alias]}}refreshPlayerAdmin();toast('Игрок удалён окончательно; история сохранена без привязки к профилю')})}
+async function restoreMatch(id){const m=DB.matches.find(x=>x.match_id===id);if(!m)return;const wasTrashOpen=!!document.querySelector('.trash-list');const maps=DB.maps.filter(x=>x.match_id===id).slice().sort((a,b)=>Number(a.map_index||0)-Number(b.map_index||0));const nextSeries=nextSeriesNumber(),firstMap=nextActiveMapNumber();const a=[{kind:'match_patch',match_id:id,patch:{archived:false,archived_at:null,series_number:nextSeries}}];maps.forEach((mp,i)=>a.push({kind:'map_patch',map_id:mp.map_id,patch:{archived:false,map_number:firstMap+i}}));try{await persistChangeAwait(a,{action:'RESTORE_MATCH',target:id,detail:{series_number:nextSeries,map_start:firstMap}})}catch(e){return toast('Не удалось сохранить восстановление: '+(e?.message||'ошибка'))}Object.assign(m,{archived:false,archived_at:null,series_number:nextSeries});maps.forEach((mp,i)=>Object.assign(mp,{archived:false,map_number:firstMap+i}));toast(`Матч восстановлен как серия ${nextSeries}`);render();if(wasTrashOpen)openTrash()}
+
+function renderMapStatEditor(matchId,mapId){const mp=DB.maps.find(x=>x.map_id===mapId),m=DB.matches.find(x=>x.match_id===matchId);if(!mp||!m)return '';const players=m.player_ids||activePlayers().map(p=>p.player_id),existing=new Map((mp.player_stats||[]).map(r=>[r.player_id,r]));return `<div class="map-edit-card"><div class="section-head"><h3>${esc(mp.map)}</h3><span class="muted">${mp.stats_available?'стата введена':'стата ещё не введена'}</span></div><div class="two"><div class="field"><label>СЧЁТ КАРТЫ</label><input id="score_${esc(mp.map_id)}" value="${esc(mapScoreText(mp)==='—'?'':mapScoreText(mp))}" placeholder="13:10"></div><div class="field"><label>ДЛИТЕЛЬНОСТЬ КАРТЫ, МИНУТЫ</label><input id="duration_${esc(mp.map_id)}" type="number" min="1" max="600" step="1" value="${Number.isFinite(Number(mp.duration_minutes))&&Number(mp.duration_minutes)>0?Number(mp.duration_minutes):''}" placeholder="Например, 42"></div></div><div class="edit-kda-grid">${players.map(pid=>{const p=player(pid),r=existing.get(pid)||{};return `<div class="edit-kda-row"><b>${esc(p?.display_name||pid)}</b><input data-map="${esc(mp.map_id)}" data-pid="${esc(pid)}" data-k="k" value="${r.kills??''}" placeholder="K"><input data-map="${esc(mp.map_id)}" data-pid="${esc(pid)}" data-k="d" value="${r.deaths??''}" placeholder="D"><input data-map="${esc(mp.map_id)}" data-pid="${esc(pid)}" data-k="a" value="${r.assists??''}" placeholder="A"></div>`}).join('')}</div></div>`}
+function openEditMatch(id){const m=DB.matches.find(x=>x.match_id===id);if(!m)return;const maps=matchMaps(m),derived=historicalLobbyGroups(m).map(side=>side.filter(id=>player(id))),hasTeams=derived[0].length>0||derived[1].length>0;window.__editTeamA=hasTeams?[...derived[0]]:[];window.__editTeamB=hasTeams?[...derived[1]]:[];const teamEditor=hasTeams?`<div class="field"><label>КОМАНДЫ</label><div class="team-select-grid"><div><div class="team-select-head"><b>КОМАНДА A</b><span id="editTeamACount">${derived[0].length} / 5</span></div><div id="editTeamA" class="team-drop"></div></div><div><div class="team-select-head"><b>КОМАНДА B</b><span id="editTeamBCount">${derived[1].length} / 5</span></div><div id="editTeamB" class="team-drop"></div></div></div><div id="editPlayerPool" class="pool-grid player-team-pool">${activePlayers().map(p=>`<button type="button" class="pool-chip" data-pid="${esc(p.player_id)}" onclick="cycleEditPlayer('${esc(p.player_id)}')">${esc(p.display_name)}</button>`).join('')}</div><div class="footer-note">Исторический состав может быть неполным. Отсутствующие игроки не добавляются автоматически.</div></div>`:'';document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide"><div class="modal-head"><h2>РЕДАКТИРОВАТЬ СЕРИЮ</h2><button class="close" onclick="closeModal()">×</button></div><div class="two"><div class="field"><label>ВРЕМЯ ЗАВЕРШЕНИЯ</label><input id="editPlayedAt" type="datetime-local" value="${esc((m.played_at||'').slice(0,16))}"><small>Начало рассчитается автоматически по длительности серии.</small></div><div class="field"><label>СЧЁТ СЕРИИ</label><input id="editScore" value="${esc(m.series_score||'')}"></div><div class="field"><label>ОБЩАЯ ДЛИТЕЛЬНОСТЬ СЕРИИ, МИНУТЫ</label><input id="editDuration" type="number" min="1" max="1200" step="1" value="${Number.isFinite(Number(m.duration_minutes))&&Number(m.duration_minutes)>0?Number(m.duration_minutes):''}" placeholder="Например, 145"></div></div>${teamEditor}${maps.map(mp=>renderMapStatEditor(id,mp.map_id)).join('')}<div class="toolbar"><button class="btn" onclick="saveMatchTiming('${esc(id)}')">СОХРАНИТЬ ТОЛЬКО ВРЕМЯ</button><button class="btn primary" onclick="saveMatchEdit('${esc(id)}')">СОХРАНИТЬ И ПЕРЕСЧИТАТЬ</button></div></div></div>`);if(hasTeams)renderEditTeams()}
+function parseScore(v){const m=String(v||'').trim().match(/^(\d+)\s*:\s*(\d+)$/);return m?[+m[1],+m[2]]:null}
+function renderEditTeams(){const a=window.__editTeamA||[],b=window.__editTeamB||[],name=id=>player(id)?.display_name||id;document.querySelectorAll('#editPlayerPool .pool-chip').forEach(el=>{const pid=el.dataset.pid,side=a.includes(pid)?'A':b.includes(pid)?'B':'';el.classList.toggle('selected',!!side);el.classList.toggle('team-a-chip',side==='A');el.classList.toggle('team-b-chip',side==='B')});$('#editTeamA').innerHTML=a.map(id=>`<button type="button" class="team-player team-a" onclick="cycleEditPlayer('${esc(id)}')">${esc(name(id))}</button>`).join('');$('#editTeamB').innerHTML=b.map(id=>`<button type="button" class="team-player team-b" onclick="cycleEditPlayer('${esc(id)}')">${esc(name(id))}</button>`).join('');$('#editTeamACount').textContent=`${a.length} / 5`;$('#editTeamBCount').textContent=`${b.length} / 5`}
+function cycleEditPlayer(id){let a=window.__editTeamA||[],b=window.__editTeamB||[];if(a.includes(id)){a=a.filter(x=>x!==id);if(b.length<5)b.push(id)}else if(b.includes(id)){b=b.filter(x=>x!==id)}else if(a.length<5)a.push(id);else if(b.length<5)b.push(id);else return toast('Обе команды уже заполнены 5×5');window.__editTeamA=a;window.__editTeamB=b;renderEditTeams()}
+async function saveMatchTiming(id){const m=DB.matches.find(x=>x.match_id===id);if(!m)return;const raw=$('#editDuration')?.value.trim(),duration=raw===''||raw==null?null:Number(raw);if(duration!==null&&(!Number.isInteger(duration)||duration<1||duration>1200))return toast('Длительность серии должна быть от 1 до 1200 минут');const ops=[{kind:'match_patch',match_id:id,patch:{played_at:$('#editPlayedAt')?.value||m.played_at,duration_minutes:duration}}];for(const mp of matchMaps(m)){const value=$(`#duration_${mp.map_id}`)?.value.trim(),minutes=value===''||value==null?null:Number(value);if(minutes!==null&&(!Number.isInteger(minutes)||minutes<1||minutes>600))return toast(`Длительность карты ${mp.map} должна быть от 1 до 600 минут`);ops.push({kind:'map_patch',map_id:mp.map_id,patch:{duration_minutes:minutes}})}try{await persistChangeAwait(ops,{action:'EDIT_MATCH_TIMING',target:id,detail:{series_duration:duration,maps:ops.length-1}})}catch(e){return toast('Не удалось сохранить время. Проверь подключение и права администратора.')}for(const op of ops){if(op.kind==='match_patch')Object.assign(m,op.patch);else Object.assign(DB.maps.find(x=>x.map_id===op.map_id),op.patch)}closeModal();toast('Время серии и карт сохранено');render()}
+async function saveMatchEdit(id){const m=DB.matches.find(x=>x.match_id===id);if(!m)return;const score=parseScore($('#editScore')?.value);if(!score)return toast(m.format==='BO1'?'Неверный счёт карты':'Неверный счёт серии');if(m.format==='BO3'&&!(Math.max(...score)===2&&Math.min(...score)<=1))return toast('Для BO3 используй 2:0 или 2:1');if(m.format==='BO5'&&!(Math.max(...score)===3&&Math.min(...score)<=2))return toast('Для BO5 используй 3:0, 3:1 или 3:2');const editA=[...new Set(window.__editTeamA||[])].slice(0,5),editB=[...new Set(window.__editTeamB||[])].slice(0,5);if(editA.some(x=>editB.includes(x)))return toast('Один игрок не может быть в двух командах');const teamOps=(editA.length||editB.length)?[{kind:'match_patch',match_id:id,patch:{team_a:editA,team_b:editB,player_ids:[...editA,...editB],team_assignment_source:'manual_edit'}}]:[];const enteredDuration=$('#editDuration')?.value.trim(),durationValue=enteredDuration===''||enteredDuration==null?null:Number(enteredDuration);if(durationValue!==null&&(!Number.isInteger(durationValue)||durationValue<1||durationValue>1200))return toast('Длительность серии должна быть от 1 до 1200 минут');const allInputs=[...document.querySelectorAll('[data-map]')];if(!allInputs.length&&$('#editRows')){const rows=$('#editRows').value.trim().split(/\n+/).map(x=>x.trim()).filter(Boolean);if(rows.length!==10)return toast('Нужен ровно 10 игроков');const ps=[];for(const line of rows){const z=line.match(/^(.+?)\s+(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)$/);if(!z)return toast('Строка не распознана: '+line);const pid=DB.aliases[z[1]]||activePlayers().find(p=>p.player_id===z[1])?.player_id;if(!pid)return toast('Неизвестный игрок: '+z[1]);ps.push({raw_name:z[1],player_id:pid,kills:+z[2],deaths:+z[3],assists:+z[4]})}const a=additions();a.push(...teamOps);const enteredDuration=$('#editDuration')?.value.trim(),durationValue=enteredDuration===''||enteredDuration==null?null:Number(enteredDuration);if(durationValue!==null&&(!Number.isInteger(durationValue)||durationValue<1||durationValue>1200))return toast('Длительность серии должна быть от 1 до 1200 минут');const patch={played_at:$('#editPlayedAt')?.value||m.played_at,duration_minutes:durationValue,series_score:m.format==='BO1'?`${score[0]>score[1]?1:0}:${score[1]>score[0]?1:0}`:`${score[0]}:${score[1]}`};a.push({kind:'match_patch',match_id:id,patch});if(m.format==='BO1'){const mp=matchMaps(m)[0];a.push({kind:'map_patch',map_id:mp.map_id,patch:{player_stats:ps,stats_available:true,score:{team_a:score[0],team_b:score[1]}}})}else a.push({kind:'match_patch',match_id:id,patch:{series_aggregate_stats:ps}});try{await persistChangeAwait(a,{action:'EDIT_MATCH',target:id,detail:{score,players:10}})}catch(e){return toast('Не удалось сохранить изменения.')}Object.assign(m,patch);if(m.format==='BO1'){const mp=matchMaps(m)[0];Object.assign(mp,{player_stats:ps,stats_available:true,score:{team_a:score[0],team_b:score[1]}})}else m.series_aggregate_stats=ps;closeModal();toast('Матч обновлён');render();return}const ops=[...teamOps];let mapWinsA=0,mapWinsB=0;for(const mp of matchMaps(m)){const inputs=[...document.querySelectorAll(`[data-map="${mp.map_id}"]`)],by=new Map();for(const el of inputs){const pid=el.dataset.pid;if(!by.has(pid))by.set(pid,{player_id:pid,raw_name:player(pid)?.display_name||pid,kills:0,deaths:0,assists:0});const v=el.value.trim();if(v!==''&&!/^\d+$/.test(v))return toast('K/D/A должны быть целыми числами');if(el.dataset.k==='k')by.get(pid).kills=v===''?0:+v;if(el.dataset.k==='d')by.get(pid).deaths=v===''?0:+v;if(el.dataset.k==='a')by.get(pid).assists=v===''?0:+v}const entered=[...by.values()].filter(r=>inputs.some(el=>el.dataset.pid===r.player_id&&el.value.trim()!=='')),sc=parseScore($(`#score_${mp.map_id}`)?.value||'');if(entered.length!==10)return toast(`Заполни K/D/A всех 10 игроков на карте ${mp.map}`);if(!sc)return toast(`Введи счёт карты ${mp.map}`);if(sc[0]===sc[1])return toast(`Счёт карты ${mp.map} не может быть ничьёй`);if(sc[0]>sc[1])mapWinsA++;else mapWinsB++;const durationRaw=$(`#duration_${mp.map_id}`)?.value.trim(),durationValue=durationRaw===''||durationRaw==null?null:Number(durationRaw);if(durationValue!==null&&(!Number.isInteger(durationValue)||durationValue<1||durationValue>600))return toast(`Длительность карты ${mp.map} должна быть от 1 до 600 минут`);ops.push({kind:'map_patch',map_id:mp.map_id,patch:{player_stats:entered,stats_available:true,score:{team_a:sc[0],team_b:sc[1]},duration_minutes:durationValue}})}if(m.format!=='BO1'&&(mapWinsA!==score[0]||mapWinsB!==score[1]))return toast(`Счёт серии ${score[0]}:${score[1]} не совпадает с картами: ${mapWinsA}:${mapWinsB}`);const totals=new Map();for(const op of ops)if(op.kind==='map_patch')for(const r of op.patch.player_stats){if(!totals.has(r.player_id))totals.set(r.player_id,{player_id:r.player_id,raw_name:r.raw_name,kills:0,deaths:0,assists:0});const t=totals.get(r.player_id);t.kills+=r.kills;t.deaths+=r.deaths;t.assists+=r.assists}ops.push({kind:'match_patch',match_id:id,patch:{played_at:$('#editPlayedAt')?.value||m.played_at,duration_minutes:durationValue,series_score:`${score[0]}:${score[1]}`,series_aggregate_stats:[...totals.values()]}});try{await persistChangeAwait(ops,{action:'EDIT_MATCH',target:id,detail:{maps:ops.length-1}})}catch(e){return toast('Не удалось сохранить изменения.')}for(const op of ops){if(op.kind==='map_patch')Object.assign(DB.maps.find(x=>x.map_id===op.map_id),op.patch);else Object.assign(m,op.patch)}closeModal();toast('Серия обновлена');render()}
+async function deleteMatch(id){const m=DB.matches.find(x=>x.match_id===id);if(!m)return;if(m.archived!==true){const a=additions();a.push({kind:'match_patch',match_id:id,patch:{archived:true,archived_at:new Date().toISOString()}});for(const mp of DB.maps.filter(x=>x.match_id===id))a.push({kind:'map_patch',map_id:mp.map_id,patch:{archived:true}});try{await persistChangeAwait(a,{action:'ARCHIVE_MATCH',target:id})}catch(e){return toast('Матч НЕ перемещён: '+(e?.message||'ошибка облака'))}m.archived=true;DB.maps.filter(x=>x.match_id===id).forEach(x=>x.archived=true);toast('Матч перемещён в корзину');render();return}const ops=[{kind:'delete_match',match_id:id}];try{await persistChangeAwait(ops,{action:'DELETE_MATCH_PERMANENT',target:id})}catch(e){return toast('Матч НЕ удалён окончательно: '+(e?.message||'ошибка облака'))}const wasTrashOpen=!!document.querySelector('.trash-list');DB.matches=DB.matches.filter(x=>x.match_id!==id);DB.maps=DB.maps.filter(x=>x.match_id!==id);document.querySelectorAll('.modal-back').forEach((el,i)=>{if(i>0)el.remove()});toast('Матч удалён окончательно');render();if(wasTrashOpen)openTrash()}
+
+function archiveMatch(id){deleteMatch(id)}
+function openTrash(){if(!state.logged)return toast('Требуется режим администратора');const archived=DB.matches.filter(m=>m.archived===true).slice().sort((a,b)=>matchTime(b)-matchTime(a));const rows=archived.map(m=>{const maps=(m.map_ids||[]).map(id=>DB.maps.find(x=>x.map_id===id)).filter(Boolean);return `<div class="trash-series-row"><div class="trash-series-main"><span class="pill">КОРЗИНА</span><b>${esc(m.format||'МАТЧ')} · ${esc(m.series_score||'—')}</b><span>${maps.map(x=>esc(x.map)).join(' · ')||'—'}</span>${m.played_at?`<small>${esc(m.played_at)}</small>`:''}</div><div class="toolbar"><button class="btn mini" onclick="openMatchDetail('${esc(m.match_id)}')">СТАТИСТИКА</button><button class="btn mini primary" onclick="restoreMatch('${esc(m.match_id)}')">ВОССТАНОВИТЬ</button><button class="btn mini danger" onclick="deleteMatch('${esc(m.match_id)}')">УДАЛИТЬ НАВСЕГДА</button></div></div>`}).join('');document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide"><div class="modal-head"><h2>КОРЗИНА</h2><button class="close" onclick="closeModal()">×</button></div><div class="trash-list">${rows||'<div class="empty">Корзина пуста.</div>'}</div></div></div>`)}
+function selectNewFormat(format){
+  const el=$('#newFormat');if(el)el.value=format;syncNewFormatUI();
+}
+function openAddGame(){
+  if(!state.logged){state.tab='settings';render();return}
+  const mapPool=[...new Set(DB.maps.filter(x=>x.archived!==true).map(x=>x.map))].sort(),players=activePlayers();
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide match-admin-modal">
+    <div class="modal-head"><div><div class="eyebrow">АДМИН · НОВЫЙ МАТЧ · ШАГ 1 / 3</div><h2>СОЗДАТЬ МАТЧ</h2><div class="muted">Формат → карты → состав команд → дата. Статистику введём следующим шагом.</div></div><button class="close" onclick="closeModal()">×</button></div>
+    <input id="newFormat" type="hidden" value="BO1">
+    <div class="admin-match-topgrid"><div class="admin-input-card format-card"><label>ФОРМАТ</label><div id="newFormatOptions" class="format-option-grid"><button type="button" class="format-option selected" data-format="BO1" onclick="selectNewFormat('BO1')"><b>BO1</b><span>1 карта</span></button><button type="button" class="format-option" data-format="BO3" onclick="selectNewFormat('BO3')"><b>BO3</b><span>до 3 карт</span></button><button type="button" class="format-option" data-format="BO5" onclick="selectNewFormat('BO5')"><b>BO5</b><span>до 5 карт</span></button></div><small>Формат определяет допустимое количество карт.</small></div><div class="admin-input-card"><label id="newScoreLabel">СЧЁТ КАРТЫ</label><input id="newScore" placeholder="13:10" inputmode="numeric"><small id="newScoreHint">Для BO1 — счёт карты, например 13:10.</small></div><div class="admin-input-card"><label>ДАТА / ВРЕМЯ</label><input id="newPlayedAt" type="datetime-local"><small>Можно оставить пустым.</small></div></div>
+    <div class="admin-match-section"><div class="admin-match-section-head"><div><div class="eyebrow">КАРТЫ</div><h3>Выбери карты</h3></div><span id="newMapHint" class="muted">Выбрано: 0</span></div><div id="newMapSelection" class="new-selection-strip"><span class="muted">Карты ещё не выбраны</span></div><div id="newMapPool" class="match-map-pool">${mapPool.map(n=>`<button type="button" class="match-map-chip" data-map="${esc(n)}" onclick="toggleNewMap('${esc(n)}')"><span class="map-pick-order"></span><b>${esc(n)}</b></button>`).join('')}</div><div class="match-selection-note">Клик по карте добавляет её в выбранный список в текущем порядке.</div><div class="guest-player-controls"><input id="newCustomMapName" maxlength="48" placeholder="Название своей карты" autocomplete="off"><button type="button" class="btn" onclick="addCustomNewMap()">ДОБАВИТЬ КАРТУ</button></div></div>
+    <div class="admin-match-section"><div class="admin-match-section-head"><div><div class="eyebrow">СОСТАВ</div><h3>Добавь участников в команды</h3></div><span id="newPlayerCount" class="muted">0 / 10</span></div><div class="match-target-picker"><span>КУДА ДОБАВЛЯТЬ КЛИКОМ</span><div class="match-target-buttons"><button type="button" id="newTargetA" class="match-target-btn team-a-target selected" onclick="setNewTargetTeam('A')">КОМАНДА A</button><button type="button" id="newTargetB" class="match-target-btn team-b-target" onclick="setNewTargetTeam('B')">КОМАНДА B</button></div></div><div class="match-team-grid"><div class="match-team-box team-a-box" ondragover="allowNewTeamDrop(event)" ondrop="dropNewPlayer(event,'A')"><div class="match-team-head"><strong>Команда A</strong><span id="newTeamACount">0 / 5</span></div><div id="newTeamA" class="match-team-slots"></div></div><div class="match-team-box team-b-box" ondragover="allowNewTeamDrop(event)" ondrop="dropNewPlayer(event,'B')"><div class="match-team-head"><strong>Команда B</strong><span id="newTeamBCount">0 / 5</span></div><div id="newTeamB" class="match-team-slots"></div></div></div><div class="admin-input-card guest-player-entry"><label for="newGuestName">НОВЫЙ УЧАСТНИК БЕЗ СТАТИСТИКИ</label><div class="guest-player-controls"><input id="newGuestName" maxlength="64" placeholder="Введи ник, например NewPlayer" autocomplete="off"><button type="button" class="btn" onclick="addNewGuest()">ДОБАВИТЬ БЕЗ СТАТИСТИКИ</button></div><small>Гость будет виден в составе только этого матча и не попадёт в профиль, K/D/A или рейтинги.</small></div><div class="match-player-helper">Нажми на игрока в списке — он попадёт в выбранную команду. Можно также перетащить игрока прямо в команду.</div><div id="newPlayerPool" class="match-player-pool"></div></div>
+    <div class="match-admin-footer"><div class="muted">В облако ничего не записывается до финального подтверждения.</div><button class="btn primary" onclick="continueNewGame()">ПРОДОЛЖИТЬ → ВВОД СТАТЫ</button></div>
+  </div></div>`);window.__newMaps=[];window.__newTeamA=[];window.__newTeamB=[];window.__newGuests={};window.__newDraft=null;window.__newTargetTeam='A';syncNewFormatUI();renderNewMaps();renderNewTeams();renderNewPlayerPool();
+}
+function requiredMapCount(format,score){if(format==='BO1')return 1;if(!score)return null;const hi=Math.max(score[0],score[1]),lo=Math.min(score[0],score[1]);if(format==='BO3'&&hi===2&&lo<=1)return hi+lo;if(format==='BO5'&&hi===3&&lo<=2)return hi+lo;return null}
+function continueNewGame(){
+  const format=$('#newFormat').value,score=parseScore($('#newScore').value),maps=[...(window.__newMaps||[])],teamA=[...(window.__newTeamA||[])],teamB=[...(window.__newTeamB||[])],guests=window.__newGuests||{};
+  if(!score)return toast(format==='BO1'?'Введи счёт карты, например 13:10':'Введи счёт серии, например 2:1 или 3:2');
+  const validRoster=team=>team.length<=5&&team.every(Boolean)&&new Set(team).size===team.length&&team.every(id=>guests[id]||!!player(id));
+  const rosterCount=teamA.length+teamB.length;
+  if(rosterCount!==10||!validRoster(teamA)||!validRoster(teamB)||teamA.some(id=>teamB.includes(id)))return toast('Для 5×5 нужно ровно 10 участников. Гостя без статистики добавляй через кнопку «БЕЗ СТАТИСТИКИ».');
+  const need=requiredMapCount(format,score);
+  if(format==='BO1'&&(score[0]===score[1]))return toast('BO1 не может закончиться вничью');
+  if(!need)return toast(format==='BO3'?'Для BO3 используй 2:0 или 2:1':'Для BO5 используй 3:0, 3:1 или 3:2');
+  if(maps.length!==need)return toast(`${format}: для счёта ${score[0]}:${score[1]} нужно ровно ${need} карт`);
+  const mapDraft=maps.map((name,i)=>({name,index:i+1,score:format==='BO1'?score:null,rows:[]}));
+  window.__newDraft={format,seriesScore:format==='BO1'?(score[0]>score[1]?'1:0':'0:1'):`${score[0]}:${score[1]}`,mapDraft,teamA,teamB,guests:{...guests},playedAt:$('#newPlayedAt').value||''};
+  renderNewStatsStep();
+}
+function renderNewStatsStep(){
+  const d=window.__newDraft;if(!d)return;const players=[...d.teamA,...d.teamB].filter(pid=>!d.guests?.[pid]);const guests=[...d.teamA,...d.teamB].filter(pid=>d.guests?.[pid]);
+  const cards=d.mapDraft.map((mp,mi)=>`<section class="map-edit-card new-map-entry match-stat-card"><div class="match-stat-card-head"><div><div class="eyebrow">КАРТА ${mi+1} / ${d.mapDraft.length}</div><h3>${esc(mp.name)}</h3></div><span class="pill">${mp.rows.length===players.length?'готово':`нужно заполнить статистику: ${players.length} игроков`}</span></div><div class="admin-score-line"><label>Счёт карты</label><input id="newScore_${mi}" value="${mp.score?`${mp.score[0]}:${mp.score[1]}`:''}" placeholder="13:10" inputmode="numeric"></div><div class="match-kda-head"><span>Игрок</span><span>K</span><span>D</span><span>A</span></div><div class="match-kda-list">${players.map((pid,pi)=>{const r=mp.rows.find(x=>x.player_id===pid)||{};return `<div class="edit-kda-row"><b>${esc(player(pid)?.display_name||pid)}</b><input id="newK_${mi}_${pi}" data-new-map="${mi}" data-pid="${esc(pid)}" data-k="k" value="${r.kills??''}" placeholder="0"><input id="newD_${mi}_${pi}" data-new-map="${mi}" data-pid="${esc(pid)}" data-k="d" value="${r.deaths??''}" placeholder="0"><input id="newA_${mi}_${pi}" data-new-map="${mi}" data-pid="${esc(pid)}" data-k="a" value="${r.assists??''}" placeholder="0"></div>`}).join('')}${guests.map(pid=>`<div class="edit-kda-row guest-kda-row"><b>${esc(d.guests[pid]?.display_name||pid)}</b><span class="guest-stat-empty">—</span><span class="guest-stat-empty">—</span><span class="guest-stat-empty">—</span></div>`).join('')}</div>${guests.length?`<div class="footer-note">${guests.length===1?'1 участник':'Участники'} без статистики: ${guests.map(pid=>esc(d.guests[pid]?.display_name||pid)).join(', ')}</div>`:''}</section>`).join('');
+  document.querySelector('.modal-back#modal')?.remove();document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide match-admin-modal"><div class="modal-head"><div><div class="eyebrow">АДМИН · НОВЫЙ МАТЧ · ШАГ 2 / 3</div><h2>СТАТИСТИКА ПО КАРТАМ</h2><div class="muted">Для каждой карты укажи счёт и K / D / A игроков из каталога. Гости остаются в составе без статистики.</div></div><button class="close" onclick="closeModal()">×</button></div>${cards}<div class="toolbar"><button class="btn" onclick="renderNewSetupStep()">← НАЗАД</button><button class="btn primary" onclick="reviewNewGame()">ПРОВЕРИТЬ →</button></div></div></div>`);
+}
+function renderNewSetupStep(){const d=window.__newDraft;if(!d)return;closeModal();window.__newMaps=d.mapDraft.map(x=>x.name);window.__newTeamA=[...d.teamA];window.__newTeamB=[...d.teamB];openAddGame();setTimeout(()=>{window.__newGuests={...(d.guests||{})};window.__newDraft=d;window.__newMaps=d.mapDraft.map(x=>x.name);window.__newTeamA=[...d.teamA];window.__newTeamB=[...d.teamB];if($('#newFormat'))$('#newFormat').value=d.format;if($('#newScore'))$('#newScore').value=d.format==='BO1'?(d.mapDraft[0].score?.join(':')||''):d.seriesScore;if($('#newPlayedAt'))$('#newPlayedAt').value=d.playedAt;syncNewFormatUI();renderNewTeams();renderNewPlayerPool();renderNewMaps();renderNewTeams();renderNewPlayerPool();},0)}
+function collectNewMapStats(){const d=window.__newDraft;if(!d)return false;const players=[...d.teamA,...d.teamB].filter(pid=>!d.guests?.[pid]);for(let mi=0;mi<d.mapDraft.length;mi++){const sc=parseScore($(`#newScore_${mi}`)?.value||'');if(!sc)return toast(`Введи счёт карты ${mi+1}`),false;const rows=[];for(let pi=0;pi<players.length;pi++){const pid=players[pi],k=$(`#newK_${mi}_${pi}`)?.value.trim()||'',de=$(`#newD_${mi}_${pi}`)?.value.trim()||'',a=$(`#newA_${mi}_${pi}`)?.value.trim()||'';if(k===''||de===''||a==='')return toast(`Заполни K/D/A игрока ${player(pid)?.display_name||pid} на карте ${mi+1}`),false;if(!/^\d+$/.test(k)||!/^\d+$/.test(de)||!/^\d+$/.test(a))return toast('K/D/A должны быть целыми числами'),false;rows.push({player_id:pid,raw_name:player(pid)?.display_name||pid,kills:+k,deaths:+de,assists:+a})}d.mapDraft[mi].score={team_a:sc[0],team_b:sc[1]};d.mapDraft[mi].rows=rows}return true}
+function reviewNewGame(){if(!collectNewMapStats())return;const d=window.__newDraft;const scoreWins=d.mapDraft.reduce((z,m)=>z+(m.score.team_a>m.score.team_b?1:0),0);const scoreB=d.mapDraft.reduce((z,m)=>z+(m.score.team_b>m.score.team_a?1:0),0);const expected=d.format==='BO1'?d.seriesScore.split(':').map(Number):d.seriesScore.split(':').map(Number);if(d.format!=='BO1'&&(scoreWins!==expected[0]||scoreB!==expected[1]))return toast(`Счёт серии ${d.seriesScore} не совпадает с результатами карт: ${scoreWins}:${scoreB}`);if(d.format==='BO1'&&(d.mapDraft[0].score.team_a===d.mapDraft[0].score.team_b))return toast('BO1 не может закончиться вничью');const totals=new Map();for(const mp of d.mapDraft)for(const r of mp.rows){if(!totals.has(r.player_id))totals.set(r.player_id,{player_id:r.player_id,raw_name:r.raw_name,kills:0,deaths:0,assists:0});const t=totals.get(r.player_id);t.kills+=r.kills;t.deaths+=r.deaths;t.assists+=r.assists}const teamA=new Set(d.teamA),teamB=new Set(d.teamB);document.querySelector('.modal-back#modal')?.remove();document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide"><div class="modal-head"><div><div class="eyebrow">ШАГ 3 / 3</div><h2>КОНТРОЛЬНАЯ ПРОВЕРКА</h2><div class="muted">Проверь серию перед единственной записью в облако.</div></div><button class="close" onclick="closeModal()">×</button></div><div class="mini-stats"><div class="mini-stat"><span>ФОРМАТ</span><strong>${esc(d.format)}</strong></div><div class="mini-stat"><span>СЕРИЯ</span><strong>${esc(d.seriesScore)}</strong></div><div class="mini-stat"><span>КАРТ</span><strong>${d.mapDraft.length}</strong></div><div class="mini-stat"><span>ИГРОКОВ</span><strong>${d.teamA.length+d.teamB.length} / 10</strong></div><div class="mini-stat"><span>СО СТАТОЙ</span><strong>${[...d.teamA,...d.teamB].filter(pid=>!d.guests?.[pid]).length} / ${d.teamA.length+d.teamB.length}</strong></div></div><div class="section"><h3>КАРТЫ</h3>${d.mapDraft.map((mp,i)=>`<div class="news-item"><b>#${i+1} ${esc(mp.name)} · ${mp.score.team_a}:${mp.score.team_b}</b><span>${mp.rows.length} игроков со статистикой · K ${mp.rows.reduce((z,r)=>z+r.kills,0)} · D ${mp.rows.reduce((z,r)=>z+r.deaths,0)} · A ${mp.rows.reduce((z,r)=>z+r.assists,0)}</span></div>`).join('')}</div><div class="section"><h3>СЕРИЯ · СУММА K/D/A</h3><div class="table-wrap"><table class="data-table"><thead><tr><th>Игрок</th><th>K</th><th>D</th><th>A</th><th>K/D</th></tr></thead><tbody>${[...totals.values()].sort((a,b)=>(b.kills/(b.deaths||1))-(a.kills/(a.deaths||1))).map(r=>`<tr><td class="name">${esc(r.raw_name)}</td><td>${r.kills}</td><td>${r.deaths}</td><td>${r.assists}</td><td>${fmt(r.deaths?r.kills/r.deaths:0)}</td></tr>`).join('')}</tbody></table></div></div><div class="toolbar"><button class="btn" onclick="renderNewStatsStep()">← НАЗАД К СТАТЕ</button><button class="btn primary" onclick="commitNewGame()">ПОДТВЕРДИТЬ И СОЗДАТЬ</button></div></div></div>`)}
+async function commitNewGame(){
+  const d=window.__newDraft;if(!d||state.serverBusy)return;
+  const now=Date.now(),mid=`match_local_${now}`,mapIds=[],firstMapNum=nextActiveMapNumber(),seriesNum=nextSeriesNumber();const ops=[];
+  d.mapDraft.forEach((mp,i)=>{const mapId=`map_local_${now}_${i+1}`;mapIds.push(mapId);ops.push({kind:'map',map:{map_id:mapId,map_number:firstMapNum+i,match_id:mid,map_index:i+1,map:mp.name,score:mp.score,stats_available:mp.rows.length>0,player_stats:mp.rows,source_header:'admin wizard'}})});
+  const totals=new Map();for(const mp of d.mapDraft)for(const r of mp.rows){if(!totals.has(r.player_id))totals.set(r.player_id,{player_id:r.player_id,raw_name:r.raw_name,kills:0,deaths:0,assists:0});const t=totals.get(r.player_id);t.kills+=r.kills;t.deaths+=r.deaths;t.assists+=r.assists}
+  const guestCount=[...d.teamA,...d.teamB].filter(pid=>d.guests?.[pid]).length;if(d.teamA.length+d.teamB.length!==10)return toast('Не удалось собрать состав: должно быть ровно 10 участников.');const match={match_id:mid,series_number:seriesNum,played_at:d.playedAt,source_kind:'local_series',format:d.format,header:`${d.format.toLowerCase()} ${d.seriesScore} ${d.mapDraft.map(x=>x.name).join('-')}`,map_ids:mapIds,series_score:d.seriesScore,series_stats_available:true,series_score_source:'admin_wizard',series_aggregate_stats:[...totals.values()],player_ids:[...d.teamA,...d.teamB].filter(pid=>!d.guests?.[pid]),team_a:d.teamA.filter(pid=>!d.guests?.[pid]),team_b:d.teamB.filter(pid=>!d.guests?.[pid]),lobby_team_a:[...d.teamA],lobby_team_b:[...d.teamB],guest_players:[...d.teamA.filter(pid=>d.guests?.[pid]).map(pid=>({...d.guests[pid],team:'A'})),...d.teamB.filter(pid=>d.guests?.[pid]).map(pid=>({...d.guests[pid],team:'B'}))],created_at:new Date().toISOString()};ops.push({kind:'match',match});
+  try{await persistChangeAwait(ops,{action:'CREATE_MATCH',target:mid,detail:{format:d.format,maps:d.mapDraft.map(x=>x.name),series_score:d.seriesScore,players:d.teamA.length+d.teamB.length}})}catch(e){toast('Матч НЕ записан: '+(e?.message||'ошибка облака'));return}
+  for(const op of ops){if(op.kind==='map')DB.maps.push(op.map);else if(op.kind==='match')DB.matches.push(op.match)}
+  window.__newDraft=null;closeModal();toast('Матч записан: все карты и игроки подтверждены.');render();
+}
+
+function renderNewMaps(){
+  const selected=[...(window.__newMaps||[])];
+  document.querySelectorAll('#newMapPool .match-map-chip').forEach(b=>{const name=b.dataset.map,idx=selected.indexOf(name);b.classList.toggle('selected',idx>=0);const ord=b.querySelector('.map-pick-order');if(ord)ord.textContent=idx>=0?String(idx+1):'';});
+  const hint=$('#newMapHint');if(hint)hint.textContent=`Выбрано: ${selected.length}`;
+  const strip=$('#newMapSelection');if(strip)strip.innerHTML=selected.length?selected.map((name,i)=>`<span class="selected-map-chip"><i>${i+1}</i>${esc(name)}</span>`).join(''):'<span class="muted">Карты ещё не выбраны</span>';
+}
+function toggleNewMap(name){
+  let a=window.__newMaps||[],f=$('#newFormat')?.value||'BO1',max=f==='BO1'?1:f==='BO3'?3:5;
+  if(a.includes(name))a=a.filter(x=>x!==name);else{if(a.length>=max)return toast(`Для ${f} максимум ${max} карт`);a.push(name)}
+  window.__newMaps=a;renderNewMaps();
+}
+function addCustomNewMap(){
+  const input=$('#newCustomMapName'),name=String(input?.value||'').trim().replace(/\s+/g,' ');
+  if(!name)return toast('Введи название карты');
+  if(name.length>48)return toast('Название карты не должно быть длиннее 48 символов');
+  const selected=window.__newMaps||[];
+  if(selected.some(x=>mapKey(x)===mapKey(name)))return toast('Эта карта уже выбрана');
+  const format=$('#newFormat')?.value||'BO1',max=format==='BO1'?1:format==='BO3'?3:5;
+  if(selected.length>=max)return toast(`Для ${format} максимум ${max} карт`);
+  window.__newMaps=[...selected,name];
+  if(input)input.value='';
+  renderNewMaps();
+}
+function setNewTargetTeam(side){window.__newTargetTeam=side==='B'?'B':'A';renderNewTeams();renderNewPlayerPool()}
+function renderNewTeams(){
+  const a=[...(window.__newTeamA||[])],b=[...(window.__newTeamB||[])],target=window.__newTargetTeam==='B'?'B':'A',guests=window.__newGuests||{};
+  const build=(side,vals)=>Array.from({length:5},(_,i)=>{const pid=vals[i]||'';return pid?`<div class="match-team-player ${side==='A'?'team-a':'team-b'}" draggable="true" ondragstart="dragNewPlayer(event,'${esc(pid)}')"><b>${i+1}</b><span>${esc(guests[pid]?.display_name||player(pid)?.display_name||pid)}${guests[pid]?'<small> · БЕЗ СТАТЫ</small>':''}</span><button type="button" class="slot-remove" aria-label="Убрать игрока" onclick="removeNewTeamPlayer('${esc(pid)}');event.stopPropagation()">×</button></div>`:`<div class="match-team-empty"><span>${i+1}. Добавить игрока</span></div>`}).join('');
+  if($('#newTeamA')){$('#newTeamA').innerHTML=build('A',a);$('#newTeamA').closest('.match-team-box')?.classList.toggle('is-drop-target',target==='A')}
+  if($('#newTeamB')){$('#newTeamB').innerHTML=build('B',b);$('#newTeamB').closest('.match-team-box')?.classList.toggle('is-drop-target',target==='B')}
+  const aCount=a.filter(Boolean).length,bCount=b.filter(Boolean).length;
+  if($('#newTeamACount'))$('#newTeamACount').textContent=`${aCount} / 5`;if($('#newTeamBCount'))$('#newTeamBCount').textContent=`${bCount} / 5`;if($('#newPlayerCount'))$('#newPlayerCount').textContent=`${aCount+bCount} / 10`;
+  $('#newTargetA')?.classList.toggle('selected',target==='A');$('#newTargetB')?.classList.toggle('selected',target==='B');
+}
+function renderNewPlayerPool(){
+  const box=$('#newPlayerPool');if(!box)return;
+  const a=[...(window.__newTeamA||[])],b=[...(window.__newTeamB||[])],target=window.__newTargetTeam==='B'?'B':'A';
+  box.innerHTML=activePlayers().slice().sort((x,y)=>String(x.display_name).localeCompare(String(y.display_name),'ru')).map(p=>{const ta=a.includes(p.player_id),tb=b.includes(p.player_id),team=ta?'A':tb?'B':'';return `<button type="button" class="match-player-chip ${team?'selected '+(team==='A'?'team-a-chip':'team-b-chip'):''}" draggable="true" ondragstart="dragNewPlayer(event,'${esc(p.player_id)}')" onclick="cycleNewPlayer('${esc(p.player_id)}')"><span>${esc(p.display_name)}</span><small>${team?`КОМАНДА ${team}`:`ДОБАВИТЬ В ${target}`}</small></button>`}).join('');
+}
+function setNewTeamSlot(side,index,value){
+  let a=[...(window.__newTeamA||[])],b=[...(window.__newTeamB||[])];const target=side==='A'?a:b;
+  a=a.filter((x,i)=>i!==index||!value);b=b.filter((x,i)=>i!==index||!value);
+  if(value){a=a.filter(x=>x!==value);b=b.filter(x=>x!==value);if(side==='A')a[index]=value;else b[index]=value}
+  window.__newTeamA=a.slice(0,5);window.__newTeamB=b.slice(0,5);renderNewTeams();renderNewPlayerPool();
+}
+function removeNewTeamPlayer(id){let a=[...(window.__newTeamA||[])].filter(x=>x!==id),b=[...(window.__newTeamB||[])].filter(x=>x!==id);while(a.length<5)a.push('');while(b.length<5)b.push('');window.__newTeamA=a.slice(0,5);window.__newTeamB=b.slice(0,5);if(window.__newGuests?.[id])delete window.__newGuests[id];renderNewTeams();renderNewPlayerPool()}
+function addNewGuest(){const input=$('#newGuestName'),name=String(input?.value||'').trim().replace(/\s+/g,' ');if(!name)return toast('Введи ник гостя');if(name.length>64)return toast('Ник должен быть не длиннее 64 символов');const normalized=name.toLocaleLowerCase();if(Object.values(window.__newGuests||{}).some(g=>g.display_name.toLocaleLowerCase()===normalized)||activePlayers().some(p=>String(p.display_name||'').trim().toLocaleLowerCase()===normalized))return toast('Такой ник уже есть в каталоге или составе');const side=window.__newTargetTeam==='B'?'B':'A',team=side==='A'?[...(window.__newTeamA||[])]:[...(window.__newTeamB||[])];if(team.filter(Boolean).length>=5)return toast('Команда '+side+' уже заполнена 5 / 5');const id='guest_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);window.__newGuests=window.__newGuests||{};window.__newGuests[id]={guest_id:id,display_name:name};addNewPlayerToTeam(id,side);if((side==='A'?window.__newTeamA:window.__newTeamB).includes(id)){if(input)input.value='';toast(name+' добавлен в команду '+side+' без статистики')}}
+function addNewPlayerToTeam(id,side){
+  let a=Array.from({length:5},(_,i)=>window.__newTeamA?.[i]||''),b=Array.from({length:5},(_,i)=>window.__newTeamB?.[i]||'');
+  a=a.filter((x,i)=>!x||a.indexOf(x)===i); while(a.length<5)a.push('');
+  b=b.filter((x,i)=>!x||b.indexOf(x)===i); while(b.length<5)b.push('');
+  a=a.map(x=>x===id?'':x); b=b.map(x=>x===id?'':x);
+  const target=side==='B'?b:a;
+  const idx=target.findIndex(x=>!x);
+  if(idx<0)return toast(`Команда ${side} уже заполнена 5 / 5`);
+  target[idx]=id;
+  window.__newTeamA=a.slice(0,5);window.__newTeamB=b.slice(0,5);renderNewTeams();renderNewPlayerPool();
+}
+function cycleNewPlayer(id){
+  const a=[...(window.__newTeamA||[])],b=[...(window.__newTeamB||[])];
+  if(a.includes(id)||b.includes(id)){removeNewTeamPlayer(id);return;}
+  addNewPlayerToTeam(id,window.__newTargetTeam==='B'?'B':'A');
+}
+function dragNewPlayer(e,id){try{e.dataTransfer.setData('text/plain',JSON.stringify({id}));e.dataTransfer.effectAllowed='move'}catch{}}
+function allowNewTeamDrop(e){e.preventDefault();try{e.dataTransfer.dropEffect='move'}catch{}}
+function dropNewPlayer(e,side){e.preventDefault();e.stopPropagation();let data;try{data=JSON.parse(e.dataTransfer.getData('text/plain'))}catch{return}if(!data?.id)return;addNewPlayerToTeam(data.id,side)}
+function toggleNewPlayer(id){cycleNewPlayer(id)}
+function syncNewFormatUI(){
+  const f=$('#newFormat')?.value||'BO1';
+  const label=document.querySelector('#newScoreLabel');if(label)label.textContent=f==='BO1'?'СЧЁТ КАРТЫ':'СЧЁТ СЕРИИ';
+  const hint=$('#newScoreHint');if(hint)hint.textContent=f==='BO1'?'Для BO1 — счёт карты, например 13:10.':'Для серии — счёт серии, например 2:1 или 3:2.';
+  document.querySelectorAll('#newFormatOptions .format-option').forEach(b=>b.classList.toggle('selected',b.dataset.format===f));
+  const chosen=[...(window.__newMaps||[])],max=f==='BO1'?1:f==='BO3'?3:5;
+  if(chosen.length>max){window.__newMaps=chosen.slice(0,max);renderNewMaps();}
+  const pool=document.querySelectorAll('#newMapPool .match-map-chip');pool.forEach(b=>b.disabled=false);
+}
+function saveGame(){return continueNewGame()}
+function closeModal(){const matchModal=$('#modal');if(matchModal){matchModal.remove();const drill=$('#playerDrilldown');if(drill)drill.style.display='';return}const mods=[...document.querySelectorAll('.modal-back')];mods.at(-1)?.remove()}
+function closeAllModals(){document.querySelectorAll('.modal-back').forEach(x=>x.remove());document.getElementById('playerModal')?.remove();document.getElementById('mapModal')?.remove()}
+function exportBackup(){try{if(!validateBase(DB)||!validateBase(BASE))throw Error('invalid current base');const payload={version:'site-v39',exported_at:new Date().toISOString(),base:{players:BASE.players,maps:BASE.maps,matches:BASE.matches,aliases:BASE.aliases},localStorage:additions(),audit:auditLog()};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='CS2_ANALYTICS_backup_'+Date.now()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Backup создан.');}catch(e){toast('Не удалось создать backup. Текущая база не изменена.')}}
+function importBackup(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result),b=x.base;if(!validateBase(b))throw Error('invalid');const importedAdditions=Array.isArray(x.localStorage)?x.localStorage:[];const nextAdd=JSON.stringify(importedAdditions),nextBase=JSON.stringify(b),nextAudit=JSON.stringify(Array.isArray(x.audit)?x.audit:[]),oldBase=localStorage.getItem('cs2_analytics_base_override'),oldAdd=localStorage.getItem('cs2_analytics_additions'),oldAudit=localStorage.getItem('cs2_analytics_audit_log');try{if(importedAdditions.length){const probe=JSON.parse(nextBase);for(const op of importedAdditions){if(!op||typeof op!=='object'||!['map','match','player','aliases','player_patch','match_patch','map_patch','delete_map','delete_match','delete_player'].includes(op.kind))throw Error('invalid backup local operation');if(op.kind==='map'&&(!op.map||typeof op.map!=='object'))throw Error('map payload missing');if(op.kind==='match'&&(!op.match||typeof op.match!=='object'))throw Error('match payload missing');if(op.kind==='player'&&(!op.player||typeof op.player!=='object'))throw Error('player payload missing');if(op.kind==='aliases'&&(!op.aliases||typeof op.aliases!=='object'||Array.isArray(op.aliases)))throw Error('aliases payload missing');if(['player_patch','match_patch','map_patch'].includes(op.kind)&&(!op.patch||typeof op.patch!=='object'||Array.isArray(op.patch)))throw Error('patch payload missing');if(op.kind==='map'&&op.map)probe.maps.push(op.map);if(op.kind==='match'&&op.match)probe.matches.push(op.match);if(op.kind==='player'&&op.player)probe.players.push(op.player);if(op.kind==='aliases')Object.assign(probe.aliases,op.aliases||{});if(op.kind==='player_patch'){const q=probe.players.find(z=>z.player_id===op.player_id);if(!q)throw Error('missing player patch target');Object.assign(q,op.patch||{})}if(op.kind==='match_patch'){const q=probe.matches.find(z=>z.match_id===op.match_id);if(!q)throw Error('missing match patch target');Object.assign(q,op.patch||{})}if(op.kind==='map_patch'){const q=probe.maps.find(z=>z.map_id===op.map_id);if(!q)throw Error('missing map patch target');Object.assign(q,op.patch||{})}if(op.kind==='delete_map'){probe.maps=probe.maps.filter(z=>z.map_id!==op.map_id)}if(op.kind==='delete_match'){probe.matches=probe.matches.filter(z=>z.match_id!==op.match_id);probe.maps=probe.maps.filter(z=>z.match_id!==op.match_id)}if(op.kind==='delete_player'){probe.players=probe.players.filter(z=>z.player_id!==op.player_id);for(const [alias,pid] of Object.entries(probe.aliases)){if(pid===op.player_id)delete probe.aliases[alias]}}}if(!validateBase(probe))throw Error('invalid backup local operation state')}if(!validateBase(b))throw Error('invalid backup base');localStorage.setItem('cs2_analytics_base_override',nextBase);localStorage.setItem('cs2_analytics_additions',nextAdd);localStorage.setItem('cs2_analytics_audit_log',nextAudit);if(localStorage.getItem('cs2_analytics_base_override')!==nextBase||localStorage.getItem('cs2_analytics_additions')!==nextAdd||localStorage.getItem('cs2_analytics_audit_log')!==nextAudit)throw Error('storage verification failed')}catch(e){try{if(oldBase===null)localStorage.removeItem('cs2_analytics_base_override');else localStorage.setItem('cs2_analytics_base_override',oldBase);if(oldAdd===null)localStorage.removeItem('cs2_analytics_additions');else localStorage.setItem('cs2_analytics_additions',oldAdd);if(oldAudit===null)localStorage.removeItem('cs2_analytics_audit_log');else localStorage.setItem('cs2_analytics_audit_log',oldAudit)}catch{};throw e}location.reload()}catch(e){toast('Неверный или повреждённый backup. Текущая база не изменена.')}};r.readAsText(file)}
+document.onclick=e=>{if(e.target?.classList?.contains('modal-back'))e.target.remove()};
+window.openAddGame=openAddGame;window.openMatchDetail=openMatchDetail;window.closeAllModals=closeAllModals;window.openPlayerAdmin=openPlayerAdmin;window.savePlayerAdmin=savePlayerAdmin;window.editPlayer=editPlayer;window.savePlayerEdit=savePlayerEdit;window.restorePlayer=restorePlayer;window.archivePlayer=archivePlayer;window.purgeArchivedPlayer=purgeArchivedPlayer;window.selectNewFormat=selectNewFormat;window.setNewTeamSlot=setNewTeamSlot;window.renderNewTeams=renderNewTeams;window.renderNewMaps=renderNewMaps;window.openEditMatch=openEditMatch;window.saveMatchEdit=saveMatchEdit;window.restoreMatch=restoreMatch;window.archiveMatch=archiveMatch;window.deleteMatch=deleteMatch;window.openTrash=openTrash;window.closeModal=closeModal;window.togglePlayer=togglePlayer;window.selectAllPlayers=selectAllPlayers;window.clearPlayers=clearPlayers;window.focusPlayer=focusPlayer;window.openPlayerDetail=openPlayerDetail;window.openPublicPlayerProfile=openPublicPlayerProfile;window.handleProfileImage=handleProfileImage;window.openWhyIndex=openWhyIndex;window.closePlayerDetail=closePlayerDetail;window.renderMapLab=renderMapLab;window.openMapDetail=openMapDetail;window.addToTeam=addToTeam;window.removeFromTeam=removeFromTeam;window.saveGame=saveGame;window.randomTeams=randomTeams;window.balanceTeams=balanceTeams;window.exportBackup=exportBackup;window.importBackup=importBackup;window.login=login;window.toast=toast;window.state=state;window.render=render;
+function closeTopModal(){const modals=[...document.querySelectorAll('.modal-back')];if(!modals.length)return false;modals.at(-1).remove();return true}
+function globalKeyboardShortcuts(e){if(e.key==='Escape'&&closeTopModal())e.preventDefault()}
+document.addEventListener('keydown',globalKeyboardShortcuts);
+document.addEventListener('DOMContentLoaded',()=>load(),{once:true});
+
+// V47.1 scroll safety: when a modal is open, wheel input over non-scrollable children
+// is routed to the modal itself, preventing nested cards/hover targets from swallowing it.
+if(document.addEventListener)document.addEventListener('wheel',e=>{
+  const modal=e.target?.closest?.('.modal');
+  if(!modal)return;
+  let el=e.target;
+  while(el&&el!==modal){
+    const cs=getComputedStyle(el);
+    const canScroll=/(auto|scroll)/.test(cs.overflowY)&&el.scrollHeight>el.clientHeight;
+    if(canScroll){
+      const down=e.deltaY>0,atTop=el.scrollTop<=0,atBottom=el.scrollTop+el.clientHeight>=el.scrollHeight-1;
+      if((down&&!atBottom)||(!down&&!atTop))return;
+    }
+    el=el.parentElement;
+  }
+  const max=modal.scrollHeight-modal.clientHeight;
+  if(max>0){e.preventDefault();modal.scrollTop=Math.max(0,Math.min(max,modal.scrollTop+e.deltaY));}
+},{passive:false,capture:true});

@@ -1,0 +1,52 @@
+import { createClient } from "npm:@supabase/supabase-js@2";
+import "./validation.js";
+const validateBase=(globalThis as any).CS2Validation?.validateBase;
+const env=(name:string)=>Deno.env.get(name)||"";
+const URL_=env("SUPABASE_URL"),SERVICE=env("SUPABASE_SERVICE_ROLE_KEY"),ANON=env("SUPABASE_ANON_KEY");
+if(!URL_||!SERVICE||!ANON)throw new Error("backend secrets are not configured");
+const db=createClient(URL_,SERVICE,{auth:{persistSession:false,autoRefreshToken:false}});
+const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"authorization,content-type,apikey,x-client-info","Access-Control-Allow-Methods":"GET,POST,OPTIONS"}});
+const clone=<T>(x:T):T=>JSON.parse(JSON.stringify(x));
+async function authUser(req:Request){const h=req.headers.get("Authorization")||"";if(!h.startsWith("Bearer "))return null;const uc=createClient(URL_,ANON,{auth:{persistSession:false,autoRefreshToken:false},global:{headers:{Authorization:h}}});const {data,error}=await uc.auth.getUser();if(error||!data.user?.email)return null;const {data:admin,error:ae}=await db.from("app_admins").select("email").eq("email",data.user.email).maybeSingle();return ae||!admin?null:data.user}
+async function row(){const r=await db.from("cs2_app_state").select("id,state,version,updated_at,updated_by").eq("id",1).single();if(r.error)throw r.error;return r.data}
+function apply(s:any,o:any){if(o?.kind==="map")s.maps.push(o.map);else if(o?.kind==="match")s.matches.push(o.match);else if(o?.kind==="player")s.players.push(o.player);else if(o?.kind==="aliases")Object.assign(s.aliases,o.aliases||{});else if(["player_patch","match_patch","map_patch"].includes(o?.kind)){const km:any={player_patch:"players",match_patch:"matches",map_patch:"maps"},im:any={player_patch:"player_id",match_patch:"match_id",map_patch:"map_id"},key=km[o.kind],idKey=im[o.kind],target=s[key].find((x:any)=>x?.[idKey]===o[idKey]);if(!target)throw Error("object not found: "+o.kind);if(!o.patch||typeof o.patch!=="object"||Array.isArray(o.patch))throw Error("patch payload missing");Object.assign(target,o.patch)}else if(o?.kind==="delete_map"){const map=s.maps.find((x:any)=>x?.map_id===o.map_id);if(!map)throw Error("map not found");const match=s.matches.find((x:any)=>x?.match_id===map.match_id);if(!match)throw Error("map match not found");const ids=Array.isArray(match.map_ids)?match.map_ids:[],remaining=ids.filter((id:any)=>id!==o.map_id),min=match.format==="BO1"?1:match.format==="BO3"?2:match.format==="BO5"?3:Infinity;if(remaining.length<min)throw Error("cannot delete map: "+match.format+" requires at least "+min+" maps");match.map_ids=remaining;s.maps=s.maps.filter((x:any)=>x?.map_id!==o.map_id);match.map_ids.forEach((id:string,i:number)=>{const related=s.maps.find((x:any)=>x?.map_id===id);if(related)related.map_index=i+1})}else if(o?.kind==="delete_match"){s.matches=s.matches.filter((x:any)=>x?.match_id!==o.match_id);s.maps=s.maps.filter((x:any)=>x?.match_id!==o.match_id)}else if(o?.kind==="delete_player"){const target=s.players.find((x:any)=>x?.player_id===o.player_id);if(!target)throw Error("player not found");const rawName=String(target.display_name||target.player_id),guestId="archived_"+o.player_id;for(const match of (s.matches||[])){const knownTeam=(Array.isArray(match.team_a)&&match.team_a.includes(o.player_id))||(Array.isArray(match.team_b)&&match.team_b.includes(o.player_id))||(Array.isArray(match.lobby_team_a)&&match.lobby_team_a.includes(o.player_id))||(Array.isArray(match.lobby_team_b)&&match.lobby_team_b.includes(o.player_id));if(Array.isArray(match.player_ids)&&match.player_ids.includes(o.player_id)&&!knownTeam)throw Error("cannot archive player: legacy match has no team assignment")}for(const map of (s.maps||[])){if(Array.isArray(map.player_stats))map.player_stats=map.player_stats.map((st:any)=>st?.player_id===o.player_id?{...st,player_id:null,raw_name:st.raw_name||rawName}:st);for(const side of ["lobby_team_a","lobby_team_b"]){if(Array.isArray(map[side]))map[side]=map[side].map((pid:any)=>pid===o.player_id?guestId:pid)}}for(const match of (s.matches||[])){let team=null;if(Array.isArray(match.team_a)&&match.team_a.includes(o.player_id))team="A";if(Array.isArray(match.team_b)&&match.team_b.includes(o.player_id))team="B";if(!team&&Array.isArray(match.lobby_team_a)&&match.lobby_team_a.includes(o.player_id))team="A";if(!team&&Array.isArray(match.lobby_team_b)&&match.lobby_team_b.includes(o.player_id))team="B";if(team){const guests=Array.isArray(match.guest_players)?match.guest_players:[];if(!guests.some((g:any)=>g?.guest_id===guestId))guests.push({guest_id:guestId,display_name:rawName,team});match.guest_players=guests}for(const side of ["lobby_team_a","lobby_team_b"]){if(Array.isArray(match[side]))match[side]=match[side].map((pid:any)=>pid===o.player_id?guestId:pid)}for(const side of ["player_ids","team_a","team_b"]){if(Array.isArray(match[side]))match[side]=match[side].filter((pid:any)=>pid!==o.player_id)}if(Array.isArray(match.series_aggregate_stats))match.series_aggregate_stats=match.series_aggregate_stats.map((st:any)=>st?.player_id===o.player_id?{...st,player_id:null,raw_name:st.raw_name||rawName}:st)}s.players=s.players.filter((x:any)=>x?.player_id!==o.player_id);for(const [alias,pid] of Object.entries(s.aliases||{}))if(pid===o.player_id)delete s.aliases[alias]}else throw Error("unsupported operation: "+o?.kind)}
+
+async function signInByLogin(body:any){
+  const login=String(body?.login||"").trim();
+  const password=String(body?.password||"");
+  if(!login||!password||login.length>128||password.length>256)
+    return json({ok:false,error:"Неверный логин или пароль"},401);
+  let email=login;
+  if(!login.includes("@")){
+    const aliases=await db.from("app_login_aliases").select("username,email").limit(1000);
+    if(aliases.error)
+      return json({ok:false,error:"Не удалось выполнить вход. Попробуй позже."},503);
+    const wanted=login.toLocaleLowerCase("en-US");
+    const alias=(aliases.data||[]).find((row:any)=>String(row.username||"").trim().toLocaleLowerCase("en-US")===wanted);
+    if(!alias?.email)
+      return json({ok:false,error:"Неверный логин или пароль"},401);
+    email=String(alias.email);
+  }
+  const authClient=createClient(URL_,ANON,{auth:{persistSession:false,autoRefreshToken:false}});
+  const signed=await authClient.auth.signInWithPassword({email,password});
+  if(signed.error||!signed.data.session||!signed.data.user?.email)
+    return json({ok:false,error:"Неверный логин или пароль"},401);
+  const admin=await db.from("app_admins").select("email").eq("email",signed.data.user.email).maybeSingle();
+  if(admin.error||!admin.data){
+    await authClient.auth.signOut();
+    return json({ok:false,error:"Неверный логин или пароль"},401);
+  }
+  return json({ok:true,session:{
+    access_token:signed.data.session.access_token,
+    refresh_token:signed.data.session.refresh_token
+  }});
+}
+
+Deno.serve(async req=>{
+  if(req.method==="OPTIONS")return json({ok:true});
+  if(req.method==="POST"){
+    let body:any=null;
+    try{body=await req.clone().json()}catch{}
+    if(body?.action==="sign_in")return await signInByLogin(body);
+  }
+  const user=await authUser(req);if(!user)return json({ok:false,error:"Unauthorized"},401);try{const u=new URL(req.url);if(req.method==="GET"&&u.pathname.endsWith("/health"))return json({ok:true,service:"cs2-admin"});if(req.method==="GET"){const r=await row();return json({ok:true,state:r.state,version:r.version,updated_at:r.updated_at})}if(req.method!=="POST")return json({ok:false,error:"Method not allowed"},405);const b=await req.json();if(b.action==="auth_check")return json({ok:true,admin:true,user_id:user.id});if(b.action==="validate"){const r=await row(),v=validateBase(r.state);if(!v.ok)return json({ok:false,error:v.error||"validation failed"},400);return json({ok:true,version:r.version})}if(b.action==="commit"){const ops=Array.isArray(b.operations)?b.operations:[];if(!ops.length||ops.length>100)return json({ok:false,error:"operations must contain 1-100 items"},400);const r=await row(),next=clone(r.state);for(const o of ops)apply(next,o);const v=validateBase(next);if(!v.ok)return json({ok:false,error:v.error||"validation failed"},400);const expected=b.expected_version==null?Number(r.version):Number(b.expected_version);if(!Number.isInteger(expected)||expected<0)return json({ok:false,error:"expected_version invalid"},400);const operationId=String(b.operation_id||"web_"+Date.now()+"_"+crypto.randomUUID().slice(0,8));const a=b.audit&&typeof b.audit==="object"?b.audit:{};const q=await db.rpc("commit_cs2_state",{p_expected_version:expected,p_state:next,p_operation_id:operationId,p_action:String(a.action||"WEB_COMMIT").slice(0,80),p_target:a.target?String(a.target).slice(0,128):null,p_detail:a.detail&&typeof a.detail==="object"?a.detail:{},p_actor:user.email||user.id,p_updated_by:user.id});if(q.error)throw q.error;const out=Array.isArray(q.data)?q.data[0]:q.data;return json({ok:true,operation_id:operationId,version:out.version,updated_at:out.updated_at,state:out.state})}return json({ok:false,error:"Unknown action"},400)}catch(e){const message=e instanceof Error?e.message:String(e);return json({ok:false,error:message},message==="version conflict"?409:500)}});
