@@ -20,7 +20,7 @@ test('embedded fallback is valid and internally linked', () => {
 
 test('embedded fallback also satisfies the stricter Edge Function state contract', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'data_embedded.js'), 'utf8');
-  const match = source.match(/window\\.CS2_EMBEDDED_DATA\\s*=\\s*(\\{[\\s\\S]*\\});?\\s*$/);
+  const match = source.match(/window\.CS2_EMBEDDED_DATA\s*=\s*(\{[\s\S]*\});?\s*$/);
   assert.ok(match, 'embedded data assignment must contain a parseable JSON object');
   const data = JSON.parse(match[1]);
   const result = validateEdgeBase(data);
