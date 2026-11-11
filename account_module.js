@@ -345,8 +345,10 @@
   const originalProfilePage=profilePage;
   profilePage=function(view){
     if(!state.myPlayerId&&!state.profileTargetId){
-      view.innerHTML='<section class="section"><div class="panel card account-unlinked-card"><div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</div><h2>'+(state.accountUser?'Игровой профиль ещё не привязан':'Войди в аккаунт')+'</h2><p class="muted">'+(state.accountUser?'Для доступа к личной статистике введи персональный код приглашения.':'Авторизуйся, чтобы открыть личный профиль и историю матчей.')+'</p><button class="btn primary" type="button" id="accountProfileAction">'+(state.accountUser?'ПРИВЯЗАТЬ ИГРОВОЙ ПРОФИЛЬ':'ВОЙТИ / СОЗДАТЬ АККАУНТ')+'</button></div></section>';
-      $('#accountProfileAction')?.addEventListener('click',()=>openAccountAuth());
+      renderRouteShell(view,function(content){
+        content.innerHTML='<section class="section"><div class="panel card account-unlinked-card"><div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</div><h2>'+(state.accountUser?'Игровой профиль ещё не привязан':'Войди в аккаунт')+'</h2><p class="muted">'+(state.accountUser?'Для доступа к личной статистике введи персональный код приглашения.':'Авторизуйся, чтобы открыть личный профиль и историю матчей.')+'</p><button class="btn primary" type="button" id="accountProfileAction">'+(state.accountUser?'ПРИВЯЗАТЬ ИГРОВОЙ ПРОФИЛЬ':'ВОЙТИ / СОЗДАТЬ АККАУНТ')+'</button></div></section>';
+        content.querySelector('#accountProfileAction')?.addEventListener('click',()=>openAccountAuth());
+      });
       return;
     }
     originalProfilePage(view);
