@@ -81,3 +81,15 @@
 - No file list available.
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T05:14:41+03:00 — docs: preserve legacy encyclopedia source and migration notes
+
+- Commit: 37dbf24064ee44310c07b43c07e31235ae60ed35
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/legacy-encyclopedia-2026-11-09/README.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
