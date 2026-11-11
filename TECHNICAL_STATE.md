@@ -42,3 +42,16 @@ npm run check
 Следовательно, ранее записанный HEAD `3b680400fdfaae5805fff8e4e862dd568578c9ff` — историческая контрольная точка profile shell, не текущий HEAD. Указанные 78 passed / 0 failed относились к workflow для старого SHA и не подтверждают тесты актуального HEAD. Для commit 03915654 в проверке combined status вернулся пустой statuses array; это не доказательство успешного или неуспешного CI. Browser QA и deployment SHA актуального HEAD не подтверждены.
 
 Подробная история исследования FACEIT, включая то, почему screenshot-only подход не сработал и почему переход к реальному HTML/CSS стал переломным моментом: [FACEIT_REFERENCE.md](FACEIT_REFERENCE.md).
+
+## Дополнение — аудит engine/merge 2026-11-11
+
+- Текущий branch HEAD на момент аудита: 25dcab800a478e72e6da8a19e524303a45fff6e1.
+- Текущий tree содержит только 11 файлов документации/workflow; runtime отсутствует.
+- Сравнение с полным runtime commit 3b680400fdfaae5805fff8e4e862dd568578c9ff: 195 runtime files отсутствуют в текущем tree, но доступны в Git history.
+- Коммит 4c4274b7a640d62d0484b2555fac55842490b384 добавил project-memory docs и одновременно удалил runtime/quality-gate artifacts из tree.
+- Последний подтверждённый успешный quality gate — commit 3b68040, run 42934830245; он не проверяет текущий HEAD.
+- DEV Supabase cs2-faceit-dev активен: state v156, 14 players, 42 matches, 93 maps, 14 profile rows, 1 linked account, 0 active invites.
+- DEV уже содержит копию данных; повторный массовый импорт не нужен до проверки runtime.
+- Подробный read-only отчёт: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
+- Cloudflare deployed SHA и browser QA текущего DEV URL не подтверждены.
+- Следующий blocker: восстановить runtime из 3b68040 в faceit-dev, сохранив документацию, затем CI и browser/deployment QA.
