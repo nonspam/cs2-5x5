@@ -159,3 +159,37 @@ ELO сортирует active matches через app helper `matchOrder()`, ко
 - 31 с определённым непустым результатом (ни одной серии 0:0).
 
 Следовательно, при текущих данных и текущем match-level roster helper ELO должен учитывать **31 из 42** серий. Остальные 11 не проходят полный series-level roster gate; 10 из них требуют отдельной проверки map-level roster consistency, прежде чем менять eligibility.
+
+
+## Engineering addendum — validation and lifecycle fixes (2026-11-11)
+
+### Deployed Edge validator v2 defect
+
+The deployed `cs2-admin` version 2 validator treated `played_at: ''` as an invalid date because it called `Date.parse('')`. The current DEV state contained two such rows, and the embedded fallback contained four. The add-match wizard permits leaving the date blank. Since the Edge Function validates the complete next state on every commit, this rejected all cloud write operations while those blank strings existed.
+
+The validator now treats null/blank `played_at` as absent and continues to reject non-empty invalid dates. The new behavior was checked against the entire live DEV state and the embedded fallback; both validate cleanly.
+
+### Team assignment provenance
+
+`saveMatchEdit()` writes `team_assignment_source='manual_edit'` when editing team assignments. The Edge validator did not include `manual_edit` in its allowed provenance set for `detailed` historical series. Added `manual_edit` to the allowed set and added a regression test that mutates a detailed embedded series to this provenance.
+
+### Player lifecycle contract
+
+The UI previously changed only `is_active` on create/archive/restore, while Edge validation requires `status` and `is_active` to agree. Fixed:
+- create: `status='active', is_active=true`;
+- archive: `status='archived', is_active=false`;
+- restore: `status='active', is_active=true`.
+
+A read-only simulation against a clone of the live DEV state confirmed that the new create/archive/restore shapes pass validation and the old inconsistent archive/restore patches are rejected.
+
+### DEV deployment and verification
+
+- `cs2-admin` deployed to DEV project `nwujudniysolpevbtggd`, active version **3**.
+- `verify_jwt=false` preserved; function still performs its own bearer-token and admin allow-list checks.
+- Deployed `index.ts` and `validation.js` were fetched back; validation source exactly matches `faceit-dev`.
+- Full current DEV state validates with v3: **14 players, 42 matches, 93 maps; zero validation errors**.
+- No SQL, data, schema, grants, policies or migration writes were performed.
+- GitHub Actions for the expanded **90-test** suite remain queued at time of this note. Manual syntax compilation passed for changed JS files. Previous completed CI was 83/83.
+- Cloudflare frontend deployment and browser QA remain unverified.
+
+This is a DEV-only Edge Function deployment, not a production deployment.

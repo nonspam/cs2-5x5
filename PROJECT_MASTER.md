@@ -83,3 +83,7 @@ GitHub Actions может автоматически записывать commit
 
 ## Аудит целостности данных и ELO
 Проверка 42 матчей / 93 карт, series aggregates, roster coverage, неоднозначных BO3 1:1 и порядка пересчёта рейтинга: [docs/FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md](docs/FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md). Спорные правила ELO намеренно не менялись.
+
+
+## Route and interaction inventory
+Static map of existing SPA routes, modal workflows, account/admin features and known navigation gaps: [docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md](docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md). This is source-level inventory only; browser QA is still pending.

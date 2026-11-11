@@ -135,3 +135,14 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 Пользователь попросил вести проект более автономно и крупными этапами, не присылать уведомление после каждой мелочи. Нужно объединять аудит/изменения/тестирование в законченные блоки и писать только при существенном результате или когда требуется решение/материал от пользователя. Не просить HTML/CSS заранее: запросить их только когда конкретный раздел готов к визуальной реализации.
 
 Техническая подготовка и безопасные улучшения могут продолжаться самостоятельно. Не придумывать дизайн. Не менять `main`, production Supabase, live data или deployed environment без прямого разрешения. Пользователь остаётся владельцем продуктовых решений.
+
+
+## 2026-11-11 — Additional verified fixes
+
+- DEV Edge Function `cs2-admin` was version 2 and rejected empty `played_at` strings in the current state. Since the function validates the entire next state on every commit, this blocked cloud writes. Fixed blank-date handling, preserved rejection of malformed non-empty dates, deployed v3 to DEV only and re-fetched the active source. The full current DEV state now validates with zero errors.
+- `saveMatchEdit` writes `manual_edit` provenance; Edge validator did not allow it for detailed historical series. Added the value and a regression test.
+- Player create/archive/restore were not synchronizing `status` and `is_active`; fixed the three mutations and added a contract test.
+- Added regression tests for ELO calibration transition, BO5 series event, map-score fallback, map/aggregate parity, Edge validation and lifecycle. Suite count is now 90; GitHub Actions remains queued, so do not call it green yet. Manual syntax compilation passed.
+- The current DEV data was read-only validated against the deployed v3 Edge validator: 14 players, 42 matches, 93 maps, no errors. No DB rows/schema/policies/migrations were changed.
+- Latest route map: `docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md`.
+

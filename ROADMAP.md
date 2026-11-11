@@ -1,3 +1,19 @@
+# Progress checkpoint — 2026-11-11
+
+- [x] Restore the last full runtime snapshot on `faceit-dev`.
+- [x] Integrate existing routes into a shared profile-inspired shell prototype (visuals remain provisional).
+- [x] Perform read-only runtime, Supabase security and data integrity audits.
+- [x] Inventory route and modal/workflow behavior from source: [route inventory](docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md).
+- [x] Verify the current DEV dataset and series aggregate parity; document unresolved ELO rules.
+- [x] Fix DEV Edge validation for blank optional dates and `manual_edit` provenance; deploy `cs2-admin` v3 to DEV only.
+- [x] Fix player create/archive/restore status synchronization in the runtime source.
+- [ ] Confirm GitHub Actions for the expanded 90-test suite (runs queued at checkpoint time).
+- [ ] Browser QA on DEV and verify Cloudflare deployed SHA.
+- [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
+- [ ] After technical audit, implement each visual section from owner-supplied HTML/CSS/references.
+
+---
+
 # Roadmap — CS2 Analytics
 
 План — очередь работ, не обещание сроков. Приоритет корректируется после аудита и согласования.

@@ -1,3 +1,23 @@
+# Current technical checkpoint — 2026-11-11 (authoritative)
+
+> This section supersedes older checkpoint snapshots further down this file. Historical entries are retained as a change record, not as the current state.
+
+- Working branch: `faceit-dev`; do not change `main`.
+- Runtime restored from the full snapshot and integrated into a shared profile-inspired shell. The shell is a technical prototype, not an approved final design.
+- User workflow: work autonomously in larger batches; avoid micro-updates. Request HTML/CSS/screenshots only when a specific section is ready for owner-directed visual implementation. Do not invent section design.
+- Runtime remains a vanilla JS SPA centered on `app_v57.js`; browser QA and Cloudflare deployed SHA are not verified.
+- DEV Supabase ref: `nwujudniysolpevbtggd`. State: v156, 14 players, 42 matches, 93 maps, 14 profiles, 1 auth user.
+- DEV Edge Function `cs2-admin`: active version 3, deployed from `faceit-dev`; current full state validates with zero errors. No database/schema writes were performed.
+- Source test suite now has 90 cases. Latest GitHub Actions run is queued; last completed CI was 83 passed / 0 failed. Manual JS syntax compilation passed for changed JS files.
+- Fixed on `faceit-dev`: blank optional `played_at` validation; `manual_edit` team provenance; player create/archive/restore status consistency.
+- Key unresolved product decisions: BO3 1:1 after two maps (draw vs incomplete); whether to derive a series roster from map-level rosters when series roster is incomplete; canonical chronological order for ELO when dates are missing.
+- Track absent; Season 1 remains placeholder. Do not implement lifecycle or change ELO rules until decisions are approved.
+- Full runtime/Supabase audit: [read-only audit](docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md).
+- Data/ELO and validation audit: [data integrity audit](docs/FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md).
+- Route/action map: [route inventory](docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md).
+
+---
+
 # Актуальная контрольная точка — FACEIT V2 (2026-11-11)
 
 Эта секция новее исторических snapshots ниже и отражает текущее состояние после восстановления runtime и первого прохода объединения shell.
