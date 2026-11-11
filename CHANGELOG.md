@@ -876,3 +876,15 @@
 - M	tests/validation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:24:29+03:00 — test: supply valid provenance in compact series fixture
+
+- Commit: 096d2fb0eb0d0cf8072ec6b95b14b9ba7297e0a0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/validation.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
