@@ -720,3 +720,15 @@
 - M	docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:44:12+03:00 — docs: record 117-test shell and DEV gate result
+
+- Commit: 8791904a34c0ed69915ed19e5b3d8c125eeb9e23
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
