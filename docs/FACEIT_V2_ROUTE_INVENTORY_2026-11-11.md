@@ -75,6 +75,27 @@ This document maps what exists. It does not approve the current visual design. T
 - Backup export/import.
 - Review audit history.
 
+## Route-to-code map
+
+This is the practical source map for preserving old behavior while sections are restyled. Names are the current runtime entry points; helpers are listed where they materially feed the section.
+
+| Section / workflow | Render entry | Existing behavior and core functions |
+|---|---|---|
+| Shared shell / history | `render`, `renderRouteShell`, `profilePage` | `APP_ROUTE_IDS`, `appRouteFromLocation`, `navigateApp`, `restoreAppRouteFromHistory`, `faceitAppRailMarkup`, `faceitAppPlayerColumnMarkup`, `bindAppShell`; profile is the special-case renderer inside the same rail shell |
+| Home | `home` | Dashboard summaries and highlights; `lastMatchSummary`, `openMatchDetail`, `openPlayerDetail` |
+| Players / analytics | `analytics` → `players` | Player table and comparison selection; `aggregate`, `stability`, `form`, `impact`, `index`, `indexBreakdown`, `toggleCompare`, `compare`, `openPlayerDetail`, `openPlayerDrilldown`, `openPublicPlayerProfile` |
+| Matches / series | `base` | History, detail, create/edit/archive/trash/restore; `openMatchDetail`, `openMapDetail`, `openAddGame`, `continueNewGame`, `renderNewSetupStep`, `renderNewMaps`, `renderNewTeams`, `renderNewStatsStep`, `collectNewMapStats`, `reviewNewGame`, `commitNewGame`, `openEditMatch`, `saveMatchEdit`, `saveMatchTiming`, `deleteMatch`, `openTrash`, `restoreMatch` |
+| Maps | `maps` | Map summaries and player rows; `mapStats`, `mapPlayerStats`, `openMapDetail`, `renderMapStatEditor` |
+| Teams | `teams` | Temporary roster builder and balancing; `teamRoster`, `teamAverage`, `teamImpactAvg`, `teamStabilityAvg`, `addToTeam`, `removeFromTeam`, `dragTeam`, `dropTeamPlayer`, `randomTeams`, `balanceTeams` |
+| Records | `records` | Career and format-specific record filters; `recordRows`, `careerRecordRows`, `bo3RecordRows`, `bo5RecordRows`, `openPlayerDrilldown` |
+| Seasons | `seasons` | Current All Time history plus Season 1 preparation placeholder; no live season/rollover system |
+| Profile | `profilePage` | Profile metrics and recent series; `profileRecord`, `profileSummary`, `profileMatchesForPlayer`, `handleProfileImage`; account/auth actions also live in `account_module.js` |
+| Settings / administration | `settings` | Admin login, player/alias management, backup and audit; `login`, `openPlayerAdmin`, `savePlayerAdmin`, `editPlayer`, `savePlayerEdit`, `archivePlayer`, `restorePlayer`, `purgeArchivedPlayer`, `exportBackup`, `importBackup`, `auditLog` |
+
+### Navigation integrity finding
+
+The audit found two legacy cross-section controls that assigned `state.tab` directly instead of using `navigateApp`: the account-menu “Мой профиль” link and the Season history “Все матчи” link. They are now routed through `navigateApp('profile')` and `navigateApp('base')`, respectively, so the URL hash and browser history are updated consistently. A regression test prohibits reintroducing literal route assignments in controls.
+
 ## Handler and code footprint
 
 Static scan of `app_v57.js`:
