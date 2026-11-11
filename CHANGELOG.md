@@ -382,3 +382,17 @@
 - A	docs/FACEIT_V2_RUNTIME_AUDIT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:58:29+03:00 — docs: refresh technical state for FACEIT V2 shell
+
+- Commit: c18e34745d1a9af522696ada00f3e5b83634901f
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ARCHITECTURE.md
+- M	PROJECT_MASTER.md
+- M	TECHNICAL_STATE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
