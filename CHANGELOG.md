@@ -514,3 +514,15 @@
 - M	tests/account-security-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:06:57+03:00 — test: fix account security test syntax
+
+- Commit: 2fcabef0bca7076da77c214b87f0e26075605d97
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/account-security-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
