@@ -75,3 +75,7 @@ GitHub Actions может автоматически записывать commit
 
 ## Критически важный FACEIT research
 Перед визуальными задачами обязательно прочитать [FACEIT_REFERENCE.md](FACEIT_REFERENCE.md). Там записано, почему попытка повторить профиль только по screenshot не сработала и почему исследование настоящего HTML/CSS FACEIT стало переломным моментом. Там же находится готовый handoff prompt для нового чата. Исходные CSS/HTML файлы предыдущего чата пока не подтверждены как сохранённые в GitHub.
+
+
+## Последний read-only технический аудит
+Полный frontend/runtime, ELO, DEV Supabase, schema/security advisors и QA gap review: [docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md](docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md). Аудит выполнен только чтением; дизайн, runtime и база данных не изменялись.
