@@ -141,3 +141,15 @@
 - M	DESIGN_SYSTEM.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T19:32:29+03:00 — Correct technical checkpoint and CI evidence
+
+- Commit: de839a1b7e4c0a194ce6e62e605bee3c41a9c413
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
