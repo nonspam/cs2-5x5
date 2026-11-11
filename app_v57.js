@@ -964,10 +964,40 @@ function recordRows(){
     const stat=statRowForPlayer(m,p.player_id,m.series_aggregate_stats||[]);
     if(!stat)continue;
     const k=Number(stat.kills)||0,d=Number(stat.deaths)||0,a=Number(stat.assists)||0,mapCount=Math.max(1,(m.map_ids||[]).length),one=[{kills:k/mapCount,deaths:d/mapCount,assists:a/mapCount}];
-    rows.push({player:p.display_name,playerId:p.player_id,map:`BO3 · ${m.series_score||'—'}`,k,d,a,kd:d?k/d:0,diff:k-d,avg:k/mapCount,impact:impact(p.player_id,one,false),idx:indexBreakdown(p.player_id,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
+    rows.push({player:p.display_name,playerId:p.player_id,map:`BO3 · ${m.series_score||'—'}`,k,d,a,maps:mapCount,kd:d?k/d:0,diff:k-d,avg:k/mapCount,impact:impact(p.player_id,one,false),idx:indexBreakdown(p.player_id,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
   }
+
   return rows;
-}function careerRecordRows(){
+}
+function bo1RecordRows(){
+  return recordRows().filter(r=>r.kind==='detailed'&&DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO1')
+    .sort((a,b)=>matchTime(DB.matches.find(m=>m.match_id===b.matchId))-matchTime(DB.matches.find(m=>m.match_id===a.matchId))||b.kd-a.kd);
+}
+function recordAvgRows(source){
+  const by=new Map();
+  for(const r of source){
+    const maps=Number(r.maps)>0?Number(r.maps):Number(r.mapCount)>0?Number(r.mapCount):1;
+    const x=by.get(r.playerId)||{...r,k:0,d:0,a:0,maps:0};
+    x.k+=Number(r.k)||0;x.d+=Number(r.d)||0;x.a+=Number(r.a)||0;x.maps+=maps;
+    by.set(r.playerId,x);
+  }
+  return [...by.values()].map(r=>({...r,avg:r.maps?r.k/r.maps:0}));
+}
+function recordWinRate(id,filter,mapName){
+  let rows=careerResultsForPlayer(id);
+  if(filter==='bo1')rows=rows.filter(r=>DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO1');
+  else if(filter==='bo3')rows=rows.filter(r=>DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO3');
+  else if(filter==='bo5')rows=rows.filter(r=>DB.matches.find(m=>m.match_id===r.matchId)?.format==='BO5');
+  else if(filter==='match'){const latest=latestMatch();rows=latest?rows.filter(r=>r.matchId===latest.match_id):[]}
+  else if(filter==='map'&&mapName&&mapName!=='all')rows=rows.filter(r=>r.map===mapName);
+  const played=rows.length,wins=rows.filter(r=>r.result==='WIN').length;
+  return {played,wins,rate:played?wins/played:0};
+}
+function recordWinRows(source,filter,mapName){
+  const ids=[...new Set(source.map(r=>r.playerId).filter(Boolean))];
+  return ids.map(id=>{const base=source.find(r=>r.playerId===id)||{},wr=recordWinRate(id,filter,mapName);return{...base,wr:wr.rate,wrPlayed:wr.played,wrWins:wr.wins}}).filter(r=>r.wrPlayed);
+}
+function careerRecordRows(){
   return activePlayers().map(p=>{const x=aggregate(p.player_id),imp=impact(p.player_id),idx=index(p.player_id);return{player:p.display_name,playerId:p.player_id,map:`Карьера · ${x.maps} карт`,k:x.k,d:x.d,a:x.a,kd:x.kd,diff:x.kdDiff,avg:x.maps?x.k/x.maps:0,impact:imp,idx,mapId:null,kind:'career'}}).filter(r=>r.k||r.d||r.a).sort((a,b)=>b.idx-a.idx);
 }
 function bo3RecordRows(){
@@ -977,7 +1007,7 @@ function bo3RecordRows(){
     if(m.source_kind==='compact_bo3'){
       for(const p of activePlayers()){
         const stat=statRowForPlayer(m,p.player_id,m.series_aggregate_stats||[]);
-        if(stat)grouped.set(p.player_id,{k:Number(stat.kills)||0,d:Number(stat.deaths)||0,a:Number(stat.assists)||0});
+        if(stat)grouped.set(p.player_id,{k:Number(stat.kills)||0,d:Number(stat.deaths)||0,a:Number(stat.assists)||0,maps:Math.max(1,(m.map_ids||[]).length)});
       }
     }else{
       for(const mid of(m.map_ids||[])){
@@ -986,16 +1016,16 @@ function bo3RecordRows(){
         for(const p of activePlayers()){
           const stat=statRowForPlayer(match,p.player_id,mp.player_stats||[]);
           if(!stat)continue;
-          const g=grouped.get(p.player_id)||{k:0,d:0,a:0};
-          g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;
+          const g=grouped.get(p.player_id)||{k:0,d:0,a:0,maps:0};
+          g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;g.maps+=1;
           grouped.set(p.player_id,g);
         }
       }
     }
     for(const [pid,g] of grouped){
       const p=player(pid);if(!p||p.is_active===false||p.deleted_permanently===true)continue;
-      const mapCount=Math.max(1,m.map_ids?.length||1),one=[{kills:g.k/mapCount,deaths:g.d/mapCount,assists:g.a/mapCount}];
-      rows.push({player:p.display_name,playerId:pid,map:`BO3 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/mapCount,impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
+      const mapCount=Math.max(1,g.maps||m.map_ids?.length||1),one=[{kills:g.k/mapCount,deaths:g.d/mapCount,assists:g.a/mapCount}];
+      rows.push({player:p.display_name,playerId:pid,map:`BO3 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,maps:mapCount,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/mapCount,impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo3',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
     }
   }
   return rows.sort((a,b)=>matchTime(activeMatches().find(m=>m.match_id===b.matchId))-matchTime(activeMatches().find(m=>m.match_id===a.matchId))||String(a.player).localeCompare(String(b.player),'ru'));
@@ -1009,15 +1039,15 @@ function bo3RecordRows(){
       for(const p of activePlayers()){
         const stat=statRowForPlayer(match,p.player_id,mp.player_stats||[]);
         if(!stat)continue;
-        const g=grouped.get(p.player_id)||{k:0,d:0,a:0};
-        g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;
+        const g=grouped.get(p.player_id)||{k:0,d:0,a:0,maps:0};
+        g.k+=Number(stat.kills)||0;g.d+=Number(stat.deaths)||0;g.a+=Number(stat.assists)||0;g.maps+=1;
         grouped.set(p.player_id,g);
       }
     }
     for(const [pid,g] of grouped){
       const p=player(pid);if(!p||p.is_active===false||p.deleted_permanently===true)continue;
-      const mapCount=Math.max(1,m.map_ids?.length||1),one=[{kills:g.k/mapCount,deaths:g.d/mapCount,assists:g.a/mapCount}];
-      rows.push({player:p.display_name,playerId:pid,map:`BO5 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/mapCount,impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo5',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
+      const mapCount=Math.max(1,g.maps||m.map_ids?.length||1),one=[{kills:g.k/mapCount,deaths:g.d/mapCount,assists:g.a/mapCount}];
+      rows.push({player:p.display_name,playerId:pid,map:`BO5 · ${m.series_score||'—'}`,k:g.k,d:g.d,a:g.a,maps:mapCount,kd:g.d?g.k/g.d:0,diff:g.k-g.d,avg:g.k/mapCount,impact:impact(pid,one,false),idx:indexBreakdown(pid,one,false,true).total,mapId:null,kind:'bo5',matchId:m.match_id,playedAt:m.played_at,seriesScore:m.series_score});
     }
   }
   return rows.sort((a,b)=>matchTime(activeMatches().find(m=>m.match_id===b.matchId))-matchTime(activeMatches().find(m=>m.match_id===a.matchId))||String(a.player).localeCompare(String(b.player),'ru'));
