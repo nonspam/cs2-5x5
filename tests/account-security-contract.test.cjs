@@ -77,3 +77,11 @@ test('password reset response does not disclose whether an email exists', () => 
   assert.match(adapter, /client\.auth\.resetPasswordForEmail\(cleanEmail/);
   assert.match(adapter, /current_password/);
 });
+
+test('player IDs used in inline event handlers exclude quotes and markup delimiters', () => {
+  const validation = read('validation.js');
+  const app = read('app_v57.js');
+  assert.match(validation, /\\p\{L\}\\p\{N\}_.: -\]\{1,64\}/);
+  assert.match(app, /onclick="togglePlayer\('\$\{p\.player_id\}'\)"/);
+  assert.match(app, /onclick="openPlayerDetail\('\$\{q\.p\.player_id\}'\)"/);
+});

@@ -57,3 +57,13 @@ Added 8 source-contract tests for token generation/hashing, admin and active-pla
 ## Scope
 
 No Auth settings, users, invitation rows, account links, storage objects, database rows, schema, policies, grants, or production resources were changed.
+
+## Static HTML injection surface review
+
+A source scan covered `app_v57.js`, `account_module.js`, `supabase_adapter.js`, `elo_v3.js`, `validation.js`, and embedded data:
+- 38 HTML sink lines were identified in the main app and 7 in the account module (the scan counts lines containing `innerHTML` or `insertAdjacentHTML`, not unique DOM operations).
+- No `eval`, `new Function`, `document.write`, or `javascript:` sinks were found in the scanned runtime files.
+- User-facing player names, aliases, match IDs, map IDs, and dates are escaped at the inspected dynamic HTML boundaries. Map asset URLs use `encodeURIComponent`.
+- Two inline handlers interpolate `player_id` without calling `esc`; the shared browser/Edge validators restrict IDs to Unicode letters/numbers plus underscore, period, colon, space, and hyphen, excluding quotes and HTML delimiters. Added a regression contract test for this invariant.
+- This is a static source review, not a full XSS penetration test or browser QA. Any future relaxation of the player ID grammar must revisit inline handlers or replace them with data attributes and event listeners.
+

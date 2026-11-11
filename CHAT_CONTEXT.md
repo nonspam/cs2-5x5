@@ -175,5 +175,12 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - SECURITY DEFINER invite implementations live in `private`, use empty search_path, and enforce admin/auth checks; public wrappers are SECURITY INVOKER. Anon has no direct table grants or invite RPC execution. Authenticated can execute wrappers but cannot directly select invite rows.
 - Profile RLS binds edits to the linked player and requires media paths under auth.uid(). Storage policies enforce same per-user folder. Bucket configuration independently enforces 5 MiB and JPEG/PNG/WebP/GIF.
 - A read-only authenticated-role context check confirmed own-account view returns one row. No DB/Auth/storage mutations were performed.
-- Added 8 static account-security contract tests; total suite 99. GitHub Actions remains queued, so no green CI claim. Details: `docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md`.
+- Added 8 static account-security contract tests; total suite 100. GitHub Actions remains queued, so no green CI claim. Details: `docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md`.
 - Registration's pending invite code is held in page memory until email confirmation; reloading before claim loses the pending value, but user can re-enter the code. Low-priority UX follow-up only.
+
+
+## 2026-11-11 — Static HTML injection surface pass
+
+- Scanned runtime HTML sinks in `app_v57.js` and `account_module.js`, plus adapters/validators/data/ELO modules. No eval/new Function/document.write/javascript: sinks found. Dynamic user-facing strings are escaped at inspected HTML boundaries; map asset URLs are URL-encoded.
+- Two inline handlers use raw `player_id`; both browser and Edge validators constrain the allowed character set to Unicode letters/numbers plus `_ . : space -`, excluding quote and markup delimiters. Added a regression test for that invariant. Total suite is 100; CI remains queued.
+- This is static review only, not penetration testing or browser QA. See account security audit.
