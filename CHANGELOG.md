@@ -960,3 +960,15 @@
 - A	docs/FACEIT_V2_GUEST_SERIES_AGGREGATE_VALIDATION_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:34:45+03:00 — docs: record guest series validation hardening
+
+- Commit: 7c75a868b9ac532bef7255b90b7b7543ebd44130
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
