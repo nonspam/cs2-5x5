@@ -105,3 +105,15 @@
 - M	CHAT_CONTEXT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T05:14:59+03:00 — docs: link imported historical encyclopedia
+
+- Commit: 2e348e6b73f017f5d4d0fbd4d4d62d48b245bd6b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	PROJECT_MASTER.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
