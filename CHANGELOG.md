@@ -912,3 +912,15 @@
 - M	tests/validation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:30:55+03:00 — fix: use whitespace normalization in identity resolver
+
+- Commit: fa30682cfaeea700b86880028fc68cf42b223f88
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	validation.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
