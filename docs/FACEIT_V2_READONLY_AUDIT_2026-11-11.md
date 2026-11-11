@@ -191,3 +191,26 @@ Impact:
 - 50 различных имён обработчиков, обнаруженных в inline `onclick`.
 
 Эти цифры показывают масштаб ручной проверки, но не являются количеством уникальных UI-кнопок и не доказывают их работоспособность: элементы часто создаются в template strings, а обработчики могут назначаться динамически. Следующий этап — разобрать их по сценариям и проверить каждый видимый control в браузере.
+
+
+## Дополнение: покрытие тестами и обработчики
+
+Текущий suite состоит из 12 test files и 83 test cases:
+- account/profile: 6
+- adapter operations: 9
+- DEV readiness/security contract: 8
+- ELO V3: 4
+- embedded dataset: 1
+- entrypoint/load order: 3
+- lifecycle regression: 5
+- metrics regression: 7
+- Player Index golden fixtures: 5
+- runtime contract: 10
+- validation: 20
+- FACEIT V2 shell: 5
+
+Static source scan для простых inline click handlers нашёл 50 уникальных имён; все 50 соответствуют объявленным функциям (DOM helper `$` — отдельный helper). Это не доказывает корректность выполнения handlers в browser runtime.
+
+Последний подтверждённый quality gate: run `43094751757`, job `validate` success, commit `52e3a0b8`, 83 tests passed / 0 failed. После этого были только docs commits и auto journal; runtime не менялся.
+
+Подробная сверка фактических 42 матчей / 93 карт, 11 aggregate sets, roster eligibility и спорных ELO правил: [FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md](FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md).
