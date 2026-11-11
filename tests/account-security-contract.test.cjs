@@ -21,7 +21,7 @@ test('invite creation is admin-only and limited to active players with a public 
   assert.match(inviteMigration, /v_user is null or not public\.is_cs2_admin\(\)/);
   assert.match(inviteMigration, /p\.value->>'status' = 'active'/);
   assert.match(inviteMigration, /coalesce\(\(p\.value->>'is_active'\)::boolean, false\) = true/);
-  assert.match(inviteMigration, /exists\s*\(\s*select 1 from public\.player_profiles pp\s*where pp\.player_id = p_player_id/s);
+  assert.match(inviteMigration, /exists\s*\(\s*select 1 from public\.player_profiles pp\s*where pp\.player_id = p\.value->>'player_id'/s);
   assert.match(inviteMigration, /v_expires timestamptz := now\(\) \+ interval '7 days'/);
 });
 
