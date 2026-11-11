@@ -24,36 +24,36 @@ jobs:
 
       - name: Append commit metadata
         env:
-          BEFORE_SHA: \${{ github.event.before }}
-          AFTER_SHA: \${{ github.event.after }}
-          PUSH_ACTOR: \${{ github.actor }}
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.event.after }}
+          PUSH_ACTOR: ${{ github.actor }}
         run: |
           set -euo pipefail
-          if [ "\${AFTER_SHA}" = "0000000000000000000000000000000000000000" ]; then
+          if [ "$AFTER_SHA" = "0000000000000000000000000000000000000000" ]; then
             exit 0
           fi
-          if grep -q "\${AFTER_SHA}" CHANGELOG.md; then
+          if grep -q "$AFTER_SHA" CHANGELOG.md; then
             echo "Commit already recorded."
             exit 0
           fi
-          SUBJECT="$(git log -1 --format=%s "\${AFTER_SHA}")"
-          COMMIT_DATE="$(git log -1 --format=%cI "\${AFTER_SHA}")"
-          AUTHOR="$(git log -1 --format='%an <%ae>' "\${AFTER_SHA}")"
-          if [ "\${BEFORE_SHA}" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "\${BEFORE_SHA}^{commit}" 2>/dev/null; then
-            FILES="$(git diff-tree --no-commit-id --name-status -r "\${AFTER_SHA}")"
+          SUBJECT="$(git log -1 --format=%s "$AFTER_SHA")"
+          COMMIT_DATE="$(git log -1 --format=%cI "$AFTER_SHA")"
+          AUTHOR="$(git log -1 --format='%an <%ae>' "$AFTER_SHA")"
+          if [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BEFORE_SHA^{commit}" 2>/dev/null; then
+            FILES="$(git diff-tree --no-commit-id --name-status -r "$AFTER_SHA")"
           else
-            FILES="$(git diff --name-status "\${BEFORE_SHA}" "\${AFTER_SHA}")"
+            FILES="$(git diff --name-status "$BEFORE_SHA" "$AFTER_SHA")"
           fi
           {
-            printf '\\n## %s — %s\\n' "\${COMMIT_DATE}" "\${SUBJECT}"
-            printf '\\n- Commit: \`%s\`\\n- Author: %s\\n- Push actor: %s\\n' "\${AFTER_SHA}" "\${AUTHOR}" "\${PUSH_ACTOR}"
-            printf '\\n### Changed paths\\n\\n'
-            if [ -n "\${FILES}" ]; then
-              while IFS= read -r line; do printf -- '- \`%s\`\\n' "\${line}"; done <<< "\${FILES}"
+            printf '\n## %s — %s\n' "$COMMIT_DATE" "$SUBJECT"
+            printf '\n- Commit: \`%s\`\n- Author: %s\n- Push actor: %s\n' "$AFTER_SHA" "$AUTHOR" "$PUSH_ACTOR"
+            printf '\n### Changed paths\n\n'
+            if [ -n "$FILES" ]; then
+              while IFS= read -r line; do printf -- '- \`%s\`\n' "$line"; done <<< "$FILES"
             else
-              printf -- '- No file list available.\\n'
+              printf -- '- No file list available.\n'
             fi
-            printf '\\n> Автоматическая запись GitHub Actions; это не смысловое резюме чата.\\n'
+            printf '\n> Автоматическая запись GitHub Actions; это не смысловое резюме чата.\n'
           } >> CHANGELOG.md
 
       - name: Commit journal update
