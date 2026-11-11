@@ -121,8 +121,8 @@ test('match archive and restore remain paired workflows over series and child ma
   assert.ok(restoreStart >= 0 && restoreEnd > restoreStart, 'match restore function exists');
   const archiveBody = app.slice(archiveStart, archiveEnd);
   const restoreBody = app.slice(restoreStart, restoreEnd);
-  assert.match(archiveBody, /kind:'match_patch'[\\s\\S]*?archived:true/);
-  assert.match(archiveBody, /kind:'map_patch'[\\s\\S]*?archived:true/);
-  assert.match(restoreBody, /kind:'match_patch'[\\s\\S]*?archived:false/);
-  assert.match(restoreBody, /kind:'map_patch'[\\s\\S]*?archived:false/);
+  assert.ok(archiveBody.includes("kind:'match_patch'") && archiveBody.includes('archived:true'));
+  assert.ok(archiveBody.includes("kind:'map_patch'") && archiveBody.includes('archived:true'));
+  assert.ok(restoreBody.includes("kind:'match_patch'") && restoreBody.includes('archived:false'));
+  assert.ok(restoreBody.includes("kind:'map_patch'") && restoreBody.includes('archived:false'));
 });
