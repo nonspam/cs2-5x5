@@ -201,6 +201,40 @@ function profileSummary(rows){
  const safeAvg=v=>maps>0&&Number.isFinite(v)?v/maps:0;
  return {matches:rows.length,wins,losses:known.filter(q=>q.result==='LOSS').length,draws:known.filter(q=>q.result==='DRAW').length,winrate:known.length?wins/known.length*100:0,k,d,a,kd:d>0?k/d:0,avgKills:safeAvg(k),avgDeaths:safeAvg(d),avgAssists:safeAvg(a),maps};
 }
+function navigateApp(tab){
+ const allowed=['home','analytics','base','maps','teams','records','seasons','settings','profile'];
+ if(!allowed.includes(tab))return;
+ state.tab=tab;state.accountMenuOpen=false;render();
+}
+function faceitAppRailMarkup(){
+ const items=[['home','⌂','Обзор'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['seasons','◉','Сезоны'],['profile','◉','Профиль']];
+ return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
+  '<div class="faceit-exact-game">◉ <b>CS2 ANALYTICS</b></div>'+
+  '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
+  '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" data-app-route="settings">⚙ <span>Настройки</span></button></div>';
+}
+function faceitAppPlayerColumnMarkup(){
+ const id=state.myPlayerId||state.profileTargetId,p=id?player(id):null;
+ if(!p)return '<aside class="faceit-exact-player-column"><div class="faceit-route-account-card"><span class="faceit-kicker">CS2 ANALYTICS</span><h2>Твой профиль</h2><p>Войди или привяжи игровой профиль, чтобы открыть личную статистику.</p><button type="button" data-account-open>ВОЙТИ / ПРИВЯЗАТЬ</button></div></aside>';
+ const row=profileRecord(id)||(id===state.myPlayerId?state.myProfile:null)||{};
+ const avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.avatar_path):'';
+ const elo=window.CS2EloV3?.player(id)?.rating??1000;
+ return '<aside class="faceit-exact-player-column"><div class="faceit-route-player-card">'+
+  '<div class="faceit-route-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
+  '<h2>'+esc(p.display_name)+'</h2><div class="faceit-route-elo"><span>CS2 ELO</span><b>'+fmt(elo,0)+'</b></div>'+
+  '<div class="faceit-route-player-meta"><span>@'+esc(id)+'</span><span>'+profileMatchesForPlayer(id).length+' матчей</span></div>'+
+  '<button type="button" data-app-route="profile">ОТКРЫТЬ ПРОФИЛЬ</button>'+
+  '</div></aside>';
+}
+function bindAppShell(root){
+ root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>navigateApp(button.dataset.appRoute)));
+ root.querySelector('[data-account-open]')?.addEventListener('click',()=>window.openAccountAuth?.());
+}
+function renderRouteShell(v,page){
+ v.innerHTML='<section class="faceit-exact-shell faceit-route-shell"><aside class="faceit-exact-global-rail">'+faceitAppRailMarkup()+'</aside>'+faceitAppPlayerColumnMarkup()+'<div class="faceit-exact-content faceit-route-content" id="faceitRouteContent"></div></section>';
+ bindAppShell(v);
+ const content=v.querySelector('#faceitRouteContent');if(content)page(content);
+}
 function profilePage(v){
  const id=state.profileTargetId||state.myPlayerId,p=id?player(id):null,canEditProfile=!!id&&id===state.myPlayerId;
  if(!id||!p){v.innerHTML='<section class="section"><div class="panel card"><h2>АККАУНТ</h2><p class="muted">'+esc(state.profileError||'Профиль игрока не найден.')+'</p></div></section>';return}
@@ -282,11 +316,11 @@ function profilePage(v){
        '<aside class="faceit-side-column">'+gameHistory+activity+rankCard+'</aside></div>';
 
  v.innerHTML='<section class="faceit-exact-shell" style="'+(cover?'background-image:linear-gradient(90deg,rgba(8,8,8,.62),rgba(8,8,8,.74)),url(\''+esc(cover)+'\')':'')+'">'+
-   '<aside class="faceit-exact-global-rail"><div class="faceit-exact-brand">◢</div><div class="faceit-exact-search">⌕ <span>Поиск</span></div><div class="faceit-exact-game">◉ <b>CS2</b></div><nav><button>▷ <span>Играть</span></button><button>♧ <span>Ранг</span></button><button>⌁ <span>Track</span></button><button>☷ <span>Лента</span></button><button>♧ <span>Клубы</span></button><button>⊕ <span>Создать клуб</span></button></nav><div class="faceit-exact-rail-bottom"><button>▧ <span>Миссии</span></button><button>♧ <span>Магазин</span></button><button class="premium">★ <span>Премиум</span></button></div></aside>'+
+   '<aside class="faceit-exact-global-rail">'+faceitAppRailMarkup()+'</aside>'+
    '<aside class="faceit-exact-player-column"><div class="faceit-exact-player-card">'+
      '<div class="faceit-exact-avatar-frame">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
      '<h1>'+esc(p.display_name)+' <small>✥</small></h1>'+
-     '<div class="faceit-exact-player-actions">'+(canEditProfile?'<button onclick="document.getElementById(\'profileAvatarFile\').click()">✎ РЕД. ПРОФИЛЬ</button>':'')+'<button onclick="navigator.clipboard?.writeText(location.href)">♧ ПОДЕЛИТЬ</button></div>'+
+     '<div class="faceit-exact-player-actions">'+(canEditProfile?'<button onclick="document.getElementById(\\'profileAvatarFile\\').click()">✎ АВАТАР</button><button onclick="document.getElementById(\\'profileCoverFile\\').click()">▧ ОБЛОЖКА</button>':'')+'<button onclick="navigator.clipboard?.writeText(location.href)">♧ ПОДЕЛИТЬ</button></div>'+
      '<div class="faceit-exact-season-link"><span>ТЕКУЩИЙ РЕЙТИНГ</span><b>CS2 · ELO</b><strong>'+Math.round(elo).toLocaleString('ru-RU')+' <small>→</small></strong></div>'+
      '<div class="faceit-exact-player-meta"><b>Игрок платформы</b><span>@'+esc(id)+'</span><span>Матчей: '+all.length+'</span></div>'+
      '<div class="faceit-exact-country"><span>◉</span> Игрок CS2</div>'+
@@ -294,9 +328,9 @@ function profilePage(v){
    '</div>'+
    '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
    '<div class="faceit-exact-content">'+
-     '<div class="faceit-exact-top-tabs"><button class="active">ИГРЫ</button><button disabled>ДРУЗЬЯ</button><button disabled>ВИДЕО</button><button disabled>ГОСТЕВАЯ КНИГА</button><button disabled>ИНВЕНТАРЬ</button><button disabled>КЛУБЫ</button><button disabled>КОМАНДЫ</button></div>'+
-     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="active">Итоги</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button disabled>Матчмейкинг</button><button disabled>Лиги</button><button disabled>Турниры</button></div>'+
-     '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;CS2 · РЕЙТИНГ</b><small>Рейтинговая статистика игрока</small></div><span>СТАТИСТИКА ИГРОКА ›</span></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
+     ''+
+     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\\'overview\\';render()">Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\\'history\\';render()">История матчей</button></div>'+
+     '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;CS2 · РЕЙТИНГ</b><small>Рейтинговая статистика игрока</small></div><button type="button" onclick="navigateApp('analytics')">СТАТИСТИКА ИГРОКА →</button></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
      '<section class="faceit-exact-results"><div class="faceit-exact-results-head"><b>Недавние результаты</b><span>Последние матчи ('+all.length+') · изменение ELO <b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b></span></div>'+
        '<div class="faceit-exact-result-line"><span>Изменение ELO</span><b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><span class="faceit-exact-wl"><b>🟩 '+sum.wins+'</b> / <b>🟥 '+sum.losses+'</b></span></div>'+eloGraphMarkup+
        '<div class="faceit-exact-form">'+(recentForm||'<span>Пока нет сыгранных матчей</span>')+'</div></section>'+
@@ -304,7 +338,7 @@ function profilePage(v){
      '<div class="faceit-exact-stat-strip"><div><b>'+fmt(sum.kd,2)+'</b><span>K/D</span></div><div><b>'+fmt(sum.avgKills,1)+'</b><span>Убийств / карта</span></div><div><b>'+fmt(sum.avgDeaths,1)+'</b><span>Смертей / карта</span></div><div><b>'+fmt(sum.avgAssists,1)+'</b><span>Помощей / карта</span></div><div><b>'+fmt(sum.winrate,1)+'%</b><span>Процент побед</span></div><div><b>'+sum.matches+'</b><span>Матчей</span></div></div>'+
      '<div class="faceit-exact-lower">'+body+'</div>'+
      (canEditProfile?'<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])"><input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">':'')+
-   '</div><aside class="faceit-exact-right-rail"><span>◉</span><span>♧</span><span>♧</span><span>⊕</span><span>♙</span></aside></section>';
+   '</div></section>';bindAppShell(v);
 }async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
@@ -329,7 +363,7 @@ function renderAccountMenu(){
  root.innerHTML='<button class="account-menu-trigger" onclick="toggleAccountMenu()" aria-label="Аккаунт">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</button>'+(state.accountMenuOpen?'<div class="account-menu-backdrop" onclick="state.accountMenuOpen=false;renderAccountMenu()"></div><div class="account-menu-pop"><div class="account-menu-user"><div class="account-menu-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</div><div><b>'+esc(p?.display_name||'Аккаунт')+'</b><small>@'+esc(id||'не авторизован')+'</small></div></div><div class="account-menu-elo"><span>ELO</span><strong>'+fmt(elo,0)+'</strong></div><button onclick="state.tab=\'profile\';state.profileSection=\'overview\';state.accountMenuOpen=false;render()">МОЙ ПРОФИЛЬ</button><button class="muted-action" onclick="accountSignOut()">ВЫЙТИ ИЗ АККАУНТА</button></div>':'');
 }
 async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.accountUser=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;state.tab='home';render();toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
-function nav(){const items=[['home','⌂','ГЛАВНАЯ'],['analytics','▥','СТАТИСТИКА'],['base','▤','МАТЧИ'],['maps','◫','КАРТЫ'],['teams','♟','СОСТАВЫ'],['records','♜','РЕКОРДЫ'],['seasons','◉','СЕЗОНЫ']];$('#nav').innerHTML=items.map(([id,ico,n])=>'<div class="nav-group"><button class="nav-btn '+(state.tab===id?'active':'')+'" data-tab="'+id+'"><span class="nav-icon">'+ico+'</span><span>'+n+'</span></button></div>').join('');document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render()});renderAccountMenu();$('#settingsBtn').onclick=()=>{state.tab='settings';state.accountMenuOpen=false;render()}}
+function nav(){$('#nav').innerHTML='';renderAccountMenu();$('#settingsBtn').onclick=()=>navigateApp('settings')}
 
 function seasons(v){
  const matches=activeMatches().slice().sort((a,b)=>matchTime(a)-matchTime(b));
@@ -355,7 +389,7 @@ function seasons(v){
  '<section class="season-panel season-history-panel"><div class="season-panel-head"><div><span class="faceit-kicker">АРХИВ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="state.tab=\'base\';render()">Все матчи →</button></div>'+
  matches.slice(-5).reverse().map(m=>'<div class="season-history-row"><span>'+esc(dateLabel(m.played_at||m.date)||'—')+'</span><b>'+esc(m.series_score||'—')+'</b><span>'+esc((m.map_ids||[]).length+' карт')+'</span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>').join('')+'</section></div></section>';
 }
-function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');({home,base,analytics,players,compare,maps,teams,records,seasons,settings,profile:profilePage}[state.tab]||home)(v);enhanceSelects(v)}
+function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
    selection chrome cannot leak into the UI. The native select stays in the DOM as
