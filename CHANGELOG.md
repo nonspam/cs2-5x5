@@ -432,3 +432,20 @@
 - M	docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T23:57:40+03:00 — docs: record account security review and expand regression coverage
+
+- Commit: 2753be9f3fd89ce0559202725ce667fd2e98c9ae
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+- M	PROJECT_MASTER.md
+- M	ROADMAP.md
+- M	TECHNICAL_STATE.md
+- M	docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md
+- M	tests/account-security-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
