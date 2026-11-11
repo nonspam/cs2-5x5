@@ -55,6 +55,18 @@ test('shared shell navigation is wired through data-app-route controls', () => {
   assert.match(app, /function renderRouteShell\(v,page\)[\s\S]*?bindAppShell\(v\)/);
 });
 
+test('every supported route has a renderer or an explicit profile special case', () => {
+  assert.match(app, /const pages=\{home,base,analytics,players,compare,maps,teams,records,seasons,settings\}/);
+  assert.match(app, /if\(state\.tab==='profile'\)\{profilePage\(v\)\}/);
+  assert.match(app, /function profilePage\(v\)[\s\S]*?faceit-exact-shell[\s\S]*?bindAppShell\(v\)/);
+});
+
+test('settings remains reachable through the persistent settings shortcut', () => {
+  assert.match(html, /id="settingsBtn"/);
+  assert.match(app, /function nav\(\)[\s\S]*?\$\('#settingsBtn'\)\.onclick=\(\)=>navigateApp\('settings'\)/);
+  assert.match(app, /\['settings'\]/);
+});
+
 test('Track is not exposed as a completed shell route', () => {
   const routeList = app.match(/const APP_ROUTE_IDS=\[([^\]]+)\]/)?.[1] || '';
   assert.doesNotMatch(routeList, /['"]track['"]/);
