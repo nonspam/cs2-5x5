@@ -95,3 +95,7 @@ DEV Supabase security/performance findings and recommended hardening work are do
 ## Database reproducibility
 
 DEV's applied migration ledger currently does not match the SQL migration files tracked on `faceit-dev`. Do not run new schema migrations or reset/recreate environments until this is reconciled. See [the migration drift report](docs/FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md).
+
+## Account and profile security
+
+The invite/link/profile security model and live DEV verification are documented in [the account security audit](docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md). Keep invite implementation server-side; do not expose private invite rows or raw tokens. The media bucket enforces a 5 MiB image allow-list server-side.

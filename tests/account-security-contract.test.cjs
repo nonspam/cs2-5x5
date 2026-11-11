@@ -58,7 +58,7 @@ test('public account RPC wrappers are invoker functions and private implementati
   }
 });
 
-test('account linking enforces one user per player and one player per user in the live adapter contract', () => {
+test('account context reads the current user's linked player through the guarded view and claim RPC', () => {
   assert.match(adapter, /client\.from\('my_player_account'\)\.select\('player_id'\)\.maybeSingle\(\)/);
   assert.match(adapter, /client\.rpc\('claim_player_account_invite'/);
   assert.match(adapter, /client\.from\('player_profiles'\)\.select\('player_id,avatar_path,cover_path,updated_at'\)/);

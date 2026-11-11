@@ -14,6 +14,8 @@ Scope: source review of account UI/adapter/migrations plus read-only DEV catalog
 - The private link and invite tables have RLS enabled. The invite table has no direct anon/authenticated table grants; access is through guarded RPCs.
 - Profile updates are restricted by RLS to the linked player and enforce that avatar/cover paths begin with the current user's UUID.
 - Storage object insert/update/delete policies similarly constrain the first path segment to `auth.uid()`; public reads are limited to the `cs2-player-media` bucket.
+- The live bucket enforces a 5 MiB server-side file-size limit and exactly JPEG, PNG, WebP, and GIF MIME types, matching the client checks.
+- Privilege checks confirmed anon has no direct SELECT on either private account table and no EXECUTE on invite RPCs; authenticated has EXECUTE on the public wrappers but no direct SELECT on the invite table. A read-only authenticated-role test confirmed the own-account view returns one row.
 
 ## Invitation workflow review
 
@@ -38,7 +40,7 @@ The later migration moves SECURITY DEFINER implementations into `private`, gives
 - Password recovery uses a generic success message, avoiding account-existence disclosure in the UI.
 - Password changes verify the current password before updating it.
 - Avatar/cover uploads are limited client-side to JPEG/PNG/WebP/GIF and 5 MiB, use a per-user storage path, and profile rows are protected by RLS.
-- These browser-side MIME/size checks improve UX but are not a substitute for server-side storage bucket limits. Verify the live bucket's file-size and MIME configuration separately before treating them as hard security controls.
+- The client MIME/size checks are backed by matching server-side bucket limits, so the same constraints are enforced at storage level.
 - Public profile rows are intentionally readable; profile editing does not allow changing player identity/name through this flow.
 
 ## Findings / follow-up
@@ -50,7 +52,7 @@ The later migration moves SECURITY DEFINER implementations into `private`, gives
 
 ## Test coverage added
 
-Added source-contract tests for token generation/hashing, admin and active-player gates, single-use claim behavior, private SECURITY DEFINER hardening, invoker wrappers, profile media constraints, and generic password-reset messaging. These are static contract tests; they do not replace live browser/Auth integration testing.
+Added 8 source-contract tests for token generation/hashing, admin and active-player gates, single-use claim behavior, private SECURITY DEFINER hardening, invoker wrappers, profile media constraints, and generic password-reset messaging. The total suite is now 99 tests. These are static contract tests; they do not replace live browser/Auth integration testing.
 
 ## Scope
 

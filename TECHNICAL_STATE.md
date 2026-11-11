@@ -8,10 +8,11 @@
 - Runtime remains a vanilla JS SPA centered on `app_v57.js`; browser QA and Cloudflare deployed SHA are not verified.
 - DEV Supabase ref: `nwujudniysolpevbtggd`. State: v156, 14 players, 42 matches, 93 maps, 14 profiles, 1 auth user.
 - DEV Edge Function `cs2-admin`: active version 3, deployed from `faceit-dev`; current full state validates with zero errors. No database/schema writes were performed.
-- Source test suite now has 91 cases. Latest GitHub Actions run is queued; last completed CI was 83 passed / 0 failed. Manual JS syntax compilation passed for changed JS files.
+- Source test suite now has 99 cases. Latest GitHub Actions run is queued; last completed CI was 83 passed / 0 failed. Manual JS syntax compilation passed for changed JS files.
 - Fixed on `faceit-dev`: blank optional `played_at` validation; `manual_edit` team provenance; player create/archive/restore status consistency.
 - Key unresolved product decisions: BO3 1:1 after two maps (draw vs incomplete); whether to derive a series roster from map-level rosters when series roster is incomplete; canonical chronological order for ELO when dates are missing.
 - Track absent; Season 1 remains placeholder. Do not implement lifecycle or change ELO rules until decisions are approved.
+- Account/invitation/profile security review: [account security audit](docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md).
 - Security and performance review: [DEV Supabase security audit](docs/FACEIT_V2_SECURITY_AUDIT_2026-11-11.md).
 - Migration reproducibility blocker: [DEV migration/schema drift](docs/FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md).
 - Full runtime/Supabase audit: [read-only audit](docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md).

@@ -142,7 +142,7 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - DEV Edge Function `cs2-admin` was version 2 and rejected empty `played_at` strings in the current state. Since the function validates the entire next state on every commit, this blocked cloud writes. Fixed blank-date handling, preserved rejection of malformed non-empty dates, deployed v3 to DEV only and re-fetched the active source. The full current DEV state now validates with zero errors.
 - `saveMatchEdit` writes `manual_edit` provenance; Edge validator did not allow it for detailed historical series. Added the value and a regression test.
 - Player create/archive/restore were not synchronizing `status` and `is_active`; fixed the three mutations and added a contract test.
-- Added regression tests for ELO calibration transition, BO5 series event, map-score fallback, map/aggregate parity, Edge validation and lifecycle. Suite count is now 91; GitHub Actions remains queued, so do not call it green yet. Manual syntax compilation passed.
+- Added regression tests for ELO calibration transition, BO5 series event, map-score fallback, map/aggregate parity, Edge validation and lifecycle. Suite count is now 99; GitHub Actions remains queued, so do not call it green yet. Manual syntax compilation passed.
 - The current DEV data was read-only validated against the deployed v3 Edge validator: 14 players, 42 matches, 93 maps, no errors. No DB rows/schema/policies/migrations were changed.
 - Latest route map: `docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md`.
 
@@ -166,3 +166,14 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - Live `public.my_player_account` view is absent from all tracked SQL files. It is `security_invoker=true` and filters by `auth.uid()`, but its broad grants were noted in the security audit.
 - Do not run further schema migrations or recreate/reset environments until missing SQL is recovered from an authoritative source and the view is represented in migration history. Do not fabricate historical migration contents.
 - Report: `docs/FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md`.
+
+
+## 2026-11-11 — Account and profile security review
+
+- Read-only DEV review confirms one confirmed Auth user and one unique player link; do not copy identity details into project docs. No invite rows currently exist.
+- `player_account_links` has PK on auth_user_id and unique player_id. `player_account_invites` stores only SHA-256 hashes of 144-bit random tokens, expires after 7 days, is single-use, row-locked on claim, and is revalidated against active player/profile state at redemption.
+- SECURITY DEFINER invite implementations live in `private`, use empty search_path, and enforce admin/auth checks; public wrappers are SECURITY INVOKER. Anon has no direct table grants or invite RPC execution. Authenticated can execute wrappers but cannot directly select invite rows.
+- Profile RLS binds edits to the linked player and requires media paths under auth.uid(). Storage policies enforce same per-user folder. Bucket configuration independently enforces 5 MiB and JPEG/PNG/WebP/GIF.
+- A read-only authenticated-role context check confirmed own-account view returns one row. No DB/Auth/storage mutations were performed.
+- Added 8 static account-security contract tests; total suite 99. GitHub Actions remains queued, so no green CI claim. Details: `docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md`.
+- Registration's pending invite code is held in page memory until email confirmation; reloading before claim loses the pending value, but user can re-enter the code. Low-priority UX follow-up only.
