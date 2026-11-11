@@ -47,7 +47,7 @@ The later migration moves SECURITY DEFINER implementations into `private`, gives
 
 1. **No confirmed privilege escalation in account-link RPCs.** The guarded private implementations and live RLS/grants are consistent with the intended model.
 2. **Pending invitation can be lost on reload before claim.** Low severity/UX issue: the code is still available from the administrator and can be re-entered. A future improvement could retain the pending code in a short-lived session-scoped flow, but avoid persisting raw invite codes long-term.
-3. **Storage bucket server-side restrictions need explicit confirmation.** The app enforces 5 MiB and image MIME types in JavaScript; inspect `storage.buckets.file_size_limit` and `allowed_mime_types` to ensure the server enforces the same constraints.
+3. **Storage restrictions verified.** The live bucket enforces a 5 MiB limit and exactly JPEG, PNG, WebP, and GIF, matching the client-side checks. No follow-up required for this item.
 4. **Migration reproducibility remains a blocker.** The account-link base table and `my_player_account` view originate from migration history not fully represented by tracked SQL. Do not alter grants or add account schema migrations until the drift report is reconciled.
 
 ## Test coverage added
