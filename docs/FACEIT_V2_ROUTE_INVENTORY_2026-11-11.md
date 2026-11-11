@@ -15,7 +15,7 @@ This document maps what exists. It does not approve the current visual design. T
 ## Application shell and navigation
 
 - Single-page application with common shell rendered through `renderRouteShell(v,page)`.
-- Navigation uses the common `navigateApp(tab)` path, writes a route hash (`#/home`, `#/base`, etc.) to browser history, and restores the route on browser back/forward. Direct hash entry is read before the first data load. This behavior is source-tested; real browser validation is still pending.
+- Navigation uses the common `navigateApp(tab)` path, writes a route hash (`#/home`, `#/base`, etc.) to browser history, and restores the route on browser back/forward. Direct hash entry is read before the first data load; a `hashchange` listener also restores state when the hash is changed outside the app. These behaviors are source-tested; real browser validation is still pending.
 - The profile page uses the same shell; account/profile is not a separate frontend.
 - Rail routes: Home, Analytics, Base, Maps, Teams, Records, Seasons, Profile. Settings is opened by its shortcut.
 - `analytics` delegates to the Players view.
@@ -89,7 +89,7 @@ These are source counts, not proof that every button works. Some controls are wi
 
 1. **Track is absent.** Do not expose it as a finished section.
 2. **Seasons are a placeholder.** No full season standings, lock/close/archive, rollover or calibration lifecycle.
-3. **Navigation is state-based.** Browser back/forward and direct deep links need explicit work.
+3. **Navigation is state-based.** Hash/history synchronization is wired and source-tested, including `popstate` and `hashchange`; direct route reload, actual back/forward behavior and mobile browser behavior still need browser QA.
 4. **Compare is not a rail route.** Confirm intended navigation with the owner before redesigning it.
 5. **Monolithic runtime.** Most renderers, data logic, modals and handlers live in `app_v57.js`; any future extraction should preserve behavior through regression tests.
 6. **No real browser QA.** Source existence and green Node tests do not prove interaction correctness.
