@@ -79,3 +79,7 @@ GitHub Actions может автоматически записывать commit
 
 ## Последний read-only технический аудит
 Полный frontend/runtime, ELO, DEV Supabase, schema/security advisors и QA gap review: [docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md](docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md). Аудит выполнен только чтением; дизайн, runtime и база данных не изменялись.
+
+
+## Аудит целостности данных и ELO
+Проверка 42 матчей / 93 карт, series aggregates, roster coverage, неоднозначных BO3 1:1 и порядка пересчёта рейтинга: [docs/FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md](docs/FACEIT_V2_DATA_INTEGRITY_AUDIT_2026-11-11.md). Спорные правила ELO намеренно не менялись.
