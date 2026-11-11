@@ -201,11 +201,26 @@ function profileSummary(rows){
  const safeAvg=v=>maps>0&&Number.isFinite(v)?v/maps:0;
  return {matches:rows.length,wins,losses:known.filter(q=>q.result==='LOSS').length,draws:known.filter(q=>q.result==='DRAW').length,winrate:known.length?wins/known.length*100:0,k,d,a,kd:d>0?k/d:0,avgKills:safeAvg(k),avgDeaths:safeAvg(d),avgAssists:safeAvg(a),maps};
 }
-function navigateApp(tab){
- const allowed=['home','analytics','base','maps','teams','records','seasons','settings','profile'];
- if(!allowed.includes(tab))return;
+const APP_ROUTE_IDS=['home','analytics','base','maps','teams','records','seasons','settings','profile','compare'];
+function appRouteFromLocation(){
+ const route=String(window.location.hash||'').replace(/^#\\/?/,'').split(/[?&]/)[0].trim();
+ return APP_ROUTE_IDS.includes(route)?route:'home';
+}
+function navigateApp(tab,options={}){
+ if(!APP_ROUTE_IDS.includes(tab))return;
+ const hash='#/'+tab;
+ if(window.location.hash!==hash){
+  const method=options.replace||state.tab===tab?'replaceState':'pushState';
+  try{window.history[method]({...(window.history.state||{}),cs2Route:tab},'',hash)}catch{}
+ }
  state.tab=tab;state.accountMenuOpen=false;render();
 }
+function restoreAppRouteFromHistory(){
+ const tab=appRouteFromLocation();
+ if(state.tab===tab)return;
+ state.tab=tab;state.accountMenuOpen=false;render();
+}
+window.addEventListener('popstate',restoreAppRouteFromHistory);
 function faceitAppRailMarkup(){
  const items=[['home','⌂','Обзор'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['seasons','◉','Сезоны'],['profile','◉','Профиль']];
  return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
@@ -362,7 +377,7 @@ function renderAccountMenu(){
  const root=$('#accountMenuRoot');if(!root)return;const id=state.myPlayerId,p=id?player(id):null,row=id?profileRecord(id):null,avatar=row?.avatar_path&&window.CS2Cloud?.publicMediaUrl?CS2Cloud.publicMediaUrl(row.avatar_path):'',elo=id?(window.CS2EloV3?.player(id)?.rating??1000):1000;
  root.innerHTML='<button class="account-menu-trigger" onclick="toggleAccountMenu()" aria-label="Аккаунт">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</button>'+(state.accountMenuOpen?'<div class="account-menu-backdrop" onclick="state.accountMenuOpen=false;renderAccountMenu()"></div><div class="account-menu-pop"><div class="account-menu-user"><div class="account-menu-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'♙')+'</div><div><b>'+esc(p?.display_name||'Аккаунт')+'</b><small>@'+esc(id||'не авторизован')+'</small></div></div><div class="account-menu-elo"><span>ELO</span><strong>'+fmt(elo,0)+'</strong></div><button onclick="state.tab=\'profile\';state.profileSection=\'overview\';state.accountMenuOpen=false;render()">МОЙ ПРОФИЛЬ</button><button class="muted-action" onclick="accountSignOut()">ВЫЙТИ ИЗ АККАУНТА</button></div>':'');
 }
-async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.accountUser=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;state.tab='home';render();toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
+async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.accountUser=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;navigateApp('home',{replace:true});toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
 function nav(){$('#nav').innerHTML='';renderAccountMenu();$('#settingsBtn').onclick=()=>navigateApp('settings')}
 
 function seasons(v){
@@ -586,7 +601,7 @@ function home(v){
   <section class="home-shell home-rebuild">
     <aside class="home-left">
       <section class="panel home-panel last-match-panel">
-        <div class="section-head"><div><h2>Последняя игра</h2><div class="muted">Обновляется автоматически</div></div><button class="text-link" onclick="state.tab='base';render()">Все игры ›</button></div>
+        <div class="section-head"><div><h2>Последняя игра</h2><div class="muted">Обновляется автоматически</div></div><button class="text-link" onclick="navigateApp('base')">Все игры ›</button></div>
         <div class="last-match-head">
           <div class="last-map-strip">${lastMaps.map(mp=>mapThumb(mp?.map||'CS2','small')).join('')}</div>
           <div class="last-match-meta"><strong>${esc(lastMaps.map(x=>x.map).join(' · ')||'Нет игры')}</strong>${latestDate?`<span>${esc(latestDate)}</span>`:''}<span>${esc(lastMatch?.format||'—')}</span></div>
@@ -595,7 +610,7 @@ function home(v){
         <div class="last-table-wrap">${lastRows.length?`<table class="home-last-table"><thead><tr><th>Игрок</th><th>K</th><th>D</th><th>A</th><th>K/D</th></tr></thead><tbody>${lastRows.map(r=>`<tr><td>${esc(r.name)}</td><td>${r.kills}</td><td>${r.deaths}</td><td>${r.assists}</td><td>${kdMarkupValue(r.kd)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">Покарточной статистики нет.</div>'}</div>
         ${lastMatch?`<div class="last-match-footer"><span>Лучший: <b>${esc(best?.name||'—')}</b></span><span>Худший: <b>${esc(worst?.name||'—')}</b></span><span>Детально: <b>${lastRows.length}/10</b></span><span>Карт в серии: <b>${lastMaps.length}</b></span></div>`:''}
       </section>
-      <section class="panel home-panel recent-games-panel home-recent-left"><div class="section-head"><div><h2>Последние игры</h2><div class="muted">Последние 6 · новые записи сверху</div></div><button class="text-link" onclick="state.tab='base';render()">Все ›</button></div><div class="recent-games">${recent.map(m=>{const mm=matchMaps(m),sc=m.series_score||'—',meta=[m.format].filter(Boolean).join(' · ');return `<div class="recent-game click-row" onclick="openMatchDetail('${esc(m.match_id)}')">${mapThumb(mm[0]?.map||'—','small')}<div><b>${esc(mm.map(x=>x.map).join(' · '))}</b><span>${esc(meta)}</span></div><strong class="${scoreClass(sc)}">${esc(sc)}</strong></div>`}).join('')||'<div class="empty">Нет матчей.</div>'}</div></section>
+      <section class="panel home-panel recent-games-panel home-recent-left"><div class="section-head"><div><h2>Последние игры</h2><div class="muted">Последние 6 · новые записи сверху</div></div><button class="text-link" onclick="navigateApp('base')">Все ›</button></div><div class="recent-games">${recent.map(m=>{const mm=matchMaps(m),sc=m.series_score||'—',meta=[m.format].filter(Boolean).join(' · ');return `<div class="recent-game click-row" onclick="openMatchDetail('${esc(m.match_id)}')">${mapThumb(mm[0]?.map||'—','small')}<div><b>${esc(mm.map(x=>x.map).join(' · '))}</b><span>${esc(meta)}</span></div><strong class="${scoreClass(sc)}">${esc(sc)}</strong></div>`}).join('')||'<div class="empty">Нет матчей.</div>'}</div></section>
     </aside>
     <section class="home-center">
       <section class="panel home-hero home-rebuild-hero">
@@ -613,8 +628,8 @@ function home(v){
 
     </section>
     <aside class="home-right">
-      <section class="panel home-panel top-players-panel"><div class="section-head"><div><h2>Топ игроков</h2><div class="muted">По Индексу игрока</div></div><button class="text-link" onclick="state.tab='analytics';render()">Все ›</button></div>${top.map((q,i)=>`<div class="top-player-row"><strong class="place">${i+1}</strong><div><b>${esc(q.p.display_name)}</b><span>Индекс ${fmt(q.idx,1)}</span></div>${trendMarkup(q.fo.trend)}</div>`).join('')||'<div class="empty">Нет игроков.</div>'}</section>
-      <section class="panel home-panel"><div class="section-head"><div><h2>Последние новости</h2><div class="muted">Автоматическая лента</div></div><button class="text-link" onclick="state.tab='settings';render()">Все ›</button></div>${homeNews(lastMatch,latestMap,audit,top).slice(0,4).map(n=>`<div class="news-item"><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>`).join('')||'<div class="empty">Пока тихо.</div>'}</section>
+      <section class="panel home-panel top-players-panel"><div class="section-head"><div><h2>Топ игроков</h2><div class="muted">По Индексу игрока</div></div><button class="text-link" onclick="navigateApp('analytics')">Все ›</button></div>${top.map((q,i)=>`<div class="top-player-row"><strong class="place">${i+1}</strong><div><b>${esc(q.p.display_name)}</b><span>Индекс ${fmt(q.idx,1)}</span></div>${trendMarkup(q.fo.trend)}</div>`).join('')||'<div class="empty">Нет игроков.</div>'}</section>
+      <section class="panel home-panel"><div class="section-head"><div><h2>Последние новости</h2><div class="muted">Автоматическая лента</div></div><button class="text-link" onclick="navigateApp('settings')">Все ›</button></div>${homeNews(lastMatch,latestMap,audit,top).slice(0,4).map(n=>`<div class="news-item"><b>${esc(n.title)}</b><span>${esc(n.text)}</span></div>`).join('')||'<div class="empty">Пока тихо.</div>'}</section>
       <section class="panel home-info"><h3>Анализируй.<br>Улучшайся.</h3><p>Смотри не только на K/D — отслеживай форму, стабильность, импакт и историю по картам.</p></section>
     </aside>
   </section>`;
@@ -741,7 +756,7 @@ function closePlayerDrilldown(){$('#playerDrilldown')?.remove()}
 
 function openPublicPlayerProfile(id){
  const p=player(id);if(!p)return;
- state.profileTargetId=id;state.tab='profile';state.profileSection='overview';state.accountMenuOpen=false;render();
+ state.profileTargetId=id;state.profileSection='overview';state.accountMenuOpen=false;navigateApp('profile');
 }
 function openPlayerDetail(id){
   const p=player(id); if(!p)return;
@@ -822,7 +837,7 @@ function openPlayerDetail(id){
   const mapRows=latest.map(r=>{const n=activeMapNumber(r.map_id);return `<div class="map-history-row compact-row click-row" onclick="openMatchDetail('${esc(r.match_id)}')" title="Открыть матч"><div class="map-history-meta"><span class="map-history-index">${n?`#${n}`:''}</span><span class="map-history-sep">·</span><b class="map-history-name">${esc(r.map)}</b><span class="map-history-sep">·</span><span class="map-kda ${kdClass(r.kills,r.deaths)}">${r.kills}/${r.deaths}/${r.assists}</span></div><strong class="map-mvp-link ${kdClass(r.kills,r.deaths)}">K/D ${fmt(r.deaths?r.kills/r.deaths:0,2)}</strong></div>`}).join('');
   const matchRows=recentMatches.map(q=>{const n=q.m?seriesNumberForMatch(q.m):'',tone=q.result==='WIN'?'positive':q.result==='LOSS'?'negative':q.result==='DRAW'?'neutral':'neutral',personalTone=q.hasStats?kdClass(q.k,q.d):'kd-neutral';return `<div class="profile-match-row click-row" onclick="openMatchDetail('${esc(q.m?.match_id||'')}')" title="Открыть матч"><div><b>СЕРИЯ ${esc(n||'—')}</b><span>${esc(q.m?.format||'')} · <b class="${tone}">${esc(q.m?.series_score||'—')}</b></span></div><strong class="series-result ${tone}">${q.result==='DRAW'?'DRAW':q.result==='WIN'?'WIN':q.result==='LOSS'?'LOSS':'—'}</strong><em class="series-personal-score ${personalTone}">${q.hasStats?`${q.k}/${q.d}/${q.a}`:'Нет подробной K/D/A'}${q.hasStats?` · ${kdMarkupValue(q.kd)} K/D`:''}</em></div>`}).join('');
   const mapCards=mapWinRows.map(w=>`<div class="profile-map-card"><div><b>${esc(w.map)}</b><small>${w.played} карт · <em class="positive">${w.wins}</em>-<em class="negative">${w.losses}</em></small></div><strong class="${w.played?scoreTone(w.wr*100):'neutral'}">${w.played?Math.round(w.wr*100)+'%':'—'}</strong><span>${w.played?`${fmt(w.kd,2)} K/D · ${fmt(w.kills/w.played,2)} K/map`:'нет данных'}</span></div>`).join('');
-  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="playerModal"><div class="modal panel wide player-profile-modal"><div class="modal-head"><div><div class="eyebrow">ПРОФИЛЬ ИГРОКА</div><div class="profile-modal-title">${profileAvatarMarkup(id,'sm')}<h2>${esc(p.display_name)}</h2></div><div class="career-summary">Место #${rank||'—'} · ${detailTotal.maps} карт · ${detailTotal.k} K / ${detailTotal.d} D / ${detailTotal.a} A · K/D ${fmt(detailKd)} · AVG K ${fmt(avgKills,2)}</div></div><div class="profile-head-actions"><button class="btn mini" onclick="state.compare=[...new Set([...state.compare,'${esc(id)}'])].slice(0,5);closePlayerDetail();state.tab='compare';render()">СРАВНИТЬ</button><button class="close" onclick="closePlayerDetail()">×</button></div></div>
+  document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="playerModal"><div class="modal panel wide player-profile-modal"><div class="modal-head"><div><div class="eyebrow">ПРОФИЛЬ ИГРОКА</div><div class="profile-modal-title">${profileAvatarMarkup(id,'sm')}<h2>${esc(p.display_name)}</h2></div><div class="career-summary">Место #${rank||'—'} · ${detailTotal.maps} карт · ${detailTotal.k} K / ${detailTotal.d} D / ${detailTotal.a} A · K/D ${fmt(detailKd)} · AVG K ${fmt(avgKills,2)}</div></div><div class="profile-head-actions"><button class="btn mini" onclick="state.compare=[...new Set([...state.compare,'${esc(id)}'])].slice(0,5);closePlayerDetail();navigateApp('compare')">СРАВНИТЬ</button><button class="close" onclick="closePlayerDetail()">×</button></div></div>
   <section class="profile-hero-grid"><div class="panel inset profile-rating"><div class="muted">ИНДЕКС ИГРОКА</div><div class="profile-rating-value">${fmt(idx,1)}</div><div class="profile-rating-meta">${rank?`#${rank} из ${active.length}`:'—'} · ${percentile} перцентиль</div><button class="btn mini why-below" onclick="openWhyIndex('${esc(id)}')">РАЗОБРАТЬ РЕЙТИНГ</button></div><div class="profile-stat-grid"><div class="inset"><span>K/D</span><strong class="${kdClass(detailTotal.k,detailTotal.d)}">${fmt(detailKd)}</strong></div><div class="inset"><span>+/−</span><strong class="${diffTone(detailTotal.k-detailTotal.d)}">${detailTotal.k-detailTotal.d>0?'+':''}${fmt(detailTotal.k-detailTotal.d,0)}</strong></div><div class="inset"><span>AVG K</span><strong>${fmt(avgKills,2)}</strong></div><div class="inset"><span>AVG D</span><strong>${fmt(detailTotal.maps?detailTotal.d/detailTotal.maps:0,2)}</strong></div><div class="inset"><span>AVG A</span><strong>${fmt(detailTotal.maps?detailTotal.a/detailTotal.maps:0,2)}</strong></div><div class="inset"><span>ИМПАКТ</span><strong class="${scoreTone(imp)}">${fmt(imp,1)}</strong></div><div class="inset"><span>ELO</span><strong class="elo-value">${fmt(window.CS2EloV3?.player(id)?.rating??1000,1)}</strong></div><div class="inset"><span>ФОРМА</span><strong class="${formTone(fo.form)}">${fmt(fo.form)}</strong></div><div class="inset"><span>СТАБИЛЬНОСТЬ</span><strong class="${scoreTone(st.score)}">${fmt(st.score,1)}</strong></div></div></section>
   <section class="profile-section"><div class="section-head"><h3>Карьерный итог</h3><span class="muted">по всем сыгранным картам</span></div><div class="profile-career-grid"><div><span>КАРТЫ</span><strong>${detailTotal.maps}</strong></div><div><span>ПОБЕДЫ / ПОРАЖЕНИЯ</span><strong><em class="positive">${wins}</em> / <em class="negative">${losses}</em> / <em class="neutral">${draws}</em></strong><small class="career-record-note">${careerSeriesResults.length} серий с известным исходом</small></div><div><span>WINRATE</span><strong class="${wins+losses+draws?scoreTone(wins/(wins+losses+draws)*100):'neutral'}">${wins+losses+draws?Math.round(wins/(wins+losses+draws)*100)+'%':'—'}</strong></div><div><span>KILLS</span><strong>${detailTotal.k}</strong></div><div><span>DEATHS</span><strong>${detailTotal.d}</strong></div><div><span>ASSISTS</span><strong>${detailTotal.a}</strong></div></div></section>
   <section class="profile-section"><div class="section-head"><h3>Форма</h3><span class="muted">последние отрезки</span></div><div class="form-window-grid">${windows.map(w=>`<div class="form-window-card ${w.n===1?'latest':''}"><span>${w.n===1?'Последняя':`Последние ${w.n}`}</span><strong>avg ${fmt(w.avg,2)}</strong><small>${kdMarkupValue(w.kd,'K/D ')}</small></div>`).join('')||'<div class="empty">Нет подробной истории.</div>'}</div></section>
@@ -1123,7 +1138,7 @@ function selectNewFormat(format){
   const el=$('#newFormat');if(el)el.value=format;syncNewFormatUI();
 }
 function openAddGame(){
-  if(!state.logged){state.tab='settings';render();return}
+  if(!state.logged){navigateApp('settings');return}
   const mapPool=[...new Set(DB.maps.filter(x=>x.archived!==true).map(x=>x.map))].sort(),players=activePlayers();
   document.body.insertAdjacentHTML('beforeend',`<div class="modal-back" id="modal"><div class="modal panel wide match-admin-modal">
     <div class="modal-head"><div><div class="eyebrow">АДМИН · НОВЫЙ МАТЧ · ШАГ 1 / 3</div><h2>СОЗДАТЬ МАТЧ</h2><div class="muted">Формат → карты → состав команд → дата. Статистику введём следующим шагом.</div></div><button class="close" onclick="closeModal()">×</button></div>
@@ -1253,7 +1268,7 @@ window.openAddGame=openAddGame;window.openMatchDetail=openMatchDetail;window.clo
 function closeTopModal(){const modals=[...document.querySelectorAll('.modal-back')];if(!modals.length)return false;modals.at(-1).remove();return true}
 function globalKeyboardShortcuts(e){if(e.key==='Escape'&&closeTopModal())e.preventDefault()}
 document.addEventListener('keydown',globalKeyboardShortcuts);
-document.addEventListener('DOMContentLoaded',()=>load(),{once:true});
+document.addEventListener('DOMContentLoaded',()=>{state.tab=appRouteFromLocation();load()},{once:true});
 
 // V47.1 scroll safety: when a modal is open, wheel input over non-scrollable children
 // is routed to the modal itself, preventing nested cards/hover targets from swallowing it.

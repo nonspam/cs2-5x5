@@ -46,3 +46,20 @@ test('shared shell has responsive layout and mobile navigation rules', () => {
   assert.match(css, /\.faceit-route-shell \.faceit-exact-global-rail nav/);
   assert.match(css, /@media\(max-width:700px\)[\s\S]*faceit-route-shell/);
 });
+
+test('application routes support direct hash entry and browser back/forward navigation', () => {
+  assert.match(app, /const APP_ROUTE_IDS=\['home','analytics','base','maps','teams','records','seasons','settings','profile','compare'\]/);
+  assert.match(app, /function appRouteFromLocation\(\)/);
+  assert.match(app, /window\.location\.hash/);
+  assert.match(app, /window\.history\[method\]/);
+  assert.match(app, /function restoreAppRouteFromHistory\(\)/);
+  assert.match(app, /window\.addEventListener\('popstate',restoreAppRouteFromHistory\)/);
+  assert.match(app, /DOMContentLoaded',\(\)=>\{state\.tab=appRouteFromLocation\(\);load\(\)\}/);
+  assert.match(app, /function render\(\)\{[^\n]*pages\[state\.tab\]\|\|home/);
+});
+
+test('cross-route dashboard links use the common navigation function', () => {
+  assert.doesNotMatch(app, /onclick="state\.tab='(?:base|analytics|settings)';render\(\)"/);
+  assert.doesNotMatch(app, /state\.tab='compare';render\(\)/);
+  assert.match(app, /closePlayerDetail\(\);navigateApp\('compare'\)/);
+});

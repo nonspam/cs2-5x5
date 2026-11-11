@@ -15,13 +15,13 @@ This document maps what exists. It does not approve the current visual design. T
 ## Application shell and navigation
 
 - Single-page application with common shell rendered through `renderRouteShell(v,page)`.
-- Navigation is state-based: `navigateApp(tab)` sets `state.tab` and re-renders.
+- Navigation uses the common `navigateApp(tab)` path, writes a route hash (`#/home`, `#/base`, etc.) to browser history, and restores the route on browser back/forward. Direct hash entry is read before the first data load. This behavior is source-tested; real browser validation is still pending.
 - The profile page uses the same shell; account/profile is not a separate frontend.
 - Rail routes: Home, Analytics, Base, Maps, Teams, Records, Seasons, Profile. Settings is opened by its shortcut.
 - `analytics` delegates to the Players view.
 - `compare` exists in the page map but is not a permanent rail item; it is opened from player comparison actions.
 - Match, player and map details are modal/drilldown flows, not independent routes.
-- Browser History API / pushState / popstate handling was not found in the current navigation path. Back/forward and deep-link behavior remain unverified and likely need implementation.
+- Browser history and direct route hashes are now wired in source. Back/forward, reload-on-route and mobile browser behavior still require a real browser smoke test.
 - Keyboard focus, escape handling, tab order and mobile rail behavior require browser QA.
 
 ## Route inventory
