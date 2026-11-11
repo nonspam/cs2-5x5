@@ -356,3 +356,15 @@
 - A	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:56:55+03:00 — fix: bind profile statistics shortcut through app router
+
+- Commit: 390a580d53bda0263342b884951d47cb065388b0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
