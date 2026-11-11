@@ -177,3 +177,15 @@
 - M	PROJECT_MASTER.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:18:10+03:00 — docs: record engine migration and merge audit
+
+- Commit: 50d7fc8453bba37b4761b6f3e8faded5a5eca831
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
