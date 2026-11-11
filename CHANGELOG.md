@@ -780,3 +780,15 @@
 - M	tests/faceit-v2-shell-dev-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:51:48+03:00 — docs: record 118 passing regression tests
+
+- Commit: 1ef7463b109b2d10f6d502756f91029f95277c40
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
