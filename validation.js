@@ -32,7 +32,7 @@
         const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest series stat missing raw_name'};const k=st.player_id||'raw:'+String(st.raw_name).trim().toLowerCase();if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
 
         if(sas.length&&m.map_ids.every(id=>maps.get(id)?.stats_available===true)){
-          const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+          const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
           const owners=new Map();
           for(const p of b.players){
             const names=[p.player_id,p.display_name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([alias])=>alias)];
