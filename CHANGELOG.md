@@ -21,3 +21,15 @@
 - \`M	.github/workflows/project-memory.yml\`
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T05:00:47+03:00 — docs: clean project journal formatting
+
+- Commit: \`fb699f44d714be5a4b2276b17fd03b059373ed13\`
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- No file list available.
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
