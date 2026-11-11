@@ -7,6 +7,7 @@
 - [x] Identify DEV migration history drift; reconciliation is a prerequisite before further schema migrations: [migration drift report](docs/FACEIT_V2_MIGRATION_DRIFT_2026-11-11.md).
 - [x] Inventory route and modal/workflow behavior from source: [route inventory](docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md).
 - [x] Verify the current DEV dataset and series aggregate parity; document unresolved ELO rules.
+- [x] Restore the missing Records BO1/average/winrate helpers, correct per-map weighting for series records, and explicitly protect profile-series vs map-record winrate granularity; [audit](docs/FACEIT_V2_METRICS_CONSISTENCY_AUDIT_2026-11-12.md). GitHub Actions [run 43115948403](https://github.com/nonspam/cs2-5x5/actions/runs/43115948403): 134 passed / 0 failed.
 - [x] Fix guest local-series aggregates with fewer than ten stats rows, enforce fully detailed map/series KDA parity, and reject duplicate player identities resolved through aliases; [report](docs/FACEIT_V2_GUEST_SERIES_AGGREGATE_VALIDATION_2026-11-12.md).
 - [x] Fix DEV Edge validation for blank optional dates and `manual_edit` provenance; deploy `cs2-admin` v3 to DEV only.
 - [x] Fix player create/archive/restore status synchronization in the runtime source.
@@ -15,7 +16,7 @@
 - [ ] Execute the browser QA matrix on DEV and verify Cloudflare deployed SHA: [execution plan](docs/FACEIT_V2_BROWSER_QA_PLAN_2026-11-12.md). Mutating flows remain local-fixture/mock only while DB row writes are out of scope.
 - [x] Audit stylesheet cascade, route content roots and shared-shell CSS readiness; [report](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
 - [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
-- [ ] After technical audit, implement each visual section from owner-supplied HTML/CSS/references.
+- [ ] Begin owner-directed CSS/HTML implementation section by section; attach the original FACEIT HTML/CSS references before reproducing the first screen.
 
 ---
 
