@@ -142,7 +142,19 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - DEV Edge Function `cs2-admin` was version 2 and rejected empty `played_at` strings in the current state. Since the function validates the entire next state on every commit, this blocked cloud writes. Fixed blank-date handling, preserved rejection of malformed non-empty dates, deployed v3 to DEV only and re-fetched the active source. The full current DEV state now validates with zero errors.
 - `saveMatchEdit` writes `manual_edit` provenance; Edge validator did not allow it for detailed historical series. Added the value and a regression test.
 - Player create/archive/restore were not synchronizing `status` and `is_active`; fixed the three mutations and added a contract test.
-- Added regression tests for ELO calibration transition, BO5 series event, map-score fallback, map/aggregate parity, Edge validation and lifecycle. Suite count is now 90; GitHub Actions remains queued, so do not call it green yet. Manual syntax compilation passed.
+- Added regression tests for ELO calibration transition, BO5 series event, map-score fallback, map/aggregate parity, Edge validation and lifecycle. Suite count is now 91; GitHub Actions remains queued, so do not call it green yet. Manual syntax compilation passed.
 - The current DEV data was read-only validated against the deployed v3 Edge validator: 14 players, 42 matches, 93 maps, no errors. No DB rows/schema/policies/migrations were changed.
 - Latest route map: `docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md`.
 
+
+
+## 2026-11-11 — DEV Supabase security review
+
+- Reviewed Supabase security and performance advisors, table grants/RLS, SECURITY DEFINER RPC definitions, account-link view, storage policies, and the public JSON state.
+- No-policy RLS findings on invites/admins/login aliases/audit/operations are intentional deny-by-default; no anon/authenticated table grants were found for those tables.
+- `commit_cs2_state` and `is_cs2_admin` are intentionally callable by authenticated clients; the former checks the admin predicate and the frontend depends on the guarded RPC. Do not revoke without replacing the client commit path.
+- `my_player_account` is `security_invoker=true` and its underlying link table has own-user RLS, but the view has broader-than-needed anon/DML grants. Recommend a narrow-grants migration; not applied.
+- DEV Auth leaked-password protection is disabled. Requires Auth settings change; not changed.
+- `player_account_invites.created_by` and `claimed_by` FKs lack indexes; recommend a migration. Unused-index advisor findings are informational and should not trigger automatic drops.
+- Public state scan found no email-like values, auth identifiers, or password/token fields. Storage bucket public read is paired with own-UID folder write/update/delete policies.
+- No database, Auth, Storage, grants, policies or migration writes were made. Full findings: `docs/FACEIT_V2_SECURITY_AUDIT_2026-11-11.md`.

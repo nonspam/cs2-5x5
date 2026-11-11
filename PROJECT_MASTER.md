@@ -87,3 +87,7 @@ GitHub Actions может автоматически записывать commit
 
 ## Route and interaction inventory
 Static map of existing SPA routes, modal workflows, account/admin features and known navigation gaps: [docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md](docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md). This is source-level inventory only; browser QA is still pending.
+
+## Security and operations
+
+DEV Supabase security/performance findings and recommended hardening work are documented in [the security audit](docs/FACEIT_V2_SECURITY_AUDIT_2026-11-11.md). Intentional RLS-deny patterns and guarded admin RPCs must not be weakened just to silence generic advisor warnings.
