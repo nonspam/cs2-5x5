@@ -3382,3 +3382,93 @@ html{scroll-behavior:auto!important}
   .faceit-profile-v2 .faceit-player-name h1{font-size:23px!important}
   .faceit-profile-v2 .faceit-rating{min-width:calc(50% - 8px)!important;flex:1 1 calc(50% - 8px)!important}
 }
+
+
+/* FACEIT reference layout: screenshot-matched profile shell */
+body:has(.faceit-exact-shell){background:#101010!important;color:#eee!important;font-family:Inter,Arial,sans-serif!important}
+body:has(.faceit-exact-shell) .topbar{display:none!important}
+body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;padding:0!important}
+.faceit-exact-shell{--fx-orange:#ff5500;position:relative;display:grid;grid-template-columns:202px 442px minmax(0,900px) 52px;gap:0;width:min(100%,1708px);min-height:100vh;margin:0 auto;background:linear-gradient(90deg,rgba(10,10,10,.34),rgba(8,8,8,.66)),radial-gradient(ellipse at 55% 5%,#454545 0,#202020 52%,#080808 100%);border-left:1px solid #080808;border-right:1px solid #080808;color:#eee;overflow:hidden}
+.faceit-exact-shell:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,rgba(0,0,0,.05),rgba(0,0,0,.58));z-index:0}
+.faceit-exact-global-rail,.faceit-exact-player-column,.faceit-exact-content,.faceit-exact-right-rail{position:relative;z-index:1;min-width:0}
+.faceit-exact-global-rail{min-height:100vh;border-right:1px solid rgba(255,255,255,.1);padding:22px 19px 18px;background:rgba(20,20,20,.2);display:flex;flex-direction:column}
+.faceit-exact-brand{height:28px;color:var(--fx-orange);font-size:27px;font-weight:900;transform:scaleX(1.15);transform-origin:left}
+.faceit-exact-search{height:34px;margin:18px 0 10px;padding:8px 10px;background:#252525;border:1px solid #383838;border-radius:5px;color:#aaa;font-size:13px}
+.faceit-exact-search span{margin-left:8px}
+.faceit-exact-game{padding:9px 10px;color:#aaa;font-size:11px;border-bottom:1px solid rgba(255,255,255,.08)}
+.faceit-exact-global-rail nav{display:grid;gap:7px;margin-top:16px}
+.faceit-exact-global-rail button{height:32px;text-align:left;border:0;background:none;color:#aaa;font-size:13px;white-space:nowrap}
+.faceit-exact-global-rail button span{margin-left:9px}
+.faceit-exact-rail-bottom{margin-top:auto;display:grid;gap:8px;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
+.faceit-exact-global-rail .premium{color:#a5f000;font-weight:800}
+.faceit-exact-player-column{padding:28px 26px 24px 0;display:flex;flex-direction:column;align-items:flex-end;gap:22px}
+.faceit-exact-player-card{width:248px;min-height:590px;padding:6px 0 16px}
+.faceit-exact-avatar-frame{height:333px;width:248px;border:1px solid #4b4b4b;border-radius:15px;background:linear-gradient(145deg,#242424,#111);display:grid;place-items:center;overflow:hidden}
+.faceit-exact-avatar-frame img{width:100%;height:100%;object-fit:cover}
+.faceit-exact-avatar-frame span{font-size:70px;font-weight:800;color:#ddd}
+.faceit-exact-player-card h1{text-align:center;font-size:21px;margin:14px 0 4px;color:#f3f3f3}
+.faceit-exact-player-card h1 small{color:#ddd;font-size:14px}
+.faceit-exact-player-actions{display:flex;justify-content:center;gap:14px;padding:4px 0 17px;border-bottom:1px solid rgba(255,255,255,.1)}
+.faceit-exact-player-actions button{border:0;background:none;color:#aaa;font-size:10px;font-weight:800}
+.faceit-exact-season-link{margin-top:20px;padding:15px 18px;background:linear-gradient(120deg,#33245e,#21163c);border:1px solid #493576;border-radius:7px;display:grid;gap:4px}
+.faceit-exact-season-link span{font-size:10px;color:#a68af3;font-weight:800;letter-spacing:.12em}
+.faceit-exact-season-link b{font-size:16px}
+.faceit-exact-season-link strong{font-size:22px}
+.faceit-exact-season-link strong small{float:right}
+.faceit-exact-player-meta{display:grid;gap:9px;margin-top:20px;font-size:11px;color:#aaa}
+.faceit-exact-player-meta b{color:#ddd}
+.faceit-exact-country{margin-top:16px;padding-bottom:17px;border-bottom:1px solid rgba(255,255,255,.1);font-size:11px;color:#bbb}
+.faceit-exact-country span{margin-right:8px;color:#7faaff}
+.faceit-exact-game-history{margin-top:17px;font-size:12px}
+.faceit-exact-game-history>div{display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px;background:rgba(20,20,20,.55);border:1px solid #383838;border-radius:7px}
+.faceit-exact-cs-icon{display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#233d88;color:#fff;font-size:9px;font-weight:900}
+.faceit-exact-game-history>div>span:nth-child(2){display:grid;gap:4px}
+.faceit-exact-game-history small{font-size:10px;color:#aaa}
+.faceit-exact-game-history i{margin-left:auto;color:#888}
+.faceit-exact-badges{width:248px;display:flex;gap:22px;padding:8px 18px;color:#f4b64d;font-size:25px}
+.faceit-exact-content{padding:22px 0 30px;max-width:900px}
+.faceit-exact-top-tabs{height:54px;display:flex;align-items:center;gap:26px;border-bottom:1px solid rgba(255,255,255,.12);white-space:nowrap}
+.faceit-exact-top-tabs button{height:54px;border:0;border-bottom:2px solid transparent;background:none;color:#aaa;font-size:11px;font-weight:800}
+.faceit-exact-top-tabs button.active{color:var(--fx-orange);border-color:var(--fx-orange)}
+.faceit-exact-top-tabs button:disabled,.faceit-exact-game-tabs button:disabled{opacity:.8}
+.faceit-exact-game-tabs{height:67px;display:flex;align-items:center;gap:22px;border-bottom:1px solid rgba(255,255,255,.1);white-space:nowrap}
+.faceit-exact-game-tabs>b{font-size:12px;margin-left:-15px;margin-right:4px}
+.faceit-exact-game-tabs button{height:31px;padding:0 11px;border:1px solid transparent;background:none;color:#aaa;font-size:11px;font-weight:700}
+.faceit-exact-game-tabs button.active{border-color:#aaa;color:#eee;background:rgba(255,255,255,.08)}
+.faceit-exact-season-card{margin-top:13px;min-height:150px;border:1px solid #373737;border-radius:10px;background:linear-gradient(110deg,rgba(85,35,35,.38),rgba(18,18,18,.82) 50%,rgba(8,8,8,.88));overflow:hidden}
+.faceit-exact-season-title{display:flex;justify-content:space-between;align-items:start;padding:16px 20px}
+.faceit-exact-season-title>div{display:grid;gap:5px}
+.faceit-exact-season-title b{font-size:13px}
+.faceit-exact-season-title small,.faceit-exact-season-title>span{font-size:10px;color:#aaa}
+.faceit-exact-season-data{display:flex;align-items:center;gap:17px;padding:0 22px 17px}
+.faceit-exact-level{width:46px;height:46px;border:5px solid var(--fx-orange);border-radius:50%;display:grid;place-items:center}
+.faceit-exact-level b{font-size:17px}
+.faceit-exact-season-data>strong{font-size:20px}
+.faceit-exact-season-numbers{margin-left:auto;display:flex;gap:20px;color:#aaa;font-size:10px}
+.faceit-exact-season-numbers b{color:#eee}
+.faceit-exact-results{margin-top:10px;padding:18px 18px 8px;border:1px solid #303030;border-radius:10px;background:rgba(12,12,12,.72)}
+.faceit-exact-results-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faceit-exact-results-head>b{font-size:13px}
+.faceit-exact-results-head>span{font-size:10px;color:#aaa}
+.faceit-exact-result-line{display:flex;align-items:center;gap:9px;margin-top:22px;font-size:10px;color:#aaa}
+.faceit-exact-result-line>b{font-size:12px}
+.faceit-exact-wl{margin-left:auto;color:#aaa}
+.faceit-exact-results .faceit-elo-progress{margin:8px 0!important;padding:0!important;border:0!important;background:transparent!important}
+.faceit-exact-results .faceit-elo-head{display:none!important}
+.faceit-exact-results .faceit-elo-chart{height:145px;max-height:145px;margin:0!important}
+.faceit-exact-results .faceit-elo-meta,.faceit-exact-results .faceit-elo-info{display:none!important}
+.faceit-exact-form{display:flex;gap:5px;padding:8px 0 12px}
+.faceit-exact-form .faceit-form-dot{width:22px;height:22px;border-radius:3px}
+.faceit-exact-stats-heading{display:flex;justify-content:space-between;align-items:center;margin:17px 0 10px}
+.faceit-exact-stats-heading b{font-size:13px}
+.faceit-exact-stats-heading span{font-size:10px;color:#999}
+.faceit-exact-stat-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.faceit-exact-stat-strip>div{min-height:58px;padding:10px;background:rgba(16,16,16,.8);border:1px solid #303030;border-radius:6px;display:grid;gap:4px}
+.faceit-exact-stat-strip b{font-size:14px}
+.faceit-exact-stat-strip span{font-size:9px;color:#999}
+.faceit-exact-lower{margin-top:18px}
+.faceit-exact-lower .faceit-perf-card,.faceit-exact-lower .faceit-content-card,.faceit-exact-lower .faceit-side-card{background:rgba(15,15,15,.82)!important;border-color:#303030!important;border-radius:6px!important}
+.faceit-exact-right-rail{border-left:1px solid rgba(255,255,255,.08);padding-top:18px;display:flex;flex-direction:column;align-items:center;gap:22px;color:#aaa;font-size:17px}
+@media(max-width:1500px){.faceit-exact-shell{grid-template-columns:170px 340px minmax(0,1fr) 42px}.faceit-exact-player-column{padding-right:22px}.faceit-exact-player-card,.faceit-exact-badges{width:240px}.faceit-exact-avatar-frame{width:240px;height:300px}.faceit-exact-content{padding-right:18px}}
+@media(max-width:1050px){.faceit-exact-shell{grid-template-columns:64px 250px minmax(0,1fr)}.faceit-exact-global-rail{padding:18px 10px}.faceit-exact-global-rail nav button span,.faceit-exact-rail-bottom button span,.faceit-exact-search span{display:none}.faceit-exact-player-column{padding:20px 10px}.faceit-exact-player-card,.faceit-exact-badges,.faceit-exact-avatar-frame{width:100%}.faceit-exact-avatar-frame{height:250px}.faceit-exact-right-rail{display:none}.faceit-exact-content{padding:16px}}
+@media(max-width:700px){.faceit-exact-shell{display:block}.faceit-exact-global-rail{display:none}.faceit-exact-player-column{padding:12px;align-items:stretch}.faceit-exact-player-card{min-height:0}.faceit-exact-avatar-frame{height:220px}.faceit-exact-badges{display:none}.faceit-exact-content{padding:10px 12px}.faceit-exact-top-tabs{overflow:auto;gap:18px}.faceit-exact-top-tabs button{font-size:9px}.faceit-exact-game-tabs{overflow:auto;gap:8px}.faceit-exact-season-numbers{gap:8px}.faceit-exact-stat-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.faceit-exact-results-head{align-items:flex-start;flex-direction:column}.faceit-exact-right-rail{display:none}}
