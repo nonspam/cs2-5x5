@@ -1032,3 +1032,15 @@
 - A	docs/FACEIT_V2_METRICS_CONSISTENCY_AUDIT_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:56:58+03:00 — test: compare profile winrate with float tolerance
+
+- Commit: 0218ad70827dd02a51672d89c6db1887914e8816
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
