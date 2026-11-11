@@ -840,3 +840,15 @@
 - M	tests/validation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:23:07+03:00 — fix: normalize aliases consistently for aggregate parity
+
+- Commit: 54abb447726d8be98947796b8e6482d63ffe5aba
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	validation.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
