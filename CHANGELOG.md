@@ -45,3 +45,15 @@
 - \`M	CHANGELOG.md\`
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T05:01:14+03:00 — fix: harden automatic project change journal
+
+- Commit: ed16cef2c9e63499d9d0747214d94632b344bf5c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	.github/workflows/project-memory.yml
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
