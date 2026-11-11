@@ -744,3 +744,15 @@
 - M	tests/faceit-v2-shell-dev-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:49:33+03:00 — docs: mark source interaction inventory complete
+
+- Commit: 37c521fa58418105e756624da4eccebd72bf60a5
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
