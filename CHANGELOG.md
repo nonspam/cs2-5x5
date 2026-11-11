@@ -648,3 +648,15 @@
 - A	docs/FACEIT_V2_SHELL_ROUTING_DEV_ISOLATION_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:40:53+03:00 — docs: checkpoint shell routing and DEV isolation work
+
+- Commit: baa121734ca4c2206f2455d04184e7952213ab7c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
