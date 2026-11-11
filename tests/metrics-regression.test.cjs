@@ -69,3 +69,53 @@ test('form does not invent a flat trend when fewer than two ten-map windows are 
   const eleven = formForRows(Array.from({ length: 11 }, (_, i) => ({ kills: i + 10, deaths: 10 })));
   assert.notEqual(eleven.trend, null);
 });
+
+test('records runtime declares all helpers used by the records route', () => {
+  for (const name of ['bo1RecordRows', 'recordAvgRows', 'recordWinRate', 'recordWinRows']) {
+    assert.match(app, new RegExp('function\\\\s+' + name + '\\\\s*\\\\('), name + ' must exist');
+  }
+  assert.match(app, /const winRowsAll=recordWinRows\\(source,filter,state\\.recordMap\\|\\|'all'\\)/);
+});
+
+test('recordAvgRows weights series rows by the number of maps represented', () => {
+  const source = app;
+  const start = source.indexOf('function recordAvgRows(');
+  const end = source.indexOf('\\nfunction recordWinRate(', start);
+  assert.ok(start >= 0 && end > start);
+  const fn = Function('return (' + source.slice(start, end).trim() + ')')();
+  const rows = fn([
+    { playerId: 'p1', k: 20, d: 10, a: 4 },
+    { playerId: 'p1', k: 30, d: 20, a: 6, maps: 2 },
+    { playerId: 'p1', k: 12, d: 8, a: 3, maps: 3 }
+  ]);
+  assert.equal(rows[0].maps, 6);
+  assert.equal(rows[0].avg, 62 / 6);
+  assert.equal(rows[0].k, 62);
+  assert.equal(rows[0].d, 38);
+});
+
+test('recordWinRate preserves map-level denominator and correctly scopes format/map filters', () => {
+  const rows = [
+    { matchId: 'bo1', map: 'mirage', result: 'WIN' },
+    { matchId: 'bo1', map: 'dust2', result: 'LOSS' },
+    { matchId: 'bo3', map: 'mirage', result: 'WIN' },
+    { matchId: 'bo3', map: 'inferno', result: 'WIN' },
+    { matchId: 'bo5', map: 'mirage', result: 'LOSS' }
+  ];
+  const matches = [
+    { match_id: 'bo1', format: 'BO1' },
+    { match_id: 'bo3', format: 'BO3' },
+    { match_id: 'bo5', format: 'BO5' }
+  ];
+  const fnStart = app.indexOf('function recordWinRate(');
+  const fnEnd = app.indexOf('\\nfunction recordWinRows(', fnStart);
+  assert.ok(fnStart >= 0 && fnEnd > fnStart);
+  const fn = Function('careerResultsForPlayer', 'DB', 'latestMatch',
+    'return (' + app.slice(fnStart, fnEnd).trim() + ')')(
+      () => rows, { matches }, () => ({ match_id: 'bo3' })
+    );
+  assert.deepEqual(fn('p1', 'career'), { played: 5, wins: 3, rate: 0.6 });
+  assert.deepEqual(fn('p1', 'bo3'), { played: 2, wins: 2, rate: 1 });
+  assert.deepEqual(fn('p1', 'map', 'mirage'), { played: 3, wins: 2, rate: 2/3 });
+  assert.deepEqual(fn('p1', 'match'), { played: 2, wins: 2, rate: 1 });
+});
