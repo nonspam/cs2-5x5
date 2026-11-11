@@ -27,8 +27,32 @@
         if(ta.length||tb.length){if(ta.length>5||tb.length>5||new Set([...ta,...tb]).size!==ta.length+tb.length||[...ta,...tb].some(pid=>!pids.has(pid)))return{ok:false,error:'invalid team assignment'}}
         for(let i=0;i<m.map_ids.length;i++){const mp=maps.get(m.map_ids[i]);if(!mp||mp.match_id!==m.match_id||Number(mp.map_index)!==i+1)return{ok:false,error:'match/map relation invalid'}}
         const sas=Array.isArray(m.series_aggregate_stats)?m.series_aggregate_stats:[];
-        if(sas.length&&!((sas.length===10)))return{ok:false,error:'series aggregate must contain 10 rows when present'};
+        if(sas.length>10)return{ok:false,error:'series aggregate cannot exceed 10 rows'};
+        if(m.source_kind==='compact_bo3'&&sas.length!==10)return{ok:false,error:'compact BO3 must contain 10 series aggregate rows'};
         const seen=new Set();for(const st of sas){if(!st||!Number.isFinite(Number(st.kills))||Number(st.kills)<0||!Number.isFinite(Number(st.deaths))||Number(st.deaths)<0||!Number.isFinite(Number(st.assists))||Number(st.assists)<0)return{ok:false,error:'invalid series KDA'};if(st.player_id!=null&&!pids.has(st.player_id))return{ok:false,error:'unknown series player'};if(st.player_id==null&&!String(st.raw_name||'').trim())return{ok:false,error:'guest series stat missing raw_name'};const k=st.player_id||'raw:'+String(st.raw_name).trim().toLowerCase();if(seen.has(k))return{ok:false,error:'duplicate series player'};seen.add(k)}
+
+        if(sas.length&&m.map_ids.every(id=>maps.get(id)?.stats_available===true)){
+          const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+          const owners=new Map();
+          for(const p of b.players){
+            const names=[p.player_id,p.display_name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([alias])=>alias)];
+            for(const name of names){const key=normalizeName(name);if(!key)continue;const set=owners.get(key)||new Set();set.add(p.player_id);owners.set(key,set)}
+          }
+          const statKey=row=>{
+            if(row?.player_id)return 'player:'+row.player_id;
+            const raw=normalizeName(row?.raw_name??row?.name),known=owners.get(raw);
+            return known?.size===1?'player:'+known.values().next().value:'raw:'+raw;
+          };
+          const sumRows=rows=>{
+            const totals=new Map();
+            for(const row of rows){const key=statKey(row),total=totals.get(key)||{kills:0,deaths:0,assists:0};total.kills+=Number(row.kills)||0;total.deaths+=Number(row.deaths)||0;total.assists+=Number(row.assists)||0;totals.set(key,total)}
+            return totals;
+          };
+          const mapTotals=sumRows(m.map_ids.flatMap(id=>maps.get(id)?.player_stats||[]));
+          const seriesTotals=sumRows(sas);
+          const keys=new Set([...mapTotals.keys(),...seriesTotals.keys()]);
+          for(const key of keys){const a=mapTotals.get(key)||{kills:0,deaths:0,assists:0},z=seriesTotals.get(key)||{kills:0,deaths:0,assists:0};if(Math.abs(a.kills-z.kills)>1e-9||Math.abs(a.deaths-z.deaths)>1e-9||Math.abs(a.assists-z.assists)>1e-9)return{ok:false,error:'series aggregate does not match detailed maps: '+m.match_id}}
+        }
       }
       return{ok:true};
     }catch(e){return{ok:false,error:e?.message||'validation failed'}}
