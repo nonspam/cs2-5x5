@@ -598,3 +598,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:32:38+03:00 — test: align shell navigation contract with route history
+
+- Commit: f6c2809dbc5f86b1d20a9c164318d3d6228b7970
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
