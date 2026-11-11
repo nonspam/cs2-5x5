@@ -78,12 +78,12 @@ This document maps what exists. It does not approve the current visual design. T
 ## Handler and code footprint
 
 Static scan of `app_v57.js`:
-- 1,276 lines; 222 function declarations.
+- 1,292 lines; 224 function declarations.
 - 126 inline `onclick` attributes and 9 inline `onchange` attributes.
-- 21 `addEventListener` calls.
-- 50 distinct simple inline handler names; all 50 resolve to declared functions or the shared DOM helper.
+- 23 `addEventListener` calls.
+- 53 distinct simple inline handler names; a source-level regression test now asserts that every inline click/change handler resolves to a declared runtime function or variable.
 
-These are source counts, not proof that every button works. Some controls are wired dynamically or through delegated handlers. A complete control-by-control browser pass is still required.
+These are source counts, not proof that every button works. Some controls are wired dynamically or through delegated handlers. The static handler-resolution test prevents missing function names, but cannot prove that a handler's runtime behavior succeeds. A complete control-by-control browser pass is still required.
 
 ## Known functional gaps and risks
 
