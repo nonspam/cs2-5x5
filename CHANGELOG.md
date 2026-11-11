@@ -636,3 +636,15 @@
 - A	tests/faceit-v2-shell-dev-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:40:26+03:00 — docs: record shell routing and DEV isolation checks
+
+- Commit: 3d00ce7702ac97b1d547947894ffdf9322437c24
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/FACEIT_V2_SHELL_ROUTING_DEV_ISOLATION_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
