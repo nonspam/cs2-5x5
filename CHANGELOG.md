@@ -708,3 +708,15 @@
 - M	tests/faceit-v2-shell-dev-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:43:35+03:00 — docs: update route inventory after hash navigation fix
+
+- Commit: 6c135d32f4f2ea73553bd10d910753317b6e1bb2
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
