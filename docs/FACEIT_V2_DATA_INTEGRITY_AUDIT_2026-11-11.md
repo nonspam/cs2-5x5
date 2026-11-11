@@ -148,3 +148,14 @@ ELO сортирует active matches через app helper `matchOrder()`, ко
 ## Границы
 
 Только DEV/read-only. Никаких UPDATE/INSERT/DELETE, migrations, grants/policies changes, runtime/UI changes или deployments в рамках этого аудита не выполнялось.
+
+
+### Точная проверка roster eligibility
+
+Отдельный read-only запрос повторил ключевые условия ELO roster gate: 5 слотов на каждой стороне после fallback с пустого lobby roster на match roster, 10 уникальных slots, минимум один известный игрок на каждой стороне. Результат:
+- 31 полный 5×5;
+- 31 с десятью уникальными слотами;
+- 31 с известным игроком на каждой стороне;
+- 31 с определённым непустым результатом (ни одной серии 0:0).
+
+Следовательно, при текущих данных и текущем match-level roster helper ELO должен учитывать **31 из 42** серий. Остальные 11 не проходят полный series-level roster gate; 10 из них требуют отдельной проверки map-level roster consistency, прежде чем менять eligibility.
