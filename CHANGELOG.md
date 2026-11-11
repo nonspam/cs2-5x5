@@ -696,3 +696,15 @@
 - M	tests/faceit-v2-shell-dev-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:43:26+03:00 — test: correct settings route allowlist assertion
+
+- Commit: fa5db1cfb34c7f5decef79768d3259f77e28c3a0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
