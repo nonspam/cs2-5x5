@@ -984,3 +984,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:50:34+03:00 — test: cover record route helpers and winrate scopes
+
+- Commit: de4a7290505492735bcfeec8b76e17dfec5a4be0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
