@@ -45,6 +45,7 @@ test('route navigation writes browser history and rejects unknown routes', () =>
 test('browser back and forward restore the route from the location hash', () => {
   assert.match(app, /function restoreAppRouteFromHistory\(\)[\s\S]*?const tab=appRouteFromLocation\(\)/);
   assert.match(app, /window\.addEventListener\('popstate',restoreAppRouteFromHistory\)/);
+  assert.match(app, /window\.addEventListener\('hashchange',restoreAppRouteFromHistory\)/);
   assert.match(app, /document\.addEventListener\('DOMContentLoaded',[\s\S]*?state\.tab=appRouteFromLocation\(\)/);
 });
 
