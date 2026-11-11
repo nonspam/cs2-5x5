@@ -610,3 +610,17 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:36:12+03:00 — test: cover route history and expose active navigation state
+
+- Commit: d0a599582ccc17a7113535ac5d2061f7e382f2d5
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- A	tests/faceit-v2-navigation.test.cjs
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
