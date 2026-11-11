@@ -236,6 +236,7 @@ function makeGuestLocalSeries() {
       match_id: matchId,
       format: 'BO3',
       source_kind: 'local_series',
+      team_assignment_source: 'manual_edit',
       map_ids: mapIds,
       series_score: '2:0',
       team_a: ['p1', 'p2', 'p3', 'p4', 'p5'],
