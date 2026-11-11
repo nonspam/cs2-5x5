@@ -888,3 +888,15 @@
 - M	tests/validation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:30:05+03:00 — fix: canonicalize duplicate stats by player identity
+
+- Commit: d0bae8d62073da2cf23b45d09826383b0cc864eb
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	validation.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
