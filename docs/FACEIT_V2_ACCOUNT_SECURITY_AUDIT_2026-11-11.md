@@ -52,7 +52,7 @@ The later migration moves SECURITY DEFINER implementations into `private`, gives
 
 ## Test coverage added
 
-Added 8 source-contract tests for token generation/hashing, admin and active-player gates, single-use claim behavior, private SECURITY DEFINER hardening, invoker wrappers, profile media constraints, and generic password-reset messaging. The total suite is now 99 tests. These are static contract tests; they do not replace live browser/Auth integration testing.
+Added 9 source-contract tests for token generation/hashing, admin and active-player gates, single-use claim behavior, private SECURITY DEFINER hardening, invoker wrappers, profile media constraints, and generic password-reset messaging. The total suite is now 100 tests. GitHub Actions quality gate passed with 100 passed / 0 failed on [run 43100294912](https://github.com/nonspam/cs2-5x5/actions/runs/43100294912). These are static contract tests; they do not replace live browser/Auth integration testing.
 
 ## Scope
 

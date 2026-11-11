@@ -175,7 +175,7 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - SECURITY DEFINER invite implementations live in `private`, use empty search_path, and enforce admin/auth checks; public wrappers are SECURITY INVOKER. Anon has no direct table grants or invite RPC execution. Authenticated can execute wrappers but cannot directly select invite rows.
 - Profile RLS binds edits to the linked player and requires media paths under auth.uid(). Storage policies enforce same per-user folder. Bucket configuration independently enforces 5 MiB and JPEG/PNG/WebP/GIF.
 - A read-only authenticated-role context check confirmed own-account view returns one row. No DB/Auth/storage mutations were performed.
-- Added 8 static account-security contract tests; total suite 100. GitHub Actions remains queued, so no green CI claim. Details: `docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md`.
+- Added 9 static account-security contract tests; total suite 100. GitHub Actions quality gate passed: 100 passed / 0 failed on run 43100294912. Details: `docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md`.
 - Registration's pending invite code is held in page memory until email confirmation; reloading before claim loses the pending value, but user can re-enter the code. Low-priority UX follow-up only.
 
 

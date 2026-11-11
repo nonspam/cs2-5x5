@@ -9,7 +9,7 @@
 - [x] Verify the current DEV dataset and series aggregate parity; document unresolved ELO rules.
 - [x] Fix DEV Edge validation for blank optional dates and `manual_edit` provenance; deploy `cs2-admin` v3 to DEV only.
 - [x] Fix player create/archive/restore status synchronization in the runtime source.
-- [ ] Confirm GitHub Actions for the expanded 100-test suite (runs queued at checkpoint time).
+- [x] Confirm GitHub Actions for the expanded 100-test suite: 100 passed / 0 failed on [run 43100294912](https://github.com/nonspam/cs2-5x5/actions/runs/43100294912).
 - [ ] Browser QA on DEV and verify Cloudflare deployed SHA.
 - [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
 - [ ] After technical audit, implement each visual section from owner-supplied HTML/CSS/references.
