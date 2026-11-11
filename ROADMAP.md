@@ -10,7 +10,7 @@
 - [x] Fix DEV Edge validation for blank optional dates and `manual_edit` provenance; deploy `cs2-admin` v3 to DEV only.
 - [x] Fix player create/archive/restore status synchronization in the runtime source.
 - [x] Confirm GitHub Actions for the expanded 100-test suite: 100 passed / 0 failed on [run 43100294912](https://github.com/nonspam/cs2-5x5/actions/runs/43100294912).
-- [x] Add static regression contracts for shared-shell routing/history and DEV Supabase isolation; [audit](docs/FACEIT_V2_SHELL_ROUTING_DEV_ISOLATION_2026-11-12.md). CI result for the new tests is pending.
+- [x] Add static regression contracts for shared-shell route allowlist/renderers, navigation history/hash changes, settings entry and DEV Supabase isolation; [audit](docs/FACEIT_V2_SHELL_ROUTING_DEV_ISOLATION_2026-11-12.md). GitHub Actions [run 43105580669](https://github.com/nonspam/cs2-5x5/actions/runs/43105580669): 117 passed / 0 failed.
 - [ ] Browser QA on DEV and verify Cloudflare deployed SHA.
 - [x] Audit stylesheet cascade, route content roots and shared-shell CSS readiness; [report](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
 - [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
