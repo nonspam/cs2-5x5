@@ -295,3 +295,15 @@
 - A	validation.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:53:01+03:00 — docs: accept FACEIT V2 profile-first product direction
+
+- Commit: f466e36079c756e7bed60363d3d6ee9f2dd988ff
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	DECISIONS.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
