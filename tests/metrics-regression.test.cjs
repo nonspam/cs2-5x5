@@ -72,17 +72,16 @@ test('form does not invent a flat trend when fewer than two ten-map windows are 
 
 test('records runtime declares all helpers used by the records route', () => {
   for (const name of ['bo1RecordRows', 'recordAvgRows', 'recordWinRate', 'recordWinRows']) {
-    assert.match(app, new RegExp('function\\\\s+' + name + '\\\\s*\\\\('), name + ' must exist');
+    assert.ok(app.includes('function ' + name + '('), name + ' must exist');
   }
-  assert.match(app, /const winRowsAll=recordWinRows\\(source,filter,state\\.recordMap\\|\\|'all'\\)/);
+  assert.ok(app.includes("const winRowsAll=recordWinRows(source,filter,state.recordMap||'all')"));
 });
 
 test('recordAvgRows weights series rows by the number of maps represented', () => {
-  const source = app;
-  const start = source.indexOf('function recordAvgRows(');
-  const end = source.indexOf('\\nfunction recordWinRate(', start);
+  const start = app.indexOf('function recordAvgRows(');
+  const end = app.indexOf('\nfunction recordWinRate(', start);
   assert.ok(start >= 0 && end > start);
-  const fn = Function('return (' + source.slice(start, end).trim() + ')')();
+  const fn = Function('return (' + app.slice(start, end).trim() + ')')();
   const rows = fn([
     { playerId: 'p1', k: 20, d: 10, a: 4 },
     { playerId: 'p1', k: 30, d: 20, a: 6, maps: 2 },
@@ -108,7 +107,7 @@ test('recordWinRate preserves map-level denominator and correctly scopes format/
     { match_id: 'bo5', format: 'BO5' }
   ];
   const fnStart = app.indexOf('function recordWinRate(');
-  const fnEnd = app.indexOf('\\nfunction recordWinRows(', fnStart);
+  const fnEnd = app.indexOf('\nfunction recordWinRows(', fnStart);
   assert.ok(fnStart >= 0 && fnEnd > fnStart);
   const fn = Function('careerResultsForPlayer', 'DB', 'latestMatch',
     'return (' + app.slice(fnStart, fnEnd).trim() + ')')(
