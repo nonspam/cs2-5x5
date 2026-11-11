@@ -4,7 +4,7 @@
   const PLAYER_ID=/^[\p{L}\p{N}_.: -]{1,64}$/u;
   const FORMATS=new Set(['BO1','BO3','BO5']);
   const SOURCE_KINDS=new Set(['detailed','compact_bo3','manual','imported','historical','local_series']);
-  const PROVENANCE=new Set(['historical_source_order','source_order_with_full_5v5','reconstructed','manual']);
+  const PROVENANCE=new Set(['historical_source_order','source_order_with_full_5v5','reconstructed','manual','manual_edit']);
   const PLAYER_STATUS=new Set(['active','archived']);
   const isObj=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
   const finite=n=>Number.isFinite(Number(n));
