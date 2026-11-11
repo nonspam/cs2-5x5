@@ -420,3 +420,15 @@
 - M	PROJECT_MASTER.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T23:15:12+03:00 — docs: add static control inventory to FACEIT V2 audit
+
+- Commit: 52e3a0b8fb9d09b59010a74f9df5c7d9d88493f7
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/FACEIT_V2_READONLY_AUDIT_2026-11-11.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
