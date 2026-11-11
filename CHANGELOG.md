@@ -571,3 +571,18 @@
 - M	docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:29:53+03:00 — feat: restore browser route history and document DEV deployment checks
+
+- Commit: 4adb9050a01b06f085dfa860752c0920b5f418d9
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- A	docs/DEV_DEPLOYMENT_VERIFICATION_2026-11-12.md
+- M	docs/FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
