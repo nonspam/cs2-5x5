@@ -118,13 +118,13 @@ test('rejects duplicate player IDs', () => {
 
 test('rejects malformed series aggregate statistics', () => {
   const base = makeBase();
-  base.matches[0].series_aggregate_stats = Array.from({ length: 9 }, (_, i) => ({
+  base.matches[0].series_aggregate_stats = Array.from({ length: 11 }, (_, i) => ({
     player_id: `p${i + 1}`,
     kills: 1,
     deaths: 1,
     assists: 0
   }));
-  assert.match(validateBase(base).error, /series aggregate must contain 10 rows/);
+  assert.match(validateBase(base).error, /series aggregate cannot exceed 10 rows/);
 });
 
 test('rejects unlinked guest rows without a raw name instead of silently collapsing them', () => {
