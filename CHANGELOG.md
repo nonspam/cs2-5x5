@@ -792,3 +792,15 @@
 - M	ROADMAP.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:50:23+03:00 — docs: link browser QA execution matrix
+
+- Commit: e95c0bb4258ea74eacde7b9c1ab87c365e0a0654
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
