@@ -14,7 +14,7 @@ test('FACEIT V2 exposes existing site sections from one profile-inspired rail', 
   for (const route of ['home','analytics','base','maps','teams','records','seasons','profile']) {
     assert.ok(app.includes("['" + route + "'"), 'rail should include route ' + route);
   }
-  assert.match(app, /function navigateApp\(tab\)/);
+  assert.match(app, /function navigateApp\(tab,options=\{\}\)/);
   assert.match(app, /data-app-route=/);
   assert.match(app, /function renderRouteShell\(v,page\)/);
   assert.match(app, /renderRouteShell\(v,pages\[state\.tab\]\|\|home\)/);
