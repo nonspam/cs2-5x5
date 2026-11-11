@@ -1,4 +1,4 @@
-# Progress checkpoint — 2026-11-11
+# Progress checkpoint — 2026-11-12
 
 - [x] Restore the last full runtime snapshot on `faceit-dev`.
 - [x] Integrate existing routes into a shared profile-inspired shell prototype (visuals remain provisional).
@@ -10,6 +10,7 @@
 - [x] Fix DEV Edge validation for blank optional dates and `manual_edit` provenance; deploy `cs2-admin` v3 to DEV only.
 - [x] Fix player create/archive/restore status synchronization in the runtime source.
 - [x] Confirm GitHub Actions for the expanded 100-test suite: 100 passed / 0 failed on [run 43100294912](https://github.com/nonspam/cs2-5x5/actions/runs/43100294912).
+- [x] Add static regression contracts for shared-shell routing/history and DEV Supabase isolation; [audit](docs/FACEIT_V2_SHELL_ROUTING_DEV_ISOLATION_2026-11-12.md). CI result for the new tests is pending.
 - [ ] Browser QA on DEV and verify Cloudflare deployed SHA.
 - [x] Audit stylesheet cascade, route content roots and shared-shell CSS readiness; [report](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
 - [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
@@ -31,21 +32,22 @@
 - [ ] Встроить обновление смысловых документов в каждый PR/task checklist.
 
 ## 1. Аудит и стабилизация
-- Проверить DEV runtime и profile shell в браузере.
-- Составить инвентаризацию страниц: работает / частично / placeholder / не проверено.
-- Убедиться, что DEV config не обращается к production Supabase.
-- Сохранить regression coverage до крупных UI изменений.
+- [x] Source-level проверка DEV config: браузерная конфигурация указывает только на DEV Supabase project ref; runtime network еще не проверен.
+- [x] Составить инвентаризацию страниц: работает / частично / placeholder / не проверено.
+- [x] Добавить regression contracts для маршрутов, hash/history и DEV-конфигурации.
+- [ ] Проверить DEV runtime и profile shell в браузере.
+- [ ] Проверить desktop/tablet/mobile, keyboard, touch и direct-link/reload в браузере.
 
 ## 2. FACEIT V2 — профиль как основной сайт
 - [x] Принять решение: профильный shell становится оболочкой всего сайта.
 - [x] Восстановить runtime, account/profile, DEV config, regression tests и quality gate в faceit-dev.
-- Инвентаризировать все текущие маршруты, кнопки, вкладки и действия: работает / частично / placeholder / лишнее.
-- Утвердить компактную карту навигации внутри profile shell; не сохранять старую и новую навигацию параллельно.
-- Подключить к одному shell существующие Players, Statistics, Matches/Series, Maps, Teams, Records, Seasons, Track и Settings.
-- Сделать каждый видимый control рабочим; placeholders скрыть до готовности.
-- Проверить desktop/tablet/mobile и переходы profile ↔ global sections.
-- Подтвердить CI, DEV deployment SHA и browser QA перед переносом данных/новыми миграциями.
-
+- [x] Зафиксировать allowlist маршрутов, историю навигации и shared-shell wiring на уровне исходников.
+- [ ] Инвентаризировать все текущие маршруты, кнопки, вкладки и действия: работает / частично / placeholder / лишнее.
+- [ ] Утвердить компактную карту навигации внутри profile shell; не сохранять старую и новую навигацию параллельно.
+- [ ] Подключить к одному shell существующие Players, Statistics, Matches/Series, Maps, Teams, Records, Seasons, Track и Settings.
+- [ ] Сделать каждый видимый control рабочим; placeholders скрыть до готовности.
+- [ ] Проверить desktop/tablet/mobile и переходы profile ↔ global sections.
+- [ ] Подтвердить CI, DEV deployment SHA и browser QA перед переносом данных/новыми миграциями.
 
 ## 3. Общая аналитика
 - Глобальная статистика и сравнение игроков.
@@ -72,10 +74,7 @@
 - Проверка persistence, realtime и ошибок.
 - Проверка Cloudflare deployment SHA и DEV URL.
 - Release notes и обновлённая документация.
-- Production вне scope без отдельного разрешения.
-
-Этап считается завершённым только после реализации, тестов и проверки критериев.
-
+- Production вне scope без отдельного разрешения. Этап считается завершённым только после реализации, тестов и проверки критериев.
 
 ## Передача контекста / FACEIT research
 - [x] Зафиксировать историю перехода от screenshot-only к исследованию настоящих FACEIT HTML/CSS.
@@ -88,13 +87,13 @@
 - Runtime восстановлен в `faceit-dev` отдельным commit `c8ee8cd8776bd4fc113d88a1531b5596db8fb45e`; 71 отобранный файл из snapshot `3b68040`.
 - Восстановлены entrypoint, app/profile/account, CSS, Supabase DEV config/adapter, ELO, fallback data, assets, tests, migrations и quality gate.
 - Quality gate для runtime recovery прошёл; после унификации shell commit `390a580d` прошёл `npm run check`: 83 теста, 0 ошибок. Workflow: https://github.com/nonspam/cs2-5x5/actions/runs/43091902336.
-- DEV URL/deployed SHA/browser QA остаются непроверенными: workers.dev endpoint не открылся в веб-инструменте.
+- DEV URL/deployed SHA/browser QA остаются непроверенными: точный workers.dev hostname не найден в tracked deployment metadata.
 
 Следующий порядок:
-1. Получить результат `npm run check` / GitHub Actions на новом HEAD.
+1. Получить результат GitHub Actions для новых source-contract тестов.
 2. Подтвердить Cloudflare deployed SHA и пройти browser QA desktop/mobile.
 3. Провести полный аудит controls и маршрутов: рабочие / частичные / placeholders / удалить.
-4. Завершить переход всех разделов на единый profile shell и проверить back/forward.
+4. Завершить переход всех разделов на единый profile shell и проверить back/forward в браузере.
 5. Подключить/проверить старые функции и сверить единые расчёты/данные.
 6. После acceptance отдельно развивать Track, полноценные сезоны, ELO/calibration и seasonal rollover.
 7. Production остаётся вне scope без отдельного разрешения.
