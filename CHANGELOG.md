@@ -93,3 +93,15 @@
 - A	docs/legacy-encyclopedia-2026-11-09/README.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T05:14:51+03:00 — docs: integrate legacy encyclopedia context
+
+- Commit: 407f261ecdafa1d3a38cbbbb1207fa0a29d8493c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
