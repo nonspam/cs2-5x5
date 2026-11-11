@@ -79,7 +79,7 @@
       }
       for(const [alias,pid] of Object.entries(b.aliases)){if(!String(alias).trim()||typeof pid!=='string'||!pids.has(pid))errors.push('invalid alias mapping:'+alias)}
       const nameOwners=new Map();
-      const normalizeStatIdentity=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+      const normalizeStatIdentity=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
       for(const p of b.players){const names=[p.player_id,p.display_name,p.name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([name])=>name)];for(const name of names){const key=normalizeStatIdentity(name);if(!key)continue;const owners=nameOwners.get(key)||new Set();owners.add(p.player_id);nameOwners.set(key,owners)}}
       const canonicalStatKey=st=>{if(st?.player_id)return 'player:'+st.player_id;const raw=normalizeStatIdentity(st?.raw_name??st?.name),owners=nameOwners.get(raw);return owners?.size===1?'player:'+owners.values().next().value:'raw:'+raw};
       if(opts.semantic!==false)for(const m of b.matches){if(m.series_score){const parts=String(m.series_score).split(':').map(Number);if(parts.some(x=>!Number.isInteger(x)||x<0))errors.push('invalid numeric series score:'+m.match_id)}const linked=(m.map_ids||[]).map(id=>maps.get(id)).filter(Boolean);if(linked.some(x=>x.match_id!==m.match_id))errors.push('map cross-link mismatch:'+m.match_id);if(m.team_assignment_source==='reconstructed'&&!nonEmptyString(m.team_assignment_note))errors.push('reconstructed assignment missing note:'+m.match_id)}
