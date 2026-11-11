@@ -3222,3 +3222,163 @@ html{scroll-behavior:auto!important}
 .faceit-reference-main{min-width:0}
 @media(max-width:980px){.faceit-profile-layout{grid-template-columns:190px minmax(0,1fr)!important}.faceit-reference-sidebar{top:70px}}
 @media(max-width:760px){.faceit-profile-layout{grid-template-columns:1fr!important}.faceit-reference-sidebar{position:relative;top:auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}.reference-user-card{grid-column:1/-1;display:grid;grid-template-columns:58px 1fr;column-gap:10px;align-items:center;text-align:left}.reference-user-card>img,.reference-avatar-fallback{width:54px;height:54px;grid-row:span 3;margin:0}.reference-user-elo{grid-column:1/-1}.reference-sidebar-group{min-width:0}.reference-sidebar-group:last-child{grid-column:1/-1}}
+
+
+/* FACEIT PROFILE MATCH — scoped profile-only visual pass */
+.faceit-profile-v2.faceit-profile-layout{
+  max-width:1500px!important;
+  grid-template-columns:236px minmax(0,1fr)!important;
+  gap:18px!important;
+  color:#f2f2f2!important;
+}
+.faceit-profile-v2 .faceit-reference-sidebar{
+  background:#171819!important;
+  border:1px solid #303234!important;
+  border-radius:3px!important;
+  padding:14px 12px!important;
+  gap:18px!important;
+}
+.faceit-profile-v2 .reference-user-card{
+  border-bottom:1px solid #303234!important;
+  padding:12px 8px 18px!important;
+}
+.faceit-profile-v2 .reference-user-card>img,
+.faceit-profile-v2 .reference-avatar-fallback{
+  width:92px!important;height:92px!important;
+  border:2px solid #45484a!important;
+  border-radius:3px!important;
+  margin-bottom:12px!important;
+}
+.faceit-profile-v2 .reference-user-card>b{
+  font-size:15px!important;font-weight:750!important;color:#f5f5f5!important;
+}
+.faceit-profile-v2 .reference-user-card>small{font-size:10px!important;color:#929699!important}
+.faceit-profile-v2 .reference-user-elo{
+  background:#202223!important;border:1px solid #373a3c!important;border-radius:2px!important;
+}
+.faceit-profile-v2 .reference-user-elo strong{color:#ff5500!important}
+.faceit-profile-v2 .reference-sidebar-group>span{color:#777d80!important;font-size:9px!important}
+.faceit-profile-v2 .reference-sidebar-group button{
+  border-radius:2px!important;text-transform:none!important;
+  letter-spacing:0!important;font-size:12px!important;font-weight:600!important;
+  color:#aeb2b4!important;min-height:36px!important;
+}
+.faceit-profile-v2 .reference-sidebar-group button:hover,
+.faceit-profile-v2 .reference-sidebar-group button.active{
+  background:rgba(255,85,0,.11)!important;
+  border-left-color:#ff5500!important;color:#fff!important;
+}
+.faceit-profile-v2 .faceit-profile-cover{
+  min-height:326px!important;border:1px solid #303234!important;
+  border-radius:2px!important;background-color:#202223!important;
+  background-position:center 38%!important;
+}
+.faceit-profile-v2 .faceit-profile-identity{
+  left:0!important;right:0!important;bottom:0!important;
+  padding:22px 24px!important;gap:12px!important;
+  align-items:flex-end!important;
+  background:linear-gradient(0deg,rgba(12,13,14,.97),rgba(12,13,14,.72) 72%,transparent)!important;
+}
+.faceit-profile-v2 .faceit-avatar-wrap{width:112px!important;height:112px!important;flex:0 0 112px!important}
+.faceit-profile-v2 .faceit-avatar{
+  border:2px solid #777!important;border-radius:2px!important;
+  box-shadow:0 3px 18px rgba(0,0,0,.35)!important;
+}
+.faceit-profile-v2 .faceit-player-name{min-width:170px!important;flex:1 1 180px!important;padding-bottom:8px!important}
+.faceit-profile-v2 .faceit-player-name h1{
+  color:#fff!important;font-size:30px!important;font-weight:750!important;
+  letter-spacing:-.035em!important;margin:0 0 5px!important;
+}
+.faceit-profile-v2 .faceit-player-name>span{color:#a7abad!important;font-size:11px!important}
+.faceit-profile-v2 .faceit-rating{
+  min-width:112px!important;padding:11px 13px!important;
+  background:rgba(27,29,30,.94)!important;
+  border:1px solid #45494b!important;border-radius:2px!important;
+  gap:4px!important;
+}
+.faceit-profile-v2 .faceit-rating small{font-size:8px!important;color:#a0a4a6!important}
+.faceit-profile-v2 .faceit-rating strong{font-size:24px!important;color:#ff5500!important}
+.faceit-profile-v2 .faceit-rating span{font-size:8px!important;color:#858a8c!important}
+.faceit-profile-v2 .faceit-cover-edit,
+.faceit-profile-v2 .faceit-avatar-edit{
+  border-radius:2px!important;background:#222526!important;
+  border:1px solid #555b5e!important;color:#eee!important;
+}
+.faceit-profile-v2 .faceit-profile-tabs-only{
+  height:52px!important;margin:0 0 16px!important;
+  background:#171819!important;border:1px solid #303234!important;
+  border-top:0!important;padding:0 12px!important;
+}
+.faceit-profile-v2 .faceit-profile-tabs-only button{
+  height:52px!important;padding:0 18px!important;
+  border-radius:0!important;background:transparent!important;
+  color:#a3a7a9!important;font-size:11px!important;
+  letter-spacing:.02em!important;text-transform:none!important;
+}
+.faceit-profile-v2 .faceit-profile-tabs-only button.active{
+  color:#fff!important;border-bottom:2px solid #ff5500!important;
+}
+.faceit-profile-v2 .faceit-elo-progress,
+.faceit-profile-v2 .faceit-perf-card,
+.faceit-profile-v2 .faceit-content-card,
+.faceit-profile-v2 .faceit-side-card{
+  background:#171819!important;border:1px solid #303234!important;
+  border-radius:2px!important;box-shadow:none!important;
+}
+.faceit-profile-v2 .faceit-elo-progress{padding:17px 19px!important}
+.faceit-profile-v2 .faceit-elo-head h3,
+.faceit-profile-v2 .faceit-perf-head h3,
+.faceit-profile-v2 .faceit-card-title h2,
+.faceit-profile-v2 .faceit-side-title h3{color:#f2f3f3!important}
+.faceit-profile-v2 .faceit-kicker{color:#929799!important}
+.faceit-profile-v2 .faceit-elo-head>strong,
+.faceit-profile-v2 .faceit-elo-line{color:#ff5500!important;stroke:#ff5500!important}
+.faceit-profile-v2 .faceit-elo-grid{stroke:#3b3e40!important}
+.faceit-profile-v2 .faceit-performance-grid{
+  border-color:#343739!important;
+}
+.faceit-profile-v2 .faceit-performance-grid>div{
+  border-color:#343739!important;background:#1b1d1e!important;
+}
+.faceit-profile-v2 .faceit-performance-grid span{color:#929799!important}
+.faceit-profile-v2 .faceit-performance-grid b{color:#f1f2f2!important}
+.faceit-profile-v2 .faceit-performance-grid small{color:#888e91!important}
+.faceit-profile-v2 .faceit-match-table-head{
+  background:#222425!important;color:#969b9e!important;
+  border-bottom:1px solid #3b3e40!important;
+}
+.faceit-profile-v2 .faceit-match-row{
+  background:#171819!important;border-top:1px solid #303234!important;
+  border-radius:0!important;color:#e9ebec!important;
+}
+.faceit-profile-v2 .faceit-match-row:hover{background:#222526!important}
+.faceit-profile-v2 .faceit-match-date,
+.faceit-profile-v2 .faceit-match-map{color:#a2a7a9!important}
+.faceit-profile-v2 .faceit-match-score,
+.faceit-profile-v2 .faceit-match-rating{color:#f1f2f2!important}
+.faceit-profile-v2 .faceit-text-link{color:#ff6a25!important}
+.faceit-profile-v2 .faceit-window-switch button{
+  border-radius:2px!important;background:#252829!important;
+  border:1px solid #414648!important;color:#bfc3c4!important;
+}
+.faceit-profile-v2 .faceit-window-switch button.active{
+  background:#ff5500!important;border-color:#ff5500!important;color:#fff!important;
+}
+.faceit-profile-v2 .faceit-form-dot{border-radius:2px!important}
+.faceit-profile-v2 .faceit-activity-cell{border-radius:1px!important}
+.faceit-profile-v2 .faceit-rank-card>strong{color:#ff5500!important}
+.faceit-profile-v2 .faceit-game-history-row{border-color:#343739!important}
+@media(max-width:1100px){
+  .faceit-profile-v2.faceit-profile-layout{grid-template-columns:205px minmax(0,1fr)!important}
+  .faceit-profile-v2 .faceit-profile-identity{flex-wrap:wrap!important}
+}
+@media(max-width:760px){
+  .faceit-profile-v2.faceit-profile-layout{grid-template-columns:1fr!important}
+  .faceit-profile-v2 .faceit-reference-sidebar{display:grid!important;grid-template-columns:1fr 1fr!important;position:relative!important;min-height:0!important}
+  .faceit-profile-v2 .reference-user-card{grid-column:1/-1!important}
+  .faceit-profile-v2 .faceit-profile-cover{min-height:420px!important}
+  .faceit-profile-v2 .faceit-profile-identity{padding:16px!important;gap:9px!important}
+  .faceit-profile-v2 .faceit-avatar-wrap{width:76px!important;height:76px!important;flex-basis:76px!important}
+  .faceit-profile-v2 .faceit-player-name h1{font-size:23px!important}
+  .faceit-profile-v2 .faceit-rating{min-width:calc(50% - 8px)!important;flex:1 1 calc(50% - 8px)!important}
+}
