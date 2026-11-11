@@ -33,6 +33,19 @@ Verified in the tracked frontend files:
 
 A new static contract suite guards the DEV branding, Supabase project ref and script ordering. These checks inspect repository source only; they do not prove what a live browser has downloaded.
 
+## Follow-up source audit — 2026-11-12
+
+A wider route-to-workflow audit added a per-section source map in [the route inventory](FACEIT_V2_ROUTE_INVENTORY_2026-11-11.md) and found two legacy controls that bypassed the central router:
+
+- Account-menu “Мой профиль” changed `state.tab` directly.
+- Season history “Все матчи” changed `state.tab` directly.
+
+Both now call `navigateApp('profile')` / `navigateApp('base')`. Regression contracts cover the complete critical workflow function surface, route dispatch, archive/restore of parent series and child maps, and prevent literal route mutations in cross-section controls.
+
+Latest quality gate: [run 43108458146](https://github.com/nonspam/cs2-5x5/actions/runs/43108458146), **122 passed / 0 failed**. Cloudflare Workers Build for `cs2-analytics-dev` succeeded on the same source branch: [build check](https://github.com/nonspam/cs2-5x5/runs/130817869345), version `44499ac1-3acf-460d-9e2b-01a0c35bed93`.
+
+The Cloudflare check confirms a successful Worker build, not that a browser is currently served that exact SHA. No live browser smoke test has been performed.
+
 ## Still open — do not mark as complete
 
 1. Obtain the exact Cloudflare `workers.dev` hostname from the Cloudflare deployment metadata. It is not present in the tracked deployment note.
@@ -45,5 +58,5 @@ A new static contract suite guards the DEV branding, Supabase project ref and sc
 
 - No production GitHub branch or production Supabase project was changed.
 - No Supabase rows, schema, policies, grants or migrations were changed in this batch.
-- No Cloudflare deployment was initiated.
+- GitHub-triggered Cloudflare DEV Worker build ran and succeeded; deployed serving SHA and browser behavior remain unverified.
 - No visual CSS or design decisions were changed.
