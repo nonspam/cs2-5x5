@@ -81,3 +81,46 @@ test('every inline click/change handler resolves to a declared runtime function'
   assert.deepEqual(unresolved, [], `unresolved inline handlers: ${unresolved.join(', ')}`);
   assert.ok(handlerNames.length >= 50, 'the source scan should cover the existing inline handler surface');
 });
+
+test('critical legacy workflows remain present behind the shared application shell', () => {
+  const required = [
+    'openMatchDetail', 'openMapDetail', 'openAddGame', 'selectNewFormat',
+    'toggleNewMap', 'continueNewGame', 'renderNewSetupStep',
+    'renderNewStatsStep', 'collectNewMapStats', 'reviewNewGame',
+    'commitNewGame', 'openEditMatch', 'saveMatchEdit', 'saveMatchTiming',
+    'deleteMatch', 'archiveMatch', 'openTrash', 'restoreMatch',
+    'openPlayerDrilldown', 'openPlayerDetail', 'openPublicPlayerProfile',
+    'openPlayerAdmin', 'savePlayerAdmin', 'editPlayer', 'savePlayerEdit',
+    'archivePlayer', 'restorePlayer', 'purgeArchivedPlayer',
+    'randomTeams', 'balanceTeams', 'exportBackup', 'importBackup',
+    'login', 'accountSignOut', 'handleProfileImage'
+  ];
+  const declared = new Set([...app.matchAll(/\b(?:async\s+)?function\s+([A-Za-z_$][\w$]*)\s*\(/g)].map(match => match[1]));
+  const missing = required.filter(name => !declared.has(name));
+  assert.deepEqual(missing, [], `missing workflow functions: ${missing.join(', ')}`);
+});
+
+test('cross-section controls use centralized route navigation and never mutate route state to a literal', () => {
+  assert.ok(app.includes(String.raw`state.profileSection=\'overview\';navigateApp(\'profile\')`), 'account menu profile link uses navigateApp');
+  assert.ok(app.includes(String.raw`navigateApp(\'base\')`), 'season history link uses navigateApp');
+  assert.doesNotMatch(app, /state\.tab\s*=\s*(?:\\)?['"](home|analytics|base|maps|teams|records|seasons|settings|profile|compare)['"]/);
+});
+
+test('analytics deliberately reuses the existing player analytics renderer', () => {
+  assert.match(app, /function analytics\(v\)\{players\(v\)\}/);
+  assert.match(app, /const pages=\{home,base,analytics,players,compare,maps,teams,records,seasons,settings\}/);
+  assert.match(app, /if\(state\.tab==='profile'\)\{profilePage\(v\)\}/);
+});
+
+test('match archive and restore remain paired workflows over series and child maps', () => {
+  const archiveStart = app.indexOf('function deleteMatch(');
+  const restoreStart = app.indexOf('function restoreMatch(');
+  const detailStart = app.indexOf('function openTrash(');
+  assert.ok(archiveStart >= 0 && restoreStart > archiveStart && detailStart > restoreStart);
+  const archiveBody = app.slice(archiveStart, restoreStart);
+  const restoreBody = app.slice(restoreStart, detailStart);
+  assert.match(archiveBody, /kind:'match_patch'[\s\S]*?archived:true/);
+  assert.match(archiveBody, /kind:'map_patch'[\s\S]*?archived:true/);
+  assert.match(restoreBody, /kind:'match_patch'[\s\S]*?archived:false/);
+  assert.match(restoreBody, /kind:'map_patch'[\s\S]*?archived:false/);
+});
