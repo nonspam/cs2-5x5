@@ -201,3 +201,15 @@
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:18:26+03:00 — docs: preserve engine audit findings in chat context
+
+- Commit: 0e0e7370fecfa025af466a878583b62fb779836e
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
