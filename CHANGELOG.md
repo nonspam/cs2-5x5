@@ -852,3 +852,15 @@
 - M	validation.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:23:10+03:00 — test: cover aggregate maximum and compact BO3 rule
+
+- Commit: eb8d8e8ba65f8cd6f1112c138bfa0996cba411fb
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/validation.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
