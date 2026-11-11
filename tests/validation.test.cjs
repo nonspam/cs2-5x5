@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { validateBase, assertBase } = require('../validation.js');
+const { validateBase: validateEdgeBase } = require('../supabase/functions/cs2-admin/validation.js');
 
 function makeBase({ format = 'BO1', mapCount = 1, stats = [], teamA = ['p1', 'p2', 'p3', 'p4', 'p5'], teamB = ['p6', 'p7', 'p8', 'p9', 'p10'] } = {}) {
   const players = Array.from({ length: 10 }, (_, i) => ({ player_id: `p${i + 1}`, name: `Player ${i + 1}` }));
@@ -188,4 +189,108 @@ test('series team stats resolve unlinked rows by a unique registered alias and d
   assert.ok(app.includes('owners.length===1&&owners[0].player_id===pid'));
   assert.ok(app.includes('statById||statByExactName||statByUniqueAlias'));
   assert.match(app, /statByUniqueAlias=statById\|\|statByExactName\|\|guest\?null:rows\.find/);
+});
+
+function makeGuestLocalSeries() {
+  const players = Array.from({ length: 9 }, (_, i) => ({
+    player_id: 'p' + (i + 1),
+    display_name: 'Player ' + (i + 1),
+    status: 'active',
+    is_active: true,
+    aliases: []
+  }));
+  const matchId = 'series_with_guest';
+  const mapIds = ['guest-map-1', 'guest-map-2'];
+  const maps = mapIds.map((mapId, mapIndex) => ({
+    map_id: mapId,
+    match_id: matchId,
+    map_index: mapIndex + 1,
+    map: mapIndex === 0 ? 'mirage' : 'inferno',
+    score: { team_a: 13, team_b: 8 },
+    stats_available: true,
+    player_stats: players.map((player, i) => ({
+      player_id: player.player_id,
+      raw_name: player.display_name,
+      kills: 10 + i + mapIndex,
+      deaths: 8 + i,
+      assists: 2 + (i % 3) + mapIndex
+    }))
+  }));
+  const totals = new Map();
+  for (const map of maps) {
+    for (const row of map.player_stats) {
+      const total = totals.get(row.player_id) || {
+        player_id: row.player_id, raw_name: row.raw_name,
+        kills: 0, deaths: 0, assists: 0
+      };
+      total.kills += row.kills;
+      total.deaths += row.deaths;
+      total.assists += row.assists;
+      totals.set(row.player_id, total);
+    }
+  }
+  return {
+    players,
+    aliases: {},
+    matches: [{
+      match_id: matchId,
+      format: 'BO3',
+      source_kind: 'local_series',
+      map_ids: mapIds,
+      series_score: '2:0',
+      team_a: ['p1', 'p2', 'p3', 'p4', 'p5'],
+      team_b: ['p6', 'p7', 'p8', 'p9'],
+      player_ids: players.map(player => player.player_id),
+      guest_players: [{ guest_id: 'guest_1', display_name: 'Guest', team: 'B' }],
+      series_aggregate_stats: [...totals.values()]
+    }],
+    maps
+  };
+}
+
+test('allows local series KDA aggregates with a guest omitted from statistics', () => {
+  const base = makeGuestLocalSeries();
+  assert.equal(base.matches[0].series_aggregate_stats.length, 9);
+  const client = validateBase(base);
+  assert.equal(client.ok, true, client.error);
+  const edge = validateEdgeBase(base);
+  assert.equal(edge.ok, true, (edge.errors || []).join('; ') || edge.error);
+});
+
+test('rejects a series aggregate that differs from the sum of its fully detailed maps', () => {
+  const base = makeGuestLocalSeries();
+  base.matches[0].series_aggregate_stats[0].kills += 1;
+  const client = validateBase(base);
+  assert.equal(client.ok, false);
+  assert.match(client.error, /series aggregate does not match detailed maps/);
+  const edge = validateEdgeBase(base);
+  assert.equal(edge.ok, false);
+  assert.match(edge.error, /series aggregate does not match detailed maps/);
+});
+
+test('allows aggregate summaries for partially detailed series without inventing missing map rows', () => {
+  const base = makeGuestLocalSeries();
+  base.maps[1].stats_available = false;
+  base.maps[1].player_stats = [];
+  const client = validateBase(base);
+  assert.equal(client.ok, true, client.error);
+  const edge = validateEdgeBase(base);
+  assert.equal(edge.ok, true, (edge.errors || []).join('; ') || edge.error);
+});
+
+test('requires ten aggregate rows for compact BO3 records in both validators', () => {
+  const base = makeGuestLocalSeries();
+  base.matches[0].source_kind = 'compact_bo3';
+  base.maps = base.maps.map(map => ({ ...map, stats_available: false, player_stats: [] }));
+  const client = validateBase(base);
+  assert.equal(client.ok, false);
+  assert.match(client.error, /compact BO3 must contain 10/);
+  const edge = validateEdgeBase(base);
+  assert.equal(edge.ok, false);
+  assert.match(edge.error, /compact BO3 must contain 10/);
+});
+
+test('runtime validation keeps partial local-series aggregates valid but requires full compact BO3 aggregates', () => {
+  const app = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'app_v57.js'), 'utf8');
+  assert.match(app, /if\\(m\\.source_kind==='compact_bo3'&&sas\\.length!==10\\)return false/);
 });
