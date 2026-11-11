@@ -21,6 +21,10 @@
       if(!uniq(b.matches,'match_id'))errors.push('duplicate/invalid match_id');
       if(b.players.some(p=>typeof p?.player_id!=='string'||!PLAYER_ID.test(p.player_id)))errors.push('invalid player_id');
       const pids=new Set(b.players.map(p=>p.player_id)),mids=new Set(b.matches.map(m=>m.match_id)),maps=new Map(b.maps.map(m=>[m.map_id,m])),listed=new Set();
+      const nameOwners=new Map();
+      const normalizeStatIdentity=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
+      for(const p of b.players){const names=[p.player_id,p.display_name,p.name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([name])=>name)];for(const name of names){const key=normalizeStatIdentity(name);if(!key)continue;const owners=nameOwners.get(key)||new Set();owners.add(p.player_id);nameOwners.set(key,owners)}}
+      const canonicalStatKey=st=>{if(st?.player_id)return 'player:'+st.player_id;const raw=normalizeStatIdentity(st?.raw_name??st?.name),owners=nameOwners.get(raw);return owners?.size===1?'player:'+owners.values().next().value:'raw:'+raw};
       for(const p of b.players){
         if(!nonEmptyString(p.display_name))errors.push('invalid display_name:'+p.player_id);
         if(!PLAYER_STATUS.has(p.status))errors.push('invalid player status:'+p.player_id);
@@ -78,10 +82,6 @@
         const seen=new Set();for(const st of rows){if(!st||!nonNeg(st.kills)||!nonNeg(st.deaths)||!nonNeg(st.assists))errors.push('invalid KDA:'+mp.map_id);if(st.player_id!=null&&!pids.has(st.player_id))errors.push('unknown player:'+mp.map_id);const k=canonicalStatKey(st);if(seen.has(k))errors.push('duplicate player stats:'+mp.map_id);seen.add(k)}
       }
       for(const [alias,pid] of Object.entries(b.aliases)){if(!String(alias).trim()||typeof pid!=='string'||!pids.has(pid))errors.push('invalid alias mapping:'+alias)}
-      const nameOwners=new Map();
-      const normalizeStatIdentity=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
-      for(const p of b.players){const names=[p.player_id,p.display_name,p.name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([name])=>name)];for(const name of names){const key=normalizeStatIdentity(name);if(!key)continue;const owners=nameOwners.get(key)||new Set();owners.add(p.player_id);nameOwners.set(key,owners)}}
-      const canonicalStatKey=st=>{if(st?.player_id)return 'player:'+st.player_id;const raw=normalizeStatIdentity(st?.raw_name??st?.name),owners=nameOwners.get(raw);return owners?.size===1?'player:'+owners.values().next().value:'raw:'+raw};
       if(opts.semantic!==false)for(const m of b.matches){if(m.series_score){const parts=String(m.series_score).split(':').map(Number);if(parts.some(x=>!Number.isInteger(x)||x<0))errors.push('invalid numeric series score:'+m.match_id)}const linked=(m.map_ids||[]).map(id=>maps.get(id)).filter(Boolean);if(linked.some(x=>x.match_id!==m.match_id))errors.push('map cross-link mismatch:'+m.match_id);if(m.team_assignment_source==='reconstructed'&&!nonEmptyString(m.team_assignment_note))errors.push('reconstructed assignment missing note:'+m.match_id)}
     }catch(e){errors.push(e?.message||'validation failed')}
     const unique=[...new Set(errors)];return {ok:unique.length===0,errors:unique,error:unique[0]||null};
