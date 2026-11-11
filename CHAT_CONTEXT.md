@@ -184,3 +184,12 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - Scanned runtime HTML sinks in `app_v57.js` and `account_module.js`, plus adapters/validators/data/ELO modules. No eval/new Function/document.write/javascript: sinks found. Dynamic user-facing strings are escaped at inspected HTML boundaries; map asset URLs are URL-encoded.
 - Two inline handlers use raw `player_id`; both browser and Edge validators constrain the allowed character set to Unicode letters/numbers plus `_ . : space -`, excluding quote and markup delimiters. Added a regression test for that invariant. Total suite is 100; CI remains queued.
 - This is static review only, not penetration testing or browser QA. See account security audit.
+
+
+## 2026-11-12 — CSS readiness pass
+
+- Static audit of `style_v57.css`: 3,514 lines, 92 custom properties, 125 media queries; shell CSS block ~14.7k chars/128 lines/153 parsed blocks/122 selector strings/18 `!important`/6 media queries. Legacy cascade has many repeated selectors; `.topbar nav` repeats 20 times, `.topbar` 16, `.nav-btn` 15.
+- Current shared shell is scoped under `.faceit-exact-shell` / `.faceit-route-shell`, but body `:has()` rules hide the old topbar and reset main. Must verify all routes in browser before visual changes.
+- Estimates: technical prep before owner-directed CSS ~80%; final approved visual CSS 5–10%; whole FACEIT V2 ~30–35%. These are planning estimates, not objective code coverage.
+- Original FACEIT HTML/CSS uploads are not confirmed in repo. Need them reattached before faithful CSS work. Exact Cloudflare URL and deployed SHA also remain unverified.
+- No CSS/runtime changes were made in this audit. Full report: `docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md`.

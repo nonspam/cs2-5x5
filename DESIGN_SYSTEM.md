@@ -42,3 +42,8 @@ FACEIT profile OBASRAL и переданные screenshot/HTML/CSS — визу�
 Не пытаться воспроизвести сложный интерфейс только по screenshot, если доступны исходные материалы. В предыдущей работе screenshot-only подход не давал нужного результата. Перелом наступил после изучения HTML + CSS реальной FACEIT profile page: это раскрыло типографику, selectors, avatar/cover, hero, gradients и stat tiles. Подробная история и handoff: [FACEIT_REFERENCE.md](FACEIT_REFERENCE.md).
 
 Семейства, замеченные в выгрузке: Geist Variable, Geist Mono, Play, Coiny, Goldman. Это не готовая карта назначения шрифтов — проверить конкретные declarations и computed styles при повторном доступе к исходникам. Исходные большие HTML/CSS файлы пока не подтверждены в GitHub; если отсутствуют, попросить пользователя загрузить их повторно.
+
+
+## CSS readiness checkpoint — 2026-11-12
+
+The current stylesheet is a prototype layered onto a dense legacy cascade. Static measurements, shell selector map, risks and the staged implementation plan are documented in [the CSS readiness audit](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md). Planning estimate: about 80% of technical preparation is complete before the owner-directed CSS pass; final approved visual implementation is only about 5–10% complete. Do not start broad restyling until the original FACEIT HTML/CSS reference extracts are available and the DEV browser baseline is captured.

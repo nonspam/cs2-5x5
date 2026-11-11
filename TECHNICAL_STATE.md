@@ -6,6 +6,7 @@
 - Runtime restored from the full snapshot and integrated into a shared profile-inspired shell. The shell is a technical prototype, not an approved final design.
 - User workflow: work autonomously in larger batches; avoid micro-updates. Request HTML/CSS/screenshots only when a specific section is ready for owner-directed visual implementation. Do not invent section design.
 - Runtime remains a vanilla JS SPA centered on `app_v57.js`; browser QA and Cloudflare deployed SHA are not verified.
+- CSS readiness checkpoint (2026-11-12): about 80% of technical prep before owner-directed visual CSS is complete; final approved FACEIT visual work is only 5–10%. [CSS/cascade audit](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
 - DEV Supabase ref: `nwujudniysolpevbtggd`. State: v156, 14 players, 42 matches, 93 maps, 14 profiles, 1 auth user.
 - DEV Edge Function `cs2-admin`: active version 3, deployed from `faceit-dev`; current full state validates with zero errors. No database/schema writes were performed.
 - Source test suite has 100 cases. GitHub Actions quality gate passed on commit `2fcabef0bca7076da77c214b87f0e26075605d97`: 100 passed / 0 failed. [CI run](https://github.com/nonspam/cs2-5x5/actions/runs/43100294912).
