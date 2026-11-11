@@ -7,3 +7,15 @@
 - Добавлен workflow автоматической записи Git changes.
 - Основано на HEAD 3b680400fdfaae5805fff8e4e862dd568578c9ff и доступных документах faceit-dev.
 - Кодовые тесты документационного commit и deployment проверяются отдельно.
+
+## 2026-11-11T05:00:08+03:00 — fix: correct project memory workflow variable expansion
+
+- Commit: \`2916eb95ac1d5c08803fbbf120b99cdb1c0d603b\`
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- \`M	.github/workflows/project-memory.yml\`
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
