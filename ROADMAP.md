@@ -42,7 +42,7 @@
 - [x] Принять решение: профильный shell становится оболочкой всего сайта.
 - [x] Восстановить runtime, account/profile, DEV config, regression tests и quality gate в faceit-dev.
 - [x] Зафиксировать allowlist маршрутов, историю навигации и shared-shell wiring на уровне исходников.
-- [ ] Инвентаризировать все текущие маршруты, кнопки, вкладки и действия: работает / частично / placeholder / лишнее.
+- [x] Провести source-level инвентаризацию маршрутов, workflow и inline handlers; добавить regression test на разрешение всех обработчиков (53/53). Browser QA остаётся отдельным незакрытым этапом.
 - [ ] Утвердить компактную карту навигации внутри profile shell; не сохранять старую и новую навигацию параллельно.
 - [ ] Подключить к одному shell существующие Players, Statistics, Matches/Series, Maps, Teams, Records, Seasons, Track и Settings.
 - [ ] Сделать каждый видимый control рабочим; placeholders скрыть до готовности.
