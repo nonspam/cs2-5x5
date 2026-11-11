@@ -461,3 +461,16 @@
 - M	docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T23:55:23+03:00 — test: cover account invitation and profile security contracts
+
+- Commit: 185a2dfa136312dc48e3d71ef97442a513e94d65
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/FACEIT_V2_ACCOUNT_SECURITY_AUDIT_2026-11-11.md
+- A	tests/account-security-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
