@@ -40,3 +40,19 @@ test('Edge validation accepts manual_edit provenance for an edited historical se
   const result = validateEdgeBase(data);
   assert.equal(result.ok, true, (result.errors || []).join('; ') || result.error || 'manual_edit provenance was rejected');
 });
+
+
+test('Edge validation treats an empty played_at field as an optional date', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'data_embedded.js'), 'utf8');
+  const match = source.match(/window\.CS2_EMBEDDED_DATA\s*=\s*(\{[\s\S]*\});?\s*$/);
+  assert.ok(match, 'embedded data assignment must contain a parseable JSON object');
+  const data = JSON.parse(match[1]);
+  const emptyDate = validateEdgeBase(data);
+  assert.equal(emptyDate.ok, true, (emptyDate.errors || []).join('; ') || emptyDate.error || 'empty played_at should be allowed');
+
+  const invalidDateState = JSON.parse(JSON.stringify(data));
+  invalidDateState.matches[0].played_at = 'not-a-date';
+  const invalidDate = validateEdgeBase(invalidDateState);
+  assert.equal(invalidDate.ok, false);
+  assert.match(invalidDate.error, /invalid played_at/);
+});
