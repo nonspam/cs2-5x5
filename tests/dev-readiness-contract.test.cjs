@@ -90,3 +90,13 @@ test('DEV player account is linked through the shared profile APIs and avatar UI
   assert.match(html, /accountMenuRoot/);
 
 });
+
+
+test('player create, archive, and restore keep status synchronized with is_active', () => {
+  const app = read('app_v57.js');
+  const edgeValidation = read('supabase/functions/cs2-admin/validation.js');
+  assert.match(app, /aliases:alias\?\[alias\]:\[\],status:'active',is_active:true/);
+  assert.match(app, /patch=\{status:'active',is_active:true,updated_at\}/);
+  assert.match(app, /patch=\{status:'archived',is_active:false,updated_at\}/);
+  assert.match(edgeValidation, /PLAYER_STATUS=new Set\(\['active','archived'\]\)/);
+});
