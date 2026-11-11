@@ -368,3 +368,17 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:57:50+03:00 — docs: record FACEIT V2 shell implementation and QA checkpoint
+
+- Commit: cf5a20cd4bb3f61040c4ee2f384f1fa2914db690
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+- M	docs/FACEIT_V2_PRODUCT_BRIEF.md
+- A	docs/FACEIT_V2_RUNTIME_AUDIT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
