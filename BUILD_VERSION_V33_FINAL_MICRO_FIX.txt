@@ -1,4 +1,0 @@
-V33 FINAL MICRO FIX
-Base: V32 DEVICE READY
-Changes: custom dark/lime selects; fast player-picker updates; AVG dynamic series fix.
-No DB/data changes.

@@ -1,3 +1,0 @@
-CS2 Analytics V53 cleanup
-Build date: 2026-09-30
-Dataset: 14 players / 67 maps / 33 matches

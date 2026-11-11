@@ -1,0 +1,67 @@
+name: Project memory journal
+
+on:
+  push:
+    branches:
+      - faceit-dev
+
+permissions:
+  contents: write
+
+concurrency:
+  group: project-memory-faceit-dev
+  cancel-in-progress: false
+
+jobs:
+  append-commit-record:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out pushed revision
+        uses: actions/checkout@v4
+        with:
+          ref: faceit-dev
+          fetch-depth: 0
+
+      - name: Append commit metadata
+        env:
+          BEFORE_SHA: \${{ github.event.before }}
+          AFTER_SHA: \${{ github.event.after }}
+          PUSH_ACTOR: \${{ github.actor }}
+        run: |
+          set -euo pipefail
+          if [ "\${AFTER_SHA}" = "0000000000000000000000000000000000000000" ]; then
+            exit 0
+          fi
+          if grep -q "\${AFTER_SHA}" CHANGELOG.md; then
+            echo "Commit already recorded."
+            exit 0
+          fi
+          SUBJECT="$(git log -1 --format=%s "\${AFTER_SHA}")"
+          COMMIT_DATE="$(git log -1 --format=%cI "\${AFTER_SHA}")"
+          AUTHOR="$(git log -1 --format='%an <%ae>' "\${AFTER_SHA}")"
+          if [ "\${BEFORE_SHA}" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "\${BEFORE_SHA}^{commit}" 2>/dev/null; then
+            FILES="$(git diff-tree --no-commit-id --name-status -r "\${AFTER_SHA}")"
+          else
+            FILES="$(git diff --name-status "\${BEFORE_SHA}" "\${AFTER_SHA}")"
+          fi
+          {
+            printf '\\n## %s — %s\\n' "\${COMMIT_DATE}" "\${SUBJECT}"
+            printf '\\n- Commit: \`%s\`\\n- Author: %s\\n- Push actor: %s\\n' "\${AFTER_SHA}" "\${AUTHOR}" "\${PUSH_ACTOR}"
+            printf '\\n### Changed paths\\n\\n'
+            if [ -n "\${FILES}" ]; then
+              while IFS= read -r line; do printf -- '- \`%s\`\\n' "\${line}"; done <<< "\${FILES}"
+            else
+              printf -- '- No file list available.\\n'
+            fi
+            printf '\\n> Автоматическая запись GitHub Actions; это не смысловое резюме чата.\\n'
+          } >> CHANGELOG.md
+
+      - name: Commit journal update
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- CHANGELOG.md; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "docs: record faceit-dev change in project journal"
+          git push origin HEAD:faceit-dev
