@@ -732,3 +732,15 @@
 - M	ROADMAP.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:49:29+03:00 — test: verify inline runtime handlers resolve
+
+- Commit: 058524819e8e17cbed1231094c03ef738965545b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
