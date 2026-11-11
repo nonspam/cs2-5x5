@@ -3388,7 +3388,7 @@ html{scroll-behavior:auto!important}
 body:has(.faceit-exact-shell){background:#101010!important;color:#eee!important;font-family:Inter,Arial,sans-serif!important}
 body:has(.faceit-exact-shell) .topbar{display:none!important}
 body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;padding:0!important}
-.faceit-exact-shell{--fx-orange:#ff5500;position:relative;display:grid;grid-template-columns:202px 442px minmax(0,900px) 52px;gap:0;width:min(100%,1708px);min-height:100vh;margin:0 auto;background:linear-gradient(90deg,rgba(10,10,10,.34),rgba(8,8,8,.66)),radial-gradient(ellipse at 55% 5%,#454545 0,#202020 52%,#080808 100%);border-left:1px solid #080808;border-right:1px solid #080808;color:#eee;overflow:hidden}
+.faceit-exact-shell{--fx-orange:#ff5500;position:relative;display:grid;grid-template-columns:202px 442px 900px 164px 52px;gap:0;width:100%;min-height:100vh;margin:0;background:linear-gradient(90deg,rgba(10,10,10,.34),rgba(8,8,8,.66)),radial-gradient(ellipse at 55% 5%,#454545 0,#202020 52%,#080808 100%);border-left:1px solid #080808;border-right:1px solid #080808;color:#eee;overflow:hidden}
 .faceit-exact-shell:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,rgba(0,0,0,.05),rgba(0,0,0,.58));z-index:0}
 .faceit-exact-global-rail,.faceit-exact-player-column,.faceit-exact-content,.faceit-exact-right-rail{position:relative;z-index:1;min-width:0}
 .faceit-exact-global-rail{min-height:100vh;border-right:1px solid rgba(255,255,255,.1);padding:22px 19px 18px;background:rgba(20,20,20,.2);display:flex;flex-direction:column}
