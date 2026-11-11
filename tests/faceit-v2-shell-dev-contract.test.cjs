@@ -114,13 +114,15 @@ test('analytics deliberately reuses the existing player analytics renderer', () 
 
 test('match archive and restore remain paired workflows over series and child maps', () => {
   const archiveStart = app.indexOf('function deleteMatch(');
+  const archiveEnd = app.indexOf('function archiveMatch(', archiveStart);
   const restoreStart = app.indexOf('function restoreMatch(');
-  const detailStart = app.indexOf('function openTrash(');
-  assert.ok(archiveStart >= 0 && restoreStart > archiveStart && detailStart > restoreStart);
-  const archiveBody = app.slice(archiveStart, restoreStart);
-  const restoreBody = app.slice(restoreStart, detailStart);
-  assert.match(archiveBody, /kind:'match_patch'[\s\S]*?archived:true/);
-  assert.match(archiveBody, /kind:'map_patch'[\s\S]*?archived:true/);
-  assert.match(restoreBody, /kind:'match_patch'[\s\S]*?archived:false/);
-  assert.match(restoreBody, /kind:'map_patch'[\s\S]*?archived:false/);
+  const restoreEnd = app.indexOf('function openEditMatch(', restoreStart);
+  assert.ok(archiveStart >= 0 && archiveEnd > archiveStart, 'match archive function exists');
+  assert.ok(restoreStart >= 0 && restoreEnd > restoreStart, 'match restore function exists');
+  const archiveBody = app.slice(archiveStart, archiveEnd);
+  const restoreBody = app.slice(restoreStart, restoreEnd);
+  assert.match(archiveBody, /kind:'match_patch'[\\s\\S]*?archived:true/);
+  assert.match(archiveBody, /kind:'map_patch'[\\s\\S]*?archived:true/);
+  assert.match(restoreBody, /kind:'match_patch'[\\s\\S]*?archived:false/);
+  assert.match(restoreBody, /kind:'map_patch'[\\s\\S]*?archived:false/);
 });
