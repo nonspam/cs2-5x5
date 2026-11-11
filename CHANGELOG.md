@@ -936,3 +936,15 @@
 - M	supabase/functions/cs2-admin/validation.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:31:54+03:00 — fix: initialize player identity map before edge validation loops
+
+- Commit: 6391bcd46db9313539dac7d6c68521c234f809d2
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	supabase/functions/cs2-admin/validation.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
