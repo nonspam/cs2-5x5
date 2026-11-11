@@ -828,3 +828,15 @@
 - M	validation.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:22:08+03:00 — test: cover guest series aggregates and map parity
+
+- Commit: 2215a72a4593dc1d99e9f6eb2766d728d9780977
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/validation.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
