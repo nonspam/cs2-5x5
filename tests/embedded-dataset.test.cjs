@@ -26,3 +26,17 @@ test('embedded fallback also satisfies the stricter Edge Function state contract
   const result = validateEdgeBase(data);
   assert.equal(result.ok, true, (result.errors || []).join('; ') || result.error || 'embedded data failed Edge validation');
 });
+
+
+test('Edge validation accepts manual_edit provenance for an edited historical series', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'data_embedded.js'), 'utf8');
+  const match = source.match(/window\.CS2_EMBEDDED_DATA\s*=\s*(\{[\s\S]*\});?\s*$/);
+  assert.ok(match, 'embedded data assignment must contain a parseable JSON object');
+  const data = JSON.parse(match[1]);
+  const historical = data.matches.find(item => item.source_kind === 'detailed');
+  assert.ok(historical, 'fixture must include a detailed historical series');
+  historical.team_assignment_source = 'manual_edit';
+
+  const result = validateEdgeBase(data);
+  assert.equal(result.ok, true, (result.errors || []).join('; ') || result.error || 'manual_edit provenance was rejected');
+});
