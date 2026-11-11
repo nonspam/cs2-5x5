@@ -117,3 +117,15 @@
 - M	PROJECT_MASTER.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T19:32:16+03:00 — Document FACEIT research history and chat handoff
+
+- Commit: d2ea4554af33c7bdef407640655e4b85c98736d4
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	FACEIT_REFERENCE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
