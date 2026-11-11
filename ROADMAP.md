@@ -68,16 +68,16 @@
 
 - Runtime восстановлен в `faceit-dev` отдельным commit `c8ee8cd8776bd4fc113d88a1531b5596db8fb45e`; 71 отобранный файл из snapshot `3b68040`.
 - Восстановлены entrypoint, app/profile/account, CSS, Supabase DEV config/adapter, ELO, fallback data, assets, tests, migrations и quality gate.
-- CI runs для нового commit созданы и на момент записи ожидают выполнения; успешный результат ещё не подтверждён.
+- Quality gate для runtime recovery прошёл; после унификации shell commit `390a580d` прошёл `npm run check`: 83 теста, 0 ошибок. Workflow: https://github.com/nonspam/cs2-5x5/actions/runs/43091902336.
 - DEV URL/deployed SHA/browser QA остаются непроверенными: workers.dev endpoint не открылся в веб-инструменте.
 
 Следующий порядок:
 1. Получить результат `npm run check` / GitHub Actions на новом HEAD.
 2. Подтвердить Cloudflare deployed SHA и пройти browser QA desktop/mobile.
-3. Инвентаризировать кликабельность и состав разделов в runtime.
-4. Спроектировать и реализовать единый profile shell/router FACEIT V2.
-5. Подключить старые функции и проверить единство расчётов/данных.
-6. После acceptance отдельно развивать сезоны, ELO/calibration и seasonal rollover.
+3. Провести полный аудит controls и маршрутов: рабочие / частичные / placeholders / удалить.
+4. Завершить переход всех разделов на единый profile shell и проверить back/forward.
+5. Подключить/проверить старые функции и сверить единые расчёты/данные.
+6. После acceptance отдельно развивать Track, полноценные сезоны, ELO/calibration и seasonal rollover.
 7. Production остаётся вне scope без отдельного разрешения.
 
 Read-only findings до восстановления: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
