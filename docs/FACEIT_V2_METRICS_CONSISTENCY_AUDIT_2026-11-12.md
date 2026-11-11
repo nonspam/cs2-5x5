@@ -62,7 +62,7 @@ Regression tests cover:
 - profile series-level W/L/D and winrate;
 - existing career aggregation and Player Index invariants.
 
-The Records restoration passed 133/133 tests. An additional profile-granularity regression has been added and its CI result will be recorded after completion.
+The final GitHub Actions quality gate [run 43115948403](https://github.com/nonspam/cs2-5x5/actions/runs/43115948403) passed: **134 tests passed / 0 failed**, including profile-series winrate granularity.
 
 The DEV Cloudflare Worker build for the Records helper restoration completed successfully:
 - service: `cs2-analytics-dev`;
