@@ -307,3 +307,15 @@
 - M	DECISIONS.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:53:05+03:00 — docs: add FACEIT V2 product brief
+
+- Commit: 203e07be297308087489892d9069640db49e7d21
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/FACEIT_V2_PRODUCT_BRIEF.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
