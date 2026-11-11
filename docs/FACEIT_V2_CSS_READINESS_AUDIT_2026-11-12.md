@@ -62,3 +62,24 @@ The shell-specific CSS begins near the end of `style_v57.css`, after earlier leg
 - No exact deployed Cloudflare URL or deployed SHA has been verified. The configured DEV service name is `cs2-analytics-dev`; the actual `workers.dev` hostname is not present in tracked documentation.
 - The current prototype shell is not the final design.
 - No CSS changes, production deployment, database mutation or migration were made in this audit.
+
+## Route-specific content roots
+
+The current route renderers already expose several useful CSS scoping roots:
+
+| Route | Current main content root | CSS implication |
+|---|---|---|
+| Home | `.home-shell` / `.home-rebuild` | Can be scoped without changing global `main` styles |
+| Players / analytics | generic `.section` with `.players-table` | A future dedicated page root may be useful before a major visual pass |
+| Matches / base | `.base-page` | Existing page-specific root |
+| Maps | `.maps-page` | Existing page-specific root and map-card family |
+| Teams | `.teams-page` | Existing page-specific root |
+| Records | `.records-page` | Existing page-specific root |
+| Seasons | `.season-page` | Existing page-specific root |
+| Profile | `.faceit-*` component family | Existing profile-specific component scope |
+
+This map is based on the current render templates and CSS selector presence, not a browser-computed-style inspection. Keep these roots as the starting points for section-level CSS work; do not introduce new global selectors just to restyle one route.
+
+## Quality gate for this audit commit
+
+GitHub Actions quality gate passed on `96623ce00e2b11fd7c9f3eb17c1e7d8701eddd7e`: 100 tests passed, 0 failed. [Run 43101582571](https://github.com/nonspam/cs2-5x5/actions/runs/43101582571).

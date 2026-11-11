@@ -193,3 +193,5 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 - Estimates: technical prep before owner-directed CSS ~80%; final approved visual CSS 5–10%; whole FACEIT V2 ~30–35%. These are planning estimates, not objective code coverage.
 - Original FACEIT HTML/CSS uploads are not confirmed in repo. Need them reattached before faithful CSS work. Exact Cloudflare URL and deployed SHA also remain unverified.
 - No CSS/runtime changes were made in this audit. Full report: `docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md`.
+
+- Follow-up CSS route-root map added to the readiness report (home, players, base, maps, teams, records, seasons, profile). Quality gate for CSS audit commit passed: 100/100 tests, 0 failures (run 43101582571).

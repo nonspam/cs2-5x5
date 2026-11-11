@@ -11,7 +11,7 @@
 - [x] Fix player create/archive/restore status synchronization in the runtime source.
 - [x] Confirm GitHub Actions for the expanded 100-test suite: 100 passed / 0 failed on [run 43100294912](https://github.com/nonspam/cs2-5x5/actions/runs/43100294912).
 - [ ] Browser QA on DEV and verify Cloudflare deployed SHA.
-- [x] Audit stylesheet cascade and shared-shell CSS readiness; [report](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
+- [x] Audit stylesheet cascade, route content roots and shared-shell CSS readiness; [report](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
 - [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
 - [ ] After technical audit, implement each visual section from owner-supplied HTML/CSS/references.
 
