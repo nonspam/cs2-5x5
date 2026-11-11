@@ -280,34 +280,31 @@ function profilePage(v){
        '<div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ / ELO</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div>'+
        '<div class="faceit-match-list">'+(matchRows(recent.slice(0,10))||'<div class="empty">Матчей пока нет.</div>')+'</div></section></div>'+
        '<aside class="faceit-side-column">'+gameHistory+activity+rankCard+'</aside></div>';
- v.innerHTML='<section class="section faceit-profile faceit-profile-v2 faceit-profile-layout">'+
-   '<aside class="faceit-reference-sidebar"><div class="reference-user-card">'+
-     (avatar?'<img src="'+esc(avatar)+'" alt="">':'<span class="reference-avatar-fallback">'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+
-     '<b>'+esc(p.display_name)+'</b><small>@'+esc(id)+'</small><div class="reference-user-elo"><span>ELO</span><strong>'+Math.round(elo)+'</strong></div></div>'+
-     '<div class="reference-sidebar-group"><span>МОЙ ПРОФИЛЬ</span><button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">◉ Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">▤ История матчей</button></div>'+
-     '<div class="reference-sidebar-group"><span>СТАТИСТИКА</span><button onclick="state.tab=\'analytics\';render()">▥ Общая статистика</button><button onclick="state.tab=\'seasons\';state.seasonView=\'all\';render()">◉ Сезоны</button><button onclick="state.tab=\'maps\';render()">◫ Карты</button></div>'+
-     '<div class="reference-sidebar-group"><span>АККАУНТ</span><button onclick="state.tab=\'settings\';render()">⚙ Настройки аккаунта</button></div>'+
-   '</aside><div class="faceit-reference-main">'+
-   '<div class="faceit-profile-cover" style="'+(cover?'background-image:linear-gradient(0deg,rgba(8,12,18,.96),rgba(8,12,18,.12)),url(\''+esc(cover)+'\')':'')+'">'+
-     (canEditProfile?'<button class="faceit-cover-edit" onclick="document.getElementById(\'profileCoverFile\').click()" aria-label="Изменить обложку">✎</button>':'')+
-     '<div class="faceit-profile-identity"><div class="faceit-avatar-wrap">'+
-       (avatar?'<img class="faceit-avatar" src="'+esc(avatar)+'" alt="">':'<div class="faceit-avatar faceit-avatar-empty">'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</div>')+
-       (canEditProfile?'<button class="faceit-avatar-edit" onclick="document.getElementById(\'profileAvatarFile\').click()" aria-label="Изменить аватар">✎</button>':'')+'</div>'+
-       '<div class="faceit-player-name"><h1>'+esc(p.display_name)+'</h1><span>@'+esc(id)+'</span></div>'+
-       '<div class="faceit-rating"><small>РЕЙТИНГ ELO</small><strong>'+elo.toLocaleString('ru-RU',{maximumFractionDigits:1})+'</strong><span>'+(eloInfo.matches<10?'КАЛИБРОВКА '+eloInfo.matches+'/10':'АКТИВНЫЙ РЕЙТИНГ')+'</span></div>'+
-       '<div class="faceit-rating"><small>УРОВЕНЬ</small><strong>'+String(eloInfo.level??4)+'</strong><span>ШКАЛА FACEIT</span></div>'+
-       '<div class="faceit-rating"><small>ПИК ELO</small><strong>'+fmt(peakElo,1)+'</strong><span>ЛУЧШИЙ РЕЙТИНГ</span></div>'+
-       '<div class="faceit-rating"><small>МЕСТО В ГРУППЕ</small><strong>#'+rank+'</strong><span>ИЗ '+ranked.length+'</span></div>'+
-     '</div></div>'+
-   '<div class="faceit-profile-tabs faceit-profile-tabs-only">'+
-     '<button class="'+(state.profileSection!=='history'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Итоги</button>'+
-     '<button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button>'+
+
+ v.innerHTML='<section class="faceit-exact-shell">'+
+   '<aside class="faceit-exact-global-rail"><div class="faceit-exact-brand">◢</div><div class="faceit-exact-search">⌕ <span>Поиск</span></div><div class="faceit-exact-game">◉ <b>CS2</b></div><nav><button>▷ <span>Играть</span></button><button>♧ <span>Ранг</span></button><button>⌁ <span>Track</span></button><button>☷ <span>Лента</span></button><button>♧ <span>Клубы</span></button><button>⊕ <span>Создать клуб</span></button></nav><div class="faceit-exact-rail-bottom"><button>▧ <span>Миссии</span></button><button>♧ <span>Магазин</span></button><button class="premium">★ <span>Премиум</span></button></div></aside>'+
+   '<aside class="faceit-exact-player-column"><div class="faceit-exact-player-card">'+
+     '<div class="faceit-exact-avatar-frame">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
+     '<h1>'+esc(p.display_name)+' <small>✥</small></h1>'+
+     '<div class="faceit-exact-player-actions">'+(canEditProfile?'<button onclick="document.getElementById(\'profileAvatarFile\').click()">✎ РЕД. ПРОФИЛЬ</button>':'')+'<button onclick="GenUIShareProfile()">♧ ПОДЕЛИТЬ</button></div>'+
+     '<div class="faceit-exact-season-link"><span>ТЕКУЩИЙ РЕЙТИНГ</span><b>CS2 · ELO</b><strong>'+Math.round(elo).toLocaleString('ru-RU')+' <small>→</small></strong></div>'+
+     '<div class="faceit-exact-player-meta"><b>Игрок платформы</b><span>@'+esc(id)+'</span><span>Матчей: '+all.length+'</span></div>'+
+     '<div class="faceit-exact-country"><span>◉</span> Игрок CS2</div>'+
+     '<div class="faceit-exact-game-history"><b>История игр</b><div><span class="faceit-exact-cs-icon">CS</span><span><b>CS2</b><small>'+all.length+' матчей</small></span><i>ⓘ</i></div></div>'+
    '</div>'+
-   eloGraphMarkup+
-   (canEditProfile?'<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])">'+
-   '<input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">':'')+
-   body+
-   '</div></section>';
+   '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
+   '<main class="faceit-exact-content">'+
+     '<div class="faceit-exact-top-tabs"><button class="active">ИГРЫ</button><button disabled>ДРУЗЬЯ</button><button disabled>ВИДЕО</button><button disabled>ГОСТЕВАЯ КНИГА</button><button disabled>ИНВЕНТАРЬ</button><button disabled>КЛУБЫ</button><button disabled>КОМАНДЫ</button></div>'+
+     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="active">Итоги</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button disabled>Матчмейкинг</button><button disabled>Лиги</button><button disabled>Турниры</button></div>'+
+     '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;Сезон · CS2</b><small>Рейтинговая статистика игрока</small></div><span>СТАТИСТИКА ИГРОКА ›</span></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
+     '<section class="faceit-exact-results"><div class="faceit-exact-results-head"><b>Недавние результаты</b><span>Последние матчи ('+all.length+') · изменение ELO <b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b></span></div>'+
+       '<div class="faceit-exact-result-line"><span>Изменение ELO</span><b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><span class="faceit-exact-wl"><b>🟩 '+sum.wins+'</b> / <b>🟥 '+sum.losses+'</b></span></div>'+eloGraphMarkup+
+       '<div class="faceit-exact-form">'+(recentForm||'<span>Пока нет сыгранных матчей</span>')+'</div></section>'+
+     '<div class="faceit-exact-stats-heading"><b>Показатели игрока</b><span>Реальная статистика матчей</span></div>'+
+     '<div class="faceit-exact-stat-strip"><div><b>'+fmt(sum.kd,2)+'</b><span>K/D</span></div><div><b>'+fmt(sum.avgKills,1)+'</b><span>Убийств / карта</span></div><div><b>'+fmt(sum.avgDeaths,1)+'</b><span>Смертей / карта</span></div><div><b>'+fmt(sum.avgAssists,1)+'</b><span>Помощей / карта</span></div><div><b>'+fmt(sum.winrate,1)+'%</b><span>Процент побед</span></div><div><b>'+sum.matches+'</b><span>Матчей</span></div></div>'+
+     '<div class="faceit-exact-lower">'+body+'</div>'+
+     (canEditProfile?'<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])"><input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">':'')+
+   '</main><aside class="faceit-exact-right-rail"><span>◉</span><span>♧</span><span>♧</span><span>⊕</span><span>♙</span></aside></section>';
 }async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
