@@ -295,3 +295,42 @@ test('runtime validation keeps partial local-series aggregates valid but require
   const app = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'app_v57.js'), 'utf8');
   assert.ok(app.includes("if(m.source_kind==='compact_bo3'&&sas.length!==10)return false"));
 });
+
+test('resolves a series aggregate raw name to the unique registered player before parity check', () => {
+  const base = makeGuestLocalSeries();
+  const row = base.matches[0].series_aggregate_stats[0];
+  const player = base.players.find(item => item.player_id === row.player_id);
+  row.player_id = null;
+  row.raw_name = player.display_name.toUpperCase();
+  assert.equal(validateBase(base).ok, true, validateBase(base).error);
+  const edge = validateEdgeBase(base);
+  assert.equal(edge.ok, true, (edge.errors || []).join('; ') || edge.error);
+});
+
+test('rejects duplicate map rows that resolve to the same registered player by ID and raw alias', () => {
+  const base = makeGuestLocalSeries();
+  base.maps[0].player_stats.push({
+    player_id: null, raw_name: 'PLAYER 1', kills: 1, deaths: 1, assists: 1
+  });
+  const client = validateBase(base);
+  assert.equal(client.ok, false);
+  assert.match(client.error, /duplicate player stats/);
+  const edge = validateEdgeBase(base);
+  assert.equal(edge.ok, false);
+  assert.ok((edge.errors || []).some(error => /duplicate player stats/.test(error)));
+});
+
+test('rejects duplicate series aggregate rows that resolve to the same registered player by ID and raw alias', () => {
+  const base = makeGuestLocalSeries();
+  const player = base.players[0];
+  base.matches[0].series_aggregate_stats[1] = {
+    player_id: null, raw_name: player.display_name.toUpperCase(),
+    kills: 1, deaths: 1, assists: 1
+  };
+  const client = validateBase(base);
+  assert.equal(client.ok, false);
+  assert.match(client.error, /duplicate series player/);
+  const edge = validateEdgeBase(base);
+  assert.equal(edge.ok, false);
+  assert.ok((edge.errors || []).some(error => /duplicate series player/.test(error)));
+});
