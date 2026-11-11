@@ -203,7 +203,7 @@ function profileSummary(rows){
 }
 const APP_ROUTE_IDS=['home','analytics','base','maps','teams','records','seasons','settings','profile','compare'];
 function appRouteFromLocation(){
- const route=String(window.location.hash||'').replace(/^#\\/?/,'').split(/[?&]/)[0].trim();
+ const route=String(window.location.hash||'').replace(/^#\/?/,'').split(/[?&]/)[0].trim();
  return APP_ROUTE_IDS.includes(route)?route:'home';
 }
 function navigateApp(tab,options={}){
