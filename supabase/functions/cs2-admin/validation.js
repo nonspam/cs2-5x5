@@ -46,7 +46,7 @@
         if(m.source_kind==='compact_bo3'&&sas.length!==10)errors.push('compact BO3 must contain 10 series aggregate rows:'+m.match_id);
         const seenSeries=new Set();for(const st of sas){if(!st||!nonNeg(st.kills)||!nonNeg(st.deaths)||!nonNeg(st.assists))errors.push('invalid series KDA:'+m.match_id);if(st.player_id!=null&&!pids.has(st.player_id))errors.push('unknown series player:'+m.match_id);const k=st.player_id||'raw:'+(st.raw_name||'');if(seenSeries.has(k))errors.push('duplicate series player:'+m.match_id);seenSeries.add(k)}
         if(sas.length&&(m.map_ids||[]).length&&(m.map_ids||[]).every(id=>maps.get(id)?.stats_available===true)){
-          const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+          const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
           const owners=new Map();
           for(const p of b.players){
             const names=[p.player_id,p.display_name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([alias])=>alias)];
