@@ -948,3 +948,15 @@
 - M	supabase/functions/cs2-admin/validation.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:34:29+03:00 — docs: record guest series aggregate validation fix
+
+- Commit: 4c1ba8886f32ccce24db1cf7b130639d7c6df0f2
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/FACEIT_V2_GUEST_SERIES_AGGREGATE_VALIDATION_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
