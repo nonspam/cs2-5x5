@@ -11,7 +11,7 @@
       for(const m of b.maps)if(!used.has(m.map_id))return{ok:false,error:'orphan map: '+m.map_id};
       for(const [a,p] of Object.entries(b.aliases))if(!String(a).trim()||typeof p!=='string'||!pids.has(p))return{ok:false,error:'invalid alias mapping'};
       const nameOwners=new Map();
-      const normalizeStatIdentity=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\\s+/g,' ');
+      const normalizeStatIdentity=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
       for(const p of b.players){const names=[p.player_id,p.display_name,p.name,...(Array.isArray(p.aliases)?p.aliases:[]),...Object.entries(b.aliases).filter(([,pid])=>pid===p.player_id).map(([alias])=>alias)];for(const name of names){const key=normalizeStatIdentity(name);if(!key)continue;const owners=nameOwners.get(key)||new Set();owners.add(p.player_id);nameOwners.set(key,owners)}}
       const canonicalStatKey=st=>{if(st?.player_id)return 'player:'+st.player_id;const raw=normalizeStatIdentity(st?.raw_name??st?.name),owners=nameOwners.get(raw);return owners?.size===1?'player:'+owners.values().next().value:'raw:'+raw};
       for(const m of b.maps){
