@@ -69,3 +69,15 @@
 - A	CHAT_CONTEXT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T05:02:01+03:00 — docs: link saved project discussion context
+
+- Commit: 6a52ef6cf89b611f25e8d2426b0c8d705ac95fee
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- No file list available.
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
