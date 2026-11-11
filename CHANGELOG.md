@@ -213,3 +213,85 @@
 - M	CHAT_CONTEXT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:52:22+03:00 — restore: recover FACEIT DEV runtime and regression baseline
+
+- Commit: c8ee8cd8776bd4fc113d88a1531b5596db8fb45e
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	.github/workflows/quality-gate.yml
+- A	CLOUDFLARE_DEV_DEPLOYMENT.md
+- A	CLOUD_SETUP.md
+- A	README.md
+- A	account_module.js
+- A	app_v57.js
+- A	assets/maps/ancient.svg
+- A	assets/maps/anubis.svg
+- A	assets/maps/cache.svg
+- A	assets/maps/dust2.svg
+- A	assets/maps/inferno.svg
+- A	assets/maps/logos/ancient.png
+- A	assets/maps/logos/anubis.png
+- A	assets/maps/logos/cache.png
+- A	assets/maps/logos/dust2.png
+- A	assets/maps/logos/inferno.png
+- A	assets/maps/logos/mirage.png
+- A	assets/maps/logos/nuke.png
+- A	assets/maps/logos/overpass.png
+- A	assets/maps/logos/train.png
+- A	assets/maps/logos/vertigo.png
+- A	assets/maps/mirage-hero-test.png
+- A	assets/maps/mirage.svg
+- A	assets/maps/nuke-clean.png
+- A	assets/maps/nuke-hero.png
+- A	assets/maps/nuke.png
+- A	assets/maps/nuke.svg
+- A	assets/maps/overpass.svg
+- A	assets/maps/train.svg
+- A	assets/maps/vertigo.svg
+- A	data/aliases.json
+- A	data/maps.json
+- A	data/matches.json
+- A	data/players.json
+- A	data_embedded.js
+- A	docs/DATA_MODEL.md
+- A	docs/ENGINEERING_BASELINE.md
+- A	docs/UNRESOLVED_GUEST_STATS_AUDIT_2026-10-22.md
+- A	elo_v3.js
+- A	favicon-128.png
+- A	favicon-192.png
+- A	favicon-512.png
+- A	favicon-64.png
+- A	index.html
+- A	manifest.json
+- A	package.json
+- A	style_v57.css
+- A	supabase-config.js
+- A	supabase/functions/cs2-admin/index.ts
+- A	supabase/functions/cs2-admin/validation.js
+- A	supabase/migrations/20261002_admin_commit_rpc.sql
+- A	supabase/migrations/20261110204350_player_account_invites_and_self_service_linking.sql
+- A	supabase/migrations/20261110204818_validate_active_player_on_account_claim.sql
+- A	supabase/migrations/20261110211414_move_player_account_helpers_to_private_schema.sql
+- A	supabase/migrations/20261110_dev_clone_schema_alignment.sql
+- A	supabase/migrations/20261110_dev_cs2_state_read_grants.sql
+- A	supabase/migrations/20261110_dev_foreign_key_indexes.sql
+- A	supabase_adapter.js
+- A	supabase_schema.sql
+- A	tests/account-profile.test.cjs
+- A	tests/adapter-operations.test.cjs
+- A	tests/dev-readiness-contract.test.cjs
+- A	tests/elo_v3.test.cjs
+- A	tests/embedded-dataset.test.cjs
+- A	tests/entrypoint.test.cjs
+- A	tests/lifecycle-regression.test.cjs
+- A	tests/metrics-regression.test.cjs
+- A	tests/player-index-golden.test.cjs
+- A	tests/runtime-contract.test.cjs
+- A	tests/validation.test.cjs
+- A	validation.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
