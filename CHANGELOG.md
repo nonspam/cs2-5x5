@@ -672,3 +672,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:42:45+03:00 — test: cover direct hash navigation restoration
+
+- Commit: 9706c82d0cc97e9aad2e561ffe3f6edcf978d98f
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
