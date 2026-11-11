@@ -57,3 +57,15 @@
 - M	.github/workflows/project-memory.yml
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T05:01:59+03:00 — docs: preserve project discussion context
+
+- Commit: 30856b02ab17e821052256a91586e8bc405a8231
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	CHAT_CONTEXT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
