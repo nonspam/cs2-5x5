@@ -153,3 +153,15 @@
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T19:32:47+03:00 — Track FACEIT research handoff tasks
+
+- Commit: 27ef0d2cf49432be658946012156a1cfba3f5d6b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
