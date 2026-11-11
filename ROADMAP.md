@@ -11,7 +11,7 @@
 - [x] Fix player create/archive/restore status synchronization in the runtime source.
 - [x] Confirm GitHub Actions for the expanded 100-test suite: 100 passed / 0 failed on [run 43100294912](https://github.com/nonspam/cs2-5x5/actions/runs/43100294912).
 - [x] Add static regression contracts for shared-shell route allowlist/renderers, navigation history/hash changes, settings entry and DEV Supabase isolation; [audit](docs/FACEIT_V2_SHELL_ROUTING_DEV_ISOLATION_2026-11-12.md). GitHub Actions [run 43105580669](https://github.com/nonspam/cs2-5x5/actions/runs/43105580669): 117 passed / 0 failed.
-- [ ] Browser QA on DEV and verify Cloudflare deployed SHA.
+- [ ] Execute the browser QA matrix on DEV and verify Cloudflare deployed SHA: [execution plan](docs/FACEIT_V2_BROWSER_QA_PLAN_2026-11-12.md). Mutating flows remain local-fixture/mock only while DB row writes are out of scope.
 - [x] Audit stylesheet cascade, route content roots and shared-shell CSS readiness; [report](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
 - [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
 - [ ] After technical audit, implement each visual section from owner-supplied HTML/CSS/references.
@@ -35,8 +35,8 @@
 - [x] Source-level проверка DEV config: браузерная конфигурация указывает только на DEV Supabase project ref; runtime network еще не проверен.
 - [x] Составить инвентаризацию страниц: работает / частично / placeholder / не проверено.
 - [x] Добавить regression contracts для маршрутов, hash/history и DEV-конфигурации.
-- [ ] Проверить DEV runtime и profile shell в браузере.
-- [ ] Проверить desktop/tablet/mobile, keyboard, touch и direct-link/reload в браузере.
+- [ ] Проверить DEV runtime и profile shell в браузере по [QA matrix](docs/FACEIT_V2_BROWSER_QA_PLAN_2026-11-12.md); mutation flows — только на local fixture/mock до разрешения на DB writes.
+- [ ] Проверить desktop/tablet/mobile, keyboard, touch и direct-link/reload в браузере по QA matrix.
 
 ## 2. FACEIT V2 — профиль как основной сайт
 - [x] Принять решение: профильный shell становится оболочкой всего сайта.
