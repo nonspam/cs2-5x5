@@ -319,3 +319,15 @@
 - A	docs/FACEIT_V2_PRODUCT_BRIEF.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-11T22:55:37+03:00 — feat: make FACEIT profile shell the unified app navigation
+
+- Commit: fb7f2ea406b4468663fd297925bd0e09b53efebe
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
