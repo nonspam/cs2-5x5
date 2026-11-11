@@ -490,3 +490,15 @@
 - M	tests/account-security-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T00:05:23+03:00 — test: align invite profile assertion with migration predicate
+
+- Commit: 6d3749969aa805a5ad119e5fef6233291af5dfcf
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- No file list available.
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
