@@ -816,3 +816,15 @@
 - M	docs/FACEIT_V2_SHELL_ROUTING_DEV_ISOLATION_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T01:22:04+03:00 — fix: allow guest series aggregate row counts
+
+- Commit: 84f8db8f4e53e5b9d6111b3ac9de53329c19ea7a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	validation.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
