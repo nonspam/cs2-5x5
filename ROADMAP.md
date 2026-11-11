@@ -17,10 +17,16 @@
 - Убедиться, что DEV config не обращается к production Supabase.
 - Сохранить regression coverage до крупных UI изменений.
 
-## 2. Единый shell
-- Утвердить общую навигацию, токены и повторяемые компоненты.
-- Перевести Home, Players, Profile, Matches и Statistics, сохранив текущие функции.
-- Проверить desktop/tablet/mobile.
+## 2. FACEIT V2 — профиль как основной сайт
+- [x] Принять решение: профильный shell становится оболочкой всего сайта.
+- [x] Восстановить runtime, account/profile, DEV config, regression tests и quality gate в faceit-dev.
+- Инвентаризировать все текущие маршруты, кнопки, вкладки и действия: работает / частично / placeholder / лишнее.
+- Утвердить компактную карту навигации внутри profile shell; не сохранять старую и новую навигацию параллельно.
+- Подключить к одному shell существующие Players, Statistics, Matches/Series, Maps, Teams, Records, Seasons, Track и Settings.
+- Сделать каждый видимый control рабочим; placeholders скрыть до готовности.
+- Проверить desktop/tablet/mobile и переходы profile ↔ global sections.
+- Подтвердить CI, DEV deployment SHA и browser QA перед переносом данных/новыми миграциями.
+
 
 ## 3. Общая аналитика
 - Глобальная статистика и сравнение игроков.
@@ -58,16 +64,20 @@
 - [ ] Проверить, есть ли исходные FACEIT HTML/CSS в GitHub; если нет — запросить у пользователя повторную загрузку.
 - [ ] После получения исходников сохранить разрешённые reference материалы и конкретную карту selectors/fonts/DOM.
 
-## Срочный blocker — состояние ветки на 2026-11-11
+## Статус восстановления runtime — 2026-11-11
 
-Перед UI-унификацией требуется восстановить runtime: текущий HEAD faceit-dev 25dcab8 содержит только 11 docs/workflow файлов; 195 файлов приложения отсутствуют в tree, хотя сохранены в истории commit 3b68040. Не принимать это за новый движок или завершённый merge.
+- Runtime восстановлен в `faceit-dev` отдельным commit `c8ee8cd8776bd4fc113d88a1531b5596db8fb45e`; 71 отобранный файл из snapshot `3b68040`.
+- Восстановлены entrypoint, app/profile/account, CSS, Supabase DEV config/adapter, ELO, fallback data, assets, tests, migrations и quality gate.
+- CI runs для нового commit созданы и на момент записи ожидают выполнения; успешный результат ещё не подтверждён.
+- DEV URL/deployed SHA/browser QA остаются непроверенными: workers.dev endpoint не открылся в веб-инструменте.
 
 Следующий порядок:
-1. Восстановить runtime из 3b68040 в faceit-dev, сохранив текущие docs.
-2. Проверить DEV Supabase config, npm run check и CI.
-3. Подтвердить Cloudflare deployed SHA и пройти browser QA desktop/mobile.
-4. Спроектировать единый shell/router и реальную кликабельность разделов.
-5. Реализовать Track и полноценные Seasons; сейчас Track отсутствует как рабочая страница, Season 1 — placeholder.
-6. После DEV acceptance отдельно согласовать production merge.
+1. Получить результат `npm run check` / GitHub Actions на новом HEAD.
+2. Подтвердить Cloudflare deployed SHA и пройти browser QA desktop/mobile.
+3. Инвентаризировать кликабельность и состав разделов в runtime.
+4. Спроектировать и реализовать единый profile shell/router FACEIT V2.
+5. Подключить старые функции и проверить единство расчётов/данных.
+6. После acceptance отдельно развивать сезоны, ELO/calibration и seasonal rollover.
+7. Production остаётся вне scope без отдельного разрешения.
 
-Read-only подробности и Supabase findings: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
+Read-only findings до восстановления: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
