@@ -2692,3 +2692,15 @@
 - M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T23:20:17+03:00 — Redesign match overview and map-specific stats
+
+- Commit: 720f659c0f3d6e159160eec1da45382ba86dce9e
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
