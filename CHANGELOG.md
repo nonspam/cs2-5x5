@@ -1860,3 +1860,15 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T16:20:52+03:00 — Preserve profile runtime cache version contract
+
+- Commit: ecc6c18d579c9f7283b2b95d705bcfed26050d37
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
