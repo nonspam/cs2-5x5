@@ -48,7 +48,7 @@ test('shared shell has responsive layout and mobile navigation rules', () => {
 });
 
 test('application routes support direct hash entry and browser back/forward navigation', () => {
-  assert.match(app, /const APP_ROUTE_IDS=\['home','analytics','base','maps','teams','records','seasons','settings','profile','compare'\]/);
+  assert.match(app, /const APP_ROUTE_IDS=\['home','analytics','base','maps','teams','records','seasons','track','settings','profile','compare'\]/);
   assert.match(app, /function appRouteFromLocation\(\)/);
   assert.match(app, /window\.location\.hash/);
   assert.match(app, /window\.history\[method\]/);
