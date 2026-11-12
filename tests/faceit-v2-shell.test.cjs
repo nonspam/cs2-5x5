@@ -157,7 +157,18 @@ test('Track and season archive live inside Profile instead of occupying permanen
   assert.ok(profile.includes('widgetSeason.label'));
 });
 
-test('Match Center renders compact player rows, rectangular map score rows and match awards',()=>{const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);for(const x of ['match-room-hero','match-room-result','match-room-layout','match-room-center','match-room-map-list','match-map-row','match-room-team','match-stat-teams','match-scoreboard','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','match-awards','match-mvp-card','НАИБОЛЬШИЙ УРОН','KAST','ЭНТРИ-УБИЙСТВА','data-match-tab="overview"','data-match-tab="stats"'])assert.ok(s.includes(x),x);assert.match(s,/profileSummary\(profileMatchesForPlayer/);assert.match(s,/match-career-metric/);assert.match(s,/K\\/R/);assert.match(s,/ADR/);assert.match(s,/HS%/);assert.match(s,/stat-positive/);assert.match(s,/stat-negative/);assert.match(s,/CS2EloV3\?\.player\(id\)/);assert.doesNotMatch(s,/CS2EloV3\?\.playerData/);assert.doesNotMatch(s,/AVG MAP|5x5 stats|match local/i);});
-test('Match Center responsive styles include full-screen layout and map artwork',()=>{for(const x of ['.match-detail-modal','.match-room-hero','.match-room-layout','.match-room-team','.match-room-map-list','.match-scoreboard','.match-detail-tabs'])assert.ok(css.includes(x),x);assert.match(css,/@media\(max-width:600px\)/);});
-
-test('Match Center reference styling uses compact rectangular map rows and square player avatars',()=>{assert.match(css,/\.match-room-center \.match-map-row\{display:grid;grid-template-columns:38px minmax\(0,1fr\) auto/);assert.match(css,/\.match-room-team \.match-player-card-ref \.player-avatar\{width:40px!important;height:40px!important;[^}]*border-radius:5px!important/);assert.match(css,/\.match-awards\{display:grid/);});
+test('Match Center renders compact player rows, rectangular map score rows and match awards',()=>{
+  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);
+  for(const x of ['match-room-hero','match-room-result','match-room-layout','match-room-center','match-room-map-list','match-map-row','match-room-team','match-stat-teams','match-scoreboard','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','match-awards','match-mvp-card','НАИБОЛЬШИЙ УРОН','KAST','ЭНТРИ-УБИЙСТВА','data-match-tab="overview"','data-match-tab="stats"','profileSummary(profileMatchesForPlayer','K/R','ADR','HS%','stat-positive','stat-negative','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
+  assert.doesNotMatch(s,/CS2EloV3\?\.playerData/);
+  assert.doesNotMatch(s,/AVG MAP|5x5 stats|match local/i);
+});
+test('Match Center responsive styles include full-screen layout and map artwork',()=>{
+  for(const x of ['.match-detail-modal','.match-room-hero','.match-room-layout','.match-room-team','.match-room-map-list','.match-scoreboard','.match-detail-tabs']) assert.ok(css.includes(x),x);
+  assert.match(css,/@media\(max-width:600px\)/);
+});
+test('Match Center reference styling uses compact rectangular map rows and square player avatars',()=>{
+  assert.ok(css.includes('.match-room-center .match-map-row{display:grid;grid-template-columns:38px minmax(0,1fr) auto'));
+  assert.ok(css.includes('.match-room-team .match-player-card-ref .player-avatar{width:40px!important;height:40px!important'));
+  assert.ok(css.includes('.match-awards{display:grid'));
+});
