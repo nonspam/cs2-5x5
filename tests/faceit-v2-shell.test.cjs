@@ -98,3 +98,25 @@ test('map catalogue photos fill the tile and K/D uses tabular numerals',()=>{ass
 test('Profile and Track render player-relative scores with a muted opponent number',()=>{assert.ok(app.includes('playerScoreMarkup(playerSeriesScoreLabel(q.m,id,q.maps)'));assert.ok(app.includes('playerScoreMarkup(playerSeriesScoreLabel(q.m,targetId,q.maps)'));assert.match(app,/function playerScoreMarkup\(score\)/);assert.match(css,/\.score-muted\{color:rgba\(220,226,232,\.52\)!important/);});
 test('Match map buttons wrap into a responsive grid and their modal scrollbar is visually hidden',()=>{assert.ok(app.includes('toolbar match-map-buttons'));assert.match(css,/\.match-map-buttons\{[\s\S]*grid-template-columns:repeat\(auto-fit,minmax\(180px,1fr\)\)!important/);assert.match(css,/#modal \.modal\.panel\.wide::-webkit-scrollbar/);});
 test('Map catalogue photo reaches the card edge without a divider gap',()=>{assert.match(css,/\.maps-page \.map-card-grid \.map-card-image\{[\s\S]*margin-bottom:-1px!important/);assert.match(css,/height:calc\(100% \+ 1px\)!important/);});
+
+test('The global rail spaces navigation and aligns Settings at the same bottom offset',()=>{
+  assert.match(css,/\.faceit-app-shell \.faceit-exact-global-rail nav\{[\s\S]*gap:12px!important/);
+  assert.match(css,/\.faceit-app-shell \.faceit-exact-rail-bottom\{[\s\S]*padding-bottom:12px!important/);
+  assert.match(css,/\.faceit-app-shell \.faceit-exact-global-rail\{[\s\S]*height:100vh!important/);
+});
+test('Home workspace fills the available route width without the old 1480px cap',()=>{
+  assert.match(css,/\.faceit-route-shell \.faceit-route-content\{[\s\S]*max-width:none!important/);
+  assert.match(css,/\.home-rebuild\{[\s\S]*width:100%!important[\s\S]*max-width:none!important/);
+  assert.match(css,/\.faceit-route-shell:has\(\.home-rebuild\)/);
+});
+test('Players table is slightly larger and map cards give more space to the photograph',()=>{
+  assert.match(css,/\.players-table td\{[\s\S]*font-size:13px!important/);
+  assert.match(css,/\.maps-page \.map-card-grid \.map-card\{[\s\S]*aspect-ratio:1\.15 \/ 1!important/);
+  assert.match(css,/\.maps-page \.map-card-grid \.map-card-image\{[\s\S]*min-height:150px!important/);
+  assert.match(css,/\.maps-page \.map-card-grid \.map-card-photo\{[\s\S]*inset:-1px!important[\s\S]*width:calc\(100% \+ 2px\)!important/);
+});
+test('All scrollbars are hidden without disabling overflow scrolling',()=>{
+  assert.match(css,/html,body,\*\{[\s\S]*scrollbar-width:none!important/);
+  assert.match(css,/\*::-webkit-scrollbar\{[\s\S]*display:none!important/);
+  assert.doesNotMatch(css,/html,body,\*\{[^}]*overflow:\s*hidden/);
+});
