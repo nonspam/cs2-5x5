@@ -2070,3 +2070,15 @@
 - M	tests/runtime-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T18:31:21+03:00 — fix: retain unambiguous guest alias resolution in Match Center
+
+- Commit: 800fd471eb52e90aae6974487bc94db0133af9cf
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
