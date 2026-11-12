@@ -2848,3 +2848,15 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T01:20:25+03:00 — Fix profile ELO chart hover and click hit testing
+
+- Commit: 90b7167bda6ce28c3d5eb4f0d3b988457684d61c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
