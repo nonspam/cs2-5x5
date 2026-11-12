@@ -2055,3 +2055,18 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T18:30:44+03:00 — fix: preserve Match Center player and ELO contracts
+
+- Commit: 7defb307f32cfec62f8f5db23822cd07c6f3e48d
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	index.html
+- M	tests/account-profile.test.cjs
+- M	tests/runtime-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
