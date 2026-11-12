@@ -226,7 +226,7 @@ test('Track hover tooltip floats beside points and never blocks pointer travel w
   assert.ok(fn.includes("document.addEventListener('keydown'"));
   const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
   assert.match(css,/\.track-chart-tooltip\{position:fixed/);
-  assert.match(css,/\.track-chart-tooltip\[data-pinned="true"\]\{pointer-events:auto\}/);
+  assert.match(css,/\.track-chart-tooltip\[data-pinned="true"\]\{pointer-events:auto;/);
 });
 
 test('Track tooltip exposes match date/time, map badges, player KDA and available ELO context', () => {
