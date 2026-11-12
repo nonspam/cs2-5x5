@@ -211,3 +211,8 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 ### Match Center implementation follow-up
 
 The first Match Center implementation was committed, then the existing UI contract test correctly flagged one obsolete assertion that required the removed team AVG MAP label. The test was updated to assert the new map tile, career metric grid, future-metric placeholders, and positive/negative scoreboard states. A draw is labeled as a draw rather than incorrectly showing a winner. CI result for the first pass: 181/182 passed; this follow-up is intended to bring the suite back to green.
+
+
+### Match Center hotfix — 2026-11-12
+
+User reported that match details stopped opening from Profile after the Match Center first pass. Root cause found: Match Center called `window.CS2EloV3.playerData(id)`, but the actual public ELO API exports this method as `window.CS2EloV3.player(id)`. The mismatch threw a TypeError while rendering the first player card, preventing the modal from being inserted. Fixed the call to the actual API and added a regression assertion against the exported method name. No database changes, deployment, or browser QA.
