@@ -2,6 +2,18 @@
 
 > This section supersedes older checkpoint snapshots further down this file. Historical entries are retained as a change record, not as the current state.
 
+## Latest Match Overview checkpoint — 2026-11-12
+
+- Working branch: `faceit-dev` only. Last source implementation commit: `0b9051d9c4c0b090c91382976d6831f6a1d04ca9`; CSS commit: `f71fb7e58bf74ad3ee48834807c7ea0e645a8287`; contract test commit: `8adb0537fd758141068d6b11edeb20040a6c03d8`. Documentation was subsequently updated; re-check branch HEAD before the next write.
+- Owner supplied a readable FACEIT match-room HTML/CSS attachment. Analysis and data mapping: [Match Overview reference analysis](docs/MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md).
+- Overview source changes: match-room nav/tabs, match metadata, score card, roster headings and center match info/map list. Current average ELO is derived from known current CS2EloV3 player ratings and explicitly labelled current, not historical.
+- The supplied DOM includes browser-extension injected analytics (fc-strip/fc-note/faceit-lobby-stats/fc-plate/forecast). Do not treat these as native FACEIT elements or import their sample metrics.
+- Only `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs` and documentation were changed. Statistics renderer remains unchanged.
+- JavaScript and test source syntax compilation passed in the connector runtime. Full `npm run check` / GitHub Quality Gate for these commits is not confirmed yet.
+- No browser QA, deployment, DB writes, SQL, migrations, schema/RLS/grants changes, `main`, or production changes were performed.
+- Next: verify Quality Gate, fix any failures, then request owner visual acceptance. Do not start Statistics until the owner approves Overview.
+
+
 - Working branch: `faceit-dev`; do not change `main`.
 - Runtime restored from the full snapshot and integrated into a shared profile-inspired shell. The shell is a technical prototype, not an approved final design.
 - User workflow: work autonomously in larger batches; avoid micro-updates. Request HTML/CSS/screenshots only when a specific section is ready for owner-directed visual implementation. Do not invent section design.
