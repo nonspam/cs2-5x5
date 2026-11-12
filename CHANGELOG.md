@@ -1970,3 +1970,16 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T17:55:16+03:00 — Fix profile season and embedded Track test contracts
+
+- Commit: 3d6cfacc05e659c9c0891e4acbd75968978e6e41
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
