@@ -171,3 +171,22 @@ test('Track route is registered, linked in navigation, and renders data-driven f
   assert.match(css, /Track Stats — functional first implementation/);
   assert.match(css, /\.track-kpis/);
 });
+
+
+test('Track is account-scoped by linked player and never falls back to an arbitrary active player', () => {
+  const trackStart = app.indexOf('function track(v){');
+  const trackEnd = app.indexOf('\\nfunction render(){', trackStart);
+  const track = app.slice(trackStart, trackEnd);
+  assert.match(track, /const targetId=state\.trackTargetId\|\|state\.myPlayerId\|\|null/);
+  assert.match(track, /if\(!targetId\)/);
+  assert.match(track, /profileMatchesForPlayer\(targetId\)/);
+  assert.doesNotMatch(track, /activePlayers\(\).*sort|people\[0\]/);
+  assert.match(app, /state\.trackTargetId=null;navigateApp\(button\.dataset\.appRoute\)/);
+  assert.match(app, /state\.trackTargetId=\\\\''\+esc\(id\)\+/);
+});
+
+test('Player profile exposes a Track tab for explicit public profile browsing', () => {
+  assert.match(app, /profileSection==='track'/);
+  assert.match(app, /PUBLIC PLAYER TRACK/);
+  assert.match(app, /PERSONAL PLAYER TRACK/);
+});
