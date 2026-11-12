@@ -2964,3 +2964,19 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/validation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T02:05:48+03:00 — test: align Match Overview contracts with current UI
+
+- Commit: df1ff7dc9557a505f255b47ee9e30a79b5a66c03
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHANGELOG.md
+- M	PROJECT_MASTER.md
+- M	TECHNICAL_STATE.md
+- M	tests/faceit-v2-shell.test.cjs
+- M	tests/validation.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
