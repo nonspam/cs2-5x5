@@ -3908,3 +3908,37 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
   .faceit-exact-shell .faceit-match-table-head,
   .faceit-exact-shell .faceit-match-row{min-width:700px}
 }
+
+
+/* Track Stats — functional first implementation, using existing career match aggregates. */
+.track-page{width:min(100%,1480px);margin:0 auto;padding:clamp(18px,2.5vw,34px);color:var(--text)}
+.track-head,.track-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.track-head h1{font-size:clamp(28px,3vw,42px);margin:8px 0}
+.track-head p{color:var(--muted);margin:0}
+.track-head-count{display:grid;text-align:right;gap:4px}.track-head-count b{font-size:28px}.track-head-count span,.track-section-head>span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.track-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:26px 0}
+.track-filters label{display:grid;gap:8px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.08em}
+.track-filters select{width:100%;min-width:0}
+.track-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.track-kpis article,.track-chart-panel,.track-matches-panel{background:rgba(14,18,23,.38);border:1px solid rgba(255,255,255,.09);border-radius:14px}
+.track-kpis article{padding:17px;display:grid;gap:10px;min-width:0}
+.track-kpis article span{font-size:10px;color:var(--muted);letter-spacing:.08em;font-weight:800}
+.track-kpis article b{font-size:clamp(17px,1.6vw,24px);overflow-wrap:anywhere}
+.track-chart-panel,.track-matches-panel{padding:20px;margin-top:14px}
+.track-section-head{align-items:center;margin-bottom:16px}
+.track-section-head h2{font-size:18px;margin:5px 0 0}
+.track-chart-wrap{width:100%;overflow:hidden}
+.track-chart-wrap svg{display:block;width:100%;height:auto;min-height:140px}
+.track-axis{stroke:rgba(255,255,255,.25);stroke-width:1}
+.track-gridline{stroke:rgba(255,255,255,.08);stroke-dasharray:4 6}
+.track-line{fill:none;stroke:#42d99a;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.track-point{fill:#42d99a;stroke:#0d1419;stroke-width:2}
+.track-chart-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-top:8px}
+.track-match-head,.track-match-row{display:grid;grid-template-columns:minmax(130px,1fr) minmax(90px,.65fr) minmax(180px,1.5fr) minmax(70px,.5fr) minmax(110px,.8fr);gap:14px;align-items:center}
+.track-match-head{padding:10px 14px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.08em;border-bottom:1px solid var(--line)}
+.track-match-row{width:100%;text-align:left;padding:13px 14px;border:0;border-bottom:1px solid rgba(255,255,255,.06);background:transparent;color:var(--text);cursor:pointer}
+.track-match-row:hover{background:rgba(255,255,255,.035)}
+.track-match-row span:nth-child(3){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track-empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed rgba(255,255,255,.12);border-radius:10px}
+@media(max-width:900px){.track-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.track-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.track-page{padding:14px}.track-head{align-items:flex-start;flex-direction:column}.track-head-count{text-align:left}.track-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.track-match-head,.track-match-row{min-width:700px}.track-matches-panel{overflow-x:auto}}
