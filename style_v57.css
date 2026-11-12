@@ -3863,3 +3863,48 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
   max-width:none;
   min-width:0;
 }
+
+
+/* Profile match history: identical full-width tracks for labels and values. */
+.faceit-exact-shell .faceit-match-table-head,
+.faceit-exact-shell .faceit-match-row{
+  display:grid;
+  grid-template-columns:minmax(145px,1.35fr) minmax(64px,.58fr) minmax(100px,.92fr) minmax(64px,.58fr) minmax(105px,.98fr) minmax(190px,1.8fr);
+  column-gap:clamp(12px,1.4vw,22px);
+  align-items:center;
+  width:100%;
+  box-sizing:border-box;
+}
+.faceit-exact-shell .faceit-match-table-head{
+  padding-left:22px;
+  padding-right:22px;
+}
+.faceit-exact-shell .faceit-match-row{
+  min-width:0;
+  padding-left:22px;
+  padding-right:22px;
+}
+.faceit-exact-shell .faceit-match-row>span,
+.faceit-exact-shell .faceit-match-table-head>span{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.faceit-exact-shell .faceit-match-date{white-space:nowrap}
+.faceit-exact-shell .faceit-match-result{text-align:left}
+.faceit-exact-shell .faceit-match-rating.kd-positive{color:#42d99a}
+.faceit-exact-shell .faceit-match-rating.kd-negative{color:#ff5968}
+.faceit-exact-shell .faceit-match-rating.kd-neutral{color:#e9eef2}
+@media(max-width:900px){
+  .faceit-exact-shell .faceit-match-table-head,
+  .faceit-exact-shell .faceit-match-row{
+    grid-template-columns:minmax(135px,1.25fr) minmax(58px,.52fr) minmax(92px,.86fr) minmax(58px,.52fr) minmax(98px,.92fr) minmax(155px,1.45fr);
+    column-gap:10px;
+    padding-left:14px;
+    padding-right:14px;
+  }
+}
+@media(max-width:680px){
+  .faceit-exact-shell .faceit-match-table-head,
+  .faceit-exact-shell .faceit-match-row{min-width:700px}
+}
