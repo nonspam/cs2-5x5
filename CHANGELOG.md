@@ -2884,3 +2884,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T01:28:19+03:00 — Use compact Track-style ELO match tooltip
+
+- Commit: d9f387045cae6f26aff66dc7bc6d433c752d71a4
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
