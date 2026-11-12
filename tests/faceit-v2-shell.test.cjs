@@ -172,3 +172,19 @@ test('Match Center reference styling uses compact rectangular map rows and squar
   assert.ok(css.includes('.match-room-team .match-player-card-ref .player-avatar{width:40px!important;height:40px!important'));
   assert.ok(css.includes('.match-awards{display:grid'));
 });
+
+test('Match Overview follows the supplied FACEIT room hierarchy without inventing unavailable match metadata',()=>{
+  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
+  assert.ok(i>=0&&j>i);
+  for(const marker of ['Комната матча','match-room-tabs','match-room-breadcrumbs','match-room-top-meta','match-room-result','match-room-rank-mark','ТЕКУЩИЙ AVG ELO','match-room-roster-heading','match-room-center','match-room-map-list']) assert.ok(source.includes(marker),marker);
+  assert.match(source,/CS2EloV3\?\.player\(r\.id\)\?\.rating/);
+  assert.match(source,/Сервер, veto и вероятности победы не отображаются без подтверждённых данных/);
+  assert.doesNotMatch(source,/Moscow|XPLAY\.GG|EXT · ПРОГНОЗ|Смотреть демо/);
+});
+test('Match Overview uses the dark FACEIT surface palette and adapts the scorecard and roster grid',()=>{
+  for(const selector of ['.match-room-nav','.match-room-tabs','.match-room-breadcrumbs','.match-room-result','.match-room-rank-mark','.match-room-roster-heading']) assert.ok(css.includes(selector),selector);
+  assert.match(css,/\.match-room-hero\{[\s\S]*background:#121212/);
+  assert.match(css,/\.match-room-result\{[\s\S]*background:#1d1d1d/);
+  assert.match(css,/@media\(max-width:700px\)[\s\S]*\.match-room-result\{grid-template-columns:minmax\(0,1fr\)/);
+  assert.match(css,/@media\(max-width:1050px\)[\s\S]*\.match-room-layout\{grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)/);
+});
