@@ -72,7 +72,7 @@ test('missing form trend stays unavailable instead of being coerced to numeric z
 
 test('Match Center resolves player stats by ID, exact name and unique registered aliases',()=>{
   assert.match(app,/const row=id=>/);
-  assert.match(app,/unique=byId\|\|byName\|\|g\?null:rows\.find/);
+  assert.match(app,/statByUniqueAlias=statById\|\|statByExactName\|\|guest\?null:rows\.find/);
   assert.match(app,/owners\.length===1&&owners\[0\]\.player_id===id/);
 });
 
