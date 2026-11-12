@@ -1524,3 +1524,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:34:11+03:00 — Add working per-match Track tooltips and consistent KDA color semantics
+
+- Commit: 92740648442c430b3a77d3766b75b18ad098b656
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
