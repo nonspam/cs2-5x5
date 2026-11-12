@@ -127,7 +127,7 @@ test('Track lists every match in the active filter, newest first',()=>{
   const trackCode=app.slice(trackStart,trackEnd);
   assert.ok(trackCode.includes('const recent=rows.slice().reverse().map(q=>'));
   assert.doesNotMatch(trackCode,/rows\.slice\(-\d+\)/);
-  assert.ok(trackCode.includes("'Матчи в треке'"));
+  assert.ok(trackCode.includes('Матчи в треке'));
 });
 test('Track match list defines six columns for six visible fields',()=>{
   assert.match(css,/\.track-match-head,\.track-match-row\{[\s\S]*minmax\(66px,\.46fr\)[\s\S]*minmax\(100px,\.72fr\)/);
