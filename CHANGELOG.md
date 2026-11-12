@@ -2404,3 +2404,15 @@
 - A	docs/NEW_CHAT_START_HERE_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T21:35:24+03:00 — ui: align match overview with FACEIT room reference
+
+- Commit: 4e55c9224a4bcb3bb5a1af03ec38258147755e89
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
