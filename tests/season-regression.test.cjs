@@ -39,7 +39,10 @@ test('All-time totals and leaderboard are clearly distinguished from seasonal re
 test('All-time leaderboard header has a matching ELO column for every rendered value', () => {
   assert.ok(season.includes('<span>ИНДЕКС</span><span>ELO</span><span>МАТЧИ</span><span>K/D</span>'));
   assert.ok(season.includes("'<div class=\"season-player-row\"><span class=\"season-rank\">"));
-  assert.match(season, /'<div class="season-player-row"><span class="season-rank">'...[\s\S]*?'<strong>'\+fmt\(x\.sum\.kd,2\)\+'<\/strong><\/div>'/);
+  const rowMarkup = season.slice(season.indexOf('const cards='), season.indexOf('const recent='));
+  for (const cell of ['<span class="season-rank">','<span class="season-player-name">',"<b>'+fmt(x.idx,1)+'</b>","<span>'+Math.round(x.elo.rating||1000)+'</span>","<span>'+x.sum.matches+' матч.</span>","<strong>'+fmt(x.sum.kd,2)+'</strong>"]) {
+    assert.ok(rowMarkup.includes(cell), 'missing leaderboard cell ' + cell);
+  }
   assert.match(css, /\.season-player-head,\.season-player-row\{grid-template-columns:30px minmax\(0,1fr\) 62px 58px 65px 55px\}/);
 });
 
