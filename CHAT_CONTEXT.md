@@ -250,3 +250,10 @@ User reported that match details stopped opening from Profile after the Match Ce
 - Contract tests обновлены под новую структуру.
 Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://github.com/nonspam/cs2-5x5/actions/runs/43261367570, 183 passed / 0 failed.
 Не выполнялись browser QA и deployment; визуальная приёмка владельцем ожидается. Не менять main/production/DB.
+
+
+## 2026-11-12 — Handoff Match Overview / Statistics
+Текущая точка продолжения и точные ограничения записаны в [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md).
+Главное: сначала реализовать только Match Overview по исходному HTML/CSS референсу; Statistics — отдельным следующим этапом после согласования Overview.
+GitHub upload-коммиты `64a081d` и `eac20e9` добавили `матч внутри,обозр и стата.txt` в историю default/main. Connector подтвердил файл, но вернул пустое содержимое. Не считать референс прочитанным и не переносить upload в `faceit-dev` автоматически. Получить читаемый Raw/Download или вложение в чат.
+Все ограничения по ветке, DB, deployment и проверкам — см. handoff.
