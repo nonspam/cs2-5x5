@@ -1572,3 +1572,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:54:00+03:00 — Add Track hover and map mark regression coverage
+
+- Commit: 67524cb2571d9455e90efe219df4d11d91fc177a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
