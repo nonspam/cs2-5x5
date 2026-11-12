@@ -129,8 +129,9 @@ test('Track lists every match in the active filter, newest first',()=>{
   assert.doesNotMatch(trackCode,/rows\.slice\(-\d+\)/);
   assert.ok(trackCode.includes('Матчи в треке'));
 });
-test('Track match list defines six columns for six visible fields',()=>{
-  assert.match(css,/\.track-match-head,\.track-match-row\{[\s\S]*minmax\(66px,\.46fr\)[\s\S]*minmax\(100px,\.72fr\)/);
+test('Track match list defines seven columns including the BO series format',()=>{
+  assert.match(app,/track-match-format/);
+  assert.match(css,/\.track-match-head,\.track-match-row\{[\s\S]*minmax\(58px,\.42fr\)[\s\S]*minmax\(145px,1\.15fr\)/);
 });
 test('Track and Seasons have a slightly wider content canvas than the base profile route',()=>{
   assert.match(css,/\.track-page,\.season-page\{[\s\S]*max-width:1580px!important/);

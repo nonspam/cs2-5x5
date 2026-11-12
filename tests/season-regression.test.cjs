@@ -14,21 +14,21 @@ const seasonEnd = app.indexOf('function selectProfileSeason(', seasonStart);
 assert.ok(seasonStart >= 0 && seasonEnd > seasonStart, 'season catalogue and resolver must exist');
 const seasonSource = app.slice(seasonStart, seasonEnd);
 
-test('FACEIT season catalogue includes current S9 and known recent season boundaries',()=>{
-  assert.match(seasonSource,/key:'s9'.*label:'S9'.*05\.08\.2026 — 08\.12\.2026/);
-  assert.match(seasonSource,/key:'s8'.*22\.04\.2026 — 04\.08\.2026/);
-  assert.match(seasonSource,/key:'s7'.*19\.11\.2025 — 21\.04\.2026/);
-  assert.match(seasonSource,/2026-08-05T13:00:00\+02:00/);
-  assert.match(seasonSource,/2026-12-08T17:00:00\+01:00/);
+test('season catalogue exposes only future S1 with the requested three-month boundary',()=>{
+  assert.equal((seasonSource.match(/key:'s\\d+'/g)||[]).length,1);
+  assert.match(seasonSource,/key:'s1'.*label:'S1'.*09\\.12\\.2026 — 09\\.03\\.2027/);
+  assert.match(seasonSource,/2026-12-09T00:00:00/);
+  assert.match(seasonSource,/2027-03-09T00:00:00/);
 });
 
 test('match-to-season resolver uses explicit season metadata or a real timestamp only',()=>{
   const api = vm.runInNewContext(seasonSource + '\n({FACEIT_SEASONS,faceitSeasonForMatch});\n',
     {matchTime:m=>{const d=Date.parse(m?.played_at||m?.date||m?.created_at||'');return Number.isFinite(d)?d:0}});
-  assert.equal(api.faceitSeasonForMatch({season_number:9}), 's9');
-  assert.equal(api.faceitSeasonForMatch({season:'Season 8'}), 's8');
-  assert.equal(api.faceitSeasonForMatch({played_at:'2026-09-02T20:00:00+02:00'}), 's9');
-  assert.equal(api.faceitSeasonForMatch({played_at:'2026-05-02T20:00:00+02:00'}), 's8');
+  assert.equal(api.faceitSeasonForMatch({season_number:1}), 's1');
+  assert.equal(api.faceitSeasonForMatch({season_number:9}), null);
+  assert.equal(api.faceitSeasonForMatch({season:'Season 8'}), null);
+  assert.equal(api.faceitSeasonForMatch({played_at:'2026-12-10T20:00:00+03:00'}), 's1');
+  assert.equal(api.faceitSeasonForMatch({played_at:'2026-11-30T20:00:00+03:00'}), null);
   assert.equal(api.faceitSeasonForMatch({match_id:'undated'}), null);
 });
 
@@ -41,6 +41,7 @@ test('existing imported matches without dates or season metadata are not assigne
   }
   assert.match(app,/all=selectedSeasonKey==='all'\?careerAll:careerAll\.filter\(row=>faceitSeasonForMatch\(row\.m\)===selectedSeasonKey\)/);
   assert.match(app,/Сезонная статистика появится после привязки матчей/);
+  assert.match(app,/playerSeasonAggregate\(id,seasonKey='all'\)/);
 });
 
 test('Profile exposes its season card, archive picker, and Overview/History/Track navigation',()=>{
@@ -70,4 +71,19 @@ test('Season UI is responsive and uses square archive tiles',()=>{
   assert.match(css,/\.faceit-season-picker-grid\{display:grid!important;grid-template-columns:repeat\(5,minmax\(0,1fr\)\)!important/);
   assert.match(css,/\.faceit-season-pick-card[\s\S]*aspect-ratio:1 \/ 1!important/);
   assert.match(css,/@media\(max-width:560px\)[\s\S]*\.faceit-season-picker-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
+});
+
+test('Statistics exposes an ALL TIME/S1 switch and calculates season rows from scoped match history',()=>{
+  const start=app.indexOf('function players(v){'),end=app.indexOf('function compare(v){',start),source=app.slice(start,end);
+  assert.match(source,/state\.statsSeasonKey\|\|'all'/);
+  assert.match(source,/playerSeasonAggregate\(p\.player_id,seasonKey\)/);
+  assert.match(source,/ALL TIME/);
+  assert.match(source,/09\.12\.2026/);
+});
+test('Track labels BO format as its own column and maps photos are reduced',()=>{
+  const start=app.indexOf('function track(v,embedded=false){'),end=app.indexOf('function bindTrackChart(',start),source=app.slice(start,end);
+  assert.match(source,/track-match-format/);
+  assert.match(source,/ФОРМАТ/);
+  assert.match(css,/\.track-match-format/);
+  assert.match(css,/\.maps-page \.map-card-grid \.map-card-image\{height:104px!important/);
 });

@@ -4543,3 +4543,13 @@ html,body,*{
 @media(max-width:1050px){.faceit-profile-top-widgets{grid-template-columns:minmax(0,1fr) 180px!important}.faceit-season-picker-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 @media(max-width:850px){.faceit-profile-top-widgets{grid-template-columns:minmax(0,1fr)!important}.faceit-season-widget{min-height:122px!important}.faceit-season-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.track-embedded .track-filters{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:560px){.faceit-season-picker{padding:11px!important}.faceit-season-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.faceit-season-pick-card{min-height:122px!important;padding:10px!important}.faceit-season-pick-card>span{font-size:22px!important}.faceit-season-scope{align-items:stretch!important}.faceit-season-scope>button{flex:1 1 auto!important}.track-embedded .track-filters{grid-template-columns:1fr!important}}
+
+/* Requested season switcher, compact map photos and explicit Track series format. */
+.stats-page .section-head{align-items:flex-end!important;gap:16px!important}
+.stats-season-filter{display:flex!important;flex-direction:column!important;gap:6px!important;min-width:190px!important;color:var(--muted)!important;font-size:10px!important;font-weight:800!important;letter-spacing:.08em!important}
+.stats-season-filter .control{min-width:190px!important}
+.stats-season-empty{margin:0 0 14px!important;padding:14px 16px!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:10px!important;background:rgba(255,255,255,.025)!important;color:var(--muted)!important;font-size:12px!important}
+.track-match-head,.track-match-row{grid-template-columns:minmax(92px,.8fr) minmax(62px,.48fr) minmax(64px,.5fr) minmax(58px,.42fr) minmax(145px,1.15fr) minmax(54px,.42fr) minmax(95px,.72fr)!important;min-width:820px!important}
+.track-match-format{font-size:11px!important;font-weight:800!important;color:#dce3e9!important;white-space:nowrap!important}
+.maps-page .map-card-grid .map-card-image{height:104px!important;min-height:104px!important;max-height:104px!important;align-self:start!important}
+@media(max-width:900px){.maps-page .map-card-grid .map-card-image{height:92px!important;min-height:92px!important;max-height:92px!important}}
