@@ -2146,3 +2146,17 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:13:30+03:00 — fix: restore opening Match Center from profile
+
+- Commit: 2232bc2a4c0d7aeb6b4e892023d9d0a9451638f8
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+- M	app_v57.js
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
