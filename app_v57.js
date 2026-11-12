@@ -450,9 +450,17 @@ function profilePage(v){
    '<div class="track-tooltip-series"><span>СЧЁТ СЕРИИ</span><b>'+esc(seriesScore)+'</b></div>'+
    '<div class="track-tooltip-layout"><div class="track-tooltip-main"><div class="track-tooltip-map-list">'+(mapRows||'<div class="track-tooltip-no-map">Нет данных по картам</div>')+'</div></div>'+
    '<div class="track-tooltip-side-stats"><div><small>ELO ДО</small><b>'+(Number.isFinite(before)?fmt(before,1):'—')+'</b></div><div><small>Δ ELO</small><b class="'+tone+'">'+deltaText+'</b></div><div><small>ELO ПОСЛЕ</small><b>'+(Number.isFinite(after)?fmt(after,1):'—')+'</b></div><div><small>СЕРИЯ</small><b>'+(event.series_number!=null?'#'+esc(event.series_number):'#'+(index+1))+'</b></div></div></div>'+
-   '<div class="track-tooltip-foot"><span>ИЗМЕНЕНИЕ РЕЙТИНГА</span><b class="'+tone+'">'+deltaText+' ELO</b></div>';
+   '<div class="track-tooltip-foot"><span>ИЗМЕНЕНИЕ РЕЙТИНГА</span><b class="'+tone+'">'+deltaText+' ELO</b></div>'+
+   '<div class="track-tooltip-actions"><button type="button" class="track-tooltip-close" aria-label="Закрыть">×</button><button type="button" class="track-tooltip-open">ОТКРЫТЬ МАТЧ</button></div>';
   tooltip.hidden=false;
   tooltip.querySelector('.track-tooltip-close')?.addEventListener('click',e=>{e.stopPropagation();hide()});
+  tooltip.querySelector('.track-tooltip-open')?.addEventListener('click',e=>{
+   e.stopPropagation();
+   const matchId=String(event.match_id??'').trim();
+   if(!matchId||!findMatch(event)){return}
+   hide();
+   openMatchDetail(matchId);
+  });
   place(dot);
  };
  const pointFrom=e=>{const node=e.target?.closest?.('.faceit-elo-point');return node&&svg.contains(node)?node:null};
