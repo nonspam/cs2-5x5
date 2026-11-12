@@ -17,7 +17,7 @@ const seasonSource = app.slice(seasonStart, seasonEnd);
 test('season catalogue exposes only future S1 with the requested three-month boundary',()=>{
   assert.match(seasonSource,/key:'s1'/);
   assert.doesNotMatch(seasonSource,/key:'s[2-9]/);
-  assert.match(seasonSource,/key:'s1'.*label:'S1'.*09\\.12\\.2026 — 09\\.03\\.2027/);
+  assert.ok(seasonSource.includes("key:'s1',number:1,label:'S1',name:'Сезон 1',dateLabel:'09.12.2026 — 09.03.2027'"));
   assert.match(seasonSource,/2026-12-09T00:00:00/);
   assert.match(seasonSource,/2027-03-09T00:00:00/);
 });
