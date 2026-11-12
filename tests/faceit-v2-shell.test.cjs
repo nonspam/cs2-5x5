@@ -224,3 +224,13 @@ test('Match Overview corrective player card keeps avatar visible and restores re
   assert.match(css,/\.match-player-avatar-wrap \.player-avatar\{[\s\S]*width:40px!important;height:40px!important/);
   assert.match(css,/\.match-career-metric b\{[\s\S]*font-size:12px!important/);
 });
+
+
+test('Match Overview map result tiles use map-specific full-bleed artwork',()=>{
+  assert.match(app,/match-map-row match-map-row-cover/);
+  assert.match(app,/mapThumb\(mp\.map,'match-map-thumb'\)/);
+  assert.match(css,/\.match-map-row-cover \.match-map-row-thumb \.map-thumb-photo\{[\s\S]*object-fit:cover!important/);
+  assert.match(css,/\.match-map-row-cover::after\{[\s\S]*linear-gradient/);
+  assert.match(css,/\.match-map-row-cover \.match-map-row-copy strong\{[\s\S]*font-size:18px!important/);
+  assert.match(css,/\.match-map-row-cover \.match-map-row-score\{[\s\S]*font-size:21px!important/);
+});
