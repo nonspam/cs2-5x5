@@ -2106,3 +2106,17 @@
 - M	tests/runtime-contract.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:06:32+03:00 — feat: reshape Match Center overview from owner feedback
+
+- Commit: d9f9b0a1073f511ace6a149194230481dfa3d4fb
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+- M	app_v57.js
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
