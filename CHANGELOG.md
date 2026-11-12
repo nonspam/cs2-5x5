@@ -2500,3 +2500,15 @@
 - M	PROJECT_MASTER.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T21:40:57+03:00 — docs: preserve Match Overview reference findings in chat context
+
+- Commit: 3ad4358edd92c6ae24d375fe57f3847e08e03519
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
