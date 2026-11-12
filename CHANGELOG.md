@@ -2332,3 +2332,15 @@
 - M	docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T20:55:04+03:00 — docs: add Match Overview handoff
+
+- Commit: cae78c295b4eb35dbced7fd5cc7199a1737a78b3
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
