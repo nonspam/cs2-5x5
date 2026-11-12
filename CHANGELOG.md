@@ -1092,3 +1092,15 @@
 - A	docs/FACEIT_REFERENCE_ARCHIVE_INVENTORY_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T03:09:10+03:00 — docs: add FACEIT reference inventory to roadmap
+
+- Commit: 9ace8f0cc3dab50051e3dab4e4940fe3a2710b50
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
