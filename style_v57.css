@@ -4144,3 +4144,22 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
  .track-head h1{font-size:25px}
  .track-head-count b{font-size:21px}
 }
+
+
+/* Fixed FACEIT-style workspace: the global rail stays put while the active content pane scrolls. */
+html:has(.faceit-exact-shell),body:has(.faceit-exact-shell){height:100%;overflow:hidden;overscroll-behavior:none}
+body:has(.faceit-exact-shell) .app{height:100vh;min-height:0;overflow:hidden}
+body:has(.faceit-exact-shell) #view{height:100vh;min-height:0;overflow:hidden}
+.faceit-exact-shell:not(.faceit-route-shell){height:100vh;min-height:100vh;overflow:hidden}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail,.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-player-column{height:100vh;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-content{height:100vh;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.faceit-exact-shell[style*="background-image"]{background-repeat:no-repeat!important;background-position:center center!important;background-size:cover!important;background-attachment:fixed!important}
+.faceit-route-shell{height:100vh;min-height:100vh!important;overflow:hidden!important;grid-template-columns:170px minmax(0,1fr)!important}
+.faceit-route-shell .faceit-exact-global-rail{height:100vh;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.faceit-route-shell .faceit-exact-content{height:100vh;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.faceit-route-shell .faceit-route-content{width:100%;max-width:1480px;margin-left:auto;margin-right:auto}
+.faceit-exact-rail-bottom{padding-bottom:26px}
+@media(max-width:1500px){.faceit-route-shell{grid-template-columns:170px minmax(0,1fr)!important}}
+@media(max-width:1050px){.faceit-route-shell{grid-template-columns:64px minmax(0,1fr)!important}}
+@media(max-width:700px){html:has(.faceit-exact-shell),body:has(.faceit-exact-shell){height:auto;overflow:auto}body:has(.faceit-exact-shell) .app,body:has(.faceit-exact-shell) #view{height:auto;min-height:100vh;overflow:visible}.faceit-exact-shell:not(.faceit-route-shell){height:auto;min-height:100vh;overflow:visible}.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail,.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-player-column,.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-content{height:auto;overflow:visible}.faceit-route-shell{height:auto;min-height:0!important;overflow:visible!important}.faceit-route-shell .faceit-exact-global-rail,.faceit-route-shell .faceit-exact-content{height:auto;overflow:visible}}
+.players-table{width:100%;table-layout:auto}.players-table .name{min-width:180px}.players-table th,.players-table td{white-space:nowrap}
