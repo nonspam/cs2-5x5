@@ -2317,3 +2317,18 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:42:00+03:00 — docs: record Match Center visual reference pass
+
+- Commit: 08ea5fe256dfedcad1c122e5e21228524804d71b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+- M	PROJECT_MASTER.md
+- M	TECHNICAL_STATE.md
+- M	docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
