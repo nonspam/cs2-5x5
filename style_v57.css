@@ -3849,3 +3849,17 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
     grid-template-columns:minmax(0,1fr);
   }
 }
+
+
+/* Shared route content: center the working canvas instead of pinning it left. */
+.faceit-route-shell .faceit-route-content{
+  width:min(100%,1480px);
+  max-width:1480px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.faceit-route-shell .faceit-exact-content{
+  width:100%;
+  max-width:none;
+  min-width:0;
+}
