@@ -120,3 +120,26 @@ test('All scrollbars are hidden without disabling overflow scrolling',()=>{
   assert.match(css,/\*::-webkit-scrollbar\{[\s\S]*display:none!important/);
   assert.doesNotMatch(css,/html,body,\*\{[^}]*overflow:\s*hidden/);
 });
+
+test('Track lists every match in the active filter, newest first',()=>{
+  const trackStart=app.indexOf('function track(v){');
+  const trackEnd=app.indexOf('function bindTrackChart(',trackStart);
+  const trackCode=app.slice(trackStart,trackEnd);
+  assert.ok(trackCode.includes('const recent=rows.slice().reverse().map(q=>'));
+  assert.doesNotMatch(trackCode,/rows\.slice\(-\d+\)/);
+  assert.ok(trackCode.includes("'Матчи в треке'"));
+});
+test('Track match list defines six columns for six visible fields',()=>{
+  assert.match(css,/\.track-match-head,\.track-match-row\{[\s\S]*minmax\(66px,\.46fr\)[\s\S]*minmax\(100px,\.72fr\)/);
+});
+test('Track and Seasons have a slightly wider content canvas than the base profile route',()=>{
+  assert.match(css,/\.track-page,\.season-page\{[\s\S]*max-width:1580px!important/);
+});
+test('Map catalogue cards are restored to square tiles with a larger flexible photo row',()=>{
+  const restoreAt=css.lastIndexOf('/* Restore the earlier square map catalogue cards');
+  const mapRules=css.slice(restoreAt);
+  assert.match(mapRules,/aspect-ratio:1 \/ 1!important/);
+  assert.match(mapRules,/grid-template-rows:minmax\(0,1fr\) auto auto!important/);
+  assert.match(mapRules,/\.maps-page \.map-card-grid \.map-card-image\{[\s\S]*min-height:0!important/);
+  assert.match(mapRules,/\.maps-page \.map-card-grid \.map-card-photo\{[\s\S]*height:100%!important/);
+});

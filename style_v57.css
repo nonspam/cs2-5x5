@@ -4426,3 +4426,77 @@ html,body,*{
   height:0!important;
   background:transparent!important;
 }
+
+
+/* Track/Seasons receive a little more working space without changing the global scale. */
+.track-page,.season-page{
+  width:min(100%,1580px)!important;
+  max-width:1580px!important;
+}
+.track-page{padding:clamp(20px,2.2vw,36px)!important}
+.track-match-head,.track-match-row{
+  grid-template-columns:
+    minmax(125px,1fr)
+    minmax(66px,.48fr)
+    minmax(160px,1.2fr)
+    minmax(105px,.8fr)
+    minmax(66px,.46fr)
+    minmax(100px,.72fr)!important;
+  gap:clamp(9px,.9vw,14px)!important;
+}
+.track-matches-panel{overflow-x:hidden!important}
+@media(max-width:760px){
+  .track-match-head,.track-match-row{min-width:760px!important}
+  .track-matches-panel{overflow-x:auto!important}
+}
+.season-page{padding:0 10px 18px!important}
+.season-overview-strip>div{padding:18px 20px!important}
+.season-panel{padding:18px!important}
+.season-player-head,.season-player-row{gap:12px!important}
+.season-player-row{min-height:52px!important;font-size:11px!important}
+
+/* Restore the earlier square map catalogue cards and the full-height photo area. */
+.maps-page{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;margin-right:0!important;
+}
+.maps-page .map-card-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:14px!important;
+  align-items:stretch!important;
+}
+.maps-page .map-card-grid .map-card{
+  aspect-ratio:1 / 1!important;
+  grid-template-rows:minmax(0,1fr) auto auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+.maps-page .map-card-grid .map-card-image{
+  height:auto!important;
+  min-height:0!important;
+  min-width:0!important;
+  width:100%!important;
+  align-self:stretch!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+.maps-page .map-card-grid .map-card-photo{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;max-height:none!important;
+  object-fit:cover!important;object-position:center center!important;
+  display:block!important;
+}
+@media(max-width:1200px){
+  .maps-page .map-card-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+@media(max-width:900px){
+  .maps-page .map-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:520px){
+  .maps-page .map-card-grid{grid-template-columns:1fr!important}
+}
