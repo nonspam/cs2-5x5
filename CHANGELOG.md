@@ -2392,3 +2392,15 @@
 - M	PROJECT_MASTER.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T20:55:59+03:00 — docs: add copyable new chat kickoff prompt
+
+- Commit: 66bf4bec62a62f9d488e757739977a8ce7c4bc0d
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/NEW_CHAT_START_HERE_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
