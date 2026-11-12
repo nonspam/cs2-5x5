@@ -2185,3 +2185,18 @@
 - A	design-references/inbox/image.png
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:25:34+03:00 — Rework match overview to match-room layout
+
+- Commit: a22a1f6640d6578d42732893acc4b85fc1db6965
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+- M	app_v57.js
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
