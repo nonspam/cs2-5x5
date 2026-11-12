@@ -323,7 +323,7 @@ function profilePage(v){
    '<aside class="faceit-exact-player-column"><div class="faceit-exact-player-card">'+
      '<div class="faceit-exact-avatar-frame">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
      '<h1>'+esc(p.display_name)+' <small>✥</small></h1>'+
-     '<div class="faceit-exact-player-actions">'+(canEditProfile?'<button onclick="document.getElementById(\'profileAvatarFile\').click()">✎ АВАТАР</button><button onclick="document.getElementById(\'profileCoverFile\').click()">▧ ОБЛОЖКА</button>':'')+'<button onclick="navigator.clipboard?.writeText(location.href)">♧ ПОДЕЛИТЬ</button></div>'+
+     '<div class="faceit-exact-player-actions">'+(canEditProfile?'<button onclick="document.getElementById(\'profileAvatarFile\').click()">✎ АВАТАР</button><button onclick="document.getElementById(\'profileCoverFile\').click()">▧ ОБЛОЖКА</button>':'')+'</div>'+
      '<div class="faceit-exact-season-link"><span>ТЕКУЩИЙ РЕЙТИНГ</span><b>CS2 · ELO</b><strong>'+Math.round(elo).toLocaleString('ru-RU')+' <small>→</small></strong></div>'+
      '<div class="faceit-exact-player-meta"><b>Игрок платформы</b><span>@'+esc(id)+'</span><span>Матчей: '+all.length+'</span></div>'+
      '<div class="faceit-exact-country"><span>◉</span> Игрок CS2</div>'+
