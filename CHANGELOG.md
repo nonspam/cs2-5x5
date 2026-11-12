@@ -1998,3 +1998,19 @@
 - M	tests/season-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T18:13:27+03:00 — feat: add S1 stats and Track format column
+
+- Commit: e0eb9312a3d1f31be0a57168e55f5be85ba9d099
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+- M	tests/season-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
