@@ -1200,3 +1200,15 @@
 - M	ROADMAP.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T03:39:03+03:00 — docs: document owner feedback pass 02
+
+- Commit: 0a8950829e883a3da0c35e411f2697494e5b29b7
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	DESIGN_SYSTEM.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
