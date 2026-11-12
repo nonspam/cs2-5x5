@@ -4106,8 +4106,8 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
 /* Track now shares the compact profile content width and panel rhythm. */
 .track-page{
  width:100%!important;
- max-width:900px!important;
- margin:0!important;
+ max-width:1480px!important;
+ margin:0 auto!important;
  padding:0 0 22px!important;
  box-sizing:border-box;
 }
