@@ -1,5 +1,10 @@
 
 
+## Quality Gate contract cleanup — 2026-11-13
+
+The second run (`43325873217`) narrowed the remaining failures to two more stale Match Overview assertions: old K/R and HS% labels and a removed placeholder sentence about server/veto probabilities. The current UI only exposes ADR among those career labels and correctly states that veto data is absent when not supplied. Updated the contracts to match this source-backed behavior; re-run pending.
+
+
 ## Quality Gate follow-up — 2026-11-13
 
 The first run after the feature commit (`43325544240`, 187/191) exposed four stale contract assertions rather than runtime syntax failures: a removed Statistics tab was still expected in Match Center, two tests used a malformed regex for the current W/L expression, and a map-team test expected a removed alias helper variable. Updated these tests to assert the active Overview-only contract and the current unique-alias resolver. Re-run pending.

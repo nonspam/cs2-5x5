@@ -128,3 +128,6 @@ Current DEV follow-up adds the BO3 series K/D Top 10, repairs the map-artwork st
 ## Quality Gate follow-up — 2026-11-13
 
 Updated stale static contracts after the feature push: removed the obsolete Statistics-tab expectation from Match Center and aligned W/L and alias-resolution assertions with the current implementation. See `TECHNICAL_STATE.md` for run details.
+
+
+Quality Gate contract cleanup (2026-11-13): removed two final stale expectations for obsolete K/R/HS% and placeholder server/veto copy. The active contract now checks the current ADR field and the explicit missing-veto message.

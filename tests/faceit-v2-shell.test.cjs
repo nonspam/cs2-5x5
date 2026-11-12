@@ -159,7 +159,7 @@ test('Track and season archive live inside Profile instead of occupying permanen
 
 test('Match Center renders compact player rows, rectangular map score rows and match awards',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);
-  for(const x of ['match-room-hero','match-room-result','match-overview-grid','match-room-center','match-room-map-list','match-map-row','match-room-team','match-stat-teams','match-scoreboard','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','match-awards','match-mvp-card','НАИБОЛЬШИЙ УРОН','KAST','ЭНТРИ-УБИЙСТВА','data-match-tab="overview"','profileSummary(profileMatchesForPlayer','K/R','ADR','HS%','stat-positive','stat-negative','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
+  for(const x of ['match-room-hero','match-room-result','match-overview-grid','match-room-center','match-room-map-list','match-map-row','match-room-team','match-stat-teams','match-scoreboard','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','match-awards','match-mvp-card','НАИБОЛЬШИЙ УРОН','KAST','ЭНТРИ-УБИЙСТВА','data-match-tab="overview"','profileSummary(profileMatchesForPlayer','ADR','stat-positive','stat-negative','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
   assert.doesNotMatch(s,/CS2EloV3\?\.playerData/);
   assert.doesNotMatch(s,/AVG MAP|5x5 stats|match local/i);
 });
@@ -181,7 +181,7 @@ test('Match Overview follows the supplied FACEIT room hierarchy without inventin
   assert.ok(source.includes("metric(c.wins+'/'+c.losses,'W/L')"));
   assert.doesNotMatch(source,/match-room-rank-mark|>CS2<\/span>/);
   assert.match(source,/match-room-team-score/);
-  assert.match(source,/Сервер, veto и вероятности победы не отображаются без подтверждённых данных/);
+  assert.match(source,/Пики и баны не записаны в источнике матча/);
   assert.doesNotMatch(source,/Moscow|XPLAY\.GG|EXT · ПРОГНОЗ|Смотреть демо/);
 });
 test('Match Overview uses the dark FACEIT surface palette and adapts the scorecard and roster grid',()=>{
