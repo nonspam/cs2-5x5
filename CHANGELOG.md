@@ -2985,3 +2985,18 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/validation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T02:07:44+03:00 — test: remove obsolete Match Overview expectations
+
+- Commit: 45f423bc670527221226cd85bb406c0f050e5f74
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHANGELOG.md
+- M	PROJECT_MASTER.md
+- M	TECHNICAL_STATE.md
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
