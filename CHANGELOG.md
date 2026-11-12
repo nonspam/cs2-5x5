@@ -2014,3 +2014,17 @@
 - M	tests/season-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T18:14:31+03:00 — fix: preserve safe player row and cache contracts
+
+- Commit: fd6c2c3e1d66b85a5fba1e2ca7a005d6b2edb3ec
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	index.html
+- M	tests/season-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
