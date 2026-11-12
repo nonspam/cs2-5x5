@@ -178,6 +178,7 @@ test('Track is account-scoped by linked player and never falls back to an arbitr
   const track = app.slice(trackStart, trackEnd);
   assert.match(track, /const targetId=state\.trackTargetId\|\|state\.myPlayerId\|\|null/);
   assert.match(track, /if\(!targetId\)/);
+  assert.match(track, /state\.accountUser\?'link':'login'/);
   assert.match(track, /profileMatchesForPlayer\(targetId\)/);
   assert.doesNotMatch(track, /activePlayers\(\).*sort|people\[0\]/);
     assert.ok(app.includes("state.trackTargetId=\\'"));
