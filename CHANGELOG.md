@@ -2860,3 +2860,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T01:20:28+03:00 — Fix ELO chart point pointer events
+
+- Commit: 021c5dfac4a7ef82586526d6dcc5fff4407c7246
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
