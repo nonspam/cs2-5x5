@@ -161,22 +161,22 @@ test('profile history header and match values share a wide aligned grid; K/D is 
 
 
 test('Track remains renderable as a Profile tab, not a permanent rail destination', () => {
-  assert.match(app, /APP_ROUTE_IDS=\\[[^\\]]*'track'/);
-  assert.match(app, /function track\\(v,embedded=false\\)/);
-  assert.match(app, /data-profile-section="track"/);
-  assert.match(app, /state\\.trackPeriod/);
-  assert.match(app, /profileMatchesForPlayer\\(targetId\\)/);
-  assert.match(app, /const pages=\\{[^}]*track/);
+  assert.ok(app.includes("APP_ROUTE_IDS=['home','analytics','base','maps','teams','records','seasons','track','settings','profile','compare']"));
+  assert.ok(app.includes('function track(v,embedded=false)'));
+  assert.ok(app.includes('data-profile-section="track"'));
+  assert.ok(app.includes('state.trackPeriod'));
+  assert.ok(app.includes('profileMatchesForPlayer(targetId)'));
+  assert.ok(app.includes('const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings}'));
   const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
-  assert.doesNotMatch(rail,/\\['track'/);
+  assert.equal(rail.includes("['track'"),false);
   const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
-  assert.match(css,/Track Stats — functional first implementation/);
-  assert.match(css,/\\.track-kpis/);
+  assert.ok(css.includes('Track Stats — functional first implementation'));
+  assert.ok(css.includes('.track-kpis'));
 });
 
 test('Track is account/profile-scoped and never falls back to an arbitrary active player', () => {
   const trackStart=app.indexOf('function track(v,embedded=false){');
-  const trackEnd=app.indexOf('\\nfunction bindTrackChart',trackStart);
+  const trackEnd=app.indexOf('\nfunction bindTrackChart',trackStart);
   const track=app.slice(trackStart,trackEnd);
   assert.ok(track.includes('const targetId=state.trackTargetId||state.profileTargetId||state.myPlayerId||null'));
   assert.ok(track.includes('if(!targetId)'));
@@ -184,7 +184,8 @@ test('Track is account/profile-scoped and never falls back to an arbitrary activ
   assert.ok(track.includes('link'));
   assert.ok(track.includes('login'));
   assert.ok(track.includes('profileMatchesForPlayer(targetId)'));
-  assert.doesNotMatch(track,/activePlayers\\(\\).*sort|people\\[0\\]/);
+  assert.equal(track.includes('activePlayers().sort'),false);
+  assert.equal(track.includes('people[0]'),false);
 });
 
 test('Track is available in the Profile tabs and removed from the global rail', () => {
@@ -193,7 +194,7 @@ test('Track is available in the Profile tabs and removed from the global rail', 
   const profile=app.slice(profileStart,profileEnd);
   assert.ok(profile.includes('data-profile-section="track"'));
   const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
-  assert.doesNotMatch(rail,/\\['track'/);
+  assert.equal(rail.includes("['track'"),false);
 });
 
 test('Track chart points bind interactive match tooltips and a direct open-match action', () => {

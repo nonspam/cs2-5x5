@@ -103,10 +103,11 @@ test('critical legacy workflows remain present behind the shared application she
   assert.deepEqual(missing, [], `missing workflow functions: ${missing.join(', ')}`);
 });
 
-test('cross-section controls use centralized profile navigation for the season archive', () => {
-  assert.ok(app.includes(String.raw\`state.profileSection=\\'overview\\';navigateApp(\\'profile\\')\`), 'account profile link uses navigateApp');
-  assert.ok(app.includes('data-profile-season='), 'season cards select a profile-scoped season');
-  assert.doesNotMatch(app, /navigateApp\\(\\\\'seasons\\\\'\\)/);
+test('season archive interactions stay inside the profile instead of navigating to a new section', () => {
+  assert.ok(app.includes('data-profile-season='));
+  assert.ok(app.includes('selectProfileSeason('));
+  assert.ok(app.includes('data-season-picker-toggle'));
+  assert.equal(app.includes("navigateApp('seasons')"), false);
 });
 
 test('analytics deliberately reuses the existing player analytics renderer', () => {
