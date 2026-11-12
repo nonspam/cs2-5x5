@@ -400,7 +400,7 @@ function track(v){
  const p=targetId?player(targetId):null;
  if(!targetId){
    const linked=!!state.accountUser;
-   v.innerHTML='<section class="track-page"><header class="track-head"><div><span class="faceit-kicker">PERSONAL PLAYER TRACK</span><h1>Твой Track</h1><p>'+(linked?'К аккаунту пока не привязан игровой профиль. Привяжи профиль, чтобы открыть личную статистику.':'Войди в аккаунт, чтобы открыть персональную статистику.')+'</p></div></header><section class="track-access-card"><b>'+(linked?'Профиль игрока не привязан':'Требуется вход в аккаунт')+'</b><p>Track не подставляет случайного игрока и не показывает чужую статистику автоматически.</p><button class="btn primary" type="button" onclick="window.openAccountAuth?.(\'link\')">'+(linked?'ПРИВЯЗАТЬ ИГРОВОЙ ПРОФИЛЬ':'ВОЙТИ В АККАУНТ')+'</button></section></section>';
+   v.innerHTML='<section class="track-page"><header class="track-head"><div><span class="faceit-kicker">PERSONAL PLAYER TRACK</span><h1>Твой Track</h1><p>'+(linked?'К аккаунту пока не привязан игровой профиль. Привяжи профиль, чтобы открыть личную статистику.':'Войди в аккаунт, чтобы открыть персональную статистику.')+'</p></div></header><section class="track-access-card"><b>'+(linked?'Профиль игрока не привязан':'Требуется вход в аккаунт')+'</b><p>Track не подставляет случайного игрока и не показывает чужую статистику автоматически.</p><button class="btn primary" type="button" onclick="window.openAccountAuth?.(state.accountUser?\'link\':\'login\')">'+(linked?'ПРИВЯЗАТЬ ИГРОВОЙ ПРОФИЛЬ':'ВОЙТИ В АККАУНТ')+'</button></section></section>';
    return;
  }
  if(!p){
