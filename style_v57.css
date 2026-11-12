@@ -4568,3 +4568,50 @@ html,body,*{
 .match-stat-teams{display:grid;gap:18px}.match-stat-team{padding:16px;border:1px solid #283440;border-radius:10px;background:#0d151e;min-width:0}.match-stat-team.team-a{border-top:2px solid #e1a54b}.match-stat-team.team-b{border-top:2px solid #5b91df}.match-stat-team-head{margin-bottom:13px}.match-stat-team-head>div>span{font-size:9px;color:#8d9ba6;font-weight:900;letter-spacing:.12em}.match-stat-team-head h3{font-size:16px}.match-stat-team-head>strong{font-size:28px;font-weight:950}.match-scoreboard{min-width:690px}.match-scoreboard td,.match-scoreboard th{padding:10px 12px!important}.match-scoreboard .player-avatar{display:inline-flex;width:24px;height:24px;vertical-align:middle;margin-right:7px}.match-player-profile-link{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#edf2f5}.match-detail-footnote{margin-top:15px;color:#778794;font-size:10px;line-height:1.5}
 @media(max-width:900px){.match-teams-grid{grid-template-columns:1fr}.match-maps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.match-detail-hero{min-height:270px}.match-team-roster{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.match-detail-topbar{height:54px}.match-detail-hero{min-height:240px;padding:27px 16px 22px}.match-detail-meta{margin-bottom:18px}.match-detail-result{grid-template-columns:1fr auto 1fr;gap:9px}.match-detail-side>span{font-size:8px}.match-detail-side>strong{font-size:21px}.match-detail-score .score-badge{font-size:36px}.match-detail-score>small{font-size:7px}.match-detail-map-name{font-size:13px}.match-detail-tabs{height:50px;gap:22px;padding:0 16px}.match-detail-section{padding:22px 13px 38px}.match-detail-section-heading{align-items:flex-start;flex-direction:column}.match-detail-section-heading>small{text-align:left}.match-team-panel{padding:12px}.match-team-metrics b{font-size:14px}.match-team-metrics span{font-size:6px}.match-team-roster{grid-template-columns:1fr}.match-player-mini-stats{gap:13px}.match-maps-grid{grid-template-columns:1fr}.match-map-art{height:150px}.match-stat-team{padding:10px}.match-scoreboard{min-width:660px}}
+
+
+/* Match Center — owner-directed first pass, 2026-11-12 */
+.match-detail-hero{min-height:0;display:grid;grid-template-columns:minmax(220px,320px) 1fr;gap:clamp(18px,3vw,42px);align-items:center;padding:28px clamp(16px,4vw,58px);background:#101923}
+.match-detail-map-tile{display:flex;flex-direction:column;gap:10px;min-width:0}
+.match-detail-map-image,.match-detail-map-placeholder{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;overflow:hidden;background:#17232e}
+.match-detail-map-tile>div:last-child{display:flex;flex-direction:column;gap:4px}
+.match-detail-map-tile strong{font-size:15px;color:#f4f7f9}
+.match-detail-map-tile small{font-size:9px;letter-spacing:.12em;color:#9aa9b5}
+.match-detail-result{max-width:none;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(10px,2vw,28px)}
+.match-detail-side{min-width:0;gap:7px}
+.match-detail-side>span{font-size:9px;color:#aebbc5}
+.match-detail-side>strong{font-size:clamp(14px,2vw,22px);overflow-wrap:anywhere}
+.match-detail-side.right{align-items:flex-end}
+.match-detail-score .score-badge{font-size:clamp(30px,4vw,48px)}
+.match-team-captain-avatar{display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+.match-team-panel-head{align-items:center}
+.match-team-captain{display:flex;align-items:center;gap:12px;min-width:0}
+.match-team-captain h3{overflow-wrap:anywhere}
+.match-team-score{font-size:30px;font-weight:950;color:#f2f5f7}
+.match-team-metrics{display:none!important}
+.match-player-card{padding:12px;background:#111b25;border:1px solid #253440;border-radius:9px}
+.match-player-identity{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:9px;margin-bottom:10px}
+.match-player-identity strong{font-size:13px;line-height:1.2;overflow-wrap:anywhere}
+.match-player-identity .player-avatar{width:34px;height:34px}
+.match-player-level{font-size:12px;font-weight:950;color:#f0a16e}
+.match-career-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.match-career-metric{display:flex;flex-direction:column;gap:3px;padding:7px 5px;background:#0b131b;border-radius:6px;min-width:0}
+.match-career-metric b{font-size:14px;color:#f0f4f7;font-weight:900}
+.match-career-metric small{font-size:8px;letter-spacing:.08em;color:#82919e}
+.match-career-empty{grid-column:1/-1;font-size:10px;color:#8d9ba6}
+.match-team-panel-head .match-team-kicker{color:#9eabb6}
+.match-team-panel.is-winner{border-color:#3a755b}
+.match-stat-k{color:#70d6a1!important;font-weight:850}
+.match-stat-d{color:#ef8b86!important;font-weight:850}
+.match-stat-a{color:#8db8ed!important;font-weight:850}
+.match-scoreboard .stat-positive{color:#65d69a!important;font-weight:900}
+.match-scoreboard .stat-negative{color:#f17d79!important;font-weight:900}
+.match-detail-data-note{margin:18px 0 0;color:#81909c;font-size:10px;line-height:1.5}
+.match-map-art{height:142px;overflow:hidden;border-radius:8px;background:#111a23}
+.match-map-art .match-map-thumb{width:100%;height:100%;object-fit:cover}
+.match-map-card{border-radius:10px;overflow:hidden}
+.match-map-card-body{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px}
+.match-map-card-foot{display:flex;justify-content:space-between;gap:8px;padding:0 12px 11px}
+@media(max-width:850px){.match-detail-hero{grid-template-columns:180px 1fr;gap:16px}.match-career-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:600px){.match-detail-hero{grid-template-columns:1fr;padding:18px 14px;gap:16px}.match-detail-map-tile{display:grid;grid-template-columns:88px 1fr;align-items:center}.match-detail-map-image,.match-detail-map-placeholder{width:88px}.match-detail-result{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px}.match-detail-side>strong{font-size:13px}.match-detail-score .score-badge{font-size:30px}.match-team-roster{grid-template-columns:1fr}.match-career-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.match-career-metric b{font-size:12px}}
+
