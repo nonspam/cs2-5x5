@@ -4163,3 +4163,28 @@ body:has(.faceit-exact-shell) #view{height:100vh;min-height:0;overflow:hidden}
 @media(max-width:1050px){.faceit-route-shell{grid-template-columns:64px minmax(0,1fr)!important}}
 @media(max-width:700px){html:has(.faceit-exact-shell),body:has(.faceit-exact-shell){height:auto;overflow:auto}body:has(.faceit-exact-shell) .app,body:has(.faceit-exact-shell) #view{height:auto;min-height:100vh;overflow:visible}.faceit-exact-shell:not(.faceit-route-shell){height:auto;min-height:100vh;overflow:visible}.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail,.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-player-column,.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-content{height:auto;overflow:visible}.faceit-route-shell{height:auto;min-height:0!important;overflow:visible!important}.faceit-route-shell .faceit-exact-global-rail,.faceit-route-shell .faceit-exact-content{height:auto;overflow:visible}}
 .players-table{width:100%;table-layout:auto}.players-table .name{min-width:180px}.players-table th,.players-table td{white-space:nowrap}
+
+/* Consistent compact rail, player-relative score colors and map tile cleanup. */
+.faceit-route-shell{grid-template-columns:64px minmax(0,1fr)!important}
+.faceit-route-shell .faceit-exact-global-rail{width:64px!important;min-width:64px!important;max-width:64px!important;padding:18px 6px!important;align-items:center;overflow-x:hidden!important}
+.faceit-route-shell .faceit-exact-brand{font-size:22px!important;transform:none!important;text-align:center;width:100%}
+.faceit-route-shell .faceit-exact-game{display:none!important}
+.faceit-route-shell .faceit-exact-global-rail nav{width:100%;gap:8px!important;margin-top:15px!important}
+.faceit-route-shell .faceit-exact-global-rail nav button,.faceit-route-shell .faceit-exact-rail-bottom button{width:50px!important;min-width:50px!important;max-width:50px!important;height:34px!important;min-height:34px!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:15px!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important}
+.faceit-route-shell .faceit-exact-global-rail nav button span,.faceit-route-shell .faceit-exact-rail-bottom button span{display:none!important}
+.faceit-route-shell .faceit-exact-rail-bottom{width:100%;gap:7px!important;padding-top:12px!important;padding-bottom:12px!important}
+.faceit-route-shell .faceit-exact-content{min-width:0!important;width:100%!important;overflow-x:hidden!important}
+.faceit-route-shell .faceit-route-content{min-width:0!important;max-width:1480px!important}
+.faceit-route-shell .faceit-exact-content,.faceit-route-shell .faceit-route-content{overflow-x:clip!important}
+@media(max-width:700px){.faceit-route-shell .faceit-exact-global-rail{width:100%!important;max-width:none!important;min-width:0!important;align-items:center;overflow-x:auto!important}.faceit-route-shell .faceit-exact-global-rail nav{width:auto!important;display:flex!important}.faceit-route-shell .faceit-exact-global-rail nav button,.faceit-route-shell .faceit-exact-rail-bottom button{width:40px!important;min-width:40px!important;max-width:40px!important;height:34px!important}.faceit-route-shell .faceit-exact-global-rail nav button span,.faceit-route-shell .faceit-exact-rail-bottom button span{display:none!important}.faceit-route-shell .faceit-exact-game{display:none!important}}
+.faceit-match-score .score-badge,.track-match-score .score-badge{display:inline-block;background:transparent!important;border:0!important;padding:0!important;font-size:inherit!important;font-weight:800!important;font-variant-numeric:tabular-nums!important;letter-spacing:0!important}
+.faceit-match-score .score-positive,.track-match-score .score-positive{color:var(--green)!important}
+.faceit-match-score .score-negative,.track-match-score .score-negative{color:var(--red)!important}
+.maps-page .map-card-grid .map-card-image{display:block!important;position:relative!important;overflow:hidden!important;padding:0!important;margin:0!important;border:0!important;line-height:0!important;background:#0d1012!important}
+.maps-page .map-card-grid .map-card-photo{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;margin:0!important;padding:0!important;border:0!important;vertical-align:top!important}
+.maps-page .map-card-grid .map-card-image-shade{display:block!important;position:absolute!important;inset:0!important;pointer-events:none!important}
+.maps-page .map-card-grid .map-card-image::before,.maps-page .map-card-grid .map-card-image::after{display:none!important;content:none!important}
+.maps-page .map-card-grid .map-card-body strong{font-family:inherit!important;font-variant-numeric:tabular-nums lining-nums!important;letter-spacing:0!important;font-feature-settings:"tnum" 1,"lnum" 1!important}
+.players-table .player-rank-head,.players-table .player-rank-cell{width:48px!important;min-width:48px!important;text-align:center!important;padding-left:8px!important;padding-right:8px!important}
+.players-table .player-rank-cell::before{display:none!important}
+.players-table .player-rank-cell span{font-variant-numeric:tabular-nums;font-weight:800;color:#aeb8c1}
