@@ -3020,3 +3020,20 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T02:57:27+03:00 — Move BO3 Top 10 to dedicated tab and repair ELO chart hit targets
+
+- Commit: 562a63e838fd5b56b0156308b9cd32490b84f50f
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+- M	app_v57.js
+- M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
