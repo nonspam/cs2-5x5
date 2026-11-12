@@ -2280,3 +2280,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:38:43+03:00 — fix: render map score rows with safe template markup
+
+- Commit: 23c608792a59d0957cc45cc5f8db4ad0b3e70568
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
