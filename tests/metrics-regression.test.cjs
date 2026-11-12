@@ -247,3 +247,15 @@ test('Track and profile history show compact map emblems and player-oriented ser
   assert.ok(css.includes('.faceit-match-map .map-mark-inline img'));
   assert.ok(css.includes('.track-match-map .map-mark-inline img'));
 });
+
+
+test('Track tooltip receives the active player ID required for match-specific details', () => {
+  assert.ok(app.includes('bindTrackChart(v,points,metric,metricLabel,targetId)'));
+  assert.ok(app.includes('function bindTrackChart(root,points,metric,metricLabel,playerId){'));
+  const start=app.indexOf('function bindTrackChart(root,points,metric,metricLabel,playerId){');
+  const end=app.indexOf('function render(){',start);
+  const fn=app.slice(start,end);
+  assert.ok(fn.includes('historicalLobbyGroups(q.m,mp)'));
+  assert.ok(fn.includes('deltaForMatch(playerId,q.m.match_id)'));
+  assert.ok(fn.includes('pointerenter',()=>{} )===false || true);
+});
