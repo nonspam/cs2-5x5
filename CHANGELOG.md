@@ -1152,3 +1152,15 @@
 - A	tests/faceit-v2-owner-feedback.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T03:36:15+03:00 — fix: escape season links in compact season rows
+
+- Commit: 36425e0736574b70bf5c926be398a14806b2590a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
