@@ -136,3 +136,12 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Не переносить upload-коммиты в `faceit-dev` до чтения и проверки файла.
 - Ранее сделанная работа Match Center и CI 183/183 описаны в [docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md](docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md) и [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md).
 - Browser QA/deployment не подтверждены. DB writes/schema/migrations запрещены без отдельного разрешения. Только `faceit-dev`; не менять `main`.
+
+
+## Контрольная точка — 2026-11-12, Match Overview handoff
+- Последний известный HEAD до обновления handoff: `5510c34a96a33a84a96d8ad171f76b660e54d307`; перепроверять актуальный HEAD перед изменениями.
+- Новый upload `матч внутри,обозр и стата.txt` присутствует в default/main в коммитах `64a081d` и `eac20e9`. Connector вернул пустое содержимое, поэтому HTML/CSS ещё не изучены.
+- Следующий этап: получить читаемый файл; реализовать только Match Overview; после согласования отдельно заняться Statistics.
+- Не переносить upload-коммиты в `faceit-dev` до чтения и проверки файла.
+- Handoff: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md).
+- Browser QA/deployment не подтверждены. DB writes/schema/migrations запрещены без отдельного разрешения. Только `faceit-dev`; не менять `main`.
