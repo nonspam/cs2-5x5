@@ -2644,3 +2644,15 @@
 - M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:52:09+03:00 — feat: turn match map rows into full-image cover tiles
+
+- Commit: d021028c937b2d9675251d41f715dfa06708a6fe
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
