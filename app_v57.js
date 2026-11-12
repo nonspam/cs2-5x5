@@ -280,7 +280,7 @@ function profilePage(v){
      '<span class="faceit-match-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span>'+
      '<span class="faceit-match-result '+tone+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</span>'+
      '<span class="faceit-match-score">'+esc(q.m.series_score||'—')+'<small class="faceit-match-elo-delta '+eloTone+'">'+eloText+'</small></span>'+
-     '<span class="faceit-match-rating">'+avgKd+'</span>'+
+     '<span class="faceit-match-rating '+personalTone+'">'+avgKd+'</span>'+
      '<span class="faceit-match-kda '+personalTone+'">'+kda+'</span>'+
      '<span class="faceit-match-map">'+esc(q.map)+'</span>'+
    '</button>';
