@@ -103,3 +103,17 @@ npm run check
 - Подробный read-only отчёт: docs/ENGINE_MIGRATION_AUDIT_2026-11-11.md.
 - Cloudflare deployed SHA и browser QA текущего DEV URL не подтверждены.
 - Следующий blocker: восстановить runtime из 3b68040 в faceit-dev, сохранив документацию, затем CI и browser/deployment QA.
+
+
+---
+
+# Актуальная контрольная точка — Match Center (2026-11-12)
+
+Подробный handoff: [docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md](docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md).
+
+- Последняя композиция обзора по FACEIT Match Room reference: `a22a1f6640d6578d42732893acc4b85fc1db6965`.
+- Последний source/test SHA с успешным Quality Gate: `6cd35f76c29007dfa27ee8d2ab322d4b8ca36d96`; 182 passed / 0 failed; [run 43258651699](https://github.com/nonspam/cs2-5x5/actions/runs/43258651699).
+- Исправление `CS2EloV3.player(id)` вместо отсутствующего `playerData(id)` сохранено в `2232bc2a4c0d7aeb6b4e892023d9d0a9451638f8`.
+- Референс владельца: `design-references/inbox/image.png`.
+- Browser QA, визуальная приёмка владельцем и deployment SHA не подтверждены.
+- Следующее действие: получить визуальную обратную связь владельца по DEV Match Center, затем итеративно исправлять отмеченные отличия.

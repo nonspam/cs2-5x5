@@ -235,3 +235,8 @@ User reported that match details stopped opening from Profile after the Match Ce
 - на узких экранах колонки перестраиваются адаптивно.
 
 Не отображаются фиктивные server/ping, veto, map win-rate и win probability: этих полей нет в подтверждённом текущем data contract. Центральный блок показывает только известные метаданные серии и реальные карты/счета. Изменение — адаптация композиции, а не копирование FACEIT assets/брендинга. Browser QA/deploy не выполнялись.
+
+
+## 2026-11-12 — Match Center checkpoint / точка продолжения
+
+Подробный handoff, подтверждённые CI и список ограничений сохранены в [docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md](docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md). Последняя проверенная quality gate для кода и contract tests: SHA `6cd35f76c29007dfa27ee8d2ab322d4b8ca36d96`, 182/182 passed. Последняя композиция обзора под референс `design-references/inbox/image.png` закоммичена в `a22a1f6640d6578d42732893acc4b85fc1db6965`. Browser QA/deploy и пользовательская приёмка ещё не подтверждены.
