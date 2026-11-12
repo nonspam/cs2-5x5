@@ -1392,3 +1392,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:12:18+03:00 — Reset public Track target when account identity refreshes
+
+- Commit: ca0b2ceed41593c11473a1b700028ac21a2ea1e0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	account_module.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
