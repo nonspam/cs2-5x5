@@ -2632,3 +2632,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:35:41+03:00 — docs: record player card screenshot correction
+
+- Commit: a6e8b7a2d6e38986caad46fde2a1da5f9c634c22
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
