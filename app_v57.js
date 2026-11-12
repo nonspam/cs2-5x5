@@ -1076,7 +1076,7 @@ function openMapDetail(mapId){
  const mapTeams=historicalLobbyGroups(match,m),groups=(mapTeams[0].length||mapTeams[1].length)?mapTeams:lobbyGroups(match);
  const normalizeName=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/\s+/g,' ');
  const teamRows=ids=>ids.map(id=>{const p=player(id),names=[id,p?.display_name,...(p?.aliases||[])].filter(Boolean).map(normalizeName);const stat=rows.find(r=>r.player_id===id)||rows.find(r=>!r.player_id&&names.includes(normalizeName(r.raw_name)));return stat?{...stat,name:p?.display_name||stat.name}:{name:p?.display_name||id,kills:null,deaths:null,assists:null,kd:null,diff:null}});
- const A=teamRows(groups[0]),B=teamRows(groups[1]);
+ const sortByKd=side=>side.map((row,index)=>({...row,_order:index})).sort((x,y)=>(y.kd??-Infinity)-(x.kd??-Infinity)||((Number(y.kills)||0)-(Number(x.kills)||0))||x._order-y._order).map(({_order,...row})=>row);const A=sortByKd(teamRows(groups[0])),B=sortByKd(teamRows(groups[1]));
  const total=side=>side.reduce((a,r)=>({k:a.k+(Number(r.kills)||0),d:a.d+(Number(r.deaths)||0),a:a.a+(Number(r.assists)||0)}),{k:0,d:0,a:0});
  const ta=total(A),tb=total(B),scoreA=Number(m.score?.team_a),scoreB=Number(m.score?.team_b),winner=Number.isFinite(scoreA)&&Number.isFinite(scoreB)?(scoreA>scoreB?'a':scoreB>scoreA?'b':'draw'):'';
  const teamName=side=>esc((side==='a'?match?.team_a_name:match?.team_b_name)||('КОМАНДА '+(side==='a'?'A':'B')));
