@@ -2452,3 +2452,15 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T21:37:35+03:00 — fix: remove duplicate match player card renderer
+
+- Commit: 0b9051d9c4c0b090c91382976d6831f6a1d04ca9
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
