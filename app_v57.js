@@ -399,7 +399,7 @@ function profilePage(v){
  window.__cs2ProfileEloCleanup?.();
  const controller=new AbortController(),tooltip=document.createElement('div');
  tooltip.className='track-chart-tooltip';tooltip.hidden=true;tooltip.dataset.pinned='false';
- tooltip.setAttribute('role','dialog');tooltip.setAttribute('aria-live','polite');tooltip.setAttribute('aria-label','Информация о матче и изменении ELO');
+ tooltip.setAttribute('role','dialog');tooltip.setAttribute('aria-live','polite');tooltip.setAttribute('aria-label','Информация о матче и изменении ELO');tooltip.style.position='fixed';tooltip.style.zIndex='12000';
  document.body.appendChild(tooltip);
  let pinnedIndex=null,activeIndex=null;
  const cleanup=()=>{controller.abort();tooltip.remove();if(window.__cs2ProfileEloCleanup===cleanup)window.__cs2ProfileEloCleanup=null};
@@ -463,11 +463,14 @@ function profilePage(v){
   });
   place(dot);
  };
- const pointFrom=e=>{const node=e.target?.closest?.('.faceit-elo-point');return node&&svg.contains(node)?node:null};
- const indexFrom=dot=>Number(dot?.dataset.eloIndex);
- svg.addEventListener('pointermove',e=>{if(pinnedIndex!==null)return;const dot=pointFrom(e);if(!dot){if(activeIndex!==null)hide();return}const index=indexFrom(dot);if(index!==activeIndex)show(index,dot,false)},{signal:controller.signal});
- svg.addEventListener('click',e=>{const dot=pointFrom(e);if(!dot)return;e.preventDefault();e.stopPropagation();const index=indexFrom(dot);if(pinnedIndex===index)hide();else show(index,dot,true)},{signal:controller.signal});
- svg.addEventListener('keydown',e=>{const dot=pointFrom(e);if(!dot)return;const index=indexFrom(dot);if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pinnedIndex===index)hide();else show(index,dot,true)}if(e.key==='Escape')hide()},{signal:controller.signal});
+ const dots=[...svg.querySelectorAll('.faceit-elo-point')];
+ dots.forEach((dot,index)=>{
+  dot.style.pointerEvents='all';
+  dot.addEventListener('pointerenter',()=>{if(pinnedIndex===null)show(index,dot,false)},{signal:controller.signal});
+  dot.addEventListener('focus',()=>{if(pinnedIndex===null)show(index,dot,false)},{signal:controller.signal});
+  dot.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(pinnedIndex===index)hide();else show(index,dot,true)},{signal:controller.signal});
+  dot.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pinnedIndex===index)hide();else show(index,dot,true)}if(e.key==='Escape')hide()},{signal:controller.signal});
+ });
  svg.addEventListener('pointerleave',()=>{if(pinnedIndex===null)hide()},{signal:controller.signal});
  document.addEventListener('pointerdown',e=>{if(pinnedIndex!==null&&!tooltip.contains(e.target)&&!e.target.closest?.('.faceit-elo-point'))hide()},{signal:controller.signal});
  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide()},{signal:controller.signal});
