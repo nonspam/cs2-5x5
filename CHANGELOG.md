@@ -2160,3 +2160,16 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:16:10+03:00 — Add design reference image inbox
+
+- Commit: b13aa6650596de1995b11629c7bad8c7c356530b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+- A	design-references/inbox/README.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
