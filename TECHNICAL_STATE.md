@@ -1,3 +1,11 @@
+
+
+## 2026-11-13 — Match Overview follow-up: BO3 Top 10, map image layering, profile ELO match links
+
+- Added a series-wide Top 10 K/D panel to Match Overview using `seriesAggregateRows` output only. Best, median-position and worst entries are labelled; zero-death positive-kill rows display `∞`; incomplete sources are explicitly shown as fewer than 10 rather than filled with invented values.
+- Corrected map artwork stacking: the map image layer is now above the tile background, the contrast overlay above the image, and labels/scores above the overlay. The map results section now carries the `match-room-center` hook required by its existing full-bleed artwork styles.
+- Fixed profile ELO tooltip match navigation to resolve the canonical `DB.matches[].match_id` before calling the strict match lookup. If no match is found, the user receives an explicit message instead of a silent no-op.
+- Updated a stale static assertion to target the current unique-alias helper and added regression contracts for Top 10, map artwork hook/layering, and ELO match-id resolution. No browser QA performed; CI is the next verification.
 # Current technical checkpoint — 2026-11-11 (authoritative)
 
 > This section supersedes older checkpoint snapshots further down this file. Historical entries are retained as a change record, not as the current state.

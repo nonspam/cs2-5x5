@@ -118,3 +118,8 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 ## Текущая задача — Match Overview
 Подробная точка продолжения: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md). Анализ исходного FACEIT HTML/CSS: [docs/MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md](docs/MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md).
 Референс получен вложением в чат и изучен. Первая реализация Overview внесена только в `faceit-dev`: nav, metadata, score card, два ростера и центральная колонка. Сейчас ожидаются Quality Gate и визуальная приёмка владельца. Statistics остаётся отдельным этапом и не меняется до одобрения Overview. Не переносить upload-коммиты из default/main в DEV.
+
+
+## 2026-11-13 — Match Overview follow-up
+
+Current DEV follow-up adds the BO3 series K/D Top 10, repairs the map-artwork stacking hook/layers, and resolves ELO point navigation through the canonical match ID. Data remains source-backed; partial series stats are not padded. See the latest `TECHNICAL_STATE.md` checkpoint and Match Overview handoff. No browser QA, deploy, DB/SQL changes, or `main` changes.

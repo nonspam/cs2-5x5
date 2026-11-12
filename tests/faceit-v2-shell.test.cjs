@@ -159,7 +159,7 @@ test('Track and season archive live inside Profile instead of occupying permanen
 
 test('Match Center renders compact player rows, rectangular map score rows and match awards',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);
-  for(const x of ['match-room-hero','match-room-result','match-room-layout','match-room-center','match-room-map-list','match-map-row','match-room-team','match-stat-teams','match-scoreboard','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','match-awards','match-mvp-card','НАИБОЛЬШИЙ УРОН','KAST','ЭНТРИ-УБИЙСТВА','data-match-tab="overview"','data-match-tab="stats"','profileSummary(profileMatchesForPlayer','K/R','ADR','HS%','stat-positive','stat-negative','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
+  for(const x of ['match-room-hero','match-room-result','match-overview-grid','match-room-center','match-room-map-list','match-map-row','match-room-team','match-stat-teams','match-scoreboard','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','match-awards','match-mvp-card','НАИБОЛЬШИЙ УРОН','KAST','ЭНТРИ-УБИЙСТВА','data-match-tab="overview"','data-match-tab="stats"','profileSummary(profileMatchesForPlayer','K/R','ADR','HS%','stat-positive','stat-negative','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
   assert.doesNotMatch(s,/CS2EloV3\?\.playerData/);
   assert.doesNotMatch(s,/AVG MAP|5x5 stats|match local/i);
 });
@@ -176,7 +176,7 @@ test('Match Center reference styling uses compact rectangular map rows and squar
 test('Match Overview follows the supplied FACEIT room hierarchy without inventing unavailable match metadata',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(i>=0&&j>i);
-  for(const marker of ['Комната матча','match-room-tabs','match-room-breadcrumbs','match-room-top-meta','match-room-result','ТЕКУЩИЙ AVG ELO','match-room-roster-heading','match-room-center','match-room-map-list']) assert.ok(source.includes(marker),marker);
+  for(const marker of ['Комната матча','match-room-tabs','match-room-breadcrumbs','match-room-top-meta','match-room-result','ТЕКУЩИЙ AVG ELO','match-room-roster-heading','match-overview-maps match-room-center','match-room-map-list']) assert.ok(source.includes(marker),marker);
   assert.match(source,/CS2EloV3\?\.player\(r\.id\)\?\.rating/);
   assert.match(source,/metric\(c\.wins\+'\/'+c\.losses,'W\/L'\)/);
   assert.doesNotMatch(source,/match-room-rank-mark|>CS2<\/span>/);
@@ -233,4 +233,21 @@ test('Match Overview map result tiles use map-specific full-bleed artwork',()=>{
   assert.match(css,/\.match-map-row-cover::after\{[\s\S]*linear-gradient/);
   assert.match(css,/\.match-map-row-cover \.match-map-row-copy strong\{[\s\S]*font-size:18px!important/);
   assert.match(css,/\.match-map-row-cover \.match-map-row-score\{[\s\S]*font-size:21px!important/);
+});
+
+
+test('Match Overview renders a ten-player series K/D ranking from aggregate stats only',()=>{
+  assert.match(app,/const top10Rows=rows\.slice\(\)\.sort/);
+  assert.match(app,/match-overview-top10/);
+  assert.match(app,/medianTop10Index/);
+  assert.match(app,/Нет агрегированной статистики игроков за серию/);
+  assert.match(css,/\.match-overview-top10-row\.is-best/);
+  assert.match(css,/\.match-overview-top10-row\.is-median/);
+  assert.match(css,/\.match-overview-top10-row\.is-worst/);
+});
+
+test('Profile ELO point actions resolve the canonical match id before opening its match room',()=>{
+  assert.match(app,/const resolvedMatch=findMatch\(event\)/);
+  assert.match(app,/openMatchDetail\(resolvedMatch\.match_id\)/);
+  assert.match(app,/Матч для этой точки ELO не найден в текущей базе/);
 });
