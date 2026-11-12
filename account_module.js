@@ -107,6 +107,7 @@
     const context=await CS2Cloud.loadProfileContext();
     state.accountUser=context.user||null;
     state.myPlayerId=context.playerId||null;
+    state.trackTargetId=null;
     state.profileRows=context.profiles||[];
     state.myProfile=state.profileRows.find(row=>row.player_id===state.myPlayerId)||null;
     try{state.cloudAdmin=await CS2Cloud.isAdmin()}catch{state.cloudAdmin=false}
