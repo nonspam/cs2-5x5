@@ -1764,3 +1764,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T05:22:24+03:00 — Bust Track and profile cover asset caches
+
+- Commit: 66e288ff1d9a33bcaf677450b5bd52e790e0840b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
