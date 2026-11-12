@@ -158,3 +158,16 @@ test('profile history header and match values share a wide aligned grid; K/D is 
   assert.ok(css.includes('.faceit-match-rating.kd-positive{color:#42d99a}'));
   assert.ok(css.includes('.faceit-match-rating.kd-negative{color:#ff5968}'));
 });
+
+
+test('Track route is registered, linked in navigation, and renders data-driven filters and metrics', () => {
+  assert.match(app, /APP_ROUTE_IDS=\[[^\]]*'track'/);
+  assert.match(app, /\['track','⌁','Track'\]/);
+  assert.match(app, /function track\(v\)/);
+  assert.match(app, /state\.trackPeriod/);
+  assert.match(app, /profileMatchesForPlayer\(chosen\.player_id\)/);
+  assert.match(app, /const pages=\{[^}]*track/);
+  const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
+  assert.match(css, /Track Stats — functional first implementation/);
+  assert.match(css, /\.track-kpis/);
+});
