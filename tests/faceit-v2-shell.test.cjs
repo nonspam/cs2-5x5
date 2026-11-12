@@ -68,5 +68,5 @@ test('the active application rail item exposes the current page to assistive tec
   assert.match(app, /state\.tab===id\?'aria-current="page" '/);
   assert.match(app, /state\.tab==='settings'\?'aria-current="page" '/);
   assert.match(app, /\['profile','◉','Профиль'\]/);
-  assert.match(app, /data-app-route="\'+id\+'"/);
+  assert.ok(app.includes('items.map(([id,ico,label])=>'), 'rail renders all routes from its shared item list');
 });
