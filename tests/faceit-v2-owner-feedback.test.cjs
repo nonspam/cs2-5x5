@@ -37,17 +37,20 @@ test('the profile route keeps its own player card and exposes full match history
   assert.ok(profile.includes('matchRows(all)'));
 });
 
-test('seasons use compact rows rather than oversized season cards', () => {
-  const seasons = section(app, 'function seasons(v)', 'function render(){');
-  assert.ok(seasons.includes('season-pick-list'));
-  assert.ok(seasons.includes('season-pick-row'));
-  assert.ok(!seasons.includes('class="season-card'));
+test('season archive is a compact square-card widget inside the player Profile', () => {
+  const profile = section(app, 'function profilePage(v)', 'async function handleProfileImage');
+  assert.ok(profile.includes('faceit-season-widget'));
+  assert.ok(profile.includes('faceit-season-picker-grid'));
+  assert.ok(profile.includes('faceit-season-pick-card'));
+  assert.ok(profile.includes('data-profile-season='));
+  assert.ok(!profile.includes('season-page'));
 });
 
-test('season archive colors series scores using the shared result classes', () => {
-  const seasons = section(app, 'function seasons(v)', 'function render(){');
-  assert.ok(seasons.includes('season-history-score'));
-  assert.ok(seasons.includes('scoreMarkup(m.series_score||'));
+test('season-filtered profile history reuses the common player-relative match score rows', () => {
+  const profile = section(app, 'function profilePage(v)', 'async function handleProfileImage');
+  assert.ok(profile.includes("state.profileSection==='history'"));
+  assert.ok(profile.includes('matchRows(all)'));
+  assert.ok(profile.includes('playerScoreMarkup(playerSeriesScoreLabel(q.m,id,q.maps)'));
 });
 
 test('the desktop shell gives navigation more room and keeps its controls outlined and transparent', () => {

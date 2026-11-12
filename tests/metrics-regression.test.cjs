@@ -160,38 +160,41 @@ test('profile history header and match values share a wide aligned grid; K/D is 
 });
 
 
-test('Track route is registered, linked in navigation, and renders data-driven filters and metrics', () => {
-  assert.match(app, /APP_ROUTE_IDS=\[[^\]]*'track'/);
-  assert.match(app, /\['track','⌁','Track'\]/);
-  assert.match(app, /function track\(v\)/);
-  assert.match(app, /state\.trackPeriod/);
-  assert.match(app, /profileMatchesForPlayer\(targetId\)/);
-  assert.match(app, /const pages=\{[^}]*track/);
-  const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
-  assert.match(css, /Track Stats — functional first implementation/);
-  assert.match(css, /\.track-kpis/);
+test('Track remains renderable as a Profile tab, not a permanent rail destination', () => {
+  assert.match(app, /APP_ROUTE_IDS=\\[[^\\]]*'track'/);
+  assert.match(app, /function track\\(v,embedded=false\\)/);
+  assert.match(app, /data-profile-section="track"/);
+  assert.match(app, /state\\.trackPeriod/);
+  assert.match(app, /profileMatchesForPlayer\\(targetId\\)/);
+  assert.match(app, /const pages=\\{[^}]*track/);
+  const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
+  assert.doesNotMatch(rail,/\\['track'/);
+  const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
+  assert.match(css,/Track Stats — functional first implementation/);
+  assert.match(css,/\\.track-kpis/);
 });
 
-test('Track is account-scoped by linked player and never falls back to an arbitrary active player', () => {
-  const trackStart = app.indexOf('function track(v){');
-  const trackEnd = app.indexOf('\nfunction bindTrackChart', trackStart);
-  const track = app.slice(trackStart, trackEnd);
-  assert.ok(track.includes('const targetId=state.trackTargetId||state.myPlayerId||null'));
+test('Track is account/profile-scoped and never falls back to an arbitrary active player', () => {
+  const trackStart=app.indexOf('function track(v,embedded=false){');
+  const trackEnd=app.indexOf('\\nfunction bindTrackChart',trackStart);
+  const track=app.slice(trackStart,trackEnd);
+  assert.ok(track.includes('const targetId=state.trackTargetId||state.profileTargetId||state.myPlayerId||null'));
   assert.ok(track.includes('if(!targetId)'));
   assert.ok(track.includes('state.accountUser?'));
   assert.ok(track.includes('link'));
   assert.ok(track.includes('login'));
   assert.ok(track.includes('profileMatchesForPlayer(targetId)'));
-  assert.doesNotMatch(track, /activePlayers\(\).*sort|people\[0\]/);
+  assert.doesNotMatch(track,/activePlayers\\(\\).*sort|people\\[0\\]/);
 });
 
-test('Track stays in the global rail and is removed from the individual profile tabs', () => {
+test('Track is available in the Profile tabs and removed from the global rail', () => {
   const profileStart=app.indexOf('function profilePage(v)');
-  const trackTab=app.indexOf("state.profileSection==='track'",profileStart);
-  assert.equal(trackTab,-1);
-  assert.match(app,/\\['track','⌁','Track'\\]/);
+  const profileEnd=app.indexOf('async function handleProfileImage',profileStart);
+  const profile=app.slice(profileStart,profileEnd);
+  assert.ok(profile.includes('data-profile-section="track"'));
+  const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
+  assert.doesNotMatch(rail,/\\['track'/);
 });
-
 
 test('Track chart points bind interactive match tooltips and a direct open-match action', () => {
   assert.ok(app.includes('function bindTrackChart(root,points,metric,metricLabel,playerId){'));
@@ -203,7 +206,7 @@ test('Track chart points bind interactive match tooltips and a direct open-match
 });
 
 test('Track match rows color the complete K/D/A string by K-to-D relation', () => {
-  const start=app.indexOf('function track(v){'),end=app.indexOf('\nfunction bindTrackChart',start),track=app.slice(start,end);
+  const start=app.indexOf('function track(v,embedded=false){'),end=app.indexOf('\nfunction bindTrackChart',start),track=app.slice(start,end);
   assert.ok(track.includes("const kdTone=(k,d)=>Number(k)>Number(d)?'positive':Number(k)<Number(d)?'negative':'neutral'"));
   assert.ok(track.includes("track-match-kda '+tone+'"));
   assert.ok(track.includes('kdTone(summary.k,summary.d)'));

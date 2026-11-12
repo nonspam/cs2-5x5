@@ -122,7 +122,7 @@ test('All scrollbars are hidden without disabling overflow scrolling',()=>{
 });
 
 test('Track lists every match in the active filter, newest first',()=>{
-  const trackStart=app.indexOf('function track(v){');
+  const trackStart=app.indexOf('function track(v,embedded=false){');
   const trackEnd=app.indexOf('function bindTrackChart(',trackStart);
   const trackCode=app.slice(trackStart,trackEnd);
   assert.ok(trackCode.includes('const recent=rows.slice().reverse().map(q=>'));
@@ -152,5 +152,6 @@ test('Track and season archive live inside Profile instead of occupying permanen
   assert.match(profile,/data-profile-section="track"/);
   assert.match(profile,/data-season-picker-toggle/);
   assert.match(profile,/data-profile-season=/);
-  assert.match(profile,/Статистика сезона/);
+  assert.ok(profile.includes('seasonWidgetMarkup'));
+  assert.ok(profile.includes('widgetSeason.label'));
 });
