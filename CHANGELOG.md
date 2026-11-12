@@ -1728,3 +1728,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T05:19:21+03:00 — Test single-image profile covers and shared Track sizing
+
+- Commit: f9cd241ea10b9f292b74dfd9509534fcaa5758af
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/account-profile.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
