@@ -5235,3 +5235,60 @@ html,body,*{
  .match-room-side:not(.right){grid-template-columns:32px minmax(0,1fr) 34px auto!important}
  .match-room-side.right{grid-template-columns:auto 34px minmax(0,1fr) 32px!important}
 }
+
+
+/* Map stats is a true top-level overlay above the match room */
+#mapModal.map-stat-backdrop{
+  position:fixed!important;inset:0!important;z-index:10000!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:18px!important;box-sizing:border-box!important;
+  background:rgba(0,0,0,.84)!important;overflow:auto!important;
+}
+#mapModal .map-stat-modal{
+  position:relative!important;z-index:10001!important;
+  width:min(1240px,calc(100vw - 36px))!important;max-width:1240px!important;
+  max-height:calc(100dvh - 36px)!important;height:auto!important;
+  margin:auto!important;overflow-y:auto!important;overflow-x:hidden!important;
+  box-sizing:border-box!important;overscroll-behavior:contain!important;
+}
+#mapModal .map-stat-hero{min-height:170px;box-sizing:border-box}
+#mapModal .map-stat-layout{
+  display:grid!important;grid-template-columns:minmax(190px,.75fr) minmax(230px,1fr) minmax(260px,1.25fr)!important;
+  gap:12px!important;padding:16px 18px!important;align-items:stretch!important;
+}
+#mapModal .map-stat-summary,#mapModal .map-stat-comparison,#mapModal .map-stat-rounds,
+#mapModal .map-stat-team{min-width:0!important;box-sizing:border-box!important}
+#mapModal .map-stat-player-grid{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;padding:0 18px 16px!important;min-width:0!important;
+}
+#mapModal .map-stat-team{padding:12px!important;overflow:hidden!important}
+#mapModal .map-stat-team .table-wrap{
+  width:100%!important;max-width:100%!important;overflow-x:auto!important;
+  overscroll-behavior-x:contain!important;
+}
+#mapModal .map-stat-player-table{width:100%!important;min-width:470px!important}
+#mapModal .map-stat-player-table th,#mapModal .map-stat-player-table td{
+  padding:8px 9px!important;white-space:nowrap!important;font-size:11px!important;
+}
+#mapModal .map-stat-footnote{margin:0 18px 18px!important}
+#mapModal .map-stat-unavailable{height:calc(100% - 28px);display:flex;align-items:center}
+@media(max-width:1000px){
+  #mapModal .map-stat-layout{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #mapModal .map-stat-rounds{grid-column:1/-1!important}
+  #mapModal .map-stat-player-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(max-width:650px){
+  #mapModal.map-stat-backdrop{padding:8px!important;align-items:flex-start!important}
+  #mapModal .map-stat-modal{width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important}
+  #mapModal .map-stat-hero{min-height:210px!important;padding:54px 16px 16px!important;grid-template-columns:1fr!important;gap:10px!important}
+  #mapModal .map-stat-hero-teams{gap:16px!important;margin-top:8px!important}
+  #mapModal .map-stat-hero-teams b{font-size:32px!important}
+  #mapModal .map-stat-hero-title{text-align:left!important}
+  #mapModal .map-stat-hero-title h2{font-size:22px!important}
+  #mapModal .map-stat-layout{grid-template-columns:minmax(0,1fr)!important;padding:12px!important}
+  #mapModal .map-stat-rounds{grid-column:auto!important}
+  #mapModal .map-stat-player-grid{padding:0 12px 12px!important}
+  #mapModal .map-stat-footnote{margin:0 12px 12px!important}
+  #mapModal .map-stat-team header{align-items:flex-start!important;flex-direction:column!important}
+}
