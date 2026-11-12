@@ -1,6 +1,6 @@
 const DB={players:[],maps:[],matches:[],aliases:{}};
 const BASE={players:[],maps:[],matches:[],aliases:{}};
-const state={tab:'home',seasonView:'all',trackPlayer:'',trackPeriod:'all',trackMap:'all',trackMetric:'kd',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,profileTargetId:null,accountUser:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,profileSection:'overview',profileWindow:20,accountMenuOpen:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
+const state={tab:'home',seasonView:'all',trackPlayer:'',trackTargetId:null,trackPeriod:'all',trackMap:'all',trackMetric:'kd',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,profileTargetId:null,accountUser:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,profileSection:'overview',profileWindow:20,accountMenuOpen:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
 let renderEpoch=0;let detailRowsCacheEpoch=-1;const detailRowsCache=new Map();
 let SERVER_AUDIT=[]; let SERVER_EVENT_SOURCE=null; let SERVER_REFRESH_TIMER=null; let SERVER_REFRESH_SEQ=0;
 const $=s=>document.querySelector(s);
@@ -230,7 +230,7 @@ function faceitAppRailMarkup(){
   '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" '+(state.tab==='settings'?'aria-current="page" ':'')+'data-app-route="settings">⚙ <span>Настройки</span></button></div>';
 }
 function bindAppShell(root){
- root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>navigateApp(button.dataset.appRoute)));
+ root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.appRoute==='track')state.trackTargetId=null;navigateApp(button.dataset.appRoute)}));
  root.querySelector('[data-account-open]')?.addEventListener('click',()=>window.openAccountAuth?.());
 }
 function renderRouteShell(v,page){
@@ -332,7 +332,7 @@ function profilePage(v){
    '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
    '<div class="faceit-exact-content">'+
      ''+
-     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button></div>'+
+     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button class="'+(state.profileSection==='track'?'active':'')+'" onclick="state.trackTargetId=\\''+esc(id)+'\\';navigateApp(\\'track\\')">Track</button></div>'+
      '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;CS2 · РЕЙТИНГ</b><small>Рейтинговая статистика игрока</small></div><button type="button" data-app-route="analytics">СТАТИСТИКА ИГРОКА →</button></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
      '<section class="faceit-exact-results"><div class="faceit-exact-results-head"><b>Недавние результаты</b><span>Последние матчи ('+all.length+') · изменение ELO <b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b></span></div>'+
        '<div class="faceit-exact-result-line"><span>Изменение ELO</span><b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><span class="faceit-exact-wl"><b>🟩 '+sum.wins+'</b> / <b>🟥 '+sum.losses+'</b></span></div>'+eloGraphMarkup+
@@ -394,10 +394,19 @@ function seasons(v){
 }
 
 function track(v){
- const people=activePlayers().slice().sort((a,b)=>String(a.display_name).localeCompare(String(b.display_name),'ru'));
- if(!people.length){v.innerHTML='<section class="track-page"><header class="track-head"><span class="faceit-kicker">PLAYER PERFORMANCE</span><h1>Track Stats</h1><p>Для построения трека пока нет активных игроков.</p></header></section>';return}
- const chosen=people.find(p=>p.player_id===state.trackPlayer)||people[0];state.trackPlayer=chosen.player_id;
- const all=profileMatchesForPlayer(chosen.player_id).filter(q=>q.hasStats);
+ const targetId=state.trackTargetId||state.myPlayerId||null;
+ const isOwn=!!state.myPlayerId&&targetId===state.myPlayerId;
+ const p=targetId?player(targetId):null;
+ if(!targetId){
+   const linked=!!state.accountUser;
+   v.innerHTML='<section class="track-page"><header class="track-head"><div><span class="faceit-kicker">PERSONAL PLAYER TRACK</span><h1>Твой Track</h1><p>'+(linked?'К аккаунту пока не привязан игровой профиль. Привяжи профиль, чтобы открыть личную статистику.':'Войди в аккаунт, чтобы открыть персональную статистику.')+'</p></div></header><section class="track-access-card"><b>'+(linked?'Профиль игрока не привязан':'Требуется вход в аккаунт')+'</b><p>Track не подставляет случайного игрока и не показывает чужую статистику автоматически.</p><button class="btn primary" type="button" onclick="window.openAccountAuth?.(\'link\')">'+(linked?'ПРИВЯЗАТЬ ИГРОВОЙ ПРОФИЛЬ':'ВОЙТИ В АККАУНТ')+'</button></section></section>';
+   return;
+ }
+ if(!p){
+   v.innerHTML='<section class="track-page"><header class="track-head"><div><span class="faceit-kicker">PLAYER TRACK</span><h1>Track недоступен</h1><p>Игровой профиль не найден или больше не активен.</p></div></header><button class="btn" onclick="state.trackTargetId=null;navigateApp(\'track\')">МОЙ TRACK</button></section>';
+   return;
+ }
+ const all=profileMatchesForPlayer(targetId).filter(q=>q.hasStats);
  const period=state.trackPeriod||'all',map=state.trackMap||'all',metric=state.trackMetric||'kd';
  const now=Date.now(),days=period==='7d'?7:period==='30d'?30:period==='90d'?90:0;
  let rows=all.filter(q=>{
@@ -407,24 +416,23 @@ function track(v){
  }).sort((a,b)=>matchTime(a.m)-matchTime(b.m)||matchOrder(a.m)-matchOrder(b.m));
  const summary=profileSummary(rows),maps=[...new Set(all.flatMap(q=>String(q.map||'').split(' · ').filter(Boolean)))].sort();
  const value=q=>metric==='kills'?q.k:metric==='deaths'?q.d:metric==='assists'?q.a:metric==='winrate'?(q.result==='WIN'?100:q.result==='LOSS'?0:null):q.kd;
- const points=rows.map((q,i)=>({x:i+1,y:value(q),q})).filter(p=>Number.isFinite(p.y));
- const W=900,H=220,pad=24,vals=points.map(p=>p.y),min=vals.length?Math.min(...vals):0,max=vals.length?Math.max(...vals):1,span=max-min||1;
- const coords=points.map((p,i)=>({x:pad+(points.length<=1?0:i*(W-pad*2)/(points.length-1)),y:H-pad-(p.y-min)*(H-pad*2)/span}));
- const line=coords.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
- const playerOptions=people.map(p=>'<option value="'+esc(p.player_id)+'" '+(p.player_id===chosen.player_id?'selected':'')+'>'+esc(p.display_name)+'</option>').join('');
+ const points=rows.map((q,i)=>({x:i+1,y:value(q),q})).filter(point=>Number.isFinite(point.y));
+ const W=900,H=220,pad=24,vals=points.map(point=>point.y),min=vals.length?Math.min(...vals):0,max=vals.length?Math.max(...vals):1,span=max-min||1;
+ const coords=points.map((point,i)=>({x:pad+(points.length<=1?0:i*(W-pad*2)/(points.length-1)),y:H-pad-(point.y-min)*(H-pad*2)/span}));
+ const line=coords.map(point=>point.x.toFixed(1)+','+point.y.toFixed(1)).join(' ');
  const mapOptions=['<option value="all">Все карты</option>',...maps.map(m=>'<option value="'+esc(m)+'" '+(map===m?'selected':'')+'>'+esc(m)+'</option>')].join('');
  const metricOptions=[['kd','K/D'],['kills','Kills'],['deaths','Deaths'],['assists','Assists'],['winrate','Результат матча']].map(([k,l])=>'<option value="'+k+'" '+(metric===k?'selected':'')+'>'+l+'</option>').join('');
  const periodOptions=[['all','Всё время'],['90d','90 дней'],['30d','30 дней'],['7d','7 дней']].map(([k,l])=>'<option value="'+k+'" '+(period===k?'selected':'')+'>'+l+'</option>').join('');
  const recent=rows.slice(-12).reverse().map(q=>'<button class="track-match-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')"><span>'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span><b class="'+(q.result==='WIN'?'positive':q.result==='LOSS'?'negative':'neutral')+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</b><span>'+esc(q.map)+'</span><strong>'+fmt(q.kd)+'</strong><span>'+q.k+'/'+q.d+'/'+q.a+'</span></button>').join('');
  const metricLabel={kd:'K/D',kills:'Kills',deaths:'Deaths',assists:'Assists',winrate:'Результат'}[metric];
+ const avatar=profileAvatarMarkup(targetId,'sm');
  v.innerHTML='<section class="track-page">'+
- '<header class="track-head"><div><span class="faceit-kicker">CS2 · PLAYER PERFORMANCE</span><h1>Track Stats</h1><p>Динамика игрока, результаты матчей и статистика по выбранным картам</p></div><div class="track-head-count"><b>'+rows.length+'</b><span>матчей в выборке</span></div></header>'+
- '<div class="track-filters"><label>ИГРОК<select class="control" onchange="state.trackPlayer=this.value;render()">'+playerOptions+'</select></label><label>ПЕРИОД<select class="control" onchange="state.trackPeriod=this.value;render()">'+periodOptions+'</select></label><label>КАРТА<select class="control" onchange="state.trackMap=this.value;render()">'+mapOptions+'</select></label><label>МЕТРИКА<select class="control" onchange="state.trackMetric=this.value;render()">'+metricOptions+'</select></label></div>'+
+ '<header class="track-head"><div class="track-owner"><button type="button" class="track-owner-avatar" onclick="openPublicPlayerProfile(\''+esc(targetId)+'\')">'+avatar+'</button><div><span class="faceit-kicker">'+(isOwn?'PERSONAL PLAYER TRACK':'PUBLIC PLAYER TRACK')+'</span><h1>'+esc(p.display_name)+' · Track</h1><p>'+(isOwn?'Твоя персональная статистика':'Публичная статистика игрока')+'</p></div></div><div class="track-head-count"><b>'+rows.length+'</b><span>матчей в выборке</span></div></header>'+
+ '<div class="track-filters"><label>ПЕРИОД<select class="control" onchange="state.trackPeriod=this.value;render()">'+periodOptions+'</select></label><label>КАРТА<select class="control" onchange="state.trackMap=this.value;render()">'+mapOptions+'</select></label><label>МЕТРИКА<select class="control" onchange="state.trackMetric=this.value;render()">'+metricOptions+'</select></label></div>'+
  '<div class="track-kpis"><article><span>МАТЧИ</span><b>'+summary.matches+'</b></article><article><span>ПОБЕДЫ</span><b class="positive">'+summary.wins+'</b></article><article><span>ВИНРЕЙТ</span><b>'+fmt(summary.winrate,1)+'%</b></article><article><span>СРЕДНИЙ K/D</span><b class="'+(summary.kd>=1?'positive':'negative')+'">'+fmt(summary.kd)+'</b></article><article><span>K / D / A</span><b>'+summary.k+' / '+summary.d+' / '+summary.a+'</b></article></div>'+
- '<section class="track-chart-panel"><div class="track-section-head"><div><span class="faceit-kicker">MATCH-BY-MATCH</span><h2>'+metricLabel+' · динамика</h2></div><span>'+points.length+' точек</span></div>'+(points.length?'<div class="track-chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="График '+metricLabel+'"><line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" class="track-axis"/><line x1="'+pad+'" y1="'+pad+'" x2="'+(W-pad)+'" y2="'+pad+'" class="track-gridline"/><polyline points="'+line+'" class="track-line"/>'+coords.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="3.5" class="track-point"/>').join('')+'</svg></div><div class="track-chart-meta"><span>МИНИМУМ '+fmt(min,metric==='winrate'?0:2)+'</span><span>МАКСИМУМ '+fmt(max,metric==='winrate'?0:2)+'</span></div>':'<div class="track-empty">Нет матчей с доступной статистикой для выбранных фильтров.</div>')+'</section>'+
+ '<section class="track-chart-panel"><div class="track-section-head"><div><span class="faceit-kicker">MATCH-BY-MATCH</span><h2>'+metricLabel+' · динамика</h2></div><span>'+points.length+' точек</span></div>'+(points.length?'<div class="track-chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="График '+metricLabel+'"><line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" class="track-axis"/><line x1="'+pad+'" y1="'+pad+'" x2="'+(W-pad)+'" y2="'+pad+'" class="track-gridline"/><polyline points="'+line+'" class="track-line"/>'+coords.map(point=>'<circle cx="'+point.x+'" cy="'+point.y+'" r="3.5" class="track-point"/>').join('')+'</svg></div><div class="track-chart-meta"><span>МИНИМУМ '+fmt(min,metric==='winrate'?0:2)+'</span><span>МАКСИМУМ '+fmt(max,metric==='winrate'?0:2)+'</span></div>':'<div class="track-empty">Нет матчей с доступной статистикой для выбранных фильтров.</div>')+'</section>'+
  '<section class="track-matches-panel"><div class="track-section-head"><div><span class="faceit-kicker">RECENT FORM</span><h2>Матчи в треке</h2></div><span>'+rows.length+' записей</span></div><div class="track-match-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>КАРТЫ</span><span>K/D</span><span>K/D/A</span></div>'+(recent||'<div class="track-empty">Нет матчей.</div>')+'</section></section>';
 }
-
 function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
