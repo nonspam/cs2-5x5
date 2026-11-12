@@ -401,29 +401,56 @@ function profilePage(v){
  tip.className='faceit-elo-tooltip';tip.hidden=true;tip.setAttribute('role','dialog');tip.setAttribute('aria-live','polite');document.body.appendChild(tip);
  let pinned=null,active=null;
  const hide=()=>{tip.hidden=true;pinned=null;active=null};
+ const findMatch=event=>{
+  const id=String(event?.match_id??'').trim();
+  if(!id)return null;
+  return DB.matches.find(match=>String(match.match_id??'').trim()===id)||null;
+ };
+ const openMatch=match=>{
+  if(!match)return false;
+  const id=String(match.match_id??'').trim();
+  const stored=DB.matches.find(item=>String(item.match_id??'').trim()===id);
+  if(!stored)return false;
+  hide();
+  closeAllModals();
+  openMatchDetail(stored.match_id);
+  return !!document.querySelector('#modal.match-detail-backdrop');
+ };
  const show=(index,dot,pin=false)=>{
   const event=history[index];if(!event)return;
-  const match=DB.matches.find(m=>String(m.match_id)===String(event.match_id));
+  const match=findMatch(event);
   const delta=window.CS2EloV3?.deltaForMatch(playerId,event.match_id);
-  const after=Number(event.after),before=Number.isFinite(after)&&delta!=null?after-Number(delta):null;
-  const date=match?dateLabel(match.played_at||match.date||match.created_at):'Дата неизвестна';
-  const result=match?playerResultFor(match,playerId):null;
+  const after=Number(event.after),before=Number.isFinite(after)&&delta!=null?after-Number(delta):Number(event.before);
+  const date=match?dateLabel(match.played_at||match.date||match.created_at):dateLabel(event.played_at)||'Дата неизвестна';
+  const result=match?playerResultFor(match,playerId):event.result||null;
   const tone=delta==null?'neutral':delta>0?'positive':delta<0?'negative':'neutral';
-  const score=match?(playerSeriesScoreLabel(match,playerId,DB.maps.filter(m=>m.match_id===match.match_id))||match.series_score||'—'):'—';
+  const score=match?(playerSeriesScoreLabel(match,playerId,DB.maps.filter(m=>String(m.match_id)===String(match.match_id)))||match.series_score||'—'):'—';
   const teamNames=match?(match.team_a_name||'Состав 1')+' — '+(match.team_b_name||'Состав 2'):'Матч не найден в загруженных данных';
-  tip.innerHTML='<div class="faceit-elo-tooltip-head"><div><small>МАТЧ '+(index+1)+' / '+history.length+'</small><strong>'+esc(date)+'</strong></div><span class="'+tone+'">'+(delta==null?'—':(delta>0?'+':'')+fmt(delta,1))+' ELO</span></div><div class="faceit-elo-tooltip-opponent"><span>'+esc(teamNames)+'</span><b>'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':result==='DRAW'?'НИЧЬЯ':'НЕТ ДАННЫХ')+'</b></div><div class="faceit-elo-tooltip-ratings"><div><small>РЕЙТИНГ ДО</small><b>'+(before==null?'—':fmt(before,1))+'</b></div><div><small>РЕЙТИНГ ПОСЛЕ</small><b>'+(Number.isFinite(after)?fmt(after,1):'—')+'</b></div><div><small>СЧЁТ СЕРИИ</small><b>'+esc(score)+'</b></div></div><div class="faceit-elo-tooltip-actions"><button type="button" class="faceit-elo-tooltip-close">ЗАКРЫТЬ</button><button type="button" class="faceit-elo-tooltip-open" '+(!match?'disabled':'')+'>ОТКРЫТЬ МАТЧ</button></div>';
+  tip.innerHTML='<div class="faceit-elo-tooltip-head"><div><small>МАТЧ '+(index+1)+' / '+history.length+'</small><strong>'+esc(date)+'</strong></div><span class="'+tone+'">'+(delta==null?'—':(delta>0?'+':'')+fmt(delta,1))+' ELO</span></div><div class="faceit-elo-tooltip-opponent"><span>'+esc(teamNames)+'</span><b>'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':result==='DRAW'?'НИЧЬЯ':'НЕТ ДАННЫХ')+'</b></div><div class="faceit-elo-tooltip-ratings"><div><small>РЕЙТИНГ ДО</small><b>'+(Number.isFinite(before)?fmt(before,1):'—')+'</b></div><div><small>РЕЙТИНГ ПОСЛЕ</small><b>'+(Number.isFinite(after)?fmt(after,1):'—')+'</b></div><div><small>СЧЁТ СЕРИИ</small><b>'+esc(score)+'</b></div></div><div class="faceit-elo-tooltip-actions"><button type="button" class="faceit-elo-tooltip-close">ЗАКРЫТЬ</button><button type="button" class="faceit-elo-tooltip-open" '+(!match?'disabled':'')+'>ОТКРЫТЬ МАТЧ</button></div>';
   tip.hidden=false;tip.dataset.pinned=pin?'true':'false';tip.style.pointerEvents=pin?'auto':'none';pinned=pin?index:null;active=index;
   const r=dot.getBoundingClientRect(),w=tip.offsetWidth||300,h=tip.offsetHeight||150;
   let left=r.right+12;if(left+w>innerWidth-12)left=r.left-w-12;
   left=Math.max(12,Math.min(innerWidth-w-12,left));let top=Math.max(12,Math.min(innerHeight-h-12,r.top-h-10));
   tip.style.left=left+'px';tip.style.top=top+'px';
   tip.querySelector('.faceit-elo-tooltip-close')?.addEventListener('click',hide);
-  tip.querySelector('.faceit-elo-tooltip-open')?.addEventListener('click',()=>{if(match){hide();openMatchDetail(match.match_id)}});
+  tip.querySelector('.faceit-elo-tooltip-open')?.addEventListener('click',()=>openMatch(match));
  };
  const pointFrom=e=>{const node=e.target?.closest?.('.faceit-elo-point');return node&&svg.contains(node)?node:null};
- svg.addEventListener('pointermove',e=>{if(pinned!==null)return;const dot=pointFrom(e);if(!dot){if(active!==null)hide();return}const index=Number(dot.dataset.eloIndex);if(index!==active)show(index,dot,false)},{signal:controller.signal});
- svg.addEventListener('click',e=>{const dot=pointFrom(e);if(!dot)return;e.stopPropagation();const index=Number(dot.dataset.eloIndex);if(pinned===index)hide();else show(index,dot,true)},{signal:controller.signal});
- svg.addEventListener('keydown',e=>{const dot=pointFrom(e);if(!dot)return;const index=Number(dot.dataset.eloIndex);if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pinned===index)hide();else show(index,dot,true)}if(e.key==='Escape')hide()},{signal:controller.signal});
+ const indexFrom=dot=>Number(dot?.dataset.eloIndex);
+ svg.addEventListener('pointermove',e=>{if(pinned!==null)return;const dot=pointFrom(e);if(!dot){if(active!==null)hide();return}const index=indexFrom(dot);if(index!==active)show(index,dot,false)},{signal:controller.signal});
+ svg.addEventListener('click',e=>{
+  const dot=pointFrom(e);if(!dot)return;
+  e.preventDefault();e.stopPropagation();
+  const index=indexFrom(dot),match=findMatch(history[index]);
+  if(match){openMatch(match);return}
+  show(index,dot,true);
+ },{signal:controller.signal});
+ svg.addEventListener('keydown',e=>{
+  const dot=pointFrom(e);if(!dot)return;
+  const index=indexFrom(dot);
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();const match=findMatch(history[index]);if(match)openMatch(match);else show(index,dot,true)}
+  if(e.key==='Escape')hide();
+ },{signal:controller.signal});
  svg.addEventListener('pointerleave',()=>{if(pinned===null)hide()},{signal:controller.signal});
  document.addEventListener('pointerdown',e=>{if(pinned!==null&&!tip.contains(e.target)&&!e.target.closest?.('.faceit-elo-point'))hide()},{signal:controller.signal});
  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide()},{signal:controller.signal});
