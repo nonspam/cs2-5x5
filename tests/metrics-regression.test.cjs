@@ -149,3 +149,12 @@ test('profile polish removes share action and gives every match column a full-wi
   assert.match(css, /\.faceit-profile-v2 \.faceit-exact-lower\s*\{\s*width:100%/);
   assert.match(css, /background:rgba\(14,18,23,\.42\)!important/);
 });
+
+
+test('profile history header and match values share a wide aligned grid; K/D is color-coded', () => {
+  assert.ok(app.includes('faceit-match-rating '+"'+personalTone+'"+''));
+  const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
+  assert.ok(css.includes('grid-template-columns:minmax(145px,1.35fr)'));
+  assert.ok(css.includes('.faceit-match-rating.kd-positive{color:#42d99a}'));
+  assert.ok(css.includes('.faceit-match-rating.kd-negative{color:#ff5968}'));
+});
