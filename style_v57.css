@@ -5171,3 +5171,67 @@ html,body,*{
 .map-stat-footnote{margin:0 20px 20px;padding:12px 14px;border-left:3px solid #536272;background:#111a22;color:#8f9ba6;font-size:11px;line-height:1.5}
 @media(max-width:1050px){.match-overview-grid{grid-template-columns:1fr 1.6fr}.match-overview-veto{grid-column:1/-1}.map-stat-layout{grid-template-columns:1fr 1fr}.map-stat-rounds{grid-column:1/-1}}
 @media(max-width:700px){.match-overview-grid,.match-overview-player-tables,.map-stat-layout,.map-stat-player-grid{grid-template-columns:1fr}.match-overview-veto,.map-stat-rounds{grid-column:auto}.map-stat-hero{grid-template-columns:1fr;min-height:230px}.map-stat-hero-title{text-align:left}.map-stat-hero-teams b{font-size:32px}.map-stat-layout{padding:12px}.map-stat-player-grid{padding:0 12px 12px}.map-stat-footnote{margin:0 12px 12px}.match-overview-grid{gap:10px}}
+
+
+/* Match Overview screenshot fixes: full-bleed map art, neutral palette, centered score */
+.match-overview-maps .match-map-row-cover{
+  position:relative!important;isolation:isolate!important;display:flex!important;
+  align-items:flex-end!important;justify-content:space-between!important;gap:16px!important;
+  width:100%!important;min-height:112px!important;padding:16px 18px!important;
+  overflow:hidden!important;background:#202326!important;border:1px solid #34393e!important;
+  border-radius:9px!important;cursor:pointer!important;text-align:left!important;
+}
+.match-overview-maps .match-map-row-cover:before{
+  content:"";position:absolute;z-index:-1;inset:0;
+  background:linear-gradient(90deg,rgba(9,12,15,.22),rgba(9,12,15,.08) 48%,rgba(9,12,15,.4)),
+             linear-gradient(0deg,rgba(8,11,14,.78),rgba(8,11,14,.02) 78%);
+  pointer-events:none;
+}
+.match-overview-maps .match-map-row-cover .match-map-row-thumb{
+  position:absolute!important;z-index:-2!important;inset:0!important;display:block!important;
+  width:100%!important;height:100%!important;min-width:0!important;overflow:hidden!important;
+  border-radius:0!important;opacity:1!important;
+}
+.match-overview-maps .match-map-row-cover .match-map-row-thumb .map-thumb,
+.match-overview-maps .match-map-row-cover .match-map-row-thumb .map-thumb-photo{
+  position:absolute!important;inset:0!important;display:block!important;width:100%!important;
+  height:100%!important;min-width:0!important;object-fit:cover!important;
+}
+.match-overview-maps .match-map-row-cover .match-map-row-thumb .map-thumb-photo{
+  object-position:center 42%!important;opacity:.98!important;filter:saturate(.78) contrast(1.04)!important;
+}
+.match-overview-maps .match-map-row-cover .match-map-row-thumb .map-logo-mini{display:none!important}
+.match-overview-maps .match-map-row-cover .match-map-row-copy{
+  position:relative!important;z-index:1!important;display:flex!important;flex-direction:column!important;
+  align-items:flex-start!important;gap:5px!important;min-width:0!important;
+}
+.match-overview-maps .match-map-row-cover .match-map-row-copy small{
+  color:#d0d8df!important;font-size:8px!important;font-weight:800!important;letter-spacing:.16em!important;
+}
+.match-overview-maps .match-map-row-cover .match-map-row-copy strong{
+  color:#fff!important;font-size:18px!important;line-height:1.05!important;font-weight:950!important;
+  letter-spacing:.045em!important;text-shadow:0 2px 12px #000!important;
+}
+.match-overview-maps .match-map-row-cover .match-map-row-score{
+  position:relative!important;z-index:1!important;align-self:flex-end!important;color:#fff!important;
+  font-size:21px!important;line-height:1!important;font-weight:950!important;
+  text-shadow:0 2px 12px #000!important;
+}
+.match-overview-maps .match-map-row-cover:hover{border-color:#87929b!important;filter:brightness(1.06)!important}
+
+/* Both team scores sit beside VS, with mirrored team identities */
+.match-room-result{grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr)!important}
+.match-room-side:not(.right){grid-template-columns:38px minmax(0,1fr) 40px auto!important}
+.match-room-side:not(.right) .match-room-faction-info{grid-column:2;grid-row:1}
+.match-room-side:not(.right) .player-avatar{grid-column:3;grid-row:1}
+.match-room-side:not(.right) .match-room-team-score{grid-column:4;grid-row:1}
+.match-room-side.right{grid-template-columns:auto 40px minmax(0,1fr) 38px!important}
+.match-room-side.right .match-room-team-score{grid-column:1;grid-row:1}
+.match-room-side.right .player-avatar{grid-column:2;grid-row:1}
+.match-room-side.right .match-room-faction-info{grid-column:3;grid-row:1}
+.match-room-side.right>span.match-room-rank-mark{grid-column:4;grid-row:1}
+@media(max-width:700px){
+ .match-room-result{grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr)!important}
+ .match-room-side:not(.right){grid-template-columns:32px minmax(0,1fr) 34px auto!important}
+ .match-room-side.right{grid-template-columns:auto 34px minmax(0,1fr) 32px!important}
+}
