@@ -1,0 +1,3 @@
+GitHub write-access check.
+Temporary verification branch based on faceit-dev.
+No application source files changed.
