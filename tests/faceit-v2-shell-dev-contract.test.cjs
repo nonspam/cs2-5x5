@@ -67,9 +67,11 @@ test('settings remains reachable through the persistent settings shortcut', () =
   assert.match(app, /APP_ROUTE_IDS=\[[^\]]*'settings'/);
 });
 
-test('Track is not exposed as a completed shell route', () => {
+test('Track is exposed as an account-scoped shell route', () => {
   const routeList = app.match(/const APP_ROUTE_IDS=\[([^\]]+)\]/)?.[1] || '';
-  assert.doesNotMatch(routeList, /['"]track['"]/);
+  assert.match(routeList, /['"]track['"]/);
+  assert.match(app, /function track\(v\)/);
+  assert.match(app, /const pages=\{[^}]*track/);
 });
 
 test('every inline click/change handler resolves to a declared runtime function', () => {
