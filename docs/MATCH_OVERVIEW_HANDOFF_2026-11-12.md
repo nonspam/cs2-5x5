@@ -46,6 +46,22 @@ Commits:
 
 JavaScript and test source were syntax-compiled in the connector runtime. Full `npm run check` / GitHub Quality Gate for these commits is not yet confirmed. Browser QA, deployment and owner visual acceptance are not performed.
 
+## Третий проход — точная карточка игрока по выделенному FACEIT-референсу
+
+Владелец прислал отдельные файлы HTML/замеров карточки и CSS выделенной области игрока. Прочитаны оба источника. В HTML подтверждены структура FACEIT player row: контейнер карточки, аватар 40 px, блок ника, отдельный Elo/end-slot и skill-level значок 32 px. Замер внешнего элемента из приложенного снимка: примерно 369.1 × 142.0 px. В HTML присутствует также расширение FACEIT Analytics: `.fc-plate`, `.fc-strip`, `.fc-note`; их метрики/данные не являются нативными данными FACEIT и не копируются как источник.
+
+В `style_v57.css` добавлен новый scoped override только для Match Overview roster:
+- карточка стала единой поверхностью, аватар вынесен в левую зону карточки;
+- верхняя строка собрана вокруг ника, Elo и уровня;
+- нижние шесть показателей отображаются одной непрерывной полосой без отдельных плиток/рамок;
+- длинные ники переносятся вместо принудительного ellipsis;
+- сохранены только реально имеющиеся метрики приложения; отсутствующие данные не синтезируются.
+
+Добавлен тестовый контракт в `tests/faceit-v2-shell.test.cjs`. Проверены JS-синтаксис приложения и синтаксис тестового файла, плюс статические условия новой карточки. Полный npm test/Quality Gate и визуальный браузерный тест не запускались. Не менялись данные, Statistics, DB/SQL/RLS/grants/migrations, main/production; деплой не выполнялся.
+
+CSS commit: `297c66eb595acd408d7a7b261deda071ce5ebe84`.
+Tests commit: `6002c5387af4ab5d721fd739131c763048eb4ab4`.
+
 ## Визуальная обратная связь и второй проход — 2026-11-12
 
 Владелец прислал два скриншота: текущий Match Overview и целевую карточку FACEIT. Замечания:
