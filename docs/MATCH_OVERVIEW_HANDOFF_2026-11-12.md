@@ -2,7 +2,7 @@
 Дата: 2026-11-12
 Репозиторий: `nonspam/cs2-5x5`
 Рабочая ветка: `faceit-dev`
-Статус: ожидание доступного исходного HTML/CSS-референса; код по новому файлу пока не менялся.
+Статус: HTML/CSS референс получен и разобран; первая реализация Match Overview внесена в `faceit-dev`; CI и визуальная приёмка новых изменений ещё не подтверждены.
 
 ## Прочитать в первую очередь
 1. [PROJECT_MASTER.md](../PROJECT_MASTER.md) — правила и продуктовый контекст.
@@ -17,6 +17,34 @@
 - **Этап 2 — Statistics.** Не начинать до завершения и согласования Overview. После этого отдельно разобрать референс статистики и реализовать его.
 
 Не смешивать два этапа в один большой редизайн. Не придумывать недостающие блоки и стили: владелец задаёт визуальное направление и принимает результат.
+
+## Референс получен и разобран — 2026-11-12
+
+Исходник приложен непосредственно в чат и прочитан. Подробный разбор и implementation map: [MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md](MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md).
+
+Ключевые факты:
+- 1.23 MB / 27,024 строк; 10 embedded style blocks, 182 media rules, 1,600 inline style attributes.
+- Нативная структура: local navigation → match metadata → score card → три колонки (ростер / центральная колонка / ростер).
+- CSS-фрагмент не содержит runtime-generated styled-components rules для многих ключевых DOM классов. Не заявлять, что computed CSS и все точные размеры полностью восстановлены.
+- Часть DOM — браузерное расширение (`fc-strip`, `fc-note`, `faceit-lobby-stats`, `fc-plate`, forecast и team panels), а не нативный FACEIT. Не копировать его значения в продукт как подтверждённую статистику.
+- Для CS2 Analytics отсутствуют подтверждённые server/veto/demo/forecast fields. Их не выдумывать. Средний ELO в score card явно подписан как текущий, а не исторический.
+
+## Первая реализация Match Overview внесена
+
+Изменены только:
+- `app_v57.js` — nav, score card, roster headers и средний текущий ELO;
+- `style_v57.css` — scoped Match Room styling и responsive layout;
+- `tests/faceit-v2-shell.test.cjs` — новые contract assertions.
+
+Statistics renderer не редактировался. DB/SQL/schema/RLS/grants/migrations, `main`, production и deployment не затрагивались.
+
+Commits:
+- JS: `4e55c9224a4bcb3bb5a1af03ec38258147755e89`, `12144170211501b9678cddba67d83c81daca64b1`, `0b9051d9c4c0b090c91382976d6831f6a1d04ca9`;
+- CSS: `f71fb7e58bf74ad3ee48834807c7ea0e645a8287`;
+- tests: `8adb0537fd758141068d6b11edeb20040a6c03d8`;
+- reference analysis doc: `f439a70489b22ba31295cece7e2e5ef7ad305e78`.
+
+JavaScript and test source were syntax-compiled in the connector runtime. Full `npm run check` / GitHub Quality Gate for these commits is not yet confirmed. Browser QA, deployment and owner visual acceptance are not performed.
 
 ## Что произошло с загрузкой референса 2026-11-12
 Владелец загрузил файл через GitHub UI в репозиторий. Обнаружен commit:
@@ -60,14 +88,12 @@
 - [CI run 43261514891](https://github.com/nonspam/cs2-5x5/actions/runs/43261514891).
 - Browser QA и deployment для последней реализации не подтверждены.
 
-## Первый рабочий шаг
-1. Проверить актуальный `faceit-dev` HEAD и открыть текущие `app_v57.js`, `style_v57.css`, связанные тесты.
-2. Получить читаемое содержимое `матч внутри,обозр и стата.txt` (не полагаться на пустой ответ API).
-3. Разобрать референс целиком: структура, иерархия, точные размеры, отступы, цвета, шрифты, адаптивность, тексты и состояния.
-4. Составить краткий implementation map для Overview.
-5. Реализовать только Overview, добавить/обновить contract tests, прогнать CI.
-6. Показать результат владельцу и дождаться его замечаний/приёмки.
-7. Только после приёмки Overview переходить к Statistics.
+## Следующие шаги
+1. Проверить актуальный HEAD `faceit-dev` и Quality Gate для новых source/test commits; не заявлять успешный CI без фактического статуса.
+2. Если CI выявит ошибки — исправить их в той же ветке и повторно проверить.
+3. Показать владельцу результат Match Overview для визуальной приёмки и собрать конкретные замечания.
+4. Не запускать browser QA или deployment без отдельного разрешения.
+5. Statistics не редактировать и не начинать до явного одобрения Overview.
 
 ## Готовый контекст для нового чата
 Попроси новый чат прочитать этот handoff и документы из списка в начале. Затем пусть он подтвердит понимание ограничений и продолжит с получения читаемого HTML/CSS файла. Никакого редизайна Statistics до закрытия Overview.
