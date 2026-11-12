@@ -1476,3 +1476,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:15:44+03:00 — Make Track access prompt regression assertion robust to inline escaping
+
+- Commit: cb1dd208496049467c5bf3876ada9c8e05f6e1ba
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
