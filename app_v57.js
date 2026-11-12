@@ -1,7 +1,7 @@
 const DB={players:[],maps:[],matches:[],aliases:{}};
 const BASE={players:[],maps:[],matches:[],aliases:{}};
 const state={tab:'home',seasonView:'all',trackPlayer:'',trackPeriod:'all',trackMap:'all',trackMetric:'kd',logged:false,selected:['gletcher'],focused:null,metric:'kd',map:'all',teamA:[],teamB:[],teamAddTarget:'A',compare:['gletcher','donater'],detailPlayer:null,whatIfOut:'',whatIfIn:'',teamChange:null,teamMap:'mirage',recordFilter:'career',recordMetric:'kills',recordMap:'all',baseMode:'maps',showArchived:false,mapPlayer:'all',myPlayerId:null,profileTargetId:null,accountUser:null,myProfile:null,profileRows:[],profileError:null,profileBusy:false,profileSection:'overview',profileWindow:20,accountMenuOpen:false,hydrationError:null,storageWarning:null,bootError:null,serverSync:false,serverVersion:null,serverBusy:false,cloudMode:false,cloudAdmin:false};
-state.trackTargetId=null;
+state.trackTargetId=null;state.profileSeasonKey='all';state.seasonPickerOpen=false;state.trackSeasonKey=null;
 let renderEpoch=0;let detailRowsCacheEpoch=-1;const detailRowsCache=new Map();
 let SERVER_AUDIT=[]; let SERVER_EVENT_SOURCE=null; let SERVER_REFRESH_TIMER=null; let SERVER_REFRESH_SEQ=0;
 const $=s=>document.querySelector(s);
@@ -114,6 +114,23 @@ function validateBase(b){if(!b||!Array.isArray(b.players)||!Array.isArray(b.maps
 function activeMatches(){return DB.matches.filter(m=>m.archived!==true)}
 function activeMapCount(){const activeIds=new Set(activeMatches().map(m=>m.match_id));return DB.maps.filter(m=>m.archived!==true&&activeIds.has(m.match_id)).length}
 function matchTime(m){const t=Date.parse(m?.played_at||m?.date||m?.created_at||'');return Number.isFinite(t)?t:0}
+const FACEIT_SEASONS=[
+ {key:'s9',number:9,label:'S9',name:'Сезон 9',dateLabel:'05.08.2026 — 08.12.2026',status:'ТЕКУЩИЙ',start:Date.parse('2026-08-05T13:00:00+02:00'),end:Date.parse('2026-12-08T17:00:00+01:00')},
+ {key:'s8',number:8,label:'S8',name:'Сезон 8',dateLabel:'22.04.2026 — 04.08.2026',status:'ЗАВЕРШЁН',start:Date.parse('2026-04-22T00:00:00+02:00'),end:Date.parse('2026-08-05T13:00:00+02:00')},
+ {key:'s7',number:7,label:'S7',name:'Сезон 7',dateLabel:'19.11.2025 — 21.04.2026',status:'ЗАВЕРШЁН',start:Date.parse('2025-11-19T00:00:00+01:00'),end:Date.parse('2026-04-22T00:00:00+02:00')},
+ ...Array.from({length:6},(_,i)=>{const number=6-i;return{key:'s'+number,number,label:'S'+number,name:'Сезон '+number,dateLabel:'Архив',status:'АРХИВ',start:null,end:null}})
+];
+function faceitSeasonForMatch(match){
+ const explicit=[match?.faceit_season,match?.season_number,match?.season_key,match?.season_id,match?.season].find(value=>value!=null&&String(value).trim()!=='');
+ if(explicit!=null){const found=String(explicit).trim().match(/(?:season|s)?\s*0*(\d{1,2})/i);if(found){const number=Number(found[1]);if(number>=1&&number<=9)return's'+number}}
+ const time=matchTime(match);if(!time)return null;
+ for(const season of FACEIT_SEASONS){if(season.start!=null&&time>=season.start&&time<season.end)return season.key}
+ return null;
+}
+function selectProfileSeason(key){
+ if(key!=='all'&&!FACEIT_SEASONS.some(season=>season.key===key))return;
+ state.profileSeasonKey=key;state.trackSeasonKey=key;state.seasonPickerOpen=false;state.profileSection='overview';render();
+}
 function legacyMatchSort(a,b){return matchTime(a)-matchTime(b)||String(a?.match_id||'').localeCompare(String(b?.match_id||''))}
 function seriesOrderSort(a,b){const aid=String(a?.match_id||''),bid=String(b?.match_id||'');const legacy=/^match_(\d+)([a-z]*)$/i,local=/^match_local_(\d+)/i;const am=aid.match(legacy),bm=bid.match(legacy);if(am&&bm)return Number(am[1])-Number(bm[1])||am[2].localeCompare(bm[2])||aid.localeCompare(bid);if(am&&!bm)return -1;if(!am&&bm)return 1;const al=aid.match(local),bl=bid.match(local);if(al&&bl)return Number(al[1])-Number(bl[1])||aid.localeCompare(bid);if(al&&!bl)return -1;if(!al&&bl)return 1;return legacyMatchSort(a,b)}
 function orderedActiveMatches(){return activeMatches().slice().sort(seriesOrderSort)}
@@ -233,7 +250,7 @@ function restoreAppRouteFromHistory(){
 window.addEventListener('popstate',restoreAppRouteFromHistory);
 window.addEventListener('hashchange',restoreAppRouteFromHistory);
 function faceitAppRailMarkup(){
- const items=[['home','⌂','Главное'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['seasons','◉','Сезоны'],['track','⌁','Track'],['profile','◉','Профиль']];
+ const items=[['home','⌂','Главное'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['profile','◉','Профиль']];
  return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
   '<div class="faceit-exact-game">◉ <b>CS2 ANALYTICS</b></div>'+
   '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" '+(state.tab===id?'aria-current="page" ':'')+'data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
@@ -254,17 +271,24 @@ function profilePage(v){
  const row=profileRecord(id)||(canEditProfile?state.myProfile:null)||{};
  const avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.avatar_path):'';
  const cover=row.cover_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.cover_path):'';
- const all=profileMatchesForPlayer(id);
+ const careerAll=profileMatchesForPlayer(id),careerTotal=profileSummary(careerAll);
+ const selectedSeasonKey=state.profileSeasonKey||'all';
+ const seasonConfig=FACEIT_SEASONS.find(season=>season.key===selectedSeasonKey)||null;
+ const all=selectedSeasonKey==='all'?careerAll:careerAll.filter(row=>faceitSeasonForMatch(row.m)===selectedSeasonKey);
  const size=[5,10,20].includes(Number(state.profileWindow))?Number(state.profileWindow):20;
- const recent=all.slice(0,size),sum=profileSummary(recent),total=profileSummary(all);
+ const emptySummary={matches:'—',maps:'—',wins:'—',losses:'—',winrate:NaN,k:NaN,d:NaN,a:NaN,kd:NaN,avgKills:NaN,avgDeaths:NaN,avgAssists:NaN};
+ const recent=all.slice(0,size),sum=all.length?profileSummary(recent):emptySummary,total=all.length?profileSummary(all):emptySummary;
  const eloInfo=window.CS2EloV3?.player(id)||{rating:1000,matches:0,history:[]};
- const elo=eloInfo.rating,peakElo=eloInfo.peakRating??1000,eloChange=window.CS2EloV3?.recentDelta(id,size)||0;
+ const elo=eloInfo.rating,peakElo=eloInfo.peakRating??1000;
+ const seasonMatchIds=new Set(all.map(row=>row.m?.match_id).filter(Boolean));
+ const scopedEloHistory=(eloInfo.history||[]).filter(event=>selectedSeasonKey==='all'||seasonMatchIds.has(event.match_id));
+ const eloChange=selectedSeasonKey==='all'?(window.CS2EloV3?.recentDelta(id,size)||0):all.reduce((total,row)=>total+(window.CS2EloV3?.deltaForMatch(id,row.m.match_id)||0),0);
  const ranked=activePlayers().map(q=>({id:q.player_id,index:index(q.player_id),kd:aggregate(q.player_id).kd,rating:window.CS2EloV3?.player(q.player_id)?.rating??1000,matches:window.CS2EloV3?.player(q.player_id)?.matches??0}))
    .sort((x,y)=>y.index-x.index||y.kd-x.kd||y.rating-x.rating||x.id.localeCompare(y.id));
  const rankIndex=ranked.findIndex(q=>q.id===id),rank=rankIndex>=0?rankIndex+1:null;
- const eloHistory=(eloInfo.history||[]).slice(-20),eloSummary=window.CS2EloV3?.summary?.()||{activeSeries:0,ratedSeries:0};
+ const eloHistory=scopedEloHistory.slice(-20),eloSummary=window.CS2EloV3?.summary?.()||{activeSeries:0,ratedSeries:0};
  const eloGraphMarkup=(()=>{
-   if(!eloHistory.length)return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><div class="faceit-elo-empty">Пока нет серий, подходящих для расчёта рейтинга.</div></section>';
+   if(!eloHistory.length)return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><div class="faceit-elo-empty">'+(selectedSeasonKey==='all'?'Пока нет серий, подходящих для расчёта рейтинга.':'Для этого сезона пока нет подтверждённых изменений ELO.')+'</div></section>';
    const values=eloHistory.map(q=>Number(q.after)||1000),min=Math.min(...values)-8,max=Math.max(...values)+8,range=Math.max(1,max-min),w=500,h=104,pad=10;
    const points=values.map((value,i)=>{
      const x=values.length===1?w/2:pad+(w-pad*2)*i/(values.length-1);
@@ -309,7 +333,7 @@ function profilePage(v){
      '<div><span>ПОМОЩИ ЗА КАРТУ</span><b>'+fmt(sum.avgAssists,1)+'</b><small>реальные данные</small></div>'+
      '<div><span>СМЕРТЕЙ ЗА КАРТУ</span><b>'+fmt(sum.avgDeaths,1)+'</b><small>реальные данные</small></div>'+
    '</div></div>';
- const careerSummary='<div class="faceit-perf-card faceit-career-card"><div class="faceit-perf-head"><div><span class="faceit-kicker">ВСЯ КАРЬЕРА</span><h3>Итоги</h3></div><span>'+total.matches+' матчей</span></div><div class="faceit-performance-grid">'+
+ const careerSummary='<div class="faceit-perf-card faceit-career-card"><div class="faceit-perf-head"><div><span class="faceit-kicker">'+(selectedSeasonKey==='all'?'ВСЯ КАРЬЕРА':esc(seasonConfig?.name||'СЕЗОН'))+'</span><h3>Итоги</h3></div><span>'+total.matches+' матчей</span></div><div class="faceit-performance-grid">'+
    '<div><span>МАТЧИ</span><b>'+total.matches+'</b><small>'+total.maps+' карт сыграно</small></div>'+
    '<div><span>ВИНРЕЙТ</span><b>'+fmt(total.winrate,1)+'%</b><small>'+total.wins+' побед · '+total.losses+' поражений</small></div>'+
    '<div><span>СРЕДНИЙ K/D</span><b>'+fmt(total.kd)+'</b><small>за всю карьеру</small></div>'+
@@ -318,10 +342,22 @@ function profilePage(v){
  const recentForm=recent.slice(0,10).map(q=>'<button class="faceit-form-dot '+(q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw')+'" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')" title="'+esc(q.map+' · '+(q.m.series_score||'—'))+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</button>').join('');
  const gameHistory='<div class="faceit-side-card"><div class="faceit-side-title"><h3>История игры</h3></div><div class="faceit-game-history-row"><span>Матчи</span><b>'+all.length+'</b></div><div class="faceit-game-history-row"><span>Карты</span><b>'+total.maps+'</b></div></div>';
  const activity='<div class="faceit-side-card"><div class="faceit-side-title"><h3>Последняя активность</h3><span>За последние 90 дней</span></div><div class="faceit-activity-count"><b>'+all.filter(q=>{const t=matchTime(q.m);return t&&Date.now()-t<=90*86400000}).length+'</b><span>матчей сыграно</span></div><div class="faceit-activity-grid">'+activityCells+'</div><div class="faceit-activity-legend"><span>меньше</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>больше</span></div></div>';
- const rankCard='<div class="faceit-side-card faceit-rank-card"><span class="faceit-kicker">МЕСТО ПО ИНДЕКСУ</span><strong>'+(rank===null?'—':'#'+rank)+'</strong><span>из '+ranked.length+' активных игроков · ELO отдельно</span></div>';
+ const rankCard=selectedSeasonKey==='all'
+   ? '<div class="faceit-side-card faceit-rank-card"><span class="faceit-kicker">МЕСТО ПО ИНДЕКСУ</span><strong>'+(rank===null?'—':'#'+rank)+'</strong><span>из '+ranked.length+' активных игроков · ELO отдельно</span></div>'
+   : '<div class="faceit-side-card faceit-rank-card"><span class="faceit-kicker">СЕЗОННЫЙ РЕЙТИНГ</span><strong>—</strong><span>История сезонного рейтинга ещё не импортирована.</span></div>';
+ const widgetSeason=seasonConfig||FACEIT_SEASONS[0];
+ const seasonWidgetMarkup='<button type="button" class="faceit-season-widget" data-season-picker-toggle><span>SEASON STATS</span><strong>'+widgetSeason.label+'</strong><b>Статистика '+esc(widgetSeason.name.toLowerCase())+'</b><small>'+esc(widgetSeason.dateLabel)+'</small><i>↗</i></button>';
+ const seasonPickerMarkup=state.seasonPickerOpen
+   ? '<section class="faceit-season-picker"><div class="faceit-season-picker-head"><div><span class="faceit-kicker">FACEIT · SEASON ARCHIVE</span><h3>Выбери сезон</h3></div><button type="button" data-season-picker-close>ЗАКРЫТЬ</button></div><div class="faceit-season-picker-grid"><button type="button" class="faceit-season-pick-card faceit-season-pick-all '+(selectedSeasonKey==='all'?'selected':'')+'" data-profile-season="all"><span>∞</span><b>ALL TIME</b><small>Вся карьера</small></button>'+FACEIT_SEASONS.map(season=>'<button type="button" class="faceit-season-pick-card '+(season.key===selectedSeasonKey?'selected ':'')+(season.key==='s9'?'current':'')+'" data-profile-season="'+season.key+'"><span>'+season.label+'</span><b>'+esc(season.name)+'</b><small>'+esc(season.dateLabel)+'</small><em>'+esc(season.status)+'</em></button>').join('')+'</div></section>'
+   : '';
+ const seasonScopeMarkup=selectedSeasonKey==='all'?''
+   : '<section class="faceit-season-scope"><div><span>ВЫБРАННЫЙ СЕЗОН</span><b>'+esc(seasonConfig?.name||'Сезон')+'</b><small>'+esc(seasonConfig?.dateLabel||'Архив без подтверждённого диапазона')+'</small></div><button type="button" data-season-picker-toggle>СМЕНИТЬ СЕЗОН</button><button type="button" data-profile-season="all">ВСЯ КАРЬЕРА</button></section>'
+   +(all.length?'':'<div class="faceit-season-no-data">В импортированной истории пока нет дат матчей или меток сезонов. Сезонная статистика появится после привязки матчей к соответствующему сезону; общекарьерные цифры сюда не подставляются.</div>');
  const body=state.profileSection==='history'
-   ? '<section class="faceit-content-card faceit-full-history"><div class="faceit-card-title"><div><span class="faceit-kicker">ИСТОРИЯ МАТЧЕЙ</span><h2>Все матчи</h2></div><span>'+all.length+' матчей</span></div><div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ / ELO</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div><div class="faceit-match-list">'+(matchRows(all)||'<div class="empty">Матчей пока нет.</div>')+'</div></section>'
-   : '<div class="faceit-main-grid"><div>'+careerSummary+performance+
+   ? '<section class="faceit-content-card faceit-full-history"><div class="faceit-card-title"><div><span class="faceit-kicker">ИСТОРИЯ МАТЧЕЙ'+(selectedSeasonKey==='all'?'':' · '+esc(seasonConfig?.label||''))+'</span><h2>Все матчи</h2></div><span>'+all.length+' матчей</span></div><div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ / ELO</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div><div class="faceit-match-list">'+(matchRows(all)||'<div class="empty">Для выбранного сезона пока нет матчей с подтверждённой сезонной привязкой.</div>')+'</div></section>'
+   : state.profileSection==='track'
+     ? '<section class="faceit-profile-track-shell"><div id="profileTrackMount"></div></section>'
+     : '<div class="faceit-main-grid"><div>'+seasonScopeMarkup+careerSummary+performance+
        '<section class="faceit-content-card"><div class="faceit-card-title"><div><span class="faceit-kicker">МАТЧИ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="state.profileSection=\'history\';render()">Полная история →</button></div>'+
        '<div class="faceit-form-large">'+(recentForm||'<span class="muted">Матчей пока нет</span>')+'</div>'+
        '<div class="faceit-match-table-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ / ELO</span><span>K/D</span><span>K/D/A</span><span>КАРТА</span></div>'+
@@ -342,16 +378,21 @@ function profilePage(v){
    '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
    '<div class="faceit-exact-content">'+
      ''+
-     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button></div>'+
-     '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;CS2 · РЕЙТИНГ</b><small>Рейтинговая статистика игрока</small></div><button type="button" data-app-route="analytics">СТАТИСТИКА ИГРОКА →</button></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
-     '<section class="faceit-exact-results"><div class="faceit-exact-results-head"><b>Недавние результаты</b><span>Последние матчи ('+all.length+') · изменение ELO <b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b></span></div>'+
+     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button class="'+(state.profileSection==='track'?'active':'')+'" data-profile-section="track">Трек</button></div>'+
+     '<div class="faceit-profile-top-widgets"><section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;CS2 · РЕЙТИНГ</b><small>Общий рейтинговый показатель</small></div><button type="button" data-app-route="analytics">СТАТИСТИКА ИГРОКА →</button></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+careerAll.length+'</b> Матчи</span><span><b>'+fmt(careerTotal.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+seasonWidgetMarkup+'</div>'+seasonPickerMarkup+
+     '<section class="faceit-exact-results"><div class="faceit-exact-results-head"><b>'+(selectedSeasonKey==='all'?'Недавние результаты':'Результаты · '+esc(seasonConfig?.label||''))+'</b><span>Последние матчи ('+all.length+') · изменение ELO <b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b></span></div>'+
        '<div class="faceit-exact-result-line"><span>Изменение ELO</span><b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><span class="faceit-exact-wl"><b>🟩 '+sum.wins+'</b> / <b>🟥 '+sum.losses+'</b></span></div>'+eloGraphMarkup+
        '<div class="faceit-exact-form">'+(recentForm||'<span>Пока нет сыгранных матчей</span>')+'</div></section>'+
-     '<div class="faceit-exact-stats-heading"><b>Показатели игрока</b><span>Реальная статистика матчей</span></div>'+
+     '<div class="faceit-exact-stats-heading"><b>Показатели игрока</b><span>'+(selectedSeasonKey==='all'?'Реальная статистика матчей':'Статистика '+esc(seasonConfig?.name||'сезона'))+'</span></div>'+
      '<div class="faceit-exact-stat-strip"><div><b>'+fmt(sum.kd,2)+'</b><span>K/D</span></div><div><b>'+fmt(sum.avgKills,1)+'</b><span>Убийств / карта</span></div><div><b>'+fmt(sum.avgDeaths,1)+'</b><span>Смертей / карта</span></div><div><b>'+fmt(sum.avgAssists,1)+'</b><span>Помощей / карта</span></div><div><b>'+fmt(sum.winrate,1)+'%</b><span>Процент побед</span></div><div><b>'+sum.matches+'</b><span>Матчей</span></div></div>'+
      '<div class="faceit-exact-lower">'+body+'</div>'+
      (canEditProfile?'<input id="profileAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'avatar\',this.files?.[0])"><input id="profileCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden onchange="handleProfileImage(\'cover\',this.files?.[0])">':'')+
    '</div></section>';bindAppShell(v);
+ v.querySelectorAll('[data-season-picker-toggle]').forEach(button=>button.addEventListener('click',()=>{state.seasonPickerOpen=!state.seasonPickerOpen;render()}));
+ v.querySelectorAll('[data-season-picker-close]').forEach(button=>button.addEventListener('click',()=>{state.seasonPickerOpen=false;render()}));
+ v.querySelectorAll('[data-profile-season]').forEach(button=>button.addEventListener('click',()=>selectProfileSeason(button.dataset.profileSeason)));
+ v.querySelectorAll('[data-profile-section]').forEach(button=>button.addEventListener('click',()=>{state.trackSeasonKey=state.profileSeasonKey||'all';state.profileSection=button.dataset.profileSection;render()}));
+ const trackMount=v.querySelector('#profileTrackMount');if(trackMount){track(trackMount,true);v.querySelector('.faceit-exact-results')?.remove();v.querySelector('.faceit-exact-stats-heading')?.remove();v.querySelector('.faceit-exact-stat-strip')?.remove();}
 }async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
@@ -378,44 +419,10 @@ function renderAccountMenu(){
 async function accountSignOut(){try{await CS2Cloud.signOut();state.myPlayerId=null;state.accountUser=null;state.myProfile=null;state.profileRows=[];state.accountMenuOpen=false;state.logged=false;state.cloudAdmin=false;navigateApp('home',{replace:true});toast('Вы вышли из аккаунта')}catch(e){toast('Ошибка выхода: '+(e?.message||'ошибка'))}}
 function nav(){$('#nav').innerHTML='';renderAccountMenu();$('#settingsBtn').onclick=()=>navigateApp('settings')}
 
-function seasons(v){
- const matches=activeMatches().slice().sort((a,b)=>matchTime(a)-matchTime(b));
- const maps=DB.maps.filter(m=>m.archived!==true&&matches.some(x=>x.match_id===m.match_id));
- const players=activePlayers().map(p=>{
-   const rows=profileMatchesForPlayer(p.player_id),sum=profileSummary(rows),elo=window.CS2EloV3?.player(p.player_id)||{rating:1000,matches:0},idx=index(p.player_id);
-   return {p,sum,elo,idx};
- }).sort((a,b)=>b.idx-a.idx||b.sum.kd-a.sum.kd||(b.elo.rating||1000)-(a.elo.rating||1000));
- const totalWins=players.reduce((n,x)=>n+x.sum.wins,0),totalKnown=players.reduce((n,x)=>n+x.sum.wins+x.sum.losses,0);
- const selected=state.seasonView||'all';
- if(selected==='season1'){
-  v.innerHTML=
-   '<section class="season-page season-detail-page">'+
-    '<div class="season-page-head"><div><button class="season-back" onclick="state.seasonView=\'all\';render()">← ВСЕ СЕЗОНЫ</button><span class="faceit-kicker">CS2 · COMPETITIVE · SEASON 01</span><h1>Первый сезон</h1><p>Сезонный рейтинг и статистика будут формироваться только из матчей, явно включённых в этот сезон.</p></div><span class="season-status-pill">ГОТОВИТСЯ</span></div>'+
-    '<div class="season-detail-status"><div><span>СТАРТ СЕЗОНА</span><b>Не назначен</b></div><div><span>СЕЗОННЫЙ РЕЙТИНГ</span><b>Не активен</b></div><div><span>ПРИВЯЗКА МАТЧЕЙ</span><b>Ожидает настройки</b></div></div>'+
-    '<div class="season-empty panel"><div class="season-empty-mark">01</div><h2>Сезон ещё не запущен</h2><p>В текущей истории нет надёжных меток, связывающих матчи с сезонами. Поэтому прошлые матчи не попадают сюда автоматически, а сезонные даты, рейтинг и статистика останутся пустыми до настройки первого сезона.</p><button class="btn" onclick="state.seasonView=\'all\';render()">Вернуться ко всем сезонам</button></div>'+
-   '</section>';
-  return;
- }
- const cards=players.slice(0,5).map((x,i)=>'<div class="season-player-row"><span class="season-rank">'+(i+1)+'</span><span class="season-player-name">'+esc(x.p.display_name)+'</span><b>'+fmt(x.idx,1)+'</b><span>'+Math.round(x.elo.rating||1000)+'</span><span>'+x.sum.matches+' матч.</span><strong>'+fmt(x.sum.kd,2)+'</strong></div>').join('');
- const recent=matches.slice(-5).reverse().map(m=>{
-  const mapRows=matchMaps(m).map(mp=>mp.map||mp.map_name||mp.name).filter(Boolean);
-  const mapMarks=mapRows.length?mapRows.map(mapMiniMarkup).join(''):'<span class="season-history-no-map">Нет данных о картах</span>';
-  return '<div class="season-history-row"><span class="season-history-date">'+esc(dateLabel(m.played_at||m.date||m.created_at)||'—')+'</span><span class="season-history-score">'+scoreMarkup(m.series_score||'—')+'</span><span class="season-history-maps">'+mapMarks+'<small>'+mapRows.length+' карт</small></span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>';
- }).join('');
- v.innerHTML='<section class="season-page">'+
- '<div class="season-page-head"><div><span class="faceit-kicker">CS2 · COMPETITIVE</span><h1>Сезоны</h1><p>Сезонные кампании отдельно от общей истории матчей</p></div><div class="season-head-total"><b>'+matches.length+'</b><span>матчей в общей истории</span></div></div>'+
- '<div class="season-overview-strip"><div><span>МАТЧИ · ALL TIME</span><b>'+matches.length+'</b></div><div><span>КАРТЫ · ALL TIME</span><b>'+maps.length+'</b></div><div><span>ИГРОКИ · ALL TIME</span><b>'+players.length+'</b></div><div><span>ВИНРЕЙТ · ALL TIME</span><b>'+(totalKnown?fmt(totalWins/totalKnown*100,1)+'%':'—')+'</b></div></div>'+
- '<div class="season-pick-list">'+
- '<button class="season-pick-row season-pick-all" onclick="state.seasonView=\'all\';render()"><span class="season-pick-symbol">∞</span><span class="season-pick-copy"><small>ALL TIME · АРХИВ</small><b>Вся история</b><em>Общая статистика, не привязанная к сезонам</em></span><strong>'+matches.length+'</strong><span class="season-pick-arrow">→</span></button>'+
- '<button class="season-pick-row season-pick-upcoming" onclick="state.seasonView=\'season1\';render()"><span class="season-pick-symbol">01</span><span class="season-pick-copy"><small>ПРЕДСТОЯЩИЙ СЕЗОН</small><b>Сезон 1</b><em>Дата старта не назначена</em></span><strong>—</strong><span class="season-pick-arrow">→</span></button>'+
- '</div>'+
- '<div class="season-lower-grid"><section class="season-panel"><div class="season-panel-head"><div><span class="faceit-kicker">ALL TIME</span><h2>Лидеры общей истории</h2></div><span>'+players.length+' игроков</span></div><div class="season-player-head"><span>#</span><span>ИГРОК</span><span>ИНДЕКС</span><span>ELO</span><span>МАТЧИ</span><span>K/D</span></div>'+(cards||'<p class="muted">Нет игроков для отображения.</p>')+'</section>'+
- '<section class="season-panel season-history-panel"><div class="season-panel-head"><div><span class="faceit-kicker">ALL TIME · АРХИВ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="navigateApp(\'base\')">Все матчи →</button></div>'+
- (recent||'<p class="muted">В истории пока нет матчей.</p>')+'</section></div></section>';
-}
+function seasons(v){profilePage(v)}
 
-function track(v){
- const targetId=state.trackTargetId||state.myPlayerId||null;
+function track(v,embedded=false){
+ const targetId=state.trackTargetId||state.profileTargetId||state.myPlayerId||null;
  const isOwn=!!state.myPlayerId&&targetId===state.myPlayerId;
  const p=targetId?player(targetId):null;
  if(!targetId){
@@ -428,12 +435,14 @@ function track(v){
    return;
  }
  const all=profileMatchesForPlayer(targetId).filter(q=>q.hasStats);
+ const seasonKey=state.trackSeasonKey||state.profileSeasonKey||'all';
  const period=state.trackPeriod||'all',map=state.trackMap||'all',metric=state.trackMetric||'kd';
  const now=Date.now(),days=period==='7d'?7:period==='30d'?30:period==='90d'?90:0;
  let rows=all.filter(q=>{
    const time=matchTime(q.m),dateOk=!days||!time||now-time<=days*86400000;
+   const seasonOk=seasonKey==='all'||faceitSeasonForMatch(q.m)===seasonKey;
    const mapOk=map==='all'||String(q.map).split(' · ').includes(map);
-   return dateOk&&mapOk;
+   return seasonOk&&dateOk&&mapOk;
  }).sort((a,b)=>matchTime(a.m)-matchTime(b.m)||matchOrder(a.m)-matchOrder(b.m));
  const summary=profileSummary(rows),maps=[...new Set(all.flatMap(q=>String(q.map||'').split(' · ').filter(Boolean)))].sort();
  const value=q=>metric==='kills'?q.k:metric==='deaths'?q.d:metric==='assists'?q.a:metric==='winrate'?(q.result==='WIN'?100:q.result==='LOSS'?0:null):q.kd;
@@ -444,14 +453,16 @@ function track(v){
  const mapOptions=['<option value="all">Все карты</option>',...maps.map(m=>'<option value="'+esc(m)+'" '+(map===m?'selected':'')+'>'+esc(m)+'</option>')].join('');
  const metricOptions=[['kd','K/D'],['kills','Kills'],['deaths','Deaths'],['assists','Assists'],['winrate','Результат матча']].map(([k,l])=>'<option value="'+k+'" '+(metric===k?'selected':'')+'>'+l+'</option>').join('');
  const periodOptions=[['all','Всё время'],['90d','90 дней'],['30d','30 дней'],['7d','7 дней']].map(([k,l])=>'<option value="'+k+'" '+(period===k?'selected':'')+'>'+l+'</option>').join('');
+ const seasonOptions=['<option value="all" '+(seasonKey==='all'?'selected':'')+'>Все сезоны</option>',...FACEIT_SEASONS.map(season=>'<option value="'+season.key+'" '+(seasonKey===season.key?'selected':'')+'>'+esc(season.label+' · '+season.name)+'</option>')].join('');
+ const seasonNotice=seasonKey!=='all'&&!rows.length?'<div class="track-season-empty">В текущей истории нет дат или меток матчей для '+esc(FACEIT_SEASONS.find(season=>season.key===seasonKey)?.name||'выбранного сезона')+'. Сезонная статистика не подменяется данными за всю карьеру.</div>':'';
  const kdTone=(k,d)=>Number(k)>Number(d)?'positive':Number(k)<Number(d)?'negative':'neutral';
  const recent=rows.slice().reverse().map(q=>{const tone=kdTone(q.k,q.d);return '<button class="track-match-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')"><span class="track-match-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span><b class="track-match-result '+(q.result==='WIN'?'positive':q.result==='LOSS'?'negative':'neutral')+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</b><span class="track-match-score">'+playerScoreMarkup(playerSeriesScoreLabel(q.m,targetId,q.maps)||q.m.series_score||'—')+'</span><span class="track-match-map">'+String(q.map||'').split(' · ').filter(Boolean).map(mapMiniMarkup).join('')+'</span><strong class="'+tone+'">'+fmt(q.kd)+'</strong><span class="track-match-kda '+tone+'">'+q.k+'/'+q.d+'/'+q.a+'</span></button>'}).join('');
  const metricLabel={kd:'K/D',kills:'Kills',deaths:'Deaths',assists:'Assists',winrate:'Результат'}[metric];
  const avatar=profileAvatarMarkup(targetId,'sm');
- v.innerHTML='<section class="track-page">'+
+ v.innerHTML='<section class="track-page '+(embedded?'track-embedded':'')+'">'+
  '<header class="track-head"><div class="track-owner"><button type="button" class="track-owner-avatar" onclick="openPublicPlayerProfile(\''+esc(targetId)+'\')">'+avatar+'</button><div><span class="faceit-kicker">'+(isOwn?'PERSONAL PLAYER TRACK':'PUBLIC PLAYER TRACK')+'</span><h1>'+esc(p.display_name)+' · Track</h1><p>'+(isOwn?'Твоя персональная статистика':'Публичная статистика игрока')+'</p></div></div><div class="track-head-count"><b>'+rows.length+'</b><span>матчей в выборке</span></div></header>'+
- '<div class="track-filters"><label>ПЕРИОД<select class="control" onchange="state.trackPeriod=this.value;render()">'+periodOptions+'</select></label><label>КАРТА<select class="control" onchange="state.trackMap=this.value;render()">'+mapOptions+'</select></label><label>МЕТРИКА<select class="control" onchange="state.trackMetric=this.value;render()">'+metricOptions+'</select></label></div>'+
- '<div class="track-kpis"><article><span>МАТЧИ</span><b>'+summary.matches+'</b></article><article><span>ПОБЕДЫ</span><b class="positive">'+summary.wins+'</b></article><article><span>ВИНРЕЙТ</span><b>'+fmt(summary.winrate,1)+'%</b></article><article><span>СРЕДНИЙ K/D</span><b class="'+(kdTone(summary.k,summary.d))+'">'+fmt(summary.kd)+'</b></article><article><span>K / D / A</span><b>'+summary.k+' / '+summary.d+' / '+summary.a+'</b></article></div>'+
+ '<div class="track-filters"><label>СЕЗОН<select class="control" onchange="state.trackSeasonKey=this.value;render()">'+seasonOptions+'</select></label><label>ПЕРИОД<select class="control" onchange="state.trackPeriod=this.value;render()">'+periodOptions+'</select></label><label>КАРТА<select class="control" onchange="state.trackMap=this.value;render()">'+mapOptions+'</select></label><label>МЕТРИКА<select class="control" onchange="state.trackMetric=this.value;render()">'+metricOptions+'</select></label></div>'+
+ seasonNotice+'<div class="track-kpis"><article><span>МАТЧИ</span><b>'+summary.matches+'</b></article><article><span>ПОБЕДЫ</span><b class="positive">'+summary.wins+'</b></article><article><span>ВИНРЕЙТ</span><b>'+fmt(summary.winrate,1)+'%</b></article><article><span>СРЕДНИЙ K/D</span><b class="'+(kdTone(summary.k,summary.d))+'">'+fmt(summary.kd)+'</b></article><article><span>K / D / A</span><b>'+summary.k+' / '+summary.d+' / '+summary.a+'</b></article></div>'+
  '<section class="track-chart-panel"><div class="track-section-head"><div><span class="faceit-kicker">MATCH-BY-MATCH</span><h2>'+metricLabel+' · динамика</h2></div><span>'+points.length+' точек</span></div>'+(points.length?'<div class="track-chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="График '+metricLabel+'"><line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" class="track-axis"/><line x1="'+pad+'" y1="'+pad+'" x2="'+(W-pad)+'" y2="'+pad+'" class="track-gridline"/><polyline points="'+line+'" class="track-line"/>'+coords.map((point,i)=>'<g class="track-point-wrap" data-track-index="'+i+'" tabindex="0" role="button" aria-label="Показать матч '+(i+1)+'"><circle cx="'+point.x+'" cy="'+point.y+'" r="12" class="track-point-hit"/><circle cx="'+point.x+'" cy="'+point.y+'" r="5" class="track-point"/></g>').join('')+'</svg></div><div class="track-chart-meta"><span>МИНИМУМ '+fmt(min,metric==='winrate'?0:2)+'</span><span>МАКСИМУМ '+fmt(max,metric==='winrate'?0:2)+'</span></div>':'<div class="track-empty">Нет матчей с доступной статистикой для выбранных фильтров.</div>')+'</section>'+
  '<section class="track-matches-panel"><div class="track-section-head"><div><span class="faceit-kicker">RECENT FORM</span><h2>Матчи в треке</h2></div><span>'+rows.length+' записей</span></div><div class="track-match-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ</span><span>КАРТЫ</span><span>K/D</span><span>K/D/A</span></div>'+(recent||'<div class="track-empty">Нет матчей.</div>')+'</section></section>';
  bindTrackChart(v,points,metric,metricLabel,targetId);

@@ -2,71 +2,72 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const root = path.join(__dirname, '..');
 const app = fs.readFileSync(path.join(root, 'app_v57.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'style_v57.css'), 'utf8');
-const matches = JSON.parse(fs.readFileSync(path.join(root, 'data', 'matches.json'), 'utf8'));
-const maps = JSON.parse(fs.readFileSync(path.join(root, 'data', 'maps.json'), 'utf8'));
+const matches = JSON.parse(fs.readFileSync(path.join(root, 'data', 'matches.json'), 'utf8')).matches;
 
-const start = app.indexOf('function seasons(v){');
-const end = app.indexOf('function track(v){', start);
-assert.ok(start >= 0 && end > start, 'seasons route must exist');
-const season = app.slice(start, end);
-const detailStart = season.indexOf("if(selected==='season1')");
-const detailEnd = season.indexOf('const cards=', detailStart);
-const seasonDetail = season.slice(detailStart, detailEnd);
+const seasonStart = app.indexOf('const FACEIT_SEASONS=');
+const seasonEnd = app.indexOf('function selectProfileSeason(', seasonStart);
+assert.ok(seasonStart >= 0 && seasonEnd > seasonStart, 'season catalogue and resolver must exist');
+const seasonSource = app.slice(seasonStart, seasonEnd);
 
-test('Season 1 remains an upcoming season and does not reuse all-time player statistics', () => {
-  assert.ok(seasonDetail.includes('СЕЗОН 1 ·') || seasonDetail.includes('SEASON 01'));
-  assert.ok(seasonDetail.includes('СТАРТ СЕЗОНА'));
-  assert.ok(seasonDetail.includes('Не назначен'));
-  assert.ok(seasonDetail.includes('СЕЗОННЫЙ РЕЙТИНГ'));
-  assert.ok(seasonDetail.includes('Ожидает настройки'));
-  assert.ok(seasonDetail.includes('прошлые матчи не попадают сюда автоматически'));
-  assert.doesNotMatch(seasonDetail, /profileSummary\(|\.sum\.|\.idx\b/);
+test('FACEIT season catalogue includes current S9 and known recent season boundaries',()=>{
+  assert.match(seasonSource,/key:'s9'.*label:'S9'.*05\.08\.2026 — 08\.12\.2026/);
+  assert.match(seasonSource,/key:'s8'.*22\.04\.2026 — 04\.08\.2026/);
+  assert.match(seasonSource,/key:'s7'.*19\.11\.2025 — 21\.04\.2026/);
+  assert.match(seasonSource,/2026-08-05T13:00:00\+02:00/);
+  assert.match(seasonSource,/2026-12-08T17:00:00\+01:00/);
 });
 
-test('All-time totals and leaderboard are clearly distinguished from seasonal results', () => {
-  assert.ok(season.includes('МАТЧИ · ALL TIME'));
-  assert.ok(season.includes('КАРТЫ · ALL TIME'));
-  assert.ok(season.includes('ИГРОКИ · ALL TIME'));
-  assert.ok(season.includes('ВИНРЕЙТ · ALL TIME'));
-  assert.ok(season.includes('ALL TIME · АРХИВ'));
-  assert.ok(season.includes('Лидеры общей истории'));
+test('match-to-season resolver uses explicit season metadata or a real timestamp only',()=>{
+  const api = vm.runInNewContext(seasonSource + '\n({FACEIT_SEASONS,faceitSeasonForMatch});\n',
+    {matchTime:m=>{const d=Date.parse(m?.played_at||m?.date||m?.created_at||'');return Number.isFinite(d)?d:0}});
+  assert.equal(api.faceitSeasonForMatch({season_number:9}), 's9');
+  assert.equal(api.faceitSeasonForMatch({season:'Season 8'}), 's8');
+  assert.equal(api.faceitSeasonForMatch({played_at:'2026-09-02T20:00:00+02:00'}), 's9');
+  assert.equal(api.faceitSeasonForMatch({played_at:'2026-05-02T20:00:00+02:00'}), 's8');
+  assert.equal(api.faceitSeasonForMatch({match_id:'undated'}), null);
 });
 
-test('All-time leaderboard header has a matching ELO column for every rendered value', () => {
-  assert.ok(season.includes('<span>ИНДЕКС</span><span>ELO</span><span>МАТЧИ</span><span>K/D</span>'));
-  assert.ok(season.includes("'<div class=\"season-player-row\"><span class=\"season-rank\">"));
-  const rowMarkup = season.slice(season.indexOf('const cards='), season.indexOf('const recent='));
-  for (const cell of ['<span class="season-rank">','<span class="season-player-name">',"<b>'+fmt(x.idx,1)+'</b>","<span>'+Math.round(x.elo.rating||1000)+'</span>","<span>'+x.sum.matches+' матч.</span>","<strong>'+fmt(x.sum.kd,2)+'</strong>"]) {
-    assert.ok(rowMarkup.includes(cell), 'missing leaderboard cell ' + cell);
+test('existing imported matches without dates or season metadata are not assigned to a season',()=>{
+  assert.ok(matches.length>0);
+  for(const match of matches){
+    const explicit=['faceit_season','season_number','season_key','season_id','season'];
+    assert.equal(explicit.some(key=>match[key]!=null),false,'match metadata unexpectedly contains a season assignment');
+    assert.equal(Boolean(match.played_at||match.date||match.created_at),false,'match unexpectedly gained a timestamp');
   }
-  assert.match(css, /\.season-player-head,\.season-player-row\{grid-template-columns:30px minmax\(0,1fr\) 62px 58px 65px 55px\}/);
+  assert.match(app,/all=selectedSeasonKey==='all'\?careerAll:careerAll\.filter\(row=>faceitSeasonForMatch\(row\.m\)===selectedSeasonKey\)/);
+  assert.match(app,/Сезонная статистика появится после привязки матчей/);
 });
 
-test('Recent all-time matches show the same map mini-emblems as Track and profile history', () => {
-  assert.ok(season.includes('matchMaps(m).map(mp=>mp.map||mp.map_name||mp.name)'));
-  assert.ok(season.includes('mapRows.map(mapMiniMarkup).join'));
-  assert.ok(season.includes('season-history-maps'));
-  assert.match(css, /\.season-history-maps \.map-mark-inline img/);
+test('Profile exposes its season card, archive picker, and Overview/History/Track navigation',()=>{
+  const start=app.indexOf('function profilePage(v){');
+  const end=app.indexOf('async function handleProfileImage',start);
+  const profile=app.slice(start,end);
+  assert.match(profile,/faceit-season-widget/);
+  assert.match(profile,/faceit-season-picker-grid/);
+  assert.match(profile,/data-profile-season=/);
+  assert.match(profile,/data-profile-section="track"/);
+  assert.match(profile,/state\.profileSection==='history'/);
+  assert.match(profile,/selectProfileSeason\(/);
 });
 
-test('Current imported match and map records do not pretend to carry season assignments', () => {
-  assert.ok(Array.isArray(matches.matches) && matches.matches.length > 0);
-  assert.ok(Array.isArray(maps.maps) && maps.maps.length > 0);
-  for (const row of matches.matches) {
-    assert.equal(Object.keys(row).some(key => /season/i.test(key)), false, 'match ' + row.match_id + ' unexpectedly acquired season metadata');
-  }
-  for (const row of maps.maps) {
-    assert.equal(Object.keys(row).some(key => /season/i.test(key)), false, 'map ' + row.map_id + ' unexpectedly acquired season metadata');
-  }
+test('Track has a season selector and filters rows by the same season resolver',()=>{
+  const start=app.indexOf('function track(v,embedded=false){');
+  const end=app.indexOf('function bindTrackChart(',start);
+  const track=app.slice(start,end);
+  assert.match(track,/const seasonKey=state\.trackSeasonKey\|\|state\.profileSeasonKey\|\|'all'/);
+  assert.match(track,/faceitSeasonForMatch\(q\.m\)===seasonKey/);
+  assert.match(track,/СЕЗОН<select/);
+  assert.match(track,/track-embedded/);
+  assert.match(css,/\.track-page\.track-embedded/);
 });
 
-test('Upcoming season presentation is compact and remains responsive', () => {
-  assert.match(css, /\.season-status-pill/);
-  assert.match(css, /\.season-detail-status/);
-  assert.match(css, /@media\(max-width:600px\)[\s\S]*\.season-detail-page/);
-  assert.match(css, /\.season-pick-row\{[\s\S]*?min-height:76px/);
+test('Season UI is responsive and uses square archive tiles',()=>{
+  assert.match(css,/\.faceit-season-picker-grid\{display:grid!important;grid-template-columns:repeat\(5,minmax\(0,1fr\)\)!important/);
+  assert.match(css,/\.faceit-season-pick-card[\s\S]*aspect-ratio:1\.12 \/ 1!important/);
+  assert.match(css,/@media\(max-width:560px\)[\s\S]*\.faceit-season-picker-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
 });

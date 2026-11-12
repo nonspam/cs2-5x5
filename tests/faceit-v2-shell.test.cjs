@@ -11,7 +11,7 @@ const css = read('style_v57.css');
 
 test('FACEIT V2 exposes existing site sections from one profile-inspired rail', () => {
   assert.match(app, /function faceitAppRailMarkup\(\)/);
-  for (const route of ['home','analytics','base','maps','teams','records','seasons','profile']) {
+  for (const route of ['home','analytics','base','maps','teams','records','profile']) {
     assert.ok(app.includes("['" + route + "'"), 'rail should include route ' + route);
   }
   assert.match(app, /function navigateApp\(tab,options=\{\}\)/);
@@ -142,4 +142,15 @@ test('Map catalogue cards are restored to square tiles with a larger flexible ph
   assert.match(mapRules,/grid-template-rows:minmax\(0,1fr\) auto auto!important/);
   assert.match(mapRules,/\.maps-page \.map-card-grid \.map-card-image\{[\s\S]*min-height:0!important/);
   assert.match(mapRules,/\.maps-page \.map-card-grid \.map-card-photo\{[\s\S]*height:100%!important/);
+});
+
+test('Track and season archive live inside Profile instead of occupying permanent rail slots',()=>{
+  const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
+  assert.doesNotMatch(rail,/\['seasons'/);
+  assert.doesNotMatch(rail,/\['track'/);
+  const profile=app.slice(app.indexOf('function profilePage(v){'),app.indexOf('async function handleProfileImage'));
+  assert.match(profile,/data-profile-section="track"/);
+  assert.match(profile,/data-season-picker-toggle/);
+  assert.match(profile,/data-profile-season=/);
+  assert.match(profile,/Статистика сезона/);
 });

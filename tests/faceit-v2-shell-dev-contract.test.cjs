@@ -67,10 +67,11 @@ test('settings remains reachable through the persistent settings shortcut', () =
   assert.match(app, /APP_ROUTE_IDS=\[[^\]]*'settings'/);
 });
 
-test('Track is exposed as an account-scoped shell route', () => {
-  const routeList = app.match(/const APP_ROUTE_IDS=\[([^\]]+)\]/)?.[1] || '';
-  assert.match(routeList, /['"]track['"]/);
-  assert.match(app, /function track\(v\)/);
+test('Track is exposed as the third Profile tab and no longer consumes a global rail slot', () => {
+  const rail = app.slice(app.indexOf('function faceitAppRailMarkup()'), app.indexOf('function bindAppShell'));
+  assert.doesNotMatch(rail, /\['track'/);
+  assert.match(app, /data-profile-section="track"/);
+  assert.match(app, /function track\(v,embedded=false\)/);
   assert.match(app, /const pages=\{[^}]*track/);
 });
 
