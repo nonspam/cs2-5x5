@@ -1416,3 +1416,15 @@
 - M	tests/faceit-v2-navigation.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:13:38+03:00 — Simplify Track profile target navigation assertion
+
+- Commit: e9b8f3adda40e21a6ab1385dad98bc9033159eee
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
