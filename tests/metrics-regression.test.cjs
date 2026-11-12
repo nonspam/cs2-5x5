@@ -192,3 +192,22 @@ test('Player profile exposes a Track tab for explicit public profile browsing', 
   assert.match(app, /PUBLIC PLAYER TRACK/);
   assert.match(app, /PERSONAL PLAYER TRACK/);
 });
+
+
+test('Track chart points expose per-match hover details and W/L colors', () => {
+  const start=app.indexOf('function track(v){'),end=app.indexOf('\\nfunction render(){',start),track=app.slice(start,end);
+  assert.match(track,/track-point-wrap/);
+  assert.match(track,/<title>/);
+  assert.match(track,/dateLabel\(q\.m\.played_at\|\|q\.m\.date\)/);
+  assert.match(track,/q\.result==='WIN'\?'positive':q\.result==='LOSS'\?'negative':'neutral'/);
+});
+
+test('Track match rows color K/D and split K/D/A values with normal-case map labels', () => {
+  const start=app.indexOf('function track(v){'),end=app.indexOf('\\nfunction render(){',start),track=app.slice(start,end);
+  assert.match(track,/q\.kd>=1\?'positive':'negative'/);
+  assert.match(track,/track-match-kda/);
+  assert.match(track,/track-match-map/);
+  const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
+  assert.match(css,/\.track-owner-avatar \.player-avatar\{display:flex!important/);
+  assert.match(css,/\.track-match-row \.track-match-map\{font-size:11px/);
+});
