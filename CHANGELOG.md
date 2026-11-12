@@ -2548,3 +2548,15 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:02:25+03:00 — docs: record Match Overview visual feedback and second pass
+
+- Commit: 00ef8323f0183318b9bca6ec17a4e3cce3c367ab
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
