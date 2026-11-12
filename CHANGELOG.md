@@ -2380,3 +2380,15 @@
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T20:55:38+03:00 — docs: link Match Overview handoff in project master
+
+- Commit: 562f61c2490d0271579b3038aaedd2f811786139
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	PROJECT_MASTER.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
