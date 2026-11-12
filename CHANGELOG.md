@@ -2728,3 +2728,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T23:34:56+03:00 — Fix map card click button behavior
+
+- Commit: d42480a65c23b993cc7a5b992281b4c1219c7a12
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
