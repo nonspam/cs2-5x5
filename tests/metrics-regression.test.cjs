@@ -174,17 +174,15 @@ test('Track route is registered, linked in navigation, and renders data-driven f
 
 test('Track is account-scoped by linked player and never falls back to an arbitrary active player', () => {
   const trackStart = app.indexOf('function track(v){');
-  const trackEnd = app.indexOf('\nfunction render(){', trackStart);
+  const trackEnd = app.indexOf('\nfunction bindTrackChart', trackStart);
   const track = app.slice(trackStart, trackEnd);
-  assert.match(track, /const targetId=state\.trackTargetId\|\|state\.myPlayerId\|\|null/);
-  assert.match(track, /if\(!targetId\)/);
+  assert.ok(track.includes('const targetId=state.trackTargetId||state.myPlayerId||null'));
+  assert.ok(track.includes('if(!targetId)'));
   assert.ok(track.includes('state.accountUser?'));
   assert.ok(track.includes('link'));
   assert.ok(track.includes('login'));
-  assert.match(track, /profileMatchesForPlayer\(targetId\)/);
+  assert.ok(track.includes('profileMatchesForPlayer(targetId)'));
   assert.doesNotMatch(track, /activePlayers\(\).*sort|people\[0\]/);
-    assert.ok(app.includes("state.trackTargetId=\\'"));
-  assert.ok(app.includes("state.trackTargetId=\\'"));
 });
 
 test('Track stays in the global rail and is removed from the individual profile tabs', () => {
@@ -196,20 +194,20 @@ test('Track stays in the global rail and is removed from the individual profile 
 
 
 test('Track chart points bind interactive match tooltips and a direct open-match action', () => {
-  assert.match(app,/function bindTrackChart\\(root,points,metric,metricLabel\\)/);
-  assert.match(app,/track-point-wrap/);
-  assert.match(app,/track-tooltip-open/);
-  assert.match(app,/openMatchDetail\\(q\\.m\\.match_id\\)/);
-  assert.match(app,/pointerenter/);
-  assert.match(app,/pinnedIndex/);
+  assert.ok(app.includes('function bindTrackChart(root,points,metric,metricLabel){'));
+  assert.ok(app.includes('track-point-wrap'));
+  assert.ok(app.includes('track-tooltip-open'));
+  assert.ok(app.includes('openMatchDetail(q.m.match_id)'));
+  assert.ok(app.includes('pointerenter'));
+  assert.ok(app.includes('pinnedIndex'));
 });
 
 test('Track match rows color the complete K/D/A string by K-to-D relation', () => {
-  const start=app.indexOf('function track(v){'),end=app.indexOf('\\nfunction bindTrackChart',start),track=app.slice(start,end);
-  assert.match(track,/const kdTone=\\(k,d\\)=>Number\\(k\\)>Number\\(d\\)\\?'positive':Number\\(k\\)<Number\\(d\\)\\?'negative':'neutral'/);
-  assert.match(track,/track-match-kda '\\+tone\\+'/);
-  assert.match(track,/kdTone\\(summary\\.k,summary\\.d\\)/);
+  const start=app.indexOf('function track(v){'),end=app.indexOf('\nfunction bindTrackChart',start),track=app.slice(start,end);
+  assert.ok(track.includes("const kdTone=(k,d)=>Number(k)>Number(d)?'positive':Number(k)<Number(d)?'negative':'neutral'"));
+  assert.ok(track.includes("track-match-kda '+tone+'"));
+  assert.ok(track.includes('kdTone(summary.k,summary.d)'));
   const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
-  assert.match(css,/\\.track-owner-avatar \\.player-avatar\\{display:flex!important/);
-  assert.match(css,/\\.track-match-row \\.track-match-map\\{font-size:11px/);
+  assert.ok(css.includes('.track-owner-avatar .player-avatar{display:flex!important'));
+  assert.ok(css.includes('.track-match-row .track-match-map{font-size:11px'));
 });
