@@ -454,10 +454,10 @@ function track(v){
  '<div class="track-kpis"><article><span>МАТЧИ</span><b>'+summary.matches+'</b></article><article><span>ПОБЕДЫ</span><b class="positive">'+summary.wins+'</b></article><article><span>ВИНРЕЙТ</span><b>'+fmt(summary.winrate,1)+'%</b></article><article><span>СРЕДНИЙ K/D</span><b class="'+(kdTone(summary.k,summary.d))+'">'+fmt(summary.kd)+'</b></article><article><span>K / D / A</span><b>'+summary.k+' / '+summary.d+' / '+summary.a+'</b></article></div>'+
  '<section class="track-chart-panel"><div class="track-section-head"><div><span class="faceit-kicker">MATCH-BY-MATCH</span><h2>'+metricLabel+' · динамика</h2></div><span>'+points.length+' точек</span></div>'+(points.length?'<div class="track-chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="График '+metricLabel+'"><line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" class="track-axis"/><line x1="'+pad+'" y1="'+pad+'" x2="'+(W-pad)+'" y2="'+pad+'" class="track-gridline"/><polyline points="'+line+'" class="track-line"/>'+coords.map((point,i)=>'<g class="track-point-wrap" data-track-index="'+i+'" tabindex="0" role="button" aria-label="Показать матч '+(i+1)+'"><circle cx="'+point.x+'" cy="'+point.y+'" r="12" class="track-point-hit"/><circle cx="'+point.x+'" cy="'+point.y+'" r="5" class="track-point"/></g>').join('')+'</svg></div><div class="track-chart-meta"><span>МИНИМУМ '+fmt(min,metric==='winrate'?0:2)+'</span><span>МАКСИМУМ '+fmt(max,metric==='winrate'?0:2)+'</span></div>':'<div class="track-empty">Нет матчей с доступной статистикой для выбранных фильтров.</div>')+'</section>'+
  '<section class="track-matches-panel"><div class="track-section-head"><div><span class="faceit-kicker">RECENT FORM</span><h2>Матчи в треке</h2></div><span>'+rows.length+' записей</span></div><div class="track-match-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>СЧЁТ</span><span>КАРТЫ</span><span>K/D</span><span>K/D/A</span></div>'+(recent||'<div class="track-empty">Нет матчей.</div>')+'</section></section>';
- bindTrackChart(v,points,metric,metricLabel);
+ bindTrackChart(v,points,metric,metricLabel,targetId);
 }
 
-function bindTrackChart(root,points,metric,metricLabel){
+function bindTrackChart(root,points,metric,metricLabel,playerId){
  const wrap=root.querySelector('.track-chart-wrap');
  if(!wrap||!points.length)return;
  const dots=[...wrap.querySelectorAll('.track-point-wrap')];
