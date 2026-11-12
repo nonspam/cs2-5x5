@@ -3971,3 +3971,32 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
 .track-assists{color:#46c7df}
 .track-match-row .positive{color:#35d995!important}
 .track-match-row .negative{color:#ff5368!important}
+
+
+/* Track interaction, semantic match colors and a touch more breathing room in the rail. */
+.faceit-route-shell .faceit-exact-global-rail nav{gap:11px;margin-top:20px}
+.faceit-route-shell .faceit-exact-global-rail nav button{min-height:36px;padding:0 9px;border-radius:6px;border:1px solid transparent;transition:background .15s ease,border-color .15s ease,color .15s ease}
+.faceit-route-shell .faceit-exact-global-rail nav button:hover{background:rgba(255,255,255,.025);border-color:rgba(235,240,245,.18)}
+.track-chart-wrap{position:relative;overflow:visible}
+.track-point-wrap{cursor:pointer;outline:none}
+.track-point-wrap .track-point{fill:#c2ccd5;stroke:#0d1419;stroke-width:2;transition:r .12s ease,fill .12s ease}
+.track-point-wrap:hover .track-point,.track-point-wrap:focus .track-point{r:7;fill:#eef3f7;stroke-width:3}
+.track-point-hit{fill:transparent;stroke:transparent;pointer-events:all;cursor:pointer}
+.track-chart-tooltip{position:absolute;z-index:20;width:min(270px,calc(100% - 16px));padding:12px;border:1px solid rgba(255,255,255,.16);border-radius:10px;background:rgba(17,22,28,.98);box-shadow:0 12px 34px rgba(0,0,0,.42);color:var(--text)}
+.track-chart-tooltip[hidden]{display:none}
+.track-tooltip-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.track-tooltip-top>div{display:grid;gap:5px}
+.track-tooltip-date{color:var(--muted);font-size:11px;font-weight:700}
+.track-tooltip-top strong{font-size:13px}
+.track-tooltip-close{width:24px;height:24px;border:0;border-radius:5px;background:rgba(255,255,255,.06);color:#cbd3db;cursor:pointer}
+.track-tooltip-map{margin:9px 0;color:#f1f4f7;font-size:14px;font-weight:800}
+.track-tooltip-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.track-tooltip-stats span{display:grid;gap:4px;min-width:0}
+.track-tooltip-stats small{font-size:9px;color:var(--muted);letter-spacing:.04em}
+.track-tooltip-stats b{font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.track-tooltip-open{width:100%;margin-top:12px;padding:9px 10px;border:1px solid rgba(255,255,255,.14);border-radius:6px;background:rgba(255,255,255,.035);color:#edf2f5;font-size:10px;font-weight:800;letter-spacing:.06em;cursor:pointer}
+.track-tooltip-open:hover{border-color:rgba(255,85,0,.6);background:rgba(255,85,0,.06)}
+.track-match-row .track-match-kda.positive{color:#35d995!important}
+.track-match-row .track-match-kda.negative{color:#ff5368!important}
+.track-match-row .track-match-kda.neutral{color:#eef2f5!important}
+@media(max-width:700px){.faceit-route-shell .faceit-exact-global-rail nav{gap:8px}.faceit-route-shell .faceit-exact-global-rail nav button{padding:0 8px}}
