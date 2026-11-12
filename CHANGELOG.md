@@ -2428,3 +2428,15 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T21:36:23+03:00 — fix: avoid implying a winner without a recorded score
+
+- Commit: 12144170211501b9678cddba67d83c81daca64b1
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
