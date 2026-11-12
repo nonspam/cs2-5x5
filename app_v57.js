@@ -271,7 +271,7 @@ function profilePage(v){
  }).join('');
  const matchRows=arr=>arr.map(q=>{
    const tone=q.result==='WIN'?'win':q.result==='LOSS'?'loss':'draw';
-   const personalTone=q.hasStats?(q.kd>1?'kd-positive':q.d>0&&q.kd<1?'kd-negative':'kd-neutral'):'kd-neutral';
+   const personalTone=q.hasStats?(q.kd>=1?'kd-positive':q.d>0&&q.kd<1?'kd-negative':'kd-neutral'):'kd-neutral';
    const avgKd=q.hasStats&&Number.isFinite(q.kd)?fmt(q.kd):'—';
    const kda=q.hasStats?[q.k,q.d,q.a].map(n=>Number.isFinite(Number(n))?Number(n):0).join('/'):'—/—/—';
    const eloDelta=window.CS2EloV3?.deltaForMatch(id,q.m.match_id)??null,eloTone=eloDelta==null?'neutral':eloDelta>0?'positive':eloDelta<0?'negative':'neutral';
