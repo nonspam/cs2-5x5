@@ -4000,3 +4000,62 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
 .track-match-row .track-match-kda.negative{color:#ff5368!important}
 .track-match-row .track-match-kda.neutral{color:#eef2f5!important}
 @media(max-width:700px){.faceit-route-shell .faceit-exact-global-rail nav{gap:8px}.faceit-route-shell .faceit-exact-global-rail nav button{padding:0 8px}}
+
+
+/* FACEIT-like compact Track hover panel: non-blocking on hover, clickable only when pinned. */
+.track-chart-wrap{overflow:visible!important}
+.track-chart-tooltip{position:fixed;z-index:9999;width:min(358px,calc(100vw - 24px));padding:11px 12px;border:1px solid rgba(220,230,238,.13);border-radius:9px;background:rgba(12,17,22,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 9px 28px rgba(0,0,0,.24);color:var(--text);pointer-events:none}
+.track-chart-tooltip[hidden]{display:none}
+.track-chart-tooltip[data-pinned="true"]{pointer-events:auto;background:rgba(12,17,22,.94)}
+.track-tooltip-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.track-tooltip-dateblock{display:grid;gap:3px;min-width:0}
+.track-tooltip-dateblock strong{font-size:12px;font-weight:750;color:#e8edf1}
+.track-tooltip-dateblock span{font-size:10px;color:var(--muted)}
+.track-tooltip-result{display:flex;align-items:center;gap:7px;min-width:0}
+.track-tooltip-result>b{width:23px;height:23px;display:grid;place-items:center;border-radius:4px;font-size:11px;font-weight:900;background:rgba(255,255,255,.08);color:#dce3e9}
+.track-tooltip-result.positive>b{background:rgba(53,217,149,.14);color:#35d995}
+.track-tooltip-result.negative>b{background:rgba(255,83,104,.14);color:#ff5368}
+.track-tooltip-result span{font-size:9px;font-weight:800;letter-spacing:.045em;color:var(--muted)}
+.track-tooltip-series{display:flex;justify-content:space-between;align-items:center;margin:8px 0 9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.07)}
+.track-tooltip-series span{font-size:9px;color:var(--muted);letter-spacing:.08em;font-weight:800}
+.track-tooltip-series b{font-size:12px;font-variant-numeric:tabular-nums;color:#e6ebef}
+.track-tooltip-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(124px,.9fr);gap:12px;align-items:start}
+.track-tooltip-main{min-width:0}
+.track-tooltip-map-list{display:grid;gap:5px;max-height:104px;overflow:auto}
+.track-tooltip-map-row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.map-mark-inline{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:100%;vertical-align:middle}
+.map-mark-inline img{width:17px;height:17px;object-fit:contain;flex:0 0 17px;opacity:.9}
+.map-mark-inline>span{font-size:11px;font-weight:700;color:#dce3e9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track-tooltip-map-score{display:inline-flex;align-items:center;gap:4px;flex:0 0 auto;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+.track-tooltip-map-score i{font-style:normal;color:var(--muted);font-size:9px}
+.track-tooltip-map-score b{font:inherit}
+.track-tooltip-no-map{font-size:10px;color:var(--muted)}
+.track-tooltip-kda{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:10px;padding-top:7px;border-top:1px solid rgba(255,255,255,.07)}
+.track-tooltip-kda small{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.06em}
+.track-tooltip-kda b{font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.track-tooltip-side-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.track-tooltip-side-stats>div{display:grid;gap:3px;min-width:0;padding:6px 7px;border:1px solid rgba(255,255,255,.055);border-radius:5px;background:rgba(255,255,255,.018)}
+.track-tooltip-side-stats small{font-size:8px;color:var(--muted);letter-spacing:.055em;font-weight:800}
+.track-tooltip-side-stats b{font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-tooltip-foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px;padding-top:7px;border-top:1px solid rgba(255,255,255,.07)}
+.track-tooltip-foot span{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.05em}
+.track-tooltip-foot b{font-size:11px;font-variant-numeric:tabular-nums}
+.track-tooltip-actions{display:flex;justify-content:flex-end;align-items:center;gap:7px;margin-top:7px}
+.track-tooltip-close{width:23px;height:23px;padding:0;border:1px solid rgba(255,255,255,.1);border-radius:4px;background:rgba(255,255,255,.035);color:#cbd3db;cursor:pointer;line-height:1}
+.track-tooltip-open{padding:6px 9px;border:1px solid rgba(255,255,255,.1);border-radius:4px;background:rgba(255,255,255,.035);color:#dce3e9;font-size:9px;font-weight:800;letter-spacing:.055em;cursor:pointer}
+.track-tooltip-open:hover{border-color:rgba(255,85,0,.45);background:rgba(255,85,0,.05)}
+.faceit-match-map{display:flex;align-items:center;gap:9px;min-width:0}
+.faceit-match-map .map-mark-inline{min-width:0}
+.faceit-match-map .map-mark-inline img{width:18px;height:18px;flex-basis:18px}
+.faceit-match-map .map-mark-inline>span{font-size:11px}
+.track-match-head,.track-match-row{grid-template-columns:minmax(100px,1fr) minmax(64px,.45fr) minmax(54px,.4fr) minmax(150px,1.2fr) minmax(55px,.45fr) minmax(100px,.72fr)}
+.track-match-row{gap:11px;padding:11px 13px}
+.track-match-row .track-match-result{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:4px;font-size:10px;font-weight:900;background:rgba(255,255,255,.06)}
+.track-match-row .track-match-result.positive{background:rgba(53,217,149,.12);color:#35d995!important}
+.track-match-row .track-match-result.negative{background:rgba(255,83,104,.12);color:#ff5368!important}
+.track-match-score{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:#dce3e9}
+.track-match-map{display:flex;align-items:center;gap:8px;min-width:0}
+.track-match-map .map-mark-inline{min-width:0}
+.track-match-map .map-mark-inline img{width:17px;height:17px;flex-basis:17px}
+.track-match-map .map-mark-inline>span{font-size:10px}
+@media(max-width:620px){.track-chart-tooltip{width:min(340px,calc(100vw - 20px));padding:10px}.track-tooltip-layout{grid-template-columns:minmax(0,1fr) minmax(112px,.9fr);gap:9px}.track-match-head,.track-match-row{min-width:790px}.faceit-match-map{gap:6px}}
