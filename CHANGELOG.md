@@ -1937,3 +1937,20 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T17:51:07+03:00 — Move season archive and Track into player profile
+
+- Commit: 31d43d9e04f9ed465faf51647b7c1e6c2ed01b84
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+- M	tests/faceit-v2-shell.test.cjs
+- M	tests/season-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
