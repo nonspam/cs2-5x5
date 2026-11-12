@@ -2920,3 +2920,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T01:38:22+03:00 — Fix profile ELO point event binding
+
+- Commit: 33693110d832e378b7ff8b3b3e8bb2aaf672e1da
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
