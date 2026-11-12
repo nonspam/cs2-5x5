@@ -388,19 +388,30 @@ function seasons(v){
  const totalWins=players.reduce((n,x)=>n+x.sum.wins,0),totalKnown=players.reduce((n,x)=>n+x.sum.wins+x.sum.losses,0);
  const selected=state.seasonView||'all';
  if(selected==='season1'){
-   v.innerHTML='<section class="season-page"><div class="season-page-head"><button class="season-back" onclick="state.seasonView=\'all\';render()">← ВСЕ СЕЗОНЫ</button><span class="faceit-kicker">СЕЗОН 1 · ПОДГОТОВКА</span><h1>Первый сезон</h1><p>Соревновательный сезон будет запущен отдельно. Текущая история матчей сохранена и доступна во вкладке «Вся история».</p></div><div class="season-empty panel"><div class="season-empty-mark">01</div><h2>Сезон ещё не начался</h2><p>Рейтинговая таблица и статистика сезона появятся после старта. Текущие матчи не будут автоматически перенесены в сезон.</p><button class="btn primary" onclick="state.seasonView=\'all\';render()">Вернуться к истории</button></div></section>';return;
+  v.innerHTML=
+   '<section class="season-page season-detail-page">'+
+    '<div class="season-page-head"><div><button class="season-back" onclick="state.seasonView=\'all\';render()">← ВСЕ СЕЗОНЫ</button><span class="faceit-kicker">CS2 · COMPETITIVE · SEASON 01</span><h1>Первый сезон</h1><p>Сезонный рейтинг и статистика будут формироваться только из матчей, явно включённых в этот сезон.</p></div><span class="season-status-pill">ГОТОВИТСЯ</span></div>'+
+    '<div class="season-detail-status"><div><span>СТАРТ СЕЗОНА</span><b>Не назначен</b></div><div><span>СЕЗОННЫЙ РЕЙТИНГ</span><b>Не активен</b></div><div><span>ПРИВЯЗКА МАТЧЕЙ</span><b>Ожидает настройки</b></div></div>'+
+    '<div class="season-empty panel"><div class="season-empty-mark">01</div><h2>Сезон ещё не запущен</h2><p>В текущей истории нет надёжных меток, связывающих матчи с сезонами. Поэтому прошлые матчи не попадают сюда автоматически, а сезонные даты, рейтинг и статистика останутся пустыми до настройки первого сезона.</p><button class="btn" onclick="state.seasonView=\'all\';render()">Вернуться ко всем сезонам</button></div>'+
+   '</section>';
+  return;
  }
  const cards=players.slice(0,5).map((x,i)=>'<div class="season-player-row"><span class="season-rank">'+(i+1)+'</span><span class="season-player-name">'+esc(x.p.display_name)+'</span><b>'+fmt(x.idx,1)+'</b><span>'+Math.round(x.elo.rating||1000)+'</span><span>'+x.sum.matches+' матч.</span><strong>'+fmt(x.sum.kd,2)+'</strong></div>').join('');
+ const recent=matches.slice(-5).reverse().map(m=>{
+  const mapRows=matchMaps(m).map(mp=>mp.map||mp.map_name||mp.name).filter(Boolean);
+  const mapMarks=mapRows.length?mapRows.map(mapMiniMarkup).join(''):'<span class="season-history-no-map">Нет данных о картах</span>';
+  return '<div class="season-history-row"><span class="season-history-date">'+esc(dateLabel(m.played_at||m.date||m.created_at)||'—')+'</span><span class="season-history-score">'+scoreMarkup(m.series_score||'—')+'</span><span class="season-history-maps">'+mapMarks+'<small>'+mapRows.length+' карт</small></span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>';
+ }).join('');
  v.innerHTML='<section class="season-page">'+
- '<div class="season-page-head"><div><span class="faceit-kicker">CS2 · COMPETITIVE</span><h1>Сезоны</h1><p>Соревновательная история и рейтинги игроков</p></div><div class="season-head-total"><b>'+matches.length+'</b><span>матчей в истории</span></div></div>'+
- '<div class="season-overview-strip"><div><span>ВСЕГО МАТЧЕЙ</span><b>'+matches.length+'</b></div><div><span>СЫГРАНО КАРТ</span><b>'+maps.length+'</b></div><div><span>АКТИВНЫХ ИГРОКОВ</span><b>'+players.length+'</b></div><div><span>ОБЩИЙ ВИНРЕЙТ</span><b>'+(totalKnown?fmt(totalWins/totalKnown*100,1)+'%':'—')+'</b></div></div>'+
+ '<div class="season-page-head"><div><span class="faceit-kicker">CS2 · COMPETITIVE</span><h1>Сезоны</h1><p>Сезонные кампании отдельно от общей истории матчей</p></div><div class="season-head-total"><b>'+matches.length+'</b><span>матчей в общей истории</span></div></div>'+
+ '<div class="season-overview-strip"><div><span>МАТЧИ · ALL TIME</span><b>'+matches.length+'</b></div><div><span>КАРТЫ · ALL TIME</span><b>'+maps.length+'</b></div><div><span>ИГРОКИ · ALL TIME</span><b>'+players.length+'</b></div><div><span>ВИНРЕЙТ · ALL TIME</span><b>'+(totalKnown?fmt(totalWins/totalKnown*100,1)+'%':'—')+'</b></div></div>'+
  '<div class="season-pick-list">'+
- '<button class="season-pick-row season-pick-all" onclick="state.seasonView=\'all\';render()"><span class="season-pick-symbol">∞</span><span class="season-pick-copy"><small>ИСТОРИЯ</small><b>Вся история</b><em>'+maps.length+' карт · общая статистика</em></span><strong>'+matches.length+'</strong><span class="season-pick-arrow">→</span></button>'+
- '<button class="season-pick-row season-pick-upcoming" onclick="state.seasonView=\'season1\';render()"><span class="season-pick-symbol">01</span><span class="season-pick-copy"><small>ПРЕДСТОЯЩИЙ</small><b>Сезон 1</b><em>Скоро · сезонный рейтинг</em></span><strong>—</strong><span class="season-pick-arrow">→</span></button>'+
+ '<button class="season-pick-row season-pick-all" onclick="state.seasonView=\'all\';render()"><span class="season-pick-symbol">∞</span><span class="season-pick-copy"><small>ALL TIME · АРХИВ</small><b>Вся история</b><em>Общая статистика, не привязанная к сезонам</em></span><strong>'+matches.length+'</strong><span class="season-pick-arrow">→</span></button>'+
+ '<button class="season-pick-row season-pick-upcoming" onclick="state.seasonView=\'season1\';render()"><span class="season-pick-symbol">01</span><span class="season-pick-copy"><small>ПРЕДСТОЯЩИЙ СЕЗОН</small><b>Сезон 1</b><em>Дата старта не назначена</em></span><strong>—</strong><span class="season-pick-arrow">→</span></button>'+
  '</div>'+
- '<div class="season-lower-grid"><section class="season-panel"><div class="season-panel-head"><div><span class="faceit-kicker">ALL TIME</span><h2>Лидеры общей истории</h2></div><span>'+players.length+' игроков</span></div><div class="season-player-head"><span>#</span><span>ИГРОК</span><span>ИНДЕКС</span><span>МАТЧИ</span><span>K/D</span></div>'+(cards||'<p class="muted">Нет игроков для отображения.</p>')+'</section>'+
- '<section class="season-panel season-history-panel"><div class="season-panel-head"><div><span class="faceit-kicker">АРХИВ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="navigateApp(\'base\')">Все матчи →</button></div>'+
- matches.slice(-5).reverse().map(m=>'<div class="season-history-row"><span>'+esc(dateLabel(m.played_at||m.date)||'—')+'</span><span class="season-history-score">'+scoreMarkup(m.series_score||'—')+'</span><span>'+esc((m.map_ids||[]).length+' карт')+'</span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>').join('')+'</section></div></section>';
+ '<div class="season-lower-grid"><section class="season-panel"><div class="season-panel-head"><div><span class="faceit-kicker">ALL TIME</span><h2>Лидеры общей истории</h2></div><span>'+players.length+' игроков</span></div><div class="season-player-head"><span>#</span><span>ИГРОК</span><span>ИНДЕКС</span><span>ELO</span><span>МАТЧИ</span><span>K/D</span></div>'+(cards||'<p class="muted">Нет игроков для отображения.</p>')+'</section>'+
+ '<section class="season-panel season-history-panel"><div class="season-panel-head"><div><span class="faceit-kicker">ALL TIME · АРХИВ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="navigateApp(\'base\')">Все матчи →</button></div>'+
+ (recent||'<p class="muted">В истории пока нет матчей.</p>')+'</section></div></section>';
 }
 
 function track(v){
