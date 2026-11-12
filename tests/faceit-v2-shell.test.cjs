@@ -238,6 +238,7 @@ test('Match Overview map result tiles use map-specific full-bleed artwork',()=>{
 
 test('Match Overview renders a ten-player series K/D ranking from aggregate stats only',()=>{
   assert.match(app,/const top10Rows=rows\.slice\(\)\.sort/);
+  assert.match(app,/const top10Markup=String\(m\.format\|\|''\)\.toUpperCase\(\)==='BO3'\?/);
   assert.match(app,/match-overview-top10/);
   assert.match(app,/medianTop10Index/);
   assert.match(app,/Нет агрегированной статистики игроков за серию/);

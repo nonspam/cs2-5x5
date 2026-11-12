@@ -1,5 +1,10 @@
 
 
+## BO3 scope guard — 2026-11-13
+
+The series Top 10 panel is now gated to `format === BO3` (case-normalized). It is not rendered for BO1 or BO5 matches, avoiding a misleading BO3 label on other formats. Added a static contract for the format guard.
+
+
 ## Quality Gate contract cleanup — 2026-11-13
 
 The second run (`43325873217`) narrowed the remaining failures to two more stale Match Overview assertions: old K/R and HS% labels and a removed placeholder sentence about server/veto probabilities. The current UI only exposes ADR among those career labels and correctly states that veto data is absent when not supplied. Updated the contracts to match this source-backed behavior; re-run pending.
