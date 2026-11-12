@@ -214,3 +214,13 @@ test('Match Overview player card follows the FACEIT single-surface column layout
   assert.match(css,/overflow-wrap:anywhere!important/);
   assert.match(css,/border-top:1px solid #292929!important/);
 });
+
+
+test('Match Overview corrective player card keeps avatar visible and restores readable proportions',()=>{
+  assert.match(app,/match-player-avatar-wrap/);
+  assert.match(app,/match-player-avatar-wrap[^]*profileAvatarMarkup\(r\.id,'md'\)/);
+  assert.match(css,/min-height:126px!important/);
+  assert.match(css,/grid-template-columns:40px minmax\(0,1fr\) auto 30px!important/);
+  assert.match(css,/\.match-player-avatar-wrap \.player-avatar\{[\s\S]*width:40px!important;height:40px!important/);
+  assert.match(css,/\.match-career-metric b\{[\s\S]*font-size:12px!important/);
+});
