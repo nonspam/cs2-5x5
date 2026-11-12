@@ -2872,3 +2872,15 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T01:25:37+03:00 — Fix ELO chart match opening
+
+- Commit: 018ddc2f1137fd653b13245f06688a0083c99733
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
