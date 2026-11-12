@@ -240,3 +240,13 @@ User reported that match details stopped opening from Profile after the Match Ce
 ## 2026-11-12 — Match Center checkpoint / точка продолжения
 
 Подробный handoff, подтверждённые CI и список ограничений сохранены в [docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md](docs/MATCH_CENTER_CHECKPOINT_2026-11-12.md). Последняя проверенная quality gate для кода и contract tests: SHA `6cd35f76c29007dfa27ee8d2ab322d4b8ca36d96`, 182/182 passed. Последняя композиция обзора под референс `design-references/inbox/image.png` закоммичена в `a22a1f6640d6578d42732893acc4b85fc1db6965`. Browser QA/deploy и пользовательская приёмка ещё не подтверждены.
+
+## 2026-11-12 — Match Center reference pass 2
+Владелец загрузил два новых эталона: `design-references/inbox/1.png` (MVP + четыре award rows) и `design-references/inbox/2.png` (компактная карточка игрока). Реализовано в `app_v57.js` и `style_v57.css`:
+- Veto/map list теперь компактные прямоугольные строки: квадратная миниатюра, имя карты, счёт справа; старые большие map cards с подвалом MVP/coverage убраны из обзора.
+- Игрок в Match Center: квадратный аватар, ник, текущий CS2EloV3 rating и level, ниже компактные карьерные метрики.
+- В Statistics добавлен крупный MVP-блок и четыре award строки: kills выводится из подтверждённых aggregate K/D/A; damage, KAST и entry kills пока помечены как недоступные, так как источник их не содержит.
+- MVP пока выбирается детерминированно по убийствам, при равенстве — по K/D; это временный явный критерий, не полноценная оценка влияния.
+- Contract tests обновлены под новую структуру.
+Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://github.com/nonspam/cs2-5x5/actions/runs/43261367570, 183 passed / 0 failed.
+Не выполнялись browser QA и deployment; визуальная приёмка владельцем ожидается. Не менять main/production/DB.
