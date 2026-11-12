@@ -1656,3 +1656,15 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T05:06:31+03:00 — Add Seasons data integrity and layout regression tests
+
+- Commit: 2bfdd5b6a0cf5b9748fb0c92b6f7d7a55209bd35
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	tests/season-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
