@@ -1560,3 +1560,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:53:55+03:00 — Refine Track hover card, match map marks and ELO details
+
+- Commit: 8e3b94fc3e19b4d2c6e47dc676dcb66d0d7183d8
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
