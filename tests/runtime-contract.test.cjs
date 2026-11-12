@@ -77,8 +77,11 @@ test('Match Center resolves player stats by ID, exact name and unique registered
 });
 
 
-test('Match Center map cards show per-map MVP and player coverage',()=>{
+test('Match Center maps render compact square thumbnails with map name and right-aligned score',()=>{
   assert.match(app,/const mapsHtml=maps\.map/);
-  assert.match(app,/mapMvp\(mp\.map_id\)/);
-  assert.match(app,/match-map-card-foot/);
+  assert.match(app,/match-map-row/);
+  assert.match(app,/match-map-row-thumb/);
+  assert.match(app,/match-map-row-score/);
+  assert.match(app,/mapScoreText\(mp\)/);
+  assert.doesNotMatch(app,/match-map-card-foot/);
 });
