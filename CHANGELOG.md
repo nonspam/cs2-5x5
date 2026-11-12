@@ -1812,3 +1812,15 @@
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T16:07:58+03:00 — Simplify player center columns and move ELO to the end
+
+- Commit: 76fb9af00077f82edff9202244108d9a8febfae2
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
