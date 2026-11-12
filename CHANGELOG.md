@@ -1752,3 +1752,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T05:20:41+03:00 — Update Track tooltip tests for explicit player context
+
+- Commit: 710af0f1e23b116a665108bbdead3e103431bd26
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
