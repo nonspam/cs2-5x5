@@ -1,5 +1,10 @@
 
 
+## Quality Gate follow-up — 2026-11-13
+
+The first run after the feature commit (`43325544240`, 187/191) exposed four stale contract assertions rather than runtime syntax failures: a removed Statistics tab was still expected in Match Center, two tests used a malformed regex for the current W/L expression, and a map-team test expected a removed alias helper variable. Updated these tests to assert the active Overview-only contract and the current unique-alias resolver. Re-run pending.
+
+
 ## 2026-11-13 — Match Overview follow-up: BO3 Top 10, map image layering, profile ELO match links
 
 - Added a series-wide Top 10 K/D panel to Match Overview using `seriesAggregateRows` output only. Best, median-position and worst entries are labelled; zero-death positive-kill rows display `∞`; incomplete sources are explicitly shown as fewer than 10 rather than filled with invented values.

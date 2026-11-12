@@ -177,7 +177,7 @@ test('map team stats resolve unlinked rows through unique registered player alia
   const app = fs.readFileSync(path.join(__dirname, '..', 'app_v57.js'), 'utf8');
   assert.ok(app.includes('function statByUniqueAliasForPlayer(rows,pid)'));
   assert.ok(app.includes('owners.length===1&&owners[0].player_id===id'));
-  assert.ok(app.includes('const row=rowById||rowByRaw||rowByKnownName'));
+  assert.ok(app.includes('return statById||statByExactName||statByUniqueAlias||null'));
 });
 
 
