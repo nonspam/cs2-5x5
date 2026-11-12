@@ -70,3 +70,22 @@ test('the active application rail item exposes the current page to assistive tec
   assert.match(app, /\['profile','◉','Профиль'\]/);
   assert.ok(app.includes('items.map(([id,ico,label])=>'), 'rail renders all routes from its shared item list');
 });
+
+
+test('player center uses the compact requested column order and removes legacy rating columns', () => {
+  const start = app.indexOf('function players(v){');
+  const end = app.indexOf('function compare', start);
+  const source = app.slice(start, end);
+  assert.ok(start >= 0 && end > start);
+  for (const label of ['Игрок','Карты','K','D','A','K/D','+/−','ELO']) assert.ok(source.includes('<th>'+label+'</th>'), 'player table includes '+label);
+  for (const label of ['Серии ELO','Импакт','Форма','Стабильность','Индекс игрока']) assert.ok(!source.includes(label), 'legacy player column removed: '+label);
+  assert.ok(source.indexOf('<th>Игрок</th>') < source.indexOf('<th>Карты</th>'));
+  assert.ok(source.indexOf('<th>+/−</th>') < source.indexOf('<th>ELO</th>'));
+});
+
+test('profile and route workspaces keep the rail fixed and scroll their content panes', () => {
+  assert.match(css, /\.faceit-exact-shell:not\(\.faceit-route-shell\) \.faceit-exact-content\{height:100vh;min-height:0;overflow-y:auto/);
+  assert.match(css, /\.faceit-route-shell\{height:100vh;min-height:100vh!important;overflow:hidden!important;grid-template-columns:170px minmax\(0,1fr\)!important\}/);
+  assert.match(css, /background-attachment:fixed!important/);
+  assert.match(css, /\.faceit-exact-rail-bottom\{padding-bottom:26px\}/);
+});
