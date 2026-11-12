@@ -1188,3 +1188,15 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T03:39:01+03:00 — docs: record owner-directed navigation and seasons refinements
+
+- Commit: 1135f1908f5a7a5b3f83c3cba712e3545fac4ca3
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	ROADMAP.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
