@@ -89,3 +89,8 @@ test('profile and route workspaces keep the rail fixed and scroll their content 
   assert.match(css, /background-attachment:fixed!important/);
   assert.match(css, /\.faceit-exact-rail-bottom\{padding-bottom:26px\}/);
 });
+
+test('player ranking sorts by K/D first and restores visible rank numbers',()=>{const s=app.indexOf('function players(v){'),e=app.indexOf('function compare',s),x=app.slice(s,e);assert.ok(x.includes('b.x.kd-a.x.kd'));assert.ok(x.includes('class="player-rank-head"'));assert.ok(x.includes('class="player-rank-cell"'));assert.ok(x.includes('ps.map((q,i)=>'));});
+test('profile and Track match scores use player-relative score badges',()=>{assert.ok(app.includes('scoreMarkup(playerSeriesScoreLabel(q.m,id,q.maps)'));assert.ok(app.includes('scoreMarkup(playerSeriesScoreLabel(q.m,targetId,q.maps)'));assert.match(css,/\.faceit-match-score \.score-positive/);assert.match(css,/\.track-match-score \.score-negative/);});
+test('route rail is compact and has no horizontal overflow',()=>{assert.match(css,/\.faceit-route-shell\{grid-template-columns:64px minmax\(0,1fr\)!important\}/);assert.match(css,/nav button span\{display:none!important\}/);assert.match(css,/overflow-x:clip!important/);});
+test('map catalogue photos fill the tile and K/D uses tabular numerals',()=>{assert.match(css,/\.maps-page \.map-card-grid \.map-card-photo\{display:block!important;position:absolute!important;inset:0!important/);assert.match(css,/font-variant-numeric:tabular-nums lining-nums!important/);});
