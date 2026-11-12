@@ -57,3 +57,18 @@ test('ordinary player accounts do not acquire administrator privileges', () => {
   assert.ok(account.includes('state.cloudAdmin=await CS2Cloud.isAdmin()'));
   assert.ok(account.includes("if(!state.logged||!state.cloudAdmin)return"));
 });
+
+
+test('profile cover background is a single non-repeating image scaled to the profile width', () => {
+  const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
+  assert.match(css, /\.faceit-exact-shell\[style\*="background-image"\]\{[\s\S]*?background-repeat:no-repeat!important/);
+  assert.match(css, /background-size:auto,100% auto!important/);
+  assert.match(css, /background-position:center top!important/);
+});
+
+test('Track uses the same compact 900px content rhythm as the profile main column', () => {
+  const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
+  assert.match(css, /\.track-page\{[\s\S]*?max-width:900px!important/);
+  assert.match(css, /\.track-kpis article,\.track-chart-panel,\.track-matches-panel\{border-radius:6px\}/);
+  assert.match(css, /\.track-chart-panel,\.track-matches-panel\{padding:14px;margin-top:10px\}/);
+});
