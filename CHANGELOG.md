@@ -2764,3 +2764,15 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T23:55:06+03:00 — Keep map stats as overlay over match room
+
+- Commit: 84f3e09490195c72f903e5bee5de4c5a63a1656c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- No file list available.
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
