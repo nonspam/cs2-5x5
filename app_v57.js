@@ -532,7 +532,7 @@ function bindTrackChart(root,points,metric,metricLabel){
  document.addEventListener('pointerdown',event=>{if(pinnedIndex!==null&&!tooltip.contains(event.target)&&!event.target.closest?.('.track-point-wrap'))hide()},{signal:controller.signal});
  document.addEventListener('keydown',event=>{if(event.key==='Escape')hide()},{signal:controller.signal});
 }
-function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
+function render(){renderEpoch++;window.__cs2TrackTooltipCleanup?.();detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
    selection chrome cannot leak into the UI. The native select stays in the DOM as
