@@ -68,6 +68,6 @@ test('Track has a season selector and filters rows by the same season resolver',
 
 test('Season UI is responsive and uses square archive tiles',()=>{
   assert.match(css,/\.faceit-season-picker-grid\{display:grid!important;grid-template-columns:repeat\(5,minmax\(0,1fr\)\)!important/);
-  assert.match(css,/\.faceit-season-pick-card[\s\S]*aspect-ratio:1\.12 \/ 1!important/);
+  assert.match(css,/\.faceit-season-pick-card[\s\S]*aspect-ratio:1 \/ 1!important/);
   assert.match(css,/@media\(max-width:560px\)[\s\S]*\.faceit-season-picker-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)!important/);
 });
