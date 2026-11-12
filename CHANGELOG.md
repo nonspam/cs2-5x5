@@ -2120,3 +2120,17 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:07:29+03:00 — test: align Match Center contract with career layout
+
+- Commit: edf49863ab098728eed45a6d50f273e7e44d3718
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+- M	app_v57.js
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
