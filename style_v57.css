@@ -4093,3 +4093,54 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
  .season-history-row{min-width:440px}
  .season-player-head,.season-player-row{grid-template-columns:22px minmax(0,1fr) 48px 48px 48px 42px;gap:6px}
 }
+
+
+/* Profile cover image: display one full-width image instead of repeating background tiles. */
+.faceit-exact-shell[style*="background-image"]{
+ background-repeat:no-repeat!important;
+ background-position:center top!important;
+ background-size:auto,100% auto!important;
+ background-color:#101010;
+}
+
+/* Track now shares the compact profile content width and panel rhythm. */
+.track-page{
+ width:100%!important;
+ max-width:900px!important;
+ margin:0!important;
+ padding:0 0 22px!important;
+ box-sizing:border-box;
+}
+.track-head{gap:14px;align-items:center}
+.track-head h1{font-size:clamp(25px,2.3vw,32px);margin:6px 0}
+.track-head p{font-size:11px}
+.track-head-count b{font-size:24px}
+.track-filters{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:18px 0}
+.track-filters label{gap:6px;font-size:9px}
+.track-kpis{gap:8px;margin-bottom:10px}
+.track-kpis article{padding:12px;gap:7px;border-radius:6px}
+.track-kpis article span{font-size:9px;letter-spacing:.055em}
+.track-kpis article b{font-size:clamp(15px,1.35vw,20px)}
+.track-kpis article,.track-chart-panel,.track-matches-panel{border-radius:6px}
+.track-chart-panel,.track-matches-panel{padding:14px;margin-top:10px}
+.track-section-head{margin-bottom:12px}
+.track-section-head h2{font-size:16px}
+.track-chart-wrap svg{min-height:120px}
+.track-chart-meta{margin-top:5px}
+.track-match-head,.track-match-row{gap:9px}
+.track-match-head{padding:8px 10px;font-size:9px}
+.track-match-row{padding:9px 10px}
+.track-match-row .track-match-result{width:21px;height:21px}
+.track-chart-tooltip{max-width:calc(100vw - 24px)}
+@media(max-width:900px){
+ .track-page{max-width:100%!important}
+ .track-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:620px){
+ .track-page{padding:0 0 18px!important}
+ .track-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}
+ .track-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .track-chart-panel,.track-matches-panel{padding:11px}
+ .track-head h1{font-size:25px}
+ .track-head-count b{font-size:21px}
+}
