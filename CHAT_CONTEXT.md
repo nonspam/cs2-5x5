@@ -216,3 +216,11 @@ The first Match Center implementation was committed, then the existing UI contra
 ### Match Center hotfix — 2026-11-12
 
 User reported that match details stopped opening from Profile after the Match Center first pass. Root cause found: Match Center called `window.CS2EloV3.playerData(id)`, but the actual public ELO API exports this method as `window.CS2EloV3.player(id)`. The mismatch threw a TypeError while rendering the first player card, preventing the modal from being inserted. Fixed the call to the actual API and added a regression assertion against the exported method name. No database changes, deployment, or browser QA.
+
+
+## 2026-11-12 — Reference image upload inbox
+
+Создан постоянный inbox для визуальных референсов и скриншотов:
+`design-references/inbox/`.
+
+Пользователь может открыть папку на ветке `faceit-dev`, выбрать Add file → Upload files, перетащить PNG/JPG/JPEG/WEBP и сделать commit прямо в `faceit-dev`. Инструкция и правила именования находятся в README папки. Использовать короткие имена с разделом и порядковым номером (например, `match-center-01-overview.png`). Не загружать секреты и приватные данные. Новые изображения не дают разрешения на самовольный редизайн: менять только то, что пользователь указал. При анализе сначала fetch-ить актуальный файл из inbox на faceit-dev и проверять визуально, затем сверять с текущим кодом.
