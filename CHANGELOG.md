@@ -2940,3 +2940,22 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T02:03:41+03:00 — feat: add BO3 top ten and fix match map and ELO links
+
+- Commit: 825bca48bec1df3561fee63d20e283510d34343f
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHANGELOG.md
+- M	PROJECT_MASTER.md
+- M	TECHNICAL_STATE.md
+- M	app_v57.js
+- M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+- M	tests/validation.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
