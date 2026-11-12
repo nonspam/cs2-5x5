@@ -2680,3 +2680,15 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:52:30+03:00 — docs: record full-image map cover tiles
+
+- Commit: db6d31479e54c83d1546f7266823449c1a8d0463
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
