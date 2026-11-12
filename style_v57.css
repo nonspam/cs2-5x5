@@ -4059,3 +4059,37 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
 .track-match-map .map-mark-inline img{width:17px;height:17px;flex-basis:17px}
 .track-match-map .map-mark-inline>span{font-size:10px}
 @media(max-width:620px){.track-chart-tooltip{width:min(340px,calc(100vw - 20px));padding:10px}.track-tooltip-layout{grid-template-columns:minmax(0,1fr) minmax(112px,.9fr);gap:9px}.track-match-head,.track-match-row{min-width:790px}.faceit-match-map{gap:6px}}
+
+
+/* Seasons: keep season facts separate from the all-time archive, with compact archive rows. */
+.season-detail-page .season-page-head{align-items:center}
+.season-status-pill{flex:0 0 auto;padding:7px 10px;border:1px solid rgba(235,240,245,.16);border-radius:4px;color:#bfc7ce;font-size:9px;font-weight:850;letter-spacing:.09em;background:rgba(255,255,255,.025)}
+.season-detail-status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 16px;border:1px solid rgba(235,240,245,.12);border-radius:6px;background:rgba(14,18,23,.32)}
+.season-detail-status>div{display:grid;gap:5px;padding:13px 15px;min-width:0;border-right:1px solid rgba(255,255,255,.07)}
+.season-detail-status>div:last-child{border-right:0}
+.season-detail-status span{font-size:8px;font-weight:850;letter-spacing:.09em;color:#8f99a3}
+.season-detail-status b{font-size:12px;color:#dce2e8;overflow-wrap:anywhere}
+.season-detail-page .season-empty{max-width:820px;margin:22px auto;padding:32px 26px;border:1px solid rgba(235,240,245,.1);background:rgba(14,18,23,.3)}
+.season-detail-page .season-empty p{max-width:620px}
+.season-player-head,.season-player-row{grid-template-columns:30px minmax(0,1fr) 62px 58px 65px 55px}
+.season-history-row{grid-template-columns:minmax(105px,.9fr) 55px minmax(130px,1.3fr) 65px;gap:9px}
+.season-history-date{font-variant-numeric:tabular-nums;white-space:nowrap}
+.season-history-maps{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden}
+.season-history-maps .map-mark-inline{min-width:0}
+.season-history-maps .map-mark-inline img{width:17px;height:17px;flex-basis:17px}
+.season-history-maps .map-mark-inline>span{font-size:10px}
+.season-history-maps small{flex:0 0 auto;color:#87919a;font-size:8px;white-space:nowrap}
+.season-history-no-map{font-size:9px;color:#858f99}
+@media(max-width:850px){
+ .season-detail-status{grid-template-columns:1fr}
+ .season-detail-status>div{border-right:0;border-bottom:1px solid rgba(255,255,255,.07)}
+ .season-detail-status>div:last-child{border-bottom:0}
+ .season-history-row{grid-template-columns:minmax(95px,.9fr) 50px minmax(115px,1fr) 58px;gap:6px}
+}
+@media(max-width:600px){
+ .season-detail-page .season-page-head{align-items:flex-start;flex-direction:column}
+ .season-detail-page .season-empty{margin:18px auto;padding:24px 16px}
+ .season-history-panel{overflow-x:auto}
+ .season-history-row{min-width:440px}
+ .season-player-head,.season-player-row{grid-template-columns:22px minmax(0,1fr) 48px 48px 48px 42px;gap:6px}
+}
