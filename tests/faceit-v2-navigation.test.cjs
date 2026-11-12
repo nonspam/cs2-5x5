@@ -56,7 +56,7 @@ function harness(initialHash = '') {
 }
 
 test('direct hash entry resolves supported routes and safely falls back for unknown routes', () => {
-  for (const route of ['home','analytics','base','maps','teams','records','seasons','settings','profile','compare']) {
+  for (const route of ['home','analytics','base','maps','teams','records','seasons','track','settings','profile','compare']) {
     const h = harness('#/' + route);
     assert.equal(h.appRouteFromLocation(), route);
   }
