@@ -165,17 +165,16 @@ test('Track route is registered, linked in navigation, and renders data-driven f
   assert.match(app, /\['track','⌁','Track'\]/);
   assert.match(app, /function track\(v\)/);
   assert.match(app, /state\.trackPeriod/);
-  assert.match(app, /profileMatchesForPlayer\(chosen\.player_id\)/);
+  assert.match(app, /profileMatchesForPlayer\(targetId\)/);
   assert.match(app, /const pages=\{[^}]*track/);
   const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
   assert.match(css, /Track Stats — functional first implementation/);
   assert.match(css, /\.track-kpis/);
 });
 
-
 test('Track is account-scoped by linked player and never falls back to an arbitrary active player', () => {
   const trackStart = app.indexOf('function track(v){');
-  const trackEnd = app.indexOf('\\nfunction render(){', trackStart);
+  const trackEnd = app.indexOf('\nfunction render(){', trackStart);
   const track = app.slice(trackStart, trackEnd);
   assert.match(track, /const targetId=state\.trackTargetId\|\|state\.myPlayerId\|\|null/);
   assert.match(track, /if\(!targetId\)/);
