@@ -257,5 +257,7 @@ test('Track tooltip receives the active player ID required for match-specific de
   const fn=app.slice(start,end);
   assert.ok(fn.includes('historicalLobbyGroups(q.m,mp)'));
   assert.ok(fn.includes('deltaForMatch(playerId,q.m.match_id)'));
-  assert.ok(fn.includes('pointerenter',()=>{} )===false || true);
+  assert.ok(fn.includes("dot.addEventListener('pointerenter'"));
+  assert.ok(fn.includes("dot.addEventListener('click'"));
+  assert.ok(fn.includes('show(index,dot,true)'));
 });
