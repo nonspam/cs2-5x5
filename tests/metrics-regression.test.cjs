@@ -211,3 +211,39 @@ test('Track match rows color the complete K/D/A string by K-to-D relation', () =
   assert.ok(css.includes('.track-owner-avatar .player-avatar{display:flex!important'));
   assert.ok(css.includes('.track-match-row .track-match-map{font-size:11px'));
 });
+
+
+test('Track hover tooltip floats beside points and never blocks pointer travel while hovering', () => {
+  const start=app.indexOf('function bindTrackChart(root,points,metric,metricLabel){');
+  const end=app.indexOf('function render(){',start);
+  assert.ok(start>=0&&end>start);
+  const fn=app.slice(start,end);
+  assert.ok(fn.includes('document.body.appendChild(tooltip)'));
+  assert.ok(fn.includes("tooltip.style.pointerEvents=pin?'auto':'none'"));
+  assert.ok(fn.includes('rightSpace>=tipWidth+gap'));
+  assert.ok(fn.includes('leftSpace>=tipWidth+gap'));
+  assert.ok(fn.includes("pointerenter',()=>show(index,dot,false)"));
+  assert.ok(fn.includes("document.addEventListener('keydown'"));
+  const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
+  assert.match(css,/\.track-chart-tooltip\{position:fixed/);
+  assert.match(css,/\.track-chart-tooltip\[data-pinned="true"\]\{pointer-events:auto\}/);
+});
+
+test('Track tooltip exposes match date/time, map badges, player KDA and available ELO context', () => {
+  const start=app.indexOf('function bindTrackChart(root,points,metric,metricLabel){');
+  const end=app.indexOf('function render(){',start);
+  const fn=app.slice(start,end);
+  for(const token of ['clockLabel(playedAt)','mapMiniMarkup(mapName)','track-tooltip-series','track-tooltip-kda','deltaForMatch(playerId,q.m.match_id)','ratingAtMatch(playerId,q.m.match_id)','levelForRating(eloAfter)','expectedA','expectedB','track-tooltip-open']) {
+    assert.ok(fn.includes(token),'missing tooltip detail '+token);
+  }
+});
+
+test('Track and profile history show compact map emblems and player-oriented series scores', () => {
+  assert.ok(app.includes('const mapMiniMarkup=name=>'));
+  assert.ok(app.includes('playerSeriesScoreLabel(q.m,id,q.maps)'));
+  assert.ok(app.includes('playerSeriesScoreLabel(q.m,targetId,q.maps)'));
+  assert.ok(app.includes("split(' · ').filter(Boolean).map(mapMiniMarkup).join('')"));
+  const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
+  assert.ok(css.includes('.faceit-match-map .map-mark-inline img'));
+  assert.ok(css.includes('.track-match-map .map-mark-inline img'));
+});
