@@ -2584,3 +2584,15 @@
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:31:44+03:00 — docs: record FACEIT player card reference implementation
+
+- Commit: c1e8e7c34d45281fdde5a5a6e12ec7edb272fe05
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
