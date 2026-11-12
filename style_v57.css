@@ -5292,3 +5292,117 @@ html,body,*{
   #mapModal .map-stat-footnote{margin:0 12px 12px!important}
   #mapModal .map-stat-team header{align-items:flex-start!important;flex-direction:column!important}
 }
+
+
+/* SITE-WIDE GRAPHITE THEME — unify all sections with the Match Overview reference.
+   Blue is replaced by neutral graphite; semantic win/loss green and red remain. */
+:root,body,.faceit-app-shell{
+  --bg:#101112!important;
+  --panel:#191b1d!important;
+  --panel2:#202326!important;
+  --surface:#191b1d!important;
+  --surface-2:#202326!important;
+  --surface-3:#292d31!important;
+  --line:#34393e!important;
+  --line-soft:#292e33!important;
+  --text:#f2f3f3!important;
+  --muted:#a0a5a9!important;
+  --muted-2:#777e83!important;
+  --blue:#9ba1a5!important;
+  --blue2:#b0b5b8!important;
+  --blue3:#858c91!important;
+  --blue-soft:#858c91!important;
+  --glow:none!important;
+  --shadow:0 18px 48px rgba(0,0,0,.32)!important;
+}
+body{
+  background:radial-gradient(circle at 70% -15%,rgba(255,255,255,.045),transparent 34%),
+             linear-gradient(180deg,#111213 0%,#0c0d0e 100%)!important;
+  color:#f2f3f3!important;
+}
+/* Shared surfaces used across dashboard, players, maps, teams, and match pages */
+.card,.panel,.home-panel,.home-info,.stat-card,.profile-section,.team-card,
+.map-card,.player-card,.match-card,.match-panel,.settings-panel,.admin-panel,
+.modal .panel,.modal .card,.team-select-grid>div,.team-drop,.player-pool,
+.match-player-pool,.match-map-pool,.match-overview-details,.match-overview-maps,
+.match-overview-veto,.map-stat-summary,.map-stat-comparison,.map-stat-rounds,
+.map-stat-team{
+  background-color:#191c1f!important;
+  border-color:#34393e!important;
+  box-shadow:none!important;
+}
+.card:hover,.map-card:hover,.player-card:hover,.team-card:hover,
+.recent-game:hover,.home-panel:hover{
+  border-color:#555c62!important;
+  box-shadow:none!important;
+}
+/* Remove blue washes and glows left by older page-specific themes */
+.home-v50 .home-info,.home-info,.home-rebuild .home-panel,
+.home-chart-panel,.home-recent-panel,.home-leaderboard,
+.team-select-grid>div,.team-drop,.account-menu-trigger,.account-menu-pop,
+.custom-select-menu,.custom-select-option,.profile-section,
+.player-profile-modal .profile-section{
+  background:#191c1f!important;
+  border-color:#34393e!important;
+  box-shadow:none!important;
+}
+.home-v50 .home-info p,.home-info p,.team-select-head,
+.team-select-head span,.muted,.subtle,.helper-text{
+  color:#a0a5a9!important;
+}
+/* Neutralize blue controls, active states, links, badges, and outlines */
+a,.link,.nav-btn,.tab-btn,.filter-btn,.custom-select-trigger,
+.account-menu-trigger,.btn.secondary,.btn.ghost,.player-chip,
+.badge,.tag,.pill,.chip{
+  border-color:#3a4045!important;
+}
+a,.link,.nav-btn,.tab-btn,.filter-btn,.custom-select-trigger,
+.account-menu-trigger,.btn.secondary,.btn.ghost,.player-chip{
+  color:#d0d3d5!important;
+}
+.nav-btn.active,.tab-btn.active,.filter-btn.active,
+.custom-select-trigger:hover,.player-chip:hover,
+.account-menu-trigger:hover{
+  background:#292e32!important;
+  color:#fff!important;
+  border-color:#747c82!important;
+  box-shadow:none!important;
+}
+.btn.primary,.btn.primary:hover{
+  background:#aeb4b8!important;color:#111315!important;border-color:#aeb4b8!important;
+}
+:focus-visible{outline-color:#9ba1a5!important;box-shadow:0 0 0 2px rgba(180,186,190,.2)!important}
+input,select,textarea,.input,.form-control{
+  background:#111416!important;color:#f0f2f3!important;border-color:#3a4045!important;
+}
+input:focus,select:focus,textarea:focus,.input:focus,.form-control:focus{
+  border-color:#8c949a!important;box-shadow:0 0 0 2px rgba(160,168,174,.14)!important;
+}
+/* Neutralize blue-tinted table headers, dividers, and secondary blocks */
+table thead,th,.table-head,.section-head,.list-header{
+  background:#25292d!important;color:#aeb4b8!important;border-color:#3a4045!important;
+}
+table td,table th,tr,.divider,hr{
+  border-color:#30363b!important;
+}
+.table-wrap,.data-table,.scoreboard,.match-scoreboard,
+.home-table,.leaderboard-table{
+  background:#15181a!important;border-color:#34393e!important;
+}
+/* Match-room and map-stat overlays follow the same graphite palette */
+.match-detail-modal,.map-stat-modal,.modal.panel,
+.match-detail-topbar,.match-room-nav,.map-stat-tabs{
+  background-color:#151719!important;border-color:#34393e!important;
+}
+.match-overview-details,.match-overview-maps,.match-overview-veto,
+.map-stat-summary,.map-stat-comparison,.map-stat-rounds,.map-stat-team{
+  background:linear-gradient(145deg,#1b1e21,#141719)!important;
+  border-color:#34393e!important;
+}
+.match-map-row-cover{
+  border-color:#4a5055!important;
+}
+.match-map-row-cover:hover{border-color:#92999e!important}
+/* Preserve meaningful green/red performance signals; only remove blue accents. */
+.positive,.is-positive,.text-green,.win,.winner{color:#36d98a!important}
+.negative,.is-negative,.text-red,.loss,.loser{color:#ff626d!important}
