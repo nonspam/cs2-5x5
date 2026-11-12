@@ -5490,3 +5490,9 @@ table td,table th,tr,.divider,hr{
 .faceit-elo-tooltip-actions button{border:1px solid #555b60;background:#292c2f;color:#f1f2f3;border-radius:7px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer}
 .faceit-elo-tooltip-actions .faceit-elo-tooltip-open{background:#ff5b24;border-color:#ff5b24;color:#111}
 .faceit-elo-tooltip-actions button:disabled{opacity:.4;cursor:not-allowed}
+
+.faceit-elo-chart .faceit-elo-points{pointer-events:all}
+.faceit-elo-chart .faceit-elo-point{pointer-events:all;cursor:pointer}
+.faceit-elo-chart .faceit-elo-hit{fill:rgba(255,255,255,.001);pointer-events:all}
+.faceit-elo-tooltip{pointer-events:auto}
+.faceit-elo-tooltip[data-pinned="false"]{pointer-events:none}
