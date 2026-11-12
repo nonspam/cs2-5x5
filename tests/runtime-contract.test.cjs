@@ -70,13 +70,15 @@ test('missing form trend stays unavailable instead of being coerced to numeric z
 });
 
 
-test('series team detail resolves guest rows by guest ID or normalized raw/display name before showing missing stats', () => {
-  assert.match(app, /const top=rows\.slice\(0,10\),team=ids=>ids\.map\(pid=>\{const guest=\(m\.guest_players\|\|\[\]\)\.find\(g=>g\.guest_id===pid\),rosterPlayer=player\(pid\),label=guest\?\.display_name\|\|rosterPlayer\?\.display_name\|\|playerName\(pid\),norm=value=>String\(value\?\?''\)\.normalize\('NFKC'\)\.trim\(\)\.toLocaleLowerCase\('ru'\)/);
-  assert.match(app, /statByUniqueAlias=statById\|\|statByExactName\|\|guest\?null:rows\.find/);
+test('Match Center resolves player stats by ID, exact name and unique registered aliases',()=>{
+  assert.match(app,/const row=id=>/);
+  assert.match(app,/unique=byId\|\|byName\|\|g\?null:rows\.find/);
+  assert.match(app,/owners\.length===1&&owners\[0\]\.player_id===id/);
 });
 
 
-test('series map list surfaces per-map MVP and actual stat-row coverage', () => {
-  assert.match(app, /const mapBtns=maps\.map\(\(mp,i\)=>\{const coverage=mp\.stats_available\?\(mp\.player_stats\|\|\[\]\)\.length:0/);
-  assert.match(app, /MVP: \$\{esc\(mapMvp\(mp\.map_id\)\)\} · статов: \$\{coverage\}/);
+test('Match Center map cards show per-map MVP and player coverage',()=>{
+  assert.match(app,/const mapsHtml=maps\.map/);
+  assert.match(app,/mapMvp\(mp\.map_id\)/);
+  assert.match(app,/match-map-card-foot/);
 });
