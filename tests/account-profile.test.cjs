@@ -66,9 +66,9 @@ test('profile cover background is a single non-repeating image scaled to the pro
   assert.match(css, /background-position:center top!important/);
 });
 
-test('Track uses the same compact 900px content rhythm as the profile main column', () => {
+test('Track fills and centers in the shared route content area while keeping compact panel rhythm', () => {
   const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
-  assert.match(css, /\.track-page\{[\s\S]*?max-width:900px!important/);
+  assert.match(css, /\.track-page\{[\s\S]*?max-width:1480px!important;\s*margin:0 auto!important/);
   assert.match(css, /\.track-kpis article,\.track-chart-panel,\.track-matches-panel\{border-radius:6px\}/);
   assert.match(css, /\.track-chart-panel,\.track-matches-panel\{padding:14px;margin-top:10px\}/);
 });
