@@ -1404,3 +1404,15 @@
 - M	account_module.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:13:36+03:00 — Update navigation allowlist for Track route
+
+- Commit: 8e45be6df657e79ca117d5437fe27f3237bad179
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-navigation.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
