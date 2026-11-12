@@ -206,3 +206,8 @@ TECHNICAL_STATE, ROADMAP и DECISIONS. Функция «Играли вмест�
 Ограничения текущего data contract: отдельное поле капитана не подтверждено; veto-pick/ban history не найден; KR, ADR, HS%, damage и entry-kill metrics отсутствуют в текущем runtime-потоке. Не вычислять их из K/D/A и не выдавать приблизительные MVP/awards за достоверные. Для будущей итерации требуется источник этих метрик и согласование формулы внутреннего рейтинга MVP.
 
 Эта итерация не является финальным дизайном. Сверить с референсными изображениями пользователя, когда он добавит их в `design-references/match-center/`.
+
+
+### Match Center implementation follow-up
+
+The first Match Center implementation was committed, then the existing UI contract test correctly flagged one obsolete assertion that required the removed team AVG MAP label. The test was updated to assert the new map tile, career metric grid, future-metric placeholders, and positive/negative scoreboard states. A draw is labeled as a draw rather than incorrectly showing a winner. CI result for the first pass: 181/182 passed; this follow-up is intended to bring the suite back to green.
