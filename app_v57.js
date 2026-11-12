@@ -223,31 +223,18 @@ function restoreAppRouteFromHistory(){
 window.addEventListener('popstate',restoreAppRouteFromHistory);
 window.addEventListener('hashchange',restoreAppRouteFromHistory);
 function faceitAppRailMarkup(){
- const items=[['home','⌂','Обзор'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['seasons','◉','Сезоны'],['profile','◉','Профиль']];
+ const items=[['home','⌂','Главное'],['analytics','♙','Игроки'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['seasons','◉','Сезоны'],['profile','◉','Профиль']];
  return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
   '<div class="faceit-exact-game">◉ <b>CS2 ANALYTICS</b></div>'+
   '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" '+(state.tab===id?'aria-current="page" ':'')+'data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
   '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" '+(state.tab==='settings'?'aria-current="page" ':'')+'data-app-route="settings">⚙ <span>Настройки</span></button></div>';
-}
-function faceitAppPlayerColumnMarkup(){
- const id=state.myPlayerId||state.profileTargetId,p=id?player(id):null;
- if(!p)return '<aside class="faceit-exact-player-column"><div class="faceit-route-account-card"><span class="faceit-kicker">CS2 ANALYTICS</span><h2>Твой профиль</h2><p>Войди или привяжи игровой профиль, чтобы открыть личную статистику.</p><button type="button" data-account-open>ВОЙТИ / ПРИВЯЗАТЬ</button></div></aside>';
- const row=profileRecord(id)||(id===state.myPlayerId?state.myProfile:null)||{};
- const avatar=row.avatar_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.avatar_path):'';
- const elo=window.CS2EloV3?.player(id)?.rating??1000;
- return '<aside class="faceit-exact-player-column"><div class="faceit-route-player-card">'+
-  '<div class="faceit-route-avatar">'+(avatar?'<img src="'+esc(avatar)+'" alt="">':'<span>'+esc(String(p.display_name||id).slice(0,1).toUpperCase())+'</span>')+'</div>'+
-  '<h2>'+esc(p.display_name)+'</h2><div class="faceit-route-elo"><span>CS2 ELO</span><b>'+fmt(elo,0)+'</b></div>'+
-  '<div class="faceit-route-player-meta"><span>@'+esc(id)+'</span><span>'+profileMatchesForPlayer(id).length+' матчей</span></div>'+
-  '<button type="button" data-app-route="profile" '+(state.tab==='profile'?'aria-current="page" ':'')+'>ОТКРЫТЬ ПРОФИЛЬ</button>'+
-  '</div></aside>';
 }
 function bindAppShell(root){
  root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>navigateApp(button.dataset.appRoute)));
  root.querySelector('[data-account-open]')?.addEventListener('click',()=>window.openAccountAuth?.());
 }
 function renderRouteShell(v,page){
- v.innerHTML='<section class="faceit-exact-shell faceit-route-shell"><aside class="faceit-exact-global-rail">'+faceitAppRailMarkup()+'</aside>'+faceitAppPlayerColumnMarkup()+'<div class="faceit-exact-content faceit-route-content" id="faceitRouteContent"></div></section>';
+ v.innerHTML='<section class="faceit-exact-shell faceit-route-shell"><aside class="faceit-exact-global-rail">'+faceitAppRailMarkup()+'</aside><div class="faceit-exact-content faceit-route-content" id="faceitRouteContent"></div></section>';
  bindAppShell(v);
  const content=v.querySelector('#faceitRouteContent');if(content)page(content);
 }
@@ -397,13 +384,13 @@ function seasons(v){
  v.innerHTML='<section class="season-page">'+
  '<div class="season-page-head"><div><span class="faceit-kicker">CS2 · COMPETITIVE</span><h1>Сезоны</h1><p>Соревновательная история и рейтинги игроков</p></div><div class="season-head-total"><b>'+matches.length+'</b><span>матчей в истории</span></div></div>'+
  '<div class="season-overview-strip"><div><span>ВСЕГО МАТЧЕЙ</span><b>'+matches.length+'</b></div><div><span>СЫГРАНО КАРТ</span><b>'+maps.length+'</b></div><div><span>АКТИВНЫХ ИГРОКОВ</span><b>'+players.length+'</b></div><div><span>ОБЩИЙ ВИНРЕЙТ</span><b>'+(totalKnown?fmt(totalWins/totalKnown*100,1)+'%':'—')+'</b></div></div>'+
- '<div class="season-cards-grid">'+
- '<button class="season-card season-card-all" onclick="state.seasonView=\'all\';render()"><div class="season-card-top"><span>ИСТОРИЯ</span><span class="season-card-mark">∞</span></div><div class="season-card-label">ВСЁ ВРЕМЯ</div><strong>'+matches.length+'</strong><small>матчей · '+maps.length+' карт</small><div class="season-card-bottom"><span>ОБЩАЯ СТАТИСТИКА</span><b>ОТКРЫТЬ →</b></div></button>'+
- '<button class="season-card season-card-upcoming" onclick="state.seasonView=\'season1\';render()"><div class="season-card-top"><span>ПРЕДСТОЯЩИЙ</span><span class="season-card-mark">01</span></div><div class="season-card-label">СЕЗОН 1</div><strong>—</strong><small>Скоро · сезонный рейтинг</small><div class="season-card-bottom"><span>ПОДГОТОВКА</span><b>ПОДРОБНЕЕ →</b></div></button>'+
+ '<div class="season-pick-list">'+
+ '<button class="season-pick-row season-pick-all" onclick="state.seasonView=\\'all\\';render()"><span class="season-pick-symbol">∞</span><span class="season-pick-copy"><small>ИСТОРИЯ</small><b>Вся история</b><em>'+maps.length+' карт · общая статистика</em></span><strong>'+matches.length+'</strong><span class="season-pick-arrow">→</span></button>'+
+ '<button class="season-pick-row season-pick-upcoming" onclick="state.seasonView=\\'season1\\';render()"><span class="season-pick-symbol">01</span><span class="season-pick-copy"><small>ПРЕДСТОЯЩИЙ</small><b>Сезон 1</b><em>Скоро · сезонный рейтинг</em></span><strong>—</strong><span class="season-pick-arrow">→</span></button>'+
  '</div>'+
  '<div class="season-lower-grid"><section class="season-panel"><div class="season-panel-head"><div><span class="faceit-kicker">ALL TIME</span><h2>Лидеры общей истории</h2></div><span>'+players.length+' игроков</span></div><div class="season-player-head"><span>#</span><span>ИГРОК</span><span>ИНДЕКС</span><span>МАТЧИ</span><span>K/D</span></div>'+(cards||'<p class="muted">Нет игроков для отображения.</p>')+'</section>'+
  '<section class="season-panel season-history-panel"><div class="season-panel-head"><div><span class="faceit-kicker">АРХИВ</span><h2>Последние матчи</h2></div><button class="faceit-text-link" onclick="navigateApp(\'base\')">Все матчи →</button></div>'+
- matches.slice(-5).reverse().map(m=>'<div class="season-history-row"><span>'+esc(dateLabel(m.played_at||m.date)||'—')+'</span><b>'+esc(m.series_score||'—')+'</b><span>'+esc((m.map_ids||[]).length+' карт')+'</span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>').join('')+'</section></div></section>';
+ matches.slice(-5).reverse().map(m=>'<div class="season-history-row"><span>'+esc(dateLabel(m.played_at||m.date)||'—')+'</span><span class="season-history-score">'+scoreMarkup(m.series_score||'—')+'</span><span>'+esc((m.map_ids||[]).length+' карт')+'</span><button onclick="openMatchDetail(\''+esc(m.match_id)+'\')">ОТКРЫТЬ</button></div>').join('')+'</section></div></section>';
 }
 function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
 
