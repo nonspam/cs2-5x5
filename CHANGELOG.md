@@ -1954,3 +1954,19 @@
 - M	tests/season-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T17:53:46+03:00 — Align Profile Track and season archive regression tests
+
+- Commit: d1a8c9835cd018f4361d9b91793cd1597d64d469
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+- M	tests/faceit-v2-owner-feedback.test.cjs
+- M	tests/faceit-v2-shell-dev-contract.test.cjs
+- M	tests/faceit-v2-shell.test.cjs
+- M	tests/metrics-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
