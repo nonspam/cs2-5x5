@@ -2356,3 +2356,15 @@
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T20:55:25+03:00 — docs: add Match Overview handoff to chat context
+
+- Commit: 11e7311e24c28b92c15d9d3b6f09fbed77e5639c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	CHAT_CONTEXT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
