@@ -139,3 +139,13 @@ test('profileSummary keeps match-level winrate separate from map-level record wi
   assert.equal(result.d, 62);
   assert.equal(result.kd, 1);
 });
+
+
+test('profile polish removes share action and gives every match column a full-width aligned grid', () => {
+  assert.doesNotMatch(app, /navigator\.clipboard\?\.writeText\(location\.href\).*ПОДЕЛИТЬ/);
+  const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
+  assert.match(css, /FACEIT polish pass — full-width profile match rows/);
+  assert.match(css, /\.faceit-profile-v2 \.faceit-match-table-head,\s*\.faceit-profile-v2 \.faceit-match-row\s*\{\s*grid-template-columns:minmax\(125px,1\.25fr\)/);
+  assert.match(css, /\.faceit-profile-v2 \.faceit-exact-lower\s*\{\s*width:100%/);
+  assert.match(css, /background:rgba\(14,18,23,\.42\)!important/);
+});
