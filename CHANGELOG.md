@@ -2824,3 +2824,15 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T01:17:57+03:00 — Add interactive match tooltips to profile ELO chart
+
+- Commit: 6414ed240be2a332eecb303d0f1fc4cfa0144d4a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
