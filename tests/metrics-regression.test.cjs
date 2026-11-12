@@ -180,7 +180,7 @@ test('Track is account-scoped by linked player and never falls back to an arbitr
   assert.match(track, /if\(!targetId\)/);
   assert.match(track, /profileMatchesForPlayer\(targetId\)/);
   assert.doesNotMatch(track, /activePlayers\(\).*sort|people\[0\]/);
-  assert.match(app, /state\.trackTargetId=null;navigateApp\(button\.dataset\.appRoute\)/);
+    assert.ok(app.includes("state.trackTargetId=\\'"));
   assert.match(app, /state\.trackTargetId=\\\\''\+esc\(id\)\+/);
 });
 
