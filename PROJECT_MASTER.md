@@ -113,3 +113,8 @@ The invite/link/profile security model and live DEV verification are documented 
 - Contract tests обновлены под новую структуру.
 Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://github.com/nonspam/cs2-5x5/actions/runs/43261367570, 183 passed / 0 failed.
 Не выполнялись browser QA и deployment; визуальная приёмка владельцем ожидается. Не менять main/production/DB.
+
+
+## Текущая задача — Match Overview
+Подробная точка продолжения: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md). Новый чат должен прочитать её до любых правок.
+Порядок строгий: сначала получить и изучить читаемый HTML/CSS референс и закончить только Match Overview; после согласования — отдельно Statistics. Upload-файл был добавлен в default/main, но connector вернул пустое содержимое, поэтому его нельзя считать изученным или автоматически переносить в DEV.
