@@ -4677,3 +4677,49 @@ html,body,*{
 @media(max-width:1050px){.match-room-layout{grid-template-columns:minmax(0,1fr) minmax(190px,.7fr);}.match-room-center{grid-column:1/-1;grid-row:2}.match-room-center .match-room-map-list{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
 @media(max-width:700px){.match-room-hero{min-height:170px;padding:14px}.match-room-result{gap:8px}.match-room-side-identity{gap:6px}.match-room-side-identity .player-avatar{width:34px;height:34px;flex-basis:34px}.match-room-side-identity strong{font-size:12px}.match-room-score .score-badge{font-size:30px}.match-room-layout{grid-template-columns:1fr}.match-room-center{grid-column:auto;grid-row:auto}.match-room-team .match-career-metric b{font-size:13px}.match-room-center .match-room-map-list{grid-template-columns:1fr 1fr}}
 @media(max-width:430px){.match-room-side>span{font-size:7px}.match-room-side-identity strong{font-size:10px}.match-room-score .score-badge{font-size:25px}.match-room-center .match-room-map-list{grid-template-columns:1fr}}
+
+/* Match Center refinement from owner references 1.png / 2.png */
+.match-room-team .match-player-card-ref{padding:8px 9px!important;background:#10171e!important;border:1px solid #29333d!important;border-radius:7px!important}
+.match-room-team .match-player-card-ref .match-player-identity{display:grid!important;grid-template-columns:40px minmax(0,1fr) 34px!important;align-items:center!important;gap:9px!important;margin:0 0 8px!important}
+.match-room-team .match-player-card-ref .player-avatar{width:40px!important;height:40px!important;flex-basis:40px!important;border-radius:5px!important;overflow:hidden!important;border:1px solid #39434d!important;background:#202a33!important}
+.match-room-team .match-player-card-ref .player-avatar img{border-radius:4px!important;object-fit:cover!important}
+.match-player-main{display:flex;flex-direction:column;gap:3px;min-width:0}
+.match-player-main strong{font-size:12px!important;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.match-player-main small{font-size:7px;color:#82909b;letter-spacing:.1em}
+.match-room-team .match-player-level{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#202a33;border:1px solid #45515d;color:#f0f3f5;font-size:10px;font-weight:950}
+.match-room-team .match-player-card-ref .match-career-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:3px!important;margin:0!important}
+.match-room-team .match-player-card-ref .match-career-metric{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;padding:5px 3px!important;background:#080d12;border:1px solid #1b252e;border-radius:3px;text-align:center}
+.match-room-team .match-player-card-ref .match-career-metric b{font-size:10px!important;line-height:1.1;white-space:nowrap}
+.match-room-team .match-player-card-ref .match-career-metric small{font-size:6px!important;line-height:1.1;color:#83909b;white-space:nowrap;letter-spacing:.02em}
+.match-room-center .match-room-map-list{display:grid!important;grid-template-columns:1fr!important;gap:5px!important}
+.match-room-center .match-map-row{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:9px;width:100%;min-width:0;padding:6px 8px;background:#111a22;border:1px solid #25313b;border-radius:5px;color:#edf2f6;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.match-room-center .match-map-row:hover{background:#17232d;border-color:#526473}
+.match-map-row-thumb,.match-map-row-thumb .map-thumb{display:block;width:38px;height:38px;min-width:38px;overflow:hidden;border-radius:4px}
+.match-map-row-thumb .map-thumb-photo{width:100%;height:100%;object-fit:cover}
+.match-map-row-thumb .map-logo-mini{max-width:70%;max-height:70%;object-fit:contain}
+.match-map-row-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.match-map-row-copy small{font-size:7px;color:#7f8d99;letter-spacing:.1em}
+.match-map-row-copy strong{font-size:11px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.match-map-row-score{font-size:13px;font-weight:950;font-variant-numeric:tabular-nums;color:#eaf0f4;white-space:nowrap}
+.match-awards{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(320px,1.1fr);gap:12px;margin:16px 0 20px}
+.match-mvp-card{display:flex;align-items:center;gap:16px;min-width:0;min-height:190px;padding:16px;background:linear-gradient(115deg,#202326,#101316 75%);border:1px solid #41464b;border-radius:9px;position:relative;overflow:hidden}
+.match-mvp-card:after{content:'MVP';position:absolute;right:8px;bottom:-18px;font-size:66px;font-weight:1000;letter-spacing:-.08em;color:#ffffff08;pointer-events:none}
+.match-mvp-card>.player-avatar{width:94px;height:116px;flex:0 0 94px;border-radius:7px;overflow:hidden;border:1px solid #59616a}
+.match-mvp-card>.player-avatar img{object-fit:cover}
+.match-mvp-main{min-width:0;position:relative;z-index:1}
+.match-mvp-main>span{font-size:11px;font-weight:950;color:#f2c84b;letter-spacing:.08em}
+.match-mvp-main h3{margin:8px 0 5px;font-size:19px;color:#f4f6f7;overflow-wrap:anywhere}
+.match-mvp-main p{margin:0 0 8px;font-size:13px;font-weight:850;color:#e4e9ed}
+.match-mvp-main small{font-size:8px;color:#a1abb4}
+.match-mvp-empty{display:grid;place-items:center;width:94px;height:116px;background:#202830;border-radius:7px;color:#f2c84b;font-weight:950}
+.match-award-list{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.match-award-card{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:8px;min-width:0;padding:9px;background:#11171d;border:1px solid #29333d;border-radius:6px}
+.match-award-card>.player-avatar,.match-award-empty-avatar{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;overflow:hidden;background:#222c35;color:#7f8d99}
+.match-award-card>.player-avatar img{object-fit:cover}
+.match-award-card>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.match-award-card small{font-size:7px;line-height:1.2;color:#929da7;letter-spacing:.04em}
+.match-award-card strong{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#eef2f5}
+.match-award-card>b{font-size:14px;font-weight:950;color:#f0f3f5}
+.match-award-card.is-unavailable{opacity:.56}
+@media(max-width:850px){.match-awards{grid-template-columns:1fr}.match-mvp-card{min-height:150px}.match-mvp-card>.player-avatar,.match-mvp-empty{height:100px}}
+@media(max-width:520px){.match-room-team .match-player-card-ref .match-career-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.match-award-list{grid-template-columns:1fr}.match-room-center .match-map-row{grid-template-columns:34px minmax(0,1fr) auto}.match-map-row-thumb,.match-map-row-thumb .map-thumb{width:34px;height:34px;min-width:34px}}
