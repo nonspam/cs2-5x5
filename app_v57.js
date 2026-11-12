@@ -457,7 +457,7 @@ function profilePage(v){
   tooltip.querySelector('.track-tooltip-open')?.addEventListener('click',e=>{
    e.stopPropagation();
    const matchId=String(event.match_id??'').trim();
-   if(!matchId||!findMatch(event)){return}
+   if(!matchId)return;
    hide();
    openMatchDetail(matchId);
   });
