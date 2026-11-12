@@ -519,7 +519,7 @@ function bindTrackChart(root,points,metric,metricLabel){
    '<div class="track-tooltip-actions"><button type="button" class="track-tooltip-close" aria-label="Закрыть">×</button><button type="button" class="track-tooltip-open">ОТКРЫТЬ МАТЧ</button></div>';
   tooltip.hidden=false;
   tooltip.querySelector('.track-tooltip-close')?.addEventListener('click',event=>{event.stopPropagation();hide()});
-  tooltip.querySelector('.track-tooltip-open')?.addEventListener('click',event=>{event.stopPropagation();const matchId=q.m.match_id;hide();openMatchDetail(matchId)});
+  tooltip.querySelector('.track-tooltip-open')?.addEventListener('click',event=>{event.stopPropagation();hide();openMatchDetail(q.m.match_id)});
   place(dot);
  };
  dots.forEach((dot,index)=>{
