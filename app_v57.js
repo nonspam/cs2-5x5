@@ -333,7 +333,7 @@ function profilePage(v){
    '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
    '<div class="faceit-exact-content">'+
      ''+
-     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button class="'+(state.profileSection==='track'?'active':'')+'" onclick="state.trackTargetId=\''+esc(id)+'\';navigateApp(\'track\')">Track</button></div>'+
+     '<div class="faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2</span><b>CS2</b><button class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button></div>'+
      '<section class="faceit-exact-season-card"><div class="faceit-exact-season-title"><div><b>✣ &nbsp;CS2 · РЕЙТИНГ</b><small>Рейтинговая статистика игрока</small></div><button type="button" data-app-route="analytics">СТАТИСТИКА ИГРОКА →</button></div><div class="faceit-exact-season-data"><div class="faceit-exact-level"><b>'+String(eloInfo.level??4)+'</b></div><strong>'+Math.round(elo).toLocaleString('ru-RU')+'</strong><div class="faceit-exact-season-numbers"><span><b>'+all.length+'</b> Матчи</span><span><b>'+fmt(total.winrate,1)+'%</b> Процент побед</span><span><b>'+Math.round(peakElo)+'</b> Пик ELO</span></div></div></section>'+
      '<section class="faceit-exact-results"><div class="faceit-exact-results-head"><b>Недавние результаты</b><span>Последние матчи ('+all.length+') · изменение ELO <b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b></span></div>'+
        '<div class="faceit-exact-result-line"><span>Изменение ELO</span><b class="'+(eloChange>=0?'positive':'negative')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><span class="faceit-exact-wl"><b>🟩 '+sum.wins+'</b> / <b>🟥 '+sum.losses+'</b></span></div>'+eloGraphMarkup+
@@ -424,16 +424,61 @@ function track(v){
  const mapOptions=['<option value="all">Все карты</option>',...maps.map(m=>'<option value="'+esc(m)+'" '+(map===m?'selected':'')+'>'+esc(m)+'</option>')].join('');
  const metricOptions=[['kd','K/D'],['kills','Kills'],['deaths','Deaths'],['assists','Assists'],['winrate','Результат матча']].map(([k,l])=>'<option value="'+k+'" '+(metric===k?'selected':'')+'>'+l+'</option>').join('');
  const periodOptions=[['all','Всё время'],['90d','90 дней'],['30d','30 дней'],['7d','7 дней']].map(([k,l])=>'<option value="'+k+'" '+(period===k?'selected':'')+'>'+l+'</option>').join('');
- const recent=rows.slice(-12).reverse().map(q=>'<button class="track-match-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')"><span class="track-match-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span><b class="'+(q.result==='WIN'?'positive':q.result==='LOSS'?'negative':'neutral')+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</b><span class="track-match-map">'+esc(q.map)+'</span><strong class="'+(q.kd>=1?'positive':'negative')+'">'+fmt(q.kd)+'</strong><span class="track-match-kda"><i class="positive">'+q.k+'</i>/<i class="negative">'+q.d+'</i>/<i class="track-assists">'+q.a+'</i></span></button>').join('');
+ const kdTone=(k,d)=>Number(k)>Number(d)?'positive':Number(k)<Number(d)?'negative':'neutral';
+ const recent=rows.slice(-12).reverse().map(q=>{const tone=kdTone(q.k,q.d);return '<button class="track-match-row" onclick="openMatchDetail(\''+esc(q.m.match_id)+'\')"><span class="track-match-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span><b class="'+(q.result==='WIN'?'positive':q.result==='LOSS'?'negative':'neutral')+'">'+(q.result==='WIN'?'W':q.result==='LOSS'?'L':'—')+'</b><span class="track-match-map">'+esc(q.map)+'</span><strong class="'+tone+'">'+fmt(q.kd)+'</strong><span class="track-match-kda '+tone+'">'+q.k+'/'+q.d+'/'+q.a+'</span></button>'}).join('');
  const metricLabel={kd:'K/D',kills:'Kills',deaths:'Deaths',assists:'Assists',winrate:'Результат'}[metric];
  const avatar=profileAvatarMarkup(targetId,'sm');
  v.innerHTML='<section class="track-page">'+
  '<header class="track-head"><div class="track-owner"><button type="button" class="track-owner-avatar" onclick="openPublicPlayerProfile(\''+esc(targetId)+'\')">'+avatar+'</button><div><span class="faceit-kicker">'+(isOwn?'PERSONAL PLAYER TRACK':'PUBLIC PLAYER TRACK')+'</span><h1>'+esc(p.display_name)+' · Track</h1><p>'+(isOwn?'Твоя персональная статистика':'Публичная статистика игрока')+'</p></div></div><div class="track-head-count"><b>'+rows.length+'</b><span>матчей в выборке</span></div></header>'+
  '<div class="track-filters"><label>ПЕРИОД<select class="control" onchange="state.trackPeriod=this.value;render()">'+periodOptions+'</select></label><label>КАРТА<select class="control" onchange="state.trackMap=this.value;render()">'+mapOptions+'</select></label><label>МЕТРИКА<select class="control" onchange="state.trackMetric=this.value;render()">'+metricOptions+'</select></label></div>'+
- '<div class="track-kpis"><article><span>МАТЧИ</span><b>'+summary.matches+'</b></article><article><span>ПОБЕДЫ</span><b class="positive">'+summary.wins+'</b></article><article><span>ВИНРЕЙТ</span><b>'+fmt(summary.winrate,1)+'%</b></article><article><span>СРЕДНИЙ K/D</span><b class="'+(summary.kd>=1?'positive':'negative')+'">'+fmt(summary.kd)+'</b></article><article><span>K / D / A</span><b>'+summary.k+' / '+summary.d+' / '+summary.a+'</b></article></div>'+
- '<section class="track-chart-panel"><div class="track-section-head"><div><span class="faceit-kicker">MATCH-BY-MATCH</span><h2>'+metricLabel+' · динамика</h2></div><span>'+points.length+' точек</span></div>'+(points.length?'<div class="track-chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="График '+metricLabel+'"><line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" class="track-axis"/><line x1="'+pad+'" y1="'+pad+'" x2="'+(W-pad)+'" y2="'+pad+'" class="track-gridline"/><polyline points="'+line+'" class="track-line"/>'+coords.map((point,i)=>{const q=points[i].q,result=q.result==='WIN'?'W':q.result==='LOSS'?'L':'—',tone=q.result==='WIN'?'positive':q.result==='LOSS'?'negative':'neutral',date=dateLabel(q.m.played_at||q.m.date)||'—',detail=date+' · '+result+' · '+q.map+' · K/D '+fmt(q.kd)+' · K/D/A '+q.k+'/'+q.d+'/'+q.a+' · '+metricLabel+' '+fmt(points[i].y,metric==='winrate'?0:2);return '<g class="track-point-wrap '+tone+'" tabindex="0" role="img" aria-label="'+esc(detail)+'"><title>'+esc(detail)+'</title><circle cx="'+point.x+'" cy="'+point.y+'" r="5" class="track-point"/></g>'}).join('')+'</svg></div><div class="track-chart-meta"><span>МИНИМУМ '+fmt(min,metric==='winrate'?0:2)+'</span><span>МАКСИМУМ '+fmt(max,metric==='winrate'?0:2)+'</span></div>':'<div class="track-empty">Нет матчей с доступной статистикой для выбранных фильтров.</div>')+'</section>'+
+ '<div class="track-kpis"><article><span>МАТЧИ</span><b>'+summary.matches+'</b></article><article><span>ПОБЕДЫ</span><b class="positive">'+summary.wins+'</b></article><article><span>ВИНРЕЙТ</span><b>'+fmt(summary.winrate,1)+'%</b></article><article><span>СРЕДНИЙ K/D</span><b class="'+(kdTone(summary.k,summary.d))+'">'+fmt(summary.kd)+'</b></article><article><span>K / D / A</span><b>'+summary.k+' / '+summary.d+' / '+summary.a+'</b></article></div>'+
+ '<section class="track-chart-panel"><div class="track-section-head"><div><span class="faceit-kicker">MATCH-BY-MATCH</span><h2>'+metricLabel+' · динамика</h2></div><span>'+points.length+' точек</span></div>'+(points.length?'<div class="track-chart-wrap"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="График '+metricLabel+'"><line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" class="track-axis"/><line x1="'+pad+'" y1="'+pad+'" x2="'+(W-pad)+'" y2="'+pad+'" class="track-gridline"/><polyline points="'+line+'" class="track-line"/>'+coords.map((point,i)=>'<g class="track-point-wrap" data-track-index="'+i+'" tabindex="0" role="button" aria-label="Показать матч '+(i+1)+'"><circle cx="'+point.x+'" cy="'+point.y+'" r="12" class="track-point-hit"/><circle cx="'+point.x+'" cy="'+point.y+'" r="5" class="track-point"/></g>').join('')+'</svg></div><div class="track-chart-meta"><span>МИНИМУМ '+fmt(min,metric==='winrate'?0:2)+'</span><span>МАКСИМУМ '+fmt(max,metric==='winrate'?0:2)+'</span></div>':'<div class="track-empty">Нет матчей с доступной статистикой для выбранных фильтров.</div>')+'</section>'+
  '<section class="track-matches-panel"><div class="track-section-head"><div><span class="faceit-kicker">RECENT FORM</span><h2>Матчи в треке</h2></div><span>'+rows.length+' записей</span></div><div class="track-match-head"><span>ДАТА</span><span>РЕЗУЛЬТАТ</span><span>КАРТЫ</span><span>K/D</span><span>K/D/A</span></div>'+(recent||'<div class="track-empty">Нет матчей.</div>')+'</section></section>';
+ bindTrackChart(v,points,metric,metricLabel);
 }
+
+function bindTrackChart(root,points,metric,metricLabel){
+ const wrap=root.querySelector('.track-chart-wrap');
+ if(!wrap||!points.length)return;
+ const dots=[...wrap.querySelectorAll('.track-point-wrap')];
+ if(!dots.length)return;
+ const tooltip=document.createElement('div');
+ tooltip.className='track-chart-tooltip';
+ tooltip.hidden=true;
+ tooltip.setAttribute('role','dialog');
+ tooltip.setAttribute('aria-live','polite');
+ wrap.appendChild(tooltip);
+ let pinnedIndex=null;
+ const hide=()=>{tooltip.hidden=true;pinnedIndex=null};
+ const show=(index,dot,pin=false)=>{
+  const point=points[index],q=point?.q;
+  if(!q)return;
+  if(pin)pinnedIndex=index;
+  const result=q.result==='WIN'?'ПОБЕДА':q.result==='LOSS'?'ПОРАЖЕНИЕ':'РЕЗУЛЬТАТ НЕИЗВЕСТЕН';
+  const resultTone=q.result==='WIN'?'positive':q.result==='LOSS'?'negative':'neutral';
+  const kdTone=Number(q.k)>Number(q.d)?'positive':Number(q.k)<Number(q.d)?'negative':'neutral';
+  const metricValue=metric==='winrate'?fmt(point.y,0)+'%':fmt(point.y,2);
+  tooltip.innerHTML='<div class="track-tooltip-top"><div><span class="track-tooltip-date">'+esc(dateLabel(q.m.played_at||q.m.date)||'—')+'</span><strong class="'+resultTone+'">'+result+'</strong></div><button type="button" class="track-tooltip-close" aria-label="Закрыть">×</button></div><div class="track-tooltip-map">'+esc(q.map||'Без карты')+'</div><div class="track-tooltip-stats"><span><small>K/D</small><b class="'+kdTone+'">'+fmt(q.kd)+'</b></span><span><small>K / D / A</small><b class="'+kdTone+'">'+q.k+' / '+q.d+' / '+q.a+'</b></span><span><small>'+esc(metricLabel)+'</small><b>'+metricValue+'</b></span></div><button type="button" class="track-tooltip-open">ОТКРЫТЬ МАТЧ</button>';
+  tooltip.hidden=false;
+  tooltip.querySelector('.track-tooltip-close')?.addEventListener('click',event=>{event.stopPropagation();hide()});
+  tooltip.querySelector('.track-tooltip-open')?.addEventListener('click',event=>{event.stopPropagation();openMatchDetail(q.m.match_id)});
+  const dotRect=dot.getBoundingClientRect(),wrapRect=wrap.getBoundingClientRect();
+  const tipWidth=tooltip.offsetWidth||260,tipHeight=tooltip.offsetHeight||150;
+  const left=clamp(dotRect.left+dotRect.width/2-wrapRect.left-tipWidth/2,8,Math.max(8,wrapRect.width-tipWidth-8));
+  const top=clamp(dotRect.top-wrapRect.top-tipHeight-12,8,Math.max(8,wrapRect.height-tipHeight-8));
+  tooltip.style.left=left+'px';
+  tooltip.style.top=top+'px';
+ };
+ dots.forEach((dot,index)=>{
+  dot.addEventListener('pointerenter',()=>{if(pinnedIndex===null)show(index,dot)});
+  dot.addEventListener('focus',()=>show(index,dot));
+  dot.addEventListener('click',event=>{event.stopPropagation();if(pinnedIndex===index)hide();else show(index,dot,true)});
+  dot.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();if(pinnedIndex===index)hide();else show(index,dot,true)}if(event.key==='Escape')hide()});
+ });
+ wrap.addEventListener('pointerleave',()=>{if(pinnedIndex===null)hide()});
+ wrap.addEventListener('click',event=>{if(!event.target.closest('.track-point-wrap')&&!event.target.closest('.track-chart-tooltip'))hide()});
+}
+
 function render(){renderEpoch++;detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
