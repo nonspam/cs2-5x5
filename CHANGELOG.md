@@ -1596,3 +1596,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:57:59+03:00 — Clean up Track tooltip on route rerender
+
+- Commit: c44cd0f94d9814b7e367e5ce20c77821761e4037
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
