@@ -397,64 +397,72 @@ function profilePage(v){
  const svg=root.querySelector('.faceit-elo-chart');
  if(!svg||!history?.length)return;
  window.__cs2ProfileEloCleanup?.();
- const controller=new AbortController(),tip=document.createElement('div');
- tip.className='faceit-elo-tooltip';tip.hidden=true;tip.setAttribute('role','dialog');tip.setAttribute('aria-live','polite');document.body.appendChild(tip);
- let pinned=null,active=null;
- const hide=()=>{tip.hidden=true;pinned=null;active=null};
+ const controller=new AbortController(),tooltip=document.createElement('div');
+ tooltip.className='track-chart-tooltip';tooltip.hidden=true;tooltip.dataset.pinned='false';
+ tooltip.setAttribute('role','dialog');tooltip.setAttribute('aria-live','polite');tooltip.setAttribute('aria-label','Информация о матче и изменении ELO');
+ document.body.appendChild(tooltip);
+ let pinnedIndex=null,activeIndex=null;
+ const cleanup=()=>{controller.abort();tooltip.remove();if(window.__cs2ProfileEloCleanup===cleanup)window.__cs2ProfileEloCleanup=null};
+ window.__cs2ProfileEloCleanup=cleanup;
+ const hide=()=>{tooltip.hidden=true;tooltip.dataset.pinned='false';tooltip.style.pointerEvents='none';pinnedIndex=null;activeIndex=null};
  const findMatch=event=>{
   const id=String(event?.match_id??'').trim();
-  if(!id)return null;
-  return DB.matches.find(match=>String(match.match_id??'').trim()===id)||null;
+  return id?DB.matches.find(match=>String(match.match_id??'').trim()===id)||null:null;
  };
- const openMatch=match=>{
-  if(!match)return false;
-  const id=String(match.match_id??'').trim();
-  const stored=DB.matches.find(item=>String(item.match_id??'').trim()===id);
-  if(!stored)return false;
-  hide();
-  closeAllModals();
-  openMatchDetail(stored.match_id);
-  return !!document.querySelector('#modal.match-detail-backdrop');
+ const place=dot=>{
+  const r=dot.getBoundingClientRect(),gap=14,w=tooltip.offsetWidth||358,h=tooltip.offsetHeight||180;
+  const right=innerWidth-r.right,leftSpace=r.left;let left;
+  if(right>=w+gap)left=r.right+gap;
+  else if(leftSpace>=w+gap)left=r.left-w-gap;
+  else left=clamp(r.left+r.width/2-w/2,12,Math.max(12,innerWidth-w-12));
+  let top=clamp(r.top+r.height/2-h/2,12,Math.max(12,innerHeight-h-12));
+  if(innerWidth<520&&right<w+gap&&leftSpace<w+gap){top=r.bottom+10+h<innerHeight?r.bottom+10:r.top-h-10;top=clamp(top,12,Math.max(12,innerHeight-h-12))}
+  tooltip.style.left=left+'px';tooltip.style.top=top+'px';
  };
  const show=(index,dot,pin=false)=>{
   const event=history[index];if(!event)return;
   const match=findMatch(event);
-  const delta=window.CS2EloV3?.deltaForMatch(playerId,event.match_id);
-  const after=Number(event.after),before=Number.isFinite(after)&&delta!=null?after-Number(delta):Number(event.before);
-  const date=match?dateLabel(match.played_at||match.date||match.created_at):dateLabel(event.played_at)||'Дата неизвестна';
+  const delta=Number.isFinite(Number(event.delta))?Number(event.delta):window.CS2EloV3?.deltaForMatch(playerId,event.match_id);
+  const after=Number(event.after),before=Number.isFinite(Number(event.before))?Number(event.before):(Number.isFinite(after)&&delta!=null?after-Number(delta):null);
+  const date=dateLabel(match?.played_at||match?.date||match?.created_at||event.played_at)||'Дата неизвестна';
+  const time=clockLabel(match?.played_at||match?.date||match?.created_at||event.played_at)||'';
   const result=match?playerResultFor(match,playerId):event.result||null;
+  const resultText=result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':result==='DRAW'?'НИЧЬЯ':'РЕЗУЛЬТАТ НЕИЗВЕСТЕН';
+  const resultTone=result==='WIN'?'positive':result==='LOSS'?'negative':'neutral';
+  const resultMark=result==='WIN'?'W':result==='LOSS'?'L':result==='DRAW'?'D':'—';
+  const maps=match?matchMaps(match,match.archived===true).slice().sort((a,b)=>Number(a.map_index||0)-Number(b.map_index||0)):[];
+  const mapRows=maps.map(mp=>{
+   const name=mp.map||mp.map_name||mp.name||'Без карты';
+   const a=Number(mp.score?.team_a),b=Number(mp.score?.team_b);
+   const [teamA,teamB]=historicalLobbyGroups(match,mp);
+   const own=teamA.includes(playerId)?a:teamB.includes(playerId)?b:null;
+   const opp=teamA.includes(playerId)?b:teamB.includes(playerId)?a:null;
+   const tone=own==null||opp==null||own===opp?'neutral':own>opp?'positive':'negative';
+   const score=Number.isFinite(own)&&Number.isFinite(opp)?'<span class="track-tooltip-map-score"><b class="'+tone+'">'+own+'</b><i>:</i><b class="neutral">'+opp+'</b></span>':'<span class="track-tooltip-map-score">—</span>';
+   return '<div class="track-tooltip-map-row">'+mapMiniMarkup(name)+score+'</div>';
+  }).join('');
+  const seriesScore=match?(playerSeriesScoreLabel(match,playerId,maps)||match.series_score||'—'):'—';
   const tone=delta==null?'neutral':delta>0?'positive':delta<0?'negative':'neutral';
-  const score=match?(playerSeriesScoreLabel(match,playerId,DB.maps.filter(m=>String(m.match_id)===String(match.match_id)))||match.series_score||'—'):'—';
-  const teamNames=match?(match.team_a_name||'Состав 1')+' — '+(match.team_b_name||'Состав 2'):'Матч не найден в загруженных данных';
-  tip.innerHTML='<div class="faceit-elo-tooltip-head"><div><small>МАТЧ '+(index+1)+' / '+history.length+'</small><strong>'+esc(date)+'</strong></div><span class="'+tone+'">'+(delta==null?'—':(delta>0?'+':'')+fmt(delta,1))+' ELO</span></div><div class="faceit-elo-tooltip-opponent"><span>'+esc(teamNames)+'</span><b>'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':result==='DRAW'?'НИЧЬЯ':'НЕТ ДАННЫХ')+'</b></div><div class="faceit-elo-tooltip-ratings"><div><small>РЕЙТИНГ ДО</small><b>'+(Number.isFinite(before)?fmt(before,1):'—')+'</b></div><div><small>РЕЙТИНГ ПОСЛЕ</small><b>'+(Number.isFinite(after)?fmt(after,1):'—')+'</b></div><div><small>СЧЁТ СЕРИИ</small><b>'+esc(score)+'</b></div></div><div class="faceit-elo-tooltip-actions"><button type="button" class="faceit-elo-tooltip-close">ЗАКРЫТЬ</button><button type="button" class="faceit-elo-tooltip-open" '+(!match?'disabled':'')+'>ОТКРЫТЬ МАТЧ</button></div>';
-  tip.hidden=false;tip.dataset.pinned=pin?'true':'false';tip.style.pointerEvents=pin?'auto':'none';pinned=pin?index:null;active=index;
-  const r=dot.getBoundingClientRect(),w=tip.offsetWidth||300,h=tip.offsetHeight||150;
-  let left=r.right+12;if(left+w>innerWidth-12)left=r.left-w-12;
-  left=Math.max(12,Math.min(innerWidth-w-12,left));let top=Math.max(12,Math.min(innerHeight-h-12,r.top-h-10));
-  tip.style.left=left+'px';tip.style.top=top+'px';
-  tip.querySelector('.faceit-elo-tooltip-close')?.addEventListener('click',hide);
-  tip.querySelector('.faceit-elo-tooltip-open')?.addEventListener('click',()=>openMatch(match));
+  const deltaText=delta==null?'—':(delta>0?'+':'')+fmt(delta,1);
+  activeIndex=index;pinnedIndex=pin?index:null;tooltip.dataset.pinned=pin?'true':'false';tooltip.style.pointerEvents=pin?'auto':'none';
+  tooltip.innerHTML=
+   '<div class="track-tooltip-top"><div class="track-tooltip-dateblock"><strong>'+esc(date)+'</strong><span>'+esc(time||('Матч '+(index+1)+' из '+history.length))+'</span></div><div class="track-tooltip-result '+resultTone+'"><b>'+resultMark+'</b><span>'+resultText+'</span></div><button type="button" class="track-tooltip-close" aria-label="Закрыть">×</button></div>'+
+   '<div class="track-tooltip-series"><span>СЧЁТ СЕРИИ</span><b>'+esc(seriesScore)+'</b></div>'+
+   '<div class="track-tooltip-layout"><div class="track-tooltip-main"><div class="track-tooltip-map-list">'+(mapRows||'<div class="track-tooltip-no-map">Нет данных по картам</div>')+'</div></div>'+
+   '<div class="track-tooltip-side-stats"><div><small>ELO ДО</small><b>'+(Number.isFinite(before)?fmt(before,1):'—')+'</b></div><div><small>Δ ELO</small><b class="'+tone+'">'+deltaText+'</b></div><div><small>ELO ПОСЛЕ</small><b>'+(Number.isFinite(after)?fmt(after,1):'—')+'</b></div><div><small>СЕРИЯ</small><b>'+(event.series_number!=null?'#'+esc(event.series_number):'#'+(index+1))+'</b></div></div></div>'+
+   '<div class="track-tooltip-foot"><span>ИЗМЕНЕНИЕ РЕЙТИНГА</span><b class="'+tone+'">'+deltaText+' ELO</b></div>';
+  tooltip.hidden=false;
+  tooltip.querySelector('.track-tooltip-close')?.addEventListener('click',e=>{e.stopPropagation();hide()});
+  place(dot);
  };
  const pointFrom=e=>{const node=e.target?.closest?.('.faceit-elo-point');return node&&svg.contains(node)?node:null};
  const indexFrom=dot=>Number(dot?.dataset.eloIndex);
- svg.addEventListener('pointermove',e=>{if(pinned!==null)return;const dot=pointFrom(e);if(!dot){if(active!==null)hide();return}const index=indexFrom(dot);if(index!==active)show(index,dot,false)},{signal:controller.signal});
- svg.addEventListener('click',e=>{
-  const dot=pointFrom(e);if(!dot)return;
-  e.preventDefault();e.stopPropagation();
-  const index=indexFrom(dot),match=findMatch(history[index]);
-  if(match){openMatch(match);return}
-  show(index,dot,true);
- },{signal:controller.signal});
- svg.addEventListener('keydown',e=>{
-  const dot=pointFrom(e);if(!dot)return;
-  const index=indexFrom(dot);
-  if(e.key==='Enter'||e.key===' '){e.preventDefault();const match=findMatch(history[index]);if(match)openMatch(match);else show(index,dot,true)}
-  if(e.key==='Escape')hide();
- },{signal:controller.signal});
- svg.addEventListener('pointerleave',()=>{if(pinned===null)hide()},{signal:controller.signal});
- document.addEventListener('pointerdown',e=>{if(pinned!==null&&!tip.contains(e.target)&&!e.target.closest?.('.faceit-elo-point'))hide()},{signal:controller.signal});
+ svg.addEventListener('pointermove',e=>{if(pinnedIndex!==null)return;const dot=pointFrom(e);if(!dot){if(activeIndex!==null)hide();return}const index=indexFrom(dot);if(index!==activeIndex)show(index,dot,false)},{signal:controller.signal});
+ svg.addEventListener('click',e=>{const dot=pointFrom(e);if(!dot)return;e.preventDefault();e.stopPropagation();const index=indexFrom(dot);if(pinnedIndex===index)hide();else show(index,dot,true)},{signal:controller.signal});
+ svg.addEventListener('keydown',e=>{const dot=pointFrom(e);if(!dot)return;const index=indexFrom(dot);if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pinnedIndex===index)hide();else show(index,dot,true)}if(e.key==='Escape')hide()},{signal:controller.signal});
+ svg.addEventListener('pointerleave',()=>{if(pinnedIndex===null)hide()},{signal:controller.signal});
+ document.addEventListener('pointerdown',e=>{if(pinnedIndex!==null&&!tooltip.contains(e.target)&&!e.target.closest?.('.faceit-elo-point'))hide()},{signal:controller.signal});
  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide()},{signal:controller.signal});
- const cleanup=()=>{controller.abort();tip.remove();if(window.__cs2ProfileEloCleanup===cleanup)window.__cs2ProfileEloCleanup=null};window.__cs2ProfileEloCleanup=cleanup;
 }
 async function handleProfileImage(kind,file){
   if(!file)return;
