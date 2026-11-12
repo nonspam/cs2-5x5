@@ -47,3 +47,12 @@ FACEIT profile OBASRAL и переданные screenshot/HTML/CSS — визу�
 ## CSS readiness checkpoint — 2026-11-12
 
 The current stylesheet is a prototype layered onto a dense legacy cascade. Static measurements, shell selector map, risks and the staged implementation plan are documented in [the CSS readiness audit](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md). Planning estimate: about 80% of technical preparation is complete before the owner-directed CSS pass; final approved visual implementation is only about 5–10% complete. Do not start broad restyling until the original FACEIT HTML/CSS reference extracts are available and the DEV browser baseline is captured.
+
+
+## FACEIT reference archive received — 2026-11-12
+
+The owner has now supplied a RAR5 archive with four UTF-8 page captures: player history, match room overview/statistics, seasons, and Track Stats. The archive has been inspected and mapped by screen. See [the reference archive inventory](docs/FACEIT_REFERENCE_ARCHIVE_INVENTORY_2026-11-12.md).
+
+These are HTML/page snapshots with embedded or appended CSS material, not four clean standalone stylesheets. The Track capture also contains extension-injected CSS, which must be excluded from the app's visual layer. The previous note that the original reference files were not available in the current conversation is superseded by this upload.
+
+Implementation order: shared profile shell + player history; seasons; match room; Track Stats. Keep CSS scoped to the appropriate page/component roots, preserve existing app data and handlers, and do not claim pixel-perfect fidelity before fixed-viewport browser comparison.
