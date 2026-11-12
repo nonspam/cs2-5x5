@@ -67,5 +67,6 @@ test('cross-route dashboard links use the common navigation function', () => {
 test('the active application rail item exposes the current page to assistive technology', () => {
   assert.match(app, /state\.tab===id\?'aria-current="page" '/);
   assert.match(app, /state\.tab==='settings'\?'aria-current="page" '/);
-  assert.match(app, /data-app-route="profile" '\+\(state\.tab==='profile'\?'aria-current="page" '/);
+  assert.match(app, /\['profile','◉','Профиль'\]/);
+  assert.match(app, /data-app-route="\'+id\+'"/);
 });
