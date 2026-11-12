@@ -292,12 +292,9 @@ function profilePage(v){
  const eloGraphMarkup=(()=>{
    if(!eloHistory.length)return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><div class="faceit-elo-empty">'+(selectedSeasonKey==='all'?'Пока нет серий, подходящих для расчёта рейтинга.':'Для этого сезона пока нет подтверждённых изменений ELO.')+'</div></section>';
    const values=eloHistory.map(q=>Number(q.after)||1000),min=Math.min(...values)-8,max=Math.max(...values)+8,range=Math.max(1,max-min),w=500,h=104,pad=10;
-   const points=values.map((value,i)=>{
-     const x=values.length===1?w/2:pad+(w-pad*2)*i/(values.length-1);
-     const y=h-pad-(h-pad*2)*(value-min)/range;
-     return x.toFixed(1)+','+y.toFixed(1);
-   }).join(' ');
-   return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3 · ПРОГРЕСС</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><svg class="faceit-elo-chart" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="График изменения ELO"><line x1="'+pad+'" y1="'+(h/2)+'" x2="'+(w-pad)+'" y2="'+(h/2)+'" class="faceit-elo-grid"/><polyline points="'+points+'" class="faceit-elo-line"/></svg><div class="faceit-elo-meta"><span>Учтено серий: <b>'+eloInfo.matches+'</b></span><span>Расчёт доступен: <b>'+eloSummary.ratedSeries+' / '+eloSummary.activeSeries+'</b></span><span>Начальный рейтинг: 1 000</span></div><details class="faceit-elo-info"><summary>Как считается ELO V3</summary><p>Командный результат даёт 85% изменения, личный импакт — 15%. Импакт считается по K/D/A за карту относительно среднего по команде. Победа всегда повышает рейтинг, поражение всегда снижает. Первые 10 учтённых серий используется K=32, далее K=24. Учитываются серии с полными составами 5 на 5 и известным исходом; незарегистрированный гость считается нейтральным игроком с 1 000 ELO.</p></details></section>';
+   const coords=values.map((value,i)=>({x:values.length===1?w/2:pad+(w-pad*2)*i/(values.length-1),y:h-pad-(h-pad*2)*(value-min)/range,value,event:eloHistory[i]}));
+   const points=coords.map(point=>point.x.toFixed(1)+','+point.y.toFixed(1)).join(' ');
+   return '<section class="faceit-elo-progress"><div class="faceit-elo-head"><div><span class="faceit-kicker">ELO V3 · ПРОГРЕСС</span><h3>Динамика рейтинга</h3></div><strong>'+fmt(elo,1)+'</strong></div><svg class="faceit-elo-chart" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="График изменения ELO"><line x1="'+pad+'" y1="'+(h/2)+'" x2="'+(w-pad)+'" y2="'+(h/2)+'" class="faceit-elo-grid"/><polyline points="'+points+'" class="faceit-elo-line"/><g class="faceit-elo-points">'+coords.map((point,i)=>'<g class="faceit-elo-point" data-elo-index="'+i+'" tabindex="0" role="button" aria-label="Матч '+(i+1)+', рейтинг '+fmt(point.value,1)+'"><circle cx="'+point.x.toFixed(1)+'" cy="'+point.y.toFixed(1)+'" r="10" class="faceit-elo-hit"/><circle cx="'+point.x.toFixed(1)+'" cy="'+point.y.toFixed(1)+'" r="3.5" class="faceit-elo-dot"/></g>').join('')+'</g></svg><div class="faceit-elo-meta"><span>Учтено серий: <b>'+eloInfo.matches+'</b></span><span>Расчёт доступен: <b>'+eloSummary.ratedSeries+' / '+eloSummary.activeSeries+'</b></span><span>Начальный рейтинг: 1 000</span></div><details class="faceit-elo-info"><summary>Как считается ELO V3</summary><p>Командный результат даёт 85% изменения, личный импакт — 15%. Импакт считается по K/D/A за карту относительно среднего по команде. Победа всегда повышает рейтинг, поражение всегда снижает. Первые 10 учтённых серий используется K=32, далее K=24. Учитываются серии с полными составами 5 на 5 и известным исходом; незарегистрированный гость считается нейтральным игроком с 1 000 ELO.</p></details></section>';
  })();
  const winrate=total.matches?Math.round(total.winrate):0;
  const activityCells=Array.from({length:90},(_,i)=>{
@@ -393,9 +390,52 @@ function profilePage(v){
  v.querySelectorAll('[data-season-picker-toggle]').forEach(button=>button.addEventListener('click',()=>{state.seasonPickerOpen=!state.seasonPickerOpen;render()}));
  v.querySelectorAll('[data-season-picker-close]').forEach(button=>button.addEventListener('click',()=>{state.seasonPickerOpen=false;render()}));
  v.querySelectorAll('[data-profile-season]').forEach(button=>button.addEventListener('click',()=>selectProfileSeason(button.dataset.profileSeason)));
+ bindProfileEloChart(v,eloHistory,id);
  v.querySelectorAll('[data-profile-section]').forEach(button=>button.addEventListener('click',()=>{state.trackSeasonKey=state.profileSeasonKey||'all';state.profileSection=button.dataset.profileSection;render()}));
  const trackMount=v.querySelector('#profileTrackMount');if(trackMount){track(trackMount,true);v.querySelector('.faceit-exact-results')?.remove();v.querySelector('.faceit-exact-stats-heading')?.remove();v.querySelector('.faceit-exact-stat-strip')?.remove();}
-}async function handleProfileImage(kind,file){
+}function bindProfileEloChart(root,history,playerId){
+ const svg=root.querySelector('.faceit-elo-chart'),dots=[...root.querySelectorAll('.faceit-elo-point')];
+ if(!svg||!dots.length)return;
+ window.__cs2ProfileEloCleanup?.();
+ const controller=new AbortController(),tip=document.createElement('div');
+ tip.className='faceit-elo-tooltip';tip.hidden=true;tip.setAttribute('role','dialog');tip.setAttribute('aria-live','polite');document.body.appendChild(tip);
+ let pinned=null;const hide=()=>{tip.hidden=true;pinned=null};
+ const show=(index,dot,pin=false)=>{
+  const event=history[index];if(!event)return;
+  const match=DB.matches.find(m=>m.match_id===event.match_id);
+  const delta=window.CS2EloV3?.deltaForMatch(playerId,event.match_id);
+  const after=Number(event.after),before=Number.isFinite(after)&&delta!=null?after-Number(delta):null;
+  const date=match?dateLabel(match.played_at||match.date||match.created_at):'Дата неизвестна';
+  const result=match?playerResultFor(match,playerId):null;
+  const tone=delta==null?'neutral':delta>0?'positive':delta<0?'negative':'neutral';
+  const score=match?(playerSeriesScoreLabel(match,playerId,DB.maps.filter(m=>m.match_id===match.match_id))||match.series_score||'—'):'—';
+  const afterText=Number.isFinite(after)?fmt(after,1):'—',beforeText=before==null?'—':fmt(before,1);
+  const [teamA,teamB]=match?historicalLobbyGroups(match,null):[[],[]];
+  const teamNames=match?(match.team_a_name||'Состав 1')+' — '+(match.team_b_name||'Состав 2'):'Матч недоступен';
+  tip.innerHTML='<div class="faceit-elo-tooltip-head"><div><small>МАТЧ '+(index+1)+' / '+history.length+'</small><strong>'+esc(date)+'</strong></div><span class="'+tone+'">'+(delta==null?'—':(delta>0?'+':'')+fmt(delta,1))+' ELO</span></div><div class="faceit-elo-tooltip-opponent"><span>'+esc(teamNames)+'</span><b>'+(result==='WIN'?'ПОБЕДА':result==='LOSS'?'ПОРАЖЕНИЕ':result==='DRAW'?'НИЧЬЯ':'НЕТ ДАННЫХ')+'</b></div><div class="faceit-elo-tooltip-ratings"><div><small>РЕЙТИНГ ДО</small><b>'+beforeText+'</b></div><div><small>РЕЙТИНГ ПОСЛЕ</small><b>'+afterText+'</b></div><div><small>СЧЁТ СЕРИИ</small><b>'+esc(score)+'</b></div></div><div class="faceit-elo-tooltip-actions"><button type="button" class="faceit-elo-tooltip-close">ЗАКРЫТЬ</button><button type="button" class="faceit-elo-tooltip-open" '+(!match?'disabled':'')+'>ОТКРЫТЬ МАТЧ</button></div>';
+  tip.hidden=false;pinned=pin?index:null;
+  const r=dot.getBoundingClientRect(),w=tip.offsetWidth||300,h=tip.offsetHeight||150;
+  let left=r.right+14;if(left+w>innerWidth-12)left=r.left-w-14;
+  if(left<12)left=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2));
+  let top=Math.max(12,Math.min(innerHeight-h-12,r.top+r.height/2-h/2));
+  tip.style.left=left+'px';tip.style.top=top+'px';
+  tip.querySelector('.faceit-elo-tooltip-close')?.addEventListener('click',hide);
+  tip.querySelector('.faceit-elo-tooltip-open')?.addEventListener('click',()=>{if(match){hide();openMatchDetail(match.match_id)}});
+ };
+ dots.forEach((dot,index)=>{
+  dot.addEventListener('pointerenter',()=>{if(pinned===null)show(index,dot,false)},{signal:controller.signal});
+  dot.addEventListener('focus',()=>show(index,dot,false),{signal:controller.signal});
+  dot.addEventListener('click',e=>{e.stopPropagation();if(pinned===index)hide();else show(index,dot,true)},{signal:controller.signal});
+  dot.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pinned===index)hide();else show(index,dot,true)}if(e.key==='Escape')hide()},{signal:controller.signal});
+ });
+ svg.addEventListener('pointerleave',()=>{if(pinned===null)hide()},{signal:controller.signal});
+ document.addEventListener('pointerdown',e=>{if(pinned!==null&&!tip.contains(e.target)&&!e.target.closest?.('.faceit-elo-point'))hide()},{signal:controller.signal});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')hide()},{signal:controller.signal});
+ const cleanup=()=>{controller.abort();tip.remove();if(window.__cs2ProfileEloCleanup===cleanup)window.__cs2ProfileEloCleanup=null};
+ window.__cs2ProfileEloCleanup=cleanup;
+}
+
+async function handleProfileImage(kind,file){
   if(!file)return;
   if(state.profileBusy)return;
   const playerId=state.myPlayerId;if(!playerId)return;
@@ -556,7 +596,7 @@ function bindTrackChart(root,points,metric,metricLabel,playerId){
  document.addEventListener('pointerdown',event=>{if(pinnedIndex!==null&&!tooltip.contains(event.target)&&!event.target.closest?.('.track-point-wrap'))hide()},{signal:controller.signal});
  document.addEventListener('keydown',event=>{if(event.key==='Escape')hide()},{signal:controller.signal});
 }
-function render(){renderEpoch++;window.__cs2TrackTooltipCleanup?.();detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
+function render(){renderEpoch++;window.__cs2TrackTooltipCleanup?.();window.__cs2ProfileEloCleanup?.();detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
    selection chrome cannot leak into the UI. The native select stays in the DOM as
