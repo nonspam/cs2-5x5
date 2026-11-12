@@ -2596,3 +2596,15 @@
 - M	docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:35:08+03:00 — fix: keep player avatars in the roster card flow
+
+- Commit: d11f6816ae1ea317d2b984712bca0e06d1b86961
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
