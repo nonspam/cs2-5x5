@@ -2908,3 +2908,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T01:31:46+03:00 — Allow ELO tooltip to open linked match
+
+- Commit: 3a1c9a8e83ec47c5201a97b19cf9c86e3a3b971b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
