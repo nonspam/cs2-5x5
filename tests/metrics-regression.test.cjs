@@ -194,7 +194,7 @@ test('Track stays in the global rail and is removed from the individual profile 
 
 
 test('Track chart points bind interactive match tooltips and a direct open-match action', () => {
-  assert.ok(app.includes('function bindTrackChart(root,points,metric,metricLabel){'));
+  assert.ok(app.includes('function bindTrackChart(root,points,metric,metricLabel,playerId){'));
   assert.ok(app.includes('track-point-wrap'));
   assert.ok(app.includes('track-tooltip-open'));
   assert.ok(app.includes('openMatchDetail(q.m.match_id)'));
@@ -214,7 +214,7 @@ test('Track match rows color the complete K/D/A string by K-to-D relation', () =
 
 
 test('Track hover tooltip floats beside points and never blocks pointer travel while hovering', () => {
-  const start=app.indexOf('function bindTrackChart(root,points,metric,metricLabel){');
+  const start=app.indexOf('function bindTrackChart(root,points,metric,metricLabel,playerId){');
   const end=app.indexOf('function render(){',start);
   assert.ok(start>=0&&end>start);
   const fn=app.slice(start,end);
@@ -230,7 +230,7 @@ test('Track hover tooltip floats beside points and never blocks pointer travel w
 });
 
 test('Track tooltip exposes match date/time, map badges, player KDA and available ELO context', () => {
-  const start=app.indexOf('function bindTrackChart(root,points,metric,metricLabel){');
+  const start=app.indexOf('function bindTrackChart(root,points,metric,metricLabel,playerId){');
   const end=app.indexOf('function render(){',start);
   const fn=app.slice(start,end);
   for(const token of ['clockLabel(playedAt)','mapMiniMarkup(mapName)','track-tooltip-series','track-tooltip-kda','deltaForMatch(playerId,q.m.match_id)','ratingAtMatch(playerId,q.m.match_id)','levelForRating(eloAfter)','expectedA','expectedB','track-tooltip-open']) {
