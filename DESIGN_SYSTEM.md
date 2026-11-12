@@ -56,3 +56,16 @@ The owner has now supplied a RAR5 archive with four UTF-8 page captures: player 
 These are HTML/page snapshots with embedded or appended CSS material, not four clean standalone stylesheets. The Track capture also contains extension-injected CSS, which must be excluded from the app's visual layer. The previous note that the original reference files were not available in the current conversation is superseded by this upload.
 
 Implementation order: shared profile shell + player history; seasons; match room; Track Stats. Keep CSS scoped to the appropriate page/component roots, preserve existing app data and handlers, and do not claim pixel-perfect fidelity before fixed-viewport browser comparison.
+
+
+## Owner feedback pass 02 — 2026-11-12
+
+Applied on `faceit-dev`:
+- The global player identity card (avatar, nickname, ELO, match count, profile button) is now only rendered by the Profile route. Other routes render the shared navigation and their page content without a persistent player card.
+- The first navigation label is «Главное». Existing functional sections remain present; no section was removed without owner direction.
+- Navigation controls are wider, transparent, and use a subtle outline instead of a solid filled active rectangle. Tablet collapses to an icon rail; mobile keeps a horizontal navigation strip.
+- The oversized season-selection cards were replaced with compact outlined rows.
+- The seasons archive now renders series scores through the shared `scoreMarkup` helper, so the leading side is green, trailing side is red, and a tie/unknown score remains neutral.
+- The Profile route already has a separate «История матчей» tab with all matches and the existing per-match details; this behavior is covered by a regression test.
+
+This pass is source-level and covered by [quality gate run 43128656306](https://github.com/nonspam/cs2-5x5/actions/runs/43128656306) (141 passed / 0 failed). It has not been visually browser-tested or deployed to Cloudflare. Continue with the supplied FACEIT references section by section and capture browser comparisons before accepting visual fidelity.
