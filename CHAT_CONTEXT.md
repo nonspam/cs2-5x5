@@ -263,3 +263,22 @@ GitHub upload-коммиты `64a081d` и `eac20e9` добавили `матч �
 Текущая точка продолжения и ограничения: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md).
 Сначала реализовать только Match Overview по исходному HTML/CSS референсу; Statistics — отдельным этапом после согласования Overview.
 Upload-коммиты `64a081d` и `eac20e9` добавили `матч внутри,обозр и стата.txt` в default/main. Connector подтвердил файл и 27,023 строк, но вернул пустое содержимое. Не считать референс прочитанным и не переносить upload в `faceit-dev` автоматически. Получить читаемый Raw/Download или вложение в чат.
+
+
+## 2026-11-12 — Match Overview: референс получен, первая реализация внесена
+
+Владелец приложил читаемый HTML/CSS snapshot Match Room FACEIT непосредственно в чат. Файл изучен; подробности: [MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md](docs/MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md).
+
+Главные выводы:
+- Нативная иерархия: локальная навигация/вкладки → метаданные → score card → 3 колонки (ростер / центр / ростер).
+- В документе присутствуют 10 embedded style blocks, 182 media rules и 1,600 inline style attrs. Большинство runtime-generated styled-components CSS rules отсутствует в выгруженном CSS, поэтому нельзя заявлять полное восстановление computed CSS.
+- `fc-strip`, `fc-note`, `faceit-lobby-stats`, `fc-plate`, forecast/team panels и их значения — внедрённое браузерное расширение, не нативный FACEIT. Не копировать эти значения как данные продукта.
+- В CS2 Analytics нет подтверждённых FACEIT server/veto/demo/forecast полей. Средний ELO выводится только из текущих rating игроков и подписан как текущий; названия составов нейтральные.
+
+В `faceit-dev` внесена первая реализация Overview:
+- JS commits: `4e55c9224a4bcb3bb5a1af03ec38258147755e89`, `12144170211501b9678cddba67d83c81daca64b1`, `0b9051d9c4c0b090c91382976d6831f6a1d04ca9`.
+- CSS commit: `f71fb7e58bf74ad3ee48834807c7ea0e645a8287`.
+- Contract test commit: `8adb0537fd758141068d6b11edeb20040a6c03d8`.
+- Handoff and implementation map: [MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md).
+
+Statistics renderer не менялся. JS/test syntax compilation passed in connector runtime; full CI/Quality Gate is not yet confirmed. Browser QA and deployment were not performed. DB/SQL/schema/RLS/grants/migrations, main and production were not touched. Statistics — only after owner approval of Overview.
