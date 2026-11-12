@@ -28,7 +28,7 @@ test('DEV config is loaded before the application runtime', () => {
 });
 
 test('the shared application shell has one explicit allowlist of supported routes', () => {
-  assert.match(app, /const APP_ROUTE_IDS=\['home','analytics','base','maps','teams','records','seasons','settings','profile','compare'\]/);
+  assert.match(app, /const APP_ROUTE_IDS=\['home','analytics','base','maps','teams','records','seasons','track','settings','profile','compare'\]/);
   assert.match(app, /function appRouteFromLocation\(\)[\s\S]*?APP_ROUTE_IDS\.includes\(route\)\?route:'home'/);
 });
 
@@ -56,7 +56,7 @@ test('shared shell navigation is wired through data-app-route controls', () => {
 });
 
 test('every supported route has a renderer or an explicit profile special case', () => {
-  assert.match(app, /const pages=\{home,base,analytics,players,compare,maps,teams,records,seasons,settings\}/);
+  assert.match(app, /const pages=\{home,base,analytics,players,compare,maps,teams,records,seasons,track,settings\}/);
   assert.match(app, /if\(state\.tab==='profile'\)\{profilePage\(v\)\}/);
   assert.match(app, /function profilePage\(v\)[\s\S]*?faceit-exact-shell[\s\S]*?bindAppShell\(v\)/);
 });
@@ -110,7 +110,7 @@ test('cross-section controls use centralized route navigation and never mutate r
 
 test('analytics deliberately reuses the existing player analytics renderer', () => {
   assert.match(app, /function analytics\(v\)\{players\(v\)\}/);
-  assert.match(app, /const pages=\{home,base,analytics,players,compare,maps,teams,records,seasons,settings\}/);
+  assert.match(app, /const pages=\{home,base,analytics,players,compare,maps,teams,records,seasons,track,settings\}/);
   assert.match(app, /if\(state\.tab==='profile'\)\{profilePage\(v\)\}/);
 });
 
