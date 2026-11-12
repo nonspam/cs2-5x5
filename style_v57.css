@@ -4680,13 +4680,13 @@ html,body,*{
 
 /* Match Center refinement from owner references 1.png / 2.png */
 .match-room-team .match-player-card-ref{padding:8px 9px!important;background:#10171e!important;border:1px solid #29333d!important;border-radius:7px!important}
-.match-room-team .match-player-card-ref .match-player-identity{display:grid!important;grid-template-columns:40px minmax(0,1fr) 34px!important;align-items:center!important;gap:9px!important;margin:0 0 8px!important}
+.match-room-team .match-player-card-ref .match-player-identity{display:grid!important;grid-template-columns:40px minmax(0,1fr) auto 30px!important;align-items:center!important;gap:9px!important;margin:0 0 8px!important}
 .match-room-team .match-player-card-ref .player-avatar{width:40px!important;height:40px!important;flex-basis:40px!important;border-radius:5px!important;overflow:hidden!important;border:1px solid #39434d!important;background:#202a33!important}
 .match-room-team .match-player-card-ref .player-avatar img{border-radius:4px!important;object-fit:cover!important}
 .match-player-main{display:flex;flex-direction:column;gap:3px;min-width:0}
 .match-player-main strong{font-size:12px!important;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .match-player-main small{font-size:7px;color:#82909b;letter-spacing:.1em}
-.match-room-team .match-player-level{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#202a33;border:1px solid #45515d;color:#f0f3f5;font-size:10px;font-weight:950}
+.match-room-team .match-player-rating{font-size:11px;font-weight:900;color:#dbe3e9;font-variant-numeric:tabular-nums;white-space:nowrap}.match-room-team .match-player-level{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#202a33;border:1px solid #45515d;color:#f0f3f5;font-size:10px;font-weight:950}
 .match-room-team .match-player-card-ref .match-career-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:3px!important;margin:0!important}
 .match-room-team .match-player-card-ref .match-career-metric{display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;padding:5px 3px!important;background:#080d12;border:1px solid #1b252e;border-radius:3px;text-align:center}
 .match-room-team .match-player-card-ref .match-career-metric b{font-size:10px!important;line-height:1.1;white-space:nowrap}
@@ -4701,7 +4701,7 @@ html,body,*{
 .match-map-row-copy small{font-size:7px;color:#7f8d99;letter-spacing:.1em}
 .match-map-row-copy strong{font-size:11px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .match-map-row-score{font-size:13px;font-weight:950;font-variant-numeric:tabular-nums;color:#eaf0f4;white-space:nowrap}
-.match-awards{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(320px,1.1fr);gap:12px;margin:16px 0 20px}
+.match-awards{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:12px;margin:16px 0 20px}
 .match-mvp-card{display:flex;align-items:center;gap:16px;min-width:0;min-height:190px;padding:16px;background:linear-gradient(115deg,#202326,#101316 75%);border:1px solid #41464b;border-radius:9px;position:relative;overflow:hidden}
 .match-mvp-card:after{content:'MVP';position:absolute;right:8px;bottom:-18px;font-size:66px;font-weight:1000;letter-spacing:-.08em;color:#ffffff08;pointer-events:none}
 .match-mvp-card>.player-avatar{width:94px;height:116px;flex:0 0 94px;border-radius:7px;overflow:hidden;border:1px solid #59616a}
@@ -4712,7 +4712,7 @@ html,body,*{
 .match-mvp-main p{margin:0 0 8px;font-size:13px;font-weight:850;color:#e4e9ed}
 .match-mvp-main small{font-size:8px;color:#a1abb4}
 .match-mvp-empty{display:grid;place-items:center;width:94px;height:116px;background:#202830;border-radius:7px;color:#f2c84b;font-weight:950}
-.match-award-list{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.match-award-list{display:grid;grid-template-columns:1fr;gap:7px}
 .match-award-card{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:8px;min-width:0;padding:9px;background:#11171d;border:1px solid #29333d;border-radius:6px}
 .match-award-card>.player-avatar,.match-award-empty-avatar{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;overflow:hidden;background:#222c35;color:#7f8d99}
 .match-award-card>.player-avatar img{object-fit:cover}
