@@ -156,3 +156,6 @@ test('Track and season archive live inside Profile instead of occupying permanen
   assert.ok(profile.includes('seasonWidgetMarkup'));
   assert.ok(profile.includes('widgetSeason.label'));
 });
+
+test('Match Center renders overview, team panels, map cards and team scoreboards',()=>{const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);for(const x of ['match-detail-hero','match-detail-result','match-teams-grid','match-maps-grid','match-stat-teams','match-scoreboard','data-match-tab="overview"','data-match-tab="stats"'])assert.ok(s.includes(x),x);assert.match(s,/AVG K \/ MAP/);assert.match(s,/K\/D/);assert.match(s,/WR/);});
+test('Match Center responsive styles include full-screen layout and map artwork',()=>{for(const x of ['.match-detail-modal','.match-detail-hero:before','.match-teams-grid','.match-maps-grid','.match-scoreboard','.match-detail-tabs'])assert.ok(css.includes(x),x);assert.match(css,/@media\(max-width:600px\)/);});
