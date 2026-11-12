@@ -1983,3 +1983,18 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T17:56:59+03:00 — Polish profile season widget and archive tiles
+
+- Commit: 0a93bf2e111f932e0303a5d39adace5760b5ca81
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	index.html
+- M	style_v57.css
+- M	tests/season-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
