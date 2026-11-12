@@ -2608,3 +2608,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:35:20+03:00 — fix: restore player avatars and readable card proportions
+
+- Commit: fe26e2957fbe045911582266acc8e854f597a6cc
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
