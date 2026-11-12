@@ -2776,3 +2776,15 @@
 - No file list available.
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T23:55:10+03:00 — Fix map stats overlay stacking and responsive layout
+
+- Commit: 53afaf9d04a7f78e46f8f6db15373942529c8cfb
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
