@@ -1164,3 +1164,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T03:37:03+03:00 — test: align profile route checks with profile-only sidebar card
+
+- Commit: 9a22797670fb250fe547ae1409fb7500d972b0be
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
