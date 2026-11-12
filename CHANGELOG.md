@@ -2620,3 +2620,15 @@
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T22:35:27+03:00 — fix: correct player avatar wrapper markup
+
+- Commit: f34cd60397c683b6f908b739621dfc8528a9231f
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
