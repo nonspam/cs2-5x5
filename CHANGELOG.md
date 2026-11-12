@@ -1680,3 +1680,15 @@
 - M	tests/season-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T05:07:56+03:00 — Strengthen season leaderboard column regression checks
+
+- Commit: 7ed88fdbceddf3876c3ecc468983b5d28e456534
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/season-regression.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
