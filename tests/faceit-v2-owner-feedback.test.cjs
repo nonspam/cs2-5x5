@@ -14,7 +14,7 @@ function section(source, startMarker, endMarker) {
   return source.slice(start, end);
 }
 
-test('the home navigation item is labelled Глав ное instead of Обзор', () => {
+test('the home navigation item is labelled Главное instead of Обзор', () => {
   const rail = section(app, 'function faceitAppRailMarkup()', 'function bindAppShell(root)');
   assert.ok(rail.includes("['home','⌂','Главное']"));
   assert.ok(!rail.includes("['home','⌂','Обзор']"));
