@@ -180,3 +180,12 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Не переносить upload-коммиты в `faceit-dev` до чтения и проверки файла.
 - Handoff: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md).
 - Browser QA/deployment не подтверждены. DB writes/schema/migrations запрещены без отдельного разрешения. Только `faceit-dev`; не менять `main`.
+
+ 
+## 2026-11-13 — Match Center Top tab and profile ELO point interaction
+- `faceit-dev` removes the BO3 Top 10 block from Overview and exposes a dedicated TOP tab beside Overview.
+- TOP table uses aggregate BO3 statistics and resolved player names; columns K/D/A/KD/+/−/AVG, with AVG explicitly calculated as kills per series map. BEST/BAD endpoints only; no MEDIAN/WORST.
+- Profile ELO point interactions use delegated capture-phase click/keyboard handling and a 28px nearest-point hit test; SVG hit radius increased.
+- `index.html` asset cache key bumped to `faceit-match-top-elo-hitfix-20261113-v1`.
+- Tests added/updated in `tests/faceit-v2-shell.test.cjs`.
+- CI/browser QA/deployed SHA are not confirmed. No DB writes, SQL, schema/RLS/grants/migrations, main, or production changes.

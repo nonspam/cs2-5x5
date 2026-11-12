@@ -236,17 +236,32 @@ test('Match Overview map result tiles use map-specific full-bleed artwork',()=>{
 });
 
 
-test('Match Overview renders a ten-player series K/D ranking from aggregate stats only',()=>{
-  assert.match(app,/const top10Rows=rows\.slice\(\)\.sort/);
-  assert.match(app,/const top10Markup=String\(m\.format\|\|''\)\.toUpperCase\(\)==='BO3'\?/);
-  assert.match(app,/match-overview-top10/);
-  assert.match(app,/medianTop10Index/);
-  assert.match(app,/Нет агрегированной статистики игроков за серию/);
-  assert.match(css,/\.match-overview-top10-row\.is-best/);
-  assert.match(css,/\.match-overview-top10-row\.is-median/);
-  assert.match(css,/\.match-overview-top10-row\.is-worst/);
+test('Match Center moves the BO3 ranking into a dedicated Top tab with resolved names and series metrics',()=>{
+  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
+  assert.ok(i>=0&&j>i);
+  assert.match(source,/const isBo3=String\(m\.format\|\|''\)\.toUpperCase\(\)\.includes\('BO3'\)/);
+  assert.match(source,/data-match-tab="top"/);
+  assert.match(source,/data-match-section="top"/);
+  assert.match(source,/resolveSeriesPlayerName/);
+  assert.match(source,/owner\.display_name/);
+  for(const metric of ['<th>K</th>','<th>D</th>','<th>A</th>','<th>K/D</th>','<th>+/−</th>','<th>AVG</th>']) assert.ok(source.includes(metric),metric);
+  assert.match(source,/match-top-tag best/);
+  assert.match(source,/match-top-tag bad/);
+  assert.doesNotMatch(source,/match-overview-top10|MEDIAN|WORST/);
+  assert.match(source,/AVG — среднее количество убийств за карту серии/);
+  assert.match(css,/\.match-top-table\{[\s\S]*width:100%/);
+  assert.match(css,/\.match-top-table tbody tr\.is-best/);
+  assert.match(css,/\.match-top-table tbody tr\.is-bad/);
 });
-
+test('Profile ELO chart uses delegated capture-phase clicks and expanded SVG hit targets',()=>{
+  assert.match(app,/const pointFromEvent=e=>/);
+  assert.match(app,/root\.addEventListener\('click',[\s\S]*?\},true\)/);
+  assert.match(app,/root\.addEventListener\('keydown'/);
+  assert.match(app,/distance<=28\?nearest:null/);
+  assert.match(app,/const resolvedMatch=findMatch\(event\)/);
+  assert.match(app,/openMatchDetail\(resolvedMatch\.match_id\)/);
+  assert.match(css,/\.faceit-elo-chart \.faceit-elo-hit\{r:14/);
+});
 test('Profile ELO point actions resolve the canonical match id before opening its match room',()=>{
   assert.match(app,/const resolvedMatch=findMatch\(event\)/);
   assert.match(app,/openMatchDetail\(resolvedMatch\.match_id\)/);

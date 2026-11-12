@@ -169,3 +169,17 @@ Commits:
 - Corrected map artwork stacking: the map image layer is now above the tile background, the contrast overlay above the image, and labels/scores above the overlay. The map results section now carries the `match-room-center` hook required by its existing full-bleed artwork styles.
 - Fixed profile ELO tooltip match navigation to resolve the canonical `DB.matches[].match_id` before calling the strict match lookup. If no match is found, the user receives an explicit message instead of a silent no-op.
 - Updated a stale static assertion to target the current unique-alias helper and added regression contracts for Top 10, map artwork hook/layering, and ELO match-id resolution. No browser QA performed; CI is the next verification.
+
+ 
+## 2026-11-13 — Separate BO3 Top tab and ELO chart hit-target repair
+
+Owner requested that the compact Top 10 ranking be removed from Overview and moved to a dedicated **TOP** tab directly beside Overview. Implemented on `faceit-dev`:
+- Overview no longer contains the ranking block.
+- For BO3 matches, the room navigation shows Overview and Top. Top uses the full available content width and lists up to ten series players sorted by aggregate K/D.
+- Columns: rank, player, K, D, A, K/D, +/−, AVG. AVG is explicitly defined as kills per map in the series; no damage/ADR/KAST/round-average data is fabricated.
+- The player-name resolver checks player ID, registered display names, aliases and guest display names before falling back to the source raw name. First row is marked BEST in green; last row BAD in red. MEDIAN/WORST labels were removed.
+- ELO chart no longer relies on independent click handlers on each SVG group. Click and keyboard handling are delegated at the profile root in capture phase; hit testing resolves the nearest plotted point within 28 CSS pixels, and SVG hit circles were expanded. Tooltip still opens the corresponding match via its canonical match ID.
+
+Files changed: `app_v57.js`, `style_v57.css`, `index.html` (cache key bumped), `tests/faceit-v2-shell.test.cjs`, `TECHNICAL_STATE.md`, this handoff.
+
+Validation status: source changes committed to `faceit-dev`; automated CI status must be checked separately. No browser QA was run. Therefore the ELO click fix is implemented but not yet confirmed in a real browser. No database/SQL/schema/RLS/grants/migrations, `main`, or production changes were made.
