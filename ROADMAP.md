@@ -16,6 +16,7 @@
 - [ ] Execute the browser QA matrix on DEV and verify Cloudflare deployed SHA: [execution plan](docs/FACEIT_V2_BROWSER_QA_PLAN_2026-11-12.md). Mutating flows remain local-fixture/mock only while DB row writes are out of scope.
 - [x] Audit stylesheet cascade, route content roots and shared-shell CSS readiness; [report](docs/FACEIT_V2_CSS_READINESS_AUDIT_2026-11-12.md).
 - [ ] Confirm owner decisions for BO3 1:1, series roster fallback and ELO chronology.
+- [x] Apply first owner-directed shell corrections on `faceit-dev`: remove the player card from all non-profile routes, widen and soften the outlined navigation, rename Overview to «Главное», compact season selectors, and color recent archive scores through the shared score renderer. Profile history remains a dedicated tab. [Quality gate](https://github.com/nonspam/cs2-5x5/actions/runs/43128656306): 141 passed / 0 failed.
 - [x] Receive and inventory the four-file FACEIT HTML/CSS reference archive; map history, seasons, match room and Track Stats to the staged implementation sequence: [inventory](docs/FACEIT_REFERENCE_ARCHIVE_INVENTORY_2026-11-12.md).
 - [ ] Begin owner-directed CSS/HTML implementation section by section, starting with the shared profile shell and player-history screen; compare each implemented section in the DEV browser before calling it complete.
 
