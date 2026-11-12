@@ -1356,3 +1356,15 @@
 - M	tests/metrics-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:11:22+03:00 — Fix profile Track tab route quoting
+
+- Commit: 29988bb9ea8f21979835330dec20039d22770811
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
