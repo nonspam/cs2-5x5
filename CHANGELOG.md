@@ -1692,3 +1692,15 @@
 - M	tests/season-regression.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T05:18:21+03:00 — Fix Track point actions by passing active player identity
+
+- Commit: 906840db22b85034ce1541bea56da2d1b6b4750a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
