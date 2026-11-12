@@ -116,5 +116,5 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 
 
 ## Текущая задача — Match Overview
-Подробная точка продолжения: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md). Новый чат должен прочитать её до любых правок.
-Порядок строгий: сначала получить и изучить читаемый HTML/CSS референс и закончить только Match Overview; после согласования — отдельно Statistics. Upload-файл был добавлен в default/main, но connector вернул пустое содержимое, поэтому его нельзя считать изученным или автоматически переносить в DEV.
+Подробная точка продолжения: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md). Анализ исходного FACEIT HTML/CSS: [docs/MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md](docs/MATCH_OVERVIEW_REFERENCE_ANALYSIS_2026-11-12.md).
+Референс получен вложением в чат и изучен. Первая реализация Overview внесена только в `faceit-dev`: nav, metadata, score card, два ростера и центральная колонка. Сейчас ожидаются Quality Gate и визуальная приёмка владельца. Statistics остаётся отдельным этапом и не меняется до одобрения Overview. Не переносить upload-коммиты из default/main в DEV.
