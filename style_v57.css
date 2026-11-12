@@ -3776,3 +3776,76 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
     overflow:visible;
   }
 }
+
+
+/* FACEIT polish pass — full-width profile match rows and quieter surfaces. */
+.faceit-profile-v2 .faceit-match-table-head,
+.faceit-profile-v2 .faceit-match-row{
+  grid-template-columns:minmax(125px,1.25fr) minmax(88px,.8fr) minmax(118px,1fr) minmax(72px,.62fr) minmax(112px,1fr) minmax(132px,1.25fr);
+  column-gap:clamp(12px,1.35vw,22px);
+}
+.faceit-profile-v2 .faceit-match-table-head{
+  width:100%;
+  padding-left:22px;
+  padding-right:22px;
+}
+.faceit-profile-v2 .faceit-match-row{
+  width:100%;
+  min-width:0;
+  padding-left:22px;
+  padding-right:22px;
+  text-align:left;
+}
+.faceit-profile-v2 .faceit-match-date,
+.faceit-profile-v2 .faceit-match-result,
+.faceit-profile-v2 .faceit-match-score,
+.faceit-profile-v2 .faceit-match-rating,
+.faceit-profile-v2 .faceit-match-kda,
+.faceit-profile-v2 .faceit-match-map{
+  min-width:0;
+  font-variant-numeric:tabular-nums;
+}
+.faceit-profile-v2 .faceit-exact-lower{
+  width:100%;
+  max-width:none;
+}
+.faceit-profile-v2 .faceit-main-grid{
+  grid-template-columns:minmax(0,1.8fr) minmax(250px,.62fr);
+}
+.faceit-profile-v2 .faceit-content-card,
+.faceit-profile-v2 .faceit-perf-card,
+.faceit-profile-v2 .faceit-side-card{
+  background:rgba(14,18,23,.42)!important;
+  border-color:rgba(255,255,255,.085)!important;
+  box-shadow:none!important;
+  backdrop-filter:blur(8px);
+}
+.faceit-profile-v2 .faceit-card-title,
+.faceit-profile-v2 .faceit-match-row{
+  border-color:rgba(255,255,255,.075);
+}
+.faceit-profile-v2 .faceit-match-row:hover{
+  background:rgba(255,255,255,.035);
+}
+@media(max-width:900px){
+  .faceit-profile-v2 .faceit-match-table-head,
+  .faceit-profile-v2 .faceit-match-row{
+    grid-template-columns:minmax(110px,1.1fr) minmax(76px,.75fr) minmax(100px,.9fr) minmax(62px,.55fr) minmax(95px,.9fr) minmax(110px,1fr);
+    column-gap:10px;
+    padding-left:14px;
+    padding-right:14px;
+  }
+}
+@media(max-width:680px){
+  .faceit-profile-v2 .faceit-match-table-head,
+  .faceit-profile-v2 .faceit-match-row{
+    min-width:690px;
+  }
+  .faceit-profile-v2 .faceit-match-list,
+  .faceit-profile-v2 .faceit-full-history{
+    overflow-x:auto;
+  }
+  .faceit-profile-v2 .faceit-main-grid{
+    grid-template-columns:minmax(0,1fr);
+  }
+}
