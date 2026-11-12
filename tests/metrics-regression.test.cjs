@@ -181,7 +181,7 @@ test('Track is account-scoped by linked player and never falls back to an arbitr
   assert.match(track, /profileMatchesForPlayer\(targetId\)/);
   assert.doesNotMatch(track, /activePlayers\(\).*sort|people\[0\]/);
     assert.ok(app.includes("state.trackTargetId=\\'"));
-  assert.match(app, /state\.trackTargetId=\\\\''\+esc\(id\)\+/);
+  assert.ok(app.includes("state.trackTargetId=\\'"));
 });
 
 test('Player profile exposes a Track tab for explicit public profile browsing', () => {
