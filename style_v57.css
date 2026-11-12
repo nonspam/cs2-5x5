@@ -5471,3 +5471,22 @@ table td,table th,tr,.divider,hr{
 .match-stat-team-head{
   border-color:#3b3f42!important;
 }
+
+.faceit-elo-chart{overflow:visible}
+.faceit-elo-line{stroke-dasharray:900;stroke-dashoffset:900;animation:faceitEloDraw 1.15s ease-out forwards}
+@keyframes faceitEloDraw{to{stroke-dashoffset:0}}
+.faceit-elo-point{cursor:pointer;outline:none}.faceit-elo-hit{fill:transparent;stroke:transparent}
+.faceit-elo-dot{fill:#ff5b24;stroke:#17191b;stroke-width:2;transition:r .15s ease,fill .15s ease}
+.faceit-elo-point:hover .faceit-elo-dot,.faceit-elo-point:focus .faceit-elo-dot{r:5.5;fill:#fff;stroke:#ff5b24}
+.faceit-elo-tooltip{position:fixed;z-index:12000;width:min(320px,calc(100vw - 24px));padding:14px;background:#202224;border:1px solid #555b60;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.55);color:#f1f2f3;font-size:12px}
+.faceit-elo-tooltip[hidden]{display:none}
+.faceit-elo-tooltip-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid #3b3f42}
+.faceit-elo-tooltip-head>div{display:flex;flex-direction:column;gap:4px}.faceit-elo-tooltip-head small,.faceit-elo-tooltip-ratings small{font-size:9px;letter-spacing:.08em;color:#a3a8ac}
+.faceit-elo-tooltip-head strong{font-size:13px}.faceit-elo-tooltip-head>span{font-size:16px;font-weight:900}
+.faceit-elo-tooltip-opponent{display:flex;justify-content:space-between;gap:8px;padding:11px 0;color:#c9cdd0}.faceit-elo-tooltip-opponent b{font-size:10px;color:#e8eaec}
+.faceit-elo-tooltip-ratings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px 0;border-top:1px solid #3b3f42;border-bottom:1px solid #3b3f42}
+.faceit-elo-tooltip-ratings>div{display:flex;flex-direction:column;gap:5px;min-width:0}.faceit-elo-tooltip-ratings b{font-size:13px;font-variant-numeric:tabular-nums}
+.faceit-elo-tooltip-actions{display:flex;justify-content:flex-end;gap:8px;padding-top:11px}
+.faceit-elo-tooltip-actions button{border:1px solid #555b60;background:#292c2f;color:#f1f2f3;border-radius:7px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer}
+.faceit-elo-tooltip-actions .faceit-elo-tooltip-open{background:#ff5b24;border-color:#ff5b24;color:#111}
+.faceit-elo-tooltip-actions button:disabled{opacity:.4;cursor:not-allowed}
