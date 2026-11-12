@@ -3037,3 +3037,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T02:59:00+03:00 — Bump Match Center JavaScript cache key
+
+- Commit: 85e4d16ba5ca07ab6493dcbc5a6b796d36f79eb3
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
