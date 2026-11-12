@@ -3512,3 +3512,63 @@ body:has(.faceit-exact-shell) main{max-width:none!important;margin:0!important;p
  .faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-content,.faceit-route-shell .faceit-exact-content{padding:10px 12px;max-width:none}
  .faceit-route-shell .faceit-exact-content{overflow:visible}
 }
+
+/* FACEIT reference pass 01 — shared profile shell and player-history palette.
+   Values are taken from the supplied history/seasons captures. Keep this scope
+   local to the profile reference screen; do not recolor unrelated routes. */
+.faceit-exact-shell:not(.faceit-route-shell){
+  --fx-orange:#ff4b00;
+  --fx-faceit-text:#f1f1f1;
+  --fx-faceit-muted:#a7a7a7;
+  --fx-faceit-surface-0:#060606;
+  --fx-faceit-surface-1:#121212;
+  --fx-faceit-surface-2:#1d1d1d;
+  --fx-faceit-surface-3:#242424;
+  --fx-faceit-border:#383838;
+  --fx-faceit-win:#05ff00;
+  --fx-faceit-loss:#ef0000;
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-global-rail{
+  border-right-color:rgba(241,241,241,.1);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-game-tabs{
+  border-bottom-color:rgba(241,241,241,.12);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-game-tabs button.active{
+  color:var(--fx-orange);
+  border-bottom-color:var(--fx-orange);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-season-card,
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-results{
+  border-color:var(--fx-faceit-border);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-exact-results{
+  background:rgba(18,18,18,.88);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-table-head{
+  color:var(--fx-faceit-muted);
+  border-bottom-color:var(--fx-faceit-border);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-row{
+  color:var(--fx-faceit-text);
+  border-top-color:var(--fx-faceit-border);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-row:hover{
+  background:rgba(241,241,241,.05);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-date,
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-map{
+  color:var(--fx-faceit-muted);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-score,
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-rating{
+  color:var(--fx-faceit-text);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-result.win,
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-elo-delta.positive{
+  color:var(--fx-faceit-win);
+}
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-result.loss,
+.faceit-exact-shell:not(.faceit-route-shell) .faceit-match-elo-delta.negative{
+  color:var(--fx-faceit-loss);
+}
