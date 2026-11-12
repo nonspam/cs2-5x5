@@ -1824,3 +1824,15 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T16:08:06+03:00 — Cover fixed workspace scrolling and player table columns
+
+- Commit: 10ca32f3aaaf4d43646c9d7a44892b9018b103a3
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
