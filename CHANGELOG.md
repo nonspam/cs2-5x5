@@ -1332,3 +1332,15 @@
 - M	ROADMAP.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T04:11:03+03:00 — Bind Track to signed-in player profile and explicit public profile views
+
+- Commit: 693bea6e7aeffe578423eb1560cead988c2d27b1
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
