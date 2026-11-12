@@ -2292,3 +2292,16 @@
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-12T19:39:49+03:00 — test: update Match Center map and player reference contracts
+
+- Commit: aeac7ce8d54fb4437f4baad8f32305dc20dec08c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+- M	tests/runtime-contract.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
