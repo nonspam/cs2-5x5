@@ -201,3 +201,16 @@ test('Match Overview player metrics are one FACEIT-style strip and player names 
   assert.match(css,/white-space:normal!important/);
   assert.match(css,/\.match-room-side\{grid-template-columns:minmax\(0,1fr\) 40px auto!important\}/);
 });
+
+
+test('Match Overview player card follows the FACEIT single-surface column layout',()=>{
+  assert.match(app,/match-career-grid/);
+  assert.match(app,/profileAvatarMarkup\(r\.id,'md'\)/);
+  assert.match(app,/match-player-rating/);
+  assert.match(app,/match-player-level/);
+  assert.match(css,/\.match-room-team \.match-player-card-ref\{[\s\S]*padding:10px 11px 8px 52px!important/);
+  assert.match(css,/\.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:repeat\(6,minmax\(0,1fr\)\)!important/);
+  assert.match(css,/\.match-room-team \.match-player-card-ref \.match-career-metric\{[\s\S]*background:transparent!important/);
+  assert.match(css,/overflow-wrap:anywhere!important/);
+  assert.match(css,/border-top:1px solid #292929!important/);
+});
