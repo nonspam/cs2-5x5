@@ -5406,3 +5406,68 @@ table td,table th,tr,.divider,hr{
 /* Preserve meaningful green/red performance signals; only remove blue accents. */
 .positive,.is-positive,.text-green,.win,.winner{color:#36d98a!important}
 .negative,.is-negative,.text-red,.loss,.loser{color:#ff626d!important}
+
+
+/* Final neutralization pass: remove remaining navy/blue panel borders and team accents */
+.match-overview-player-tables .match-stat-team,
+.match-stat-team,
+.match-stat-team.team-a,
+.match-stat-team.team-b,
+.match-scoreboard,
+.match-scoreboard .table-wrap,
+.match-overview-details,
+.match-overview-maps,
+.match-overview-veto,
+.match-map-row,
+.match-map-row-cover,
+.match-map-row-cover:focus,
+.match-map-row-cover:active,
+.map-stat-team,
+.map-stat-summary,
+.map-stat-comparison,
+.map-stat-rounds,
+.table-wrap,
+.data-table,
+.scoreboard,
+.panel,
+.card,
+.home-panel{
+  border-color:#3b3f42!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.012)!important;
+}
+.match-stat-team.team-a,
+.match-stat-team.team-b{
+  border-top-color:#4a4e52!important;
+}
+.match-overview-player-tables .match-stat-team,
+.match-stat-team,
+.match-overview-details,
+.match-overview-maps,
+.match-overview-veto,
+.map-stat-team,
+.map-stat-summary,
+.map-stat-comparison,
+.map-stat-rounds,
+.match-detail-modal,
+.map-stat-modal,
+.panel,
+.card,
+.home-panel{
+  background-color:#191b1d!important;
+  background-image:linear-gradient(145deg,#1d2022,#17191b)!important;
+}
+.match-overview-maps .match-map-row-cover{
+  border:1px solid #4a4e52!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+.match-overview-maps .match-map-row-cover:hover,
+.match-overview-maps .match-map-row-cover:focus-visible{
+  border-color:#858b90!important;
+  outline:0!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08)!important;
+}
+.match-overview-player-tables .match-stat-team-head,
+.match-stat-team-head{
+  border-color:#3b3f42!important;
+}
