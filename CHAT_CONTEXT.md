@@ -257,3 +257,9 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 Главное: сначала реализовать только Match Overview по исходному HTML/CSS референсу; Statistics — отдельным следующим этапом после согласования Overview.
 GitHub upload-коммиты `64a081d` и `eac20e9` добавили `матч внутри,обозр и стата.txt` в историю default/main. Connector подтвердил файл, но вернул пустое содержимое. Не считать референс прочитанным и не переносить upload в `faceit-dev` автоматически. Получить читаемый Raw/Download или вложение в чат.
 Все ограничения по ветке, DB, deployment и проверкам — см. handoff.
+
+
+## 2026-11-12 — Handoff Match Overview / Statistics
+Текущая точка продолжения и ограничения: [docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md](docs/MATCH_OVERVIEW_HANDOFF_2026-11-12.md).
+Сначала реализовать только Match Overview по исходному HTML/CSS референсу; Statistics — отдельным этапом после согласования Overview.
+Upload-коммиты `64a081d` и `eac20e9` добавили `матч внутри,обозр и стата.txt` в default/main. Connector подтвердил файл и 27,023 строк, но вернул пустое содержимое. Не считать референс прочитанным и не переносить upload в `faceit-dev` автоматически. Получить читаемый Raw/Download или вложение в чат.
