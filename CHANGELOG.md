@@ -3170,3 +3170,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:16:37+03:00 — Fix oversized square map catalogue cards
+
+- Commit: b7a8cde9a0fc129ad59c7c31ef27adc2655d64d0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
