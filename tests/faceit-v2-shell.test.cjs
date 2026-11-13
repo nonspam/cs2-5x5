@@ -324,3 +324,11 @@ test('Nested Maps, Teams and Records headers get lime backgrounds while titles s
   assert.ok(css.includes('.stats-page>.section-head h2,.base-page>.section-head h2'));
   assert.ok(css.includes('color:#fff!important'));
 });
+
+test('Section headers use soft lime-to-charcoal gradients instead of solid lime fills',()=>{
+  assert.ok(css.includes('linear-gradient(100deg,rgba(184,239,69,.20) 0%,rgba(115,151,49,.13) 34%,rgba(30,36,28,.72) 70%,rgba(12,15,17,.96) 100%)'));
+  assert.ok(css.includes('.maps-page .map-lab-panel>.section-head'));
+  assert.ok(css.includes('.teams-page .team-roster-picker>.section-head'));
+  assert.ok(css.includes('.records-page .record-block>.section-head'));
+  assert.ok(css.includes('color:#fff!important'));
+});
