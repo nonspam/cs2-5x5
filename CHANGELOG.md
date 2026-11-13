@@ -3374,3 +3374,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:40:22+03:00 — Reduce lime accents to main page headers only
+
+- Commit: 7f3348dd9589f154874af9a14c2310e3dee2cec5
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
