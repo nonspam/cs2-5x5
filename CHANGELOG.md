@@ -3110,3 +3110,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	elo_v3.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:08:56+03:00 — Test ELO reset and map-only profile history
+
+- Commit: 2208ddbf671bf794fba6797976e769bbeed96737
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
