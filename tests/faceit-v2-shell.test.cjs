@@ -84,6 +84,10 @@ test('player center uses the compact requested column order and removes legacy r
   assert.ok(source.indexOf('<th>+/−</th>') < source.indexOf('<th>ELO</th>'));
 });
 
+test('map catalogue cards stay compact and do not reserve a square blank image area',()=>{
+  assert.match(css,/\.maps-page \.map-card-grid \.map-card\{[\s\S]*aspect-ratio:auto!important/);
+  assert.match(css,/\.maps-page \.map-card-grid \.map-card-image\{[\s\S]*height:150px!important[\s\S]*max-height:150px!important/);
+});
 test('player Statistics table removes Matches column and keeps Maps',()=>{
   const start=app.indexOf('function players(v){');
   const end=app.indexOf('function compare',start);
