@@ -240,3 +240,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Applied consistently to Player Statistics, Matches/Series, Teams, Records, Maps, Map Lab, Players picker, and record category headers.
 - Bumped stylesheet cache key to `lime-soft-gradient-20261113-v3`; added regression coverage.
 - Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
+
+
+## 2026-11-13 — Reduce lime usage to main page headers
+- Preserved the soft lime-to-charcoal gradient only on the top-level headers for Statistics, Matches, Maps, Teams, and Records.
+- Removed colored backgrounds/borders from nested Maps headers (selected map, Map Lab), Teams Players header, and Records selected-record / Top 10 / metric category headers. Their titles remain white and subtitles return to neutral muted text.
+- Removed filled lime styling from secondary Maps pills and Teams/Records toolbar primary controls; the selected map's existing restrained outline remains.
+- Bumped stylesheet cache key to `lime-main-headers-only-20261113-v4`; added regression contract.
+- Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
