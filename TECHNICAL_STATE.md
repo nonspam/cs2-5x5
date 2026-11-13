@@ -216,3 +216,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Map catalogue cards now use content height with a 150px desktop image and 120px image on narrower layouts; grid remains five columns on wide desktop with existing responsive breakpoints.
 - Added a CSS regression contract and bumped the app cache key to `faceit-map-cards-compact-20261113-v1`.
 - Only `faceit-dev`; no data, DB, SQL, schema/RLS/grants, `main`, production, browser QA, or deployment changes.
+
+
+## 2026-11-13 — Lime accent for section headers and active controls
+- Applied a shared lime accent (`#b8ef45`) to the primary section header strips for Player Statistics, Matches/Series, Teams, Records, and Maps.
+- Adjusted header padding and title/subtitle insets so page titles no longer sit flush against the strip edge.
+- Highlighted active toolbar controls and the selected map card / selected-map subheader with the same lime treatment; ordinary data colors and table content remain unchanged.
+- Bumped `style_v57.css` cache key to `lime-section-headers-20261113-v1`; added CSS regression contracts.
+- Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
