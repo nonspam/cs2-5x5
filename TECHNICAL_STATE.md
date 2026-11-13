@@ -209,3 +209,10 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Did not alter profile `gameHistory`, other statistics, sorting, aggregates, or match data.
 - Added a focused regression contract in `tests/faceit-v2-shell.test.cjs` and bumped the app JS cache key to `faceit-statistics-maps-only-20261113-v1`.
 - Updated only `faceit-dev`; no DB writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
+
+
+## 2026-11-13 — Map catalogue card sizing correction
+- Removed the forced 1:1 card aspect ratio that left a large empty black area below the 104px map image.
+- Map catalogue cards now use content height with a 150px desktop image and 120px image on narrower layouts; grid remains five columns on wide desktop with existing responsive breakpoints.
+- Added a CSS regression contract and bumped the app cache key to `faceit-map-cards-compact-20261113-v1`.
+- Only `faceit-dev`; no data, DB, SQL, schema/RLS/grants, `main`, production, browser QA, or deployment changes.
