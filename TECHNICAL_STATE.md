@@ -1,3 +1,12 @@
+## 2026-11-13 — Owner-approved full-page Match Room implementation
+
+- Replaced the old match-detail modal with a dedicated full-viewport Match Room page and a `?match=<id>` URL state that supports browser back/forward and direct link restoration.
+- Implemented the approved black three-column layout: left/right team rosters, central map cards and VETO, large map-art match banner, global navigation, player nickname search, and a profile-avatar dropdown.
+- Reused live application data and existing helpers for player avatars, match rosters, current ELO, career aggregates, series K/D/A, map artwork, map scores, and VETO actions. No generated player names, match values, or fabricated ADR were introduced.
+- Removed demo viewing, matchmaking CTA, match-statistics promo, deposit progress, and Winline promotional elements from the Match Room.
+- Map detail opens above the Match Room and returns to it without duplicating the match page.
+- Updated `app_v57.js`, `style_v57.css`, `index.html`, and `tests/faceit-v2-shell.test.cjs`. Browser QA and live DEV deployment remain unverified.
+- No DB writes, SQL, migrations, schema/RLS/grants, `main`, or production changes.
 
 
 ## 2026-11-13 — Quality Gate test contract repair
