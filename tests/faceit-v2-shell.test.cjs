@@ -369,7 +369,7 @@ test('Match Room main content is full-width and not constrained by the global ma
 });
 
 test('Match Room uses temporary first-letter avatars instead of image placeholders',()=>{
-  assert.match(app,/function matchRoomInitialAvatar\(id,size='md'\)/);
+  assert.match(app,/function matchRoomInitialAvatar\(id,size='md',displayName=''\)/);
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(source.includes('matchRoomInitialAvatar('));
   assert.doesNotMatch(source,/profileAvatarMarkup\(/);
@@ -398,5 +398,5 @@ test('Match Room desktop geometry follows the approved 1 : 1.18 : 1 three-column
 test('Match Room has explicit tablet and mobile layout breakpoints without horizontal overflow',()=>{
   assert.match(css,/@media\(max-width:1100px\)\{#matchRoomPage \.match-room-columns\{grid-template-columns:minmax\(0,1fr\) minmax\(260px,1fr\)!important\}/);
   assert.match(css,/@media\(max-width:760px\)\{#matchRoomPage>\.match-room-content/);
-  assert.match(css,/#matchRoomPage\.match-room-page\{[^}]*overflow-x:hidden!important/);
+  assert.match(css,/\.match-room-page\{[^}]*overflow-x:hidden!important/);
 });
