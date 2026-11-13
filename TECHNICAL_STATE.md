@@ -1,4 +1,11 @@
 
+
+## 2026-11-13 — Quality Gate test contract repair
+
+- Updated the shared `makeMatch()` fixture in `tests/elo_v3.test.cjs` to use a reliable `played_at` timestamp after the ELO V3 reset boundary (`2026-11-13T03:08:26+03:00`). Existing ELO tests now exercise current-era matches rather than accidentally testing the intentional exclusion of undated matches.
+- Relaxed the DEV entrypoint cache-key assertion in `tests/dev-readiness-contract.test.cjs` to require the V57 app asset and a version query without pinning an obsolete cache-key prefix. The separate Supabase adapter cache-key assertion remains unchanged.
+- No ELO runtime logic, application UI, data, database, SQL, migrations, schema/RLS/grants, `main`, or production changes. Browser QA and deployment were not performed.
+
 ## 2026-11-13 — ELO reset to 1000 and profile history cleanup
 
 - ELO V3 now initializes every non-deleted player at 1000 and replays only matches with a reliable played/created timestamp at or after 2026-11-13 03:08:26 (UTC+03:00). All earlier match history remains intact for match/statistics pages but no longer affects the new ELO rating, ranks, or ELO chart. New matches with no usable timestamp are excluded until timestamped.
