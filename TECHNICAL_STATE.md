@@ -1,5 +1,12 @@
 
 
+## 2026-11-14 — Match Room precision-pass quality gate
+
+- Final Quality Gate for Match Room precision pass: **210 passed, 0 failed** on commit `6d9880ed37718038367bd3a4b4c487283bbd99ab`; run [43520187979](https://github.com/nonspam/cs2-5x5/actions/runs/43520187979).
+- The gate covers JavaScript syntax and automated regression/contract tests, including temporary initials, CS2 ELO-derived team badges, target desktop geometry, and responsive breakpoints.
+- No browser visual run or DEV deployment was performed; pixel-perfect appearance is therefore not yet verified in a rendered browser. FACEIT avatars and country flags remain unavailable without source data and are not fabricated.
+
+
 ## 2026-11-14 — Match Room precision pass
 
 - Rebound temporary avatar initials to the resolved display name (including guest rows and player search), rather than deriving the initial from an internal ID.
