@@ -3122,3 +3122,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:09:02+03:00 — Document ELO reset and map-only profile history
+
+- Commit: 0a5e5c785e61018c058e699c1c7454f52f6a17ba
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
