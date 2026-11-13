@@ -5542,3 +5542,9 @@ table td,table th,tr,.divider,hr{
 .faceit-elo-chart .faceit-elo-hit{r:14;fill:rgba(255,255,255,.002)!important;stroke:transparent;pointer-events:all!important}
 .faceit-elo-chart .faceit-elo-dot{pointer-events:none}
 .faceit-elo-chart .faceit-elo-point:focus .faceit-elo-dot{stroke:#ff5b24;stroke-width:2}
+
+
+/* BO3 Top: color the performance cells by series K/D; keep player name and AVG neutral. */
+.match-top-table tbody tr.kd-positive-row td:nth-child(n+3):nth-child(-n+7){color:#43dc91!important;font-weight:850}
+.match-top-table tbody tr.kd-neutral-row td:nth-child(n+3):nth-child(-n+7){color:#edf0f2!important;font-weight:750}
+.match-top-table tbody tr.kd-negative-row td:nth-child(n+3):nth-child(-n+7){color:#ff6874!important;font-weight:850}
