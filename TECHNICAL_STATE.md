@@ -1,4 +1,11 @@
 
+## 2026-11-13 — ELO reset to 1000 and profile history cleanup
+
+- ELO V3 now initializes every non-deleted player at 1000 and replays only matches with a reliable played/created timestamp at or after 2026-11-13 03:08:26 (UTC+03:00). All earlier match history remains intact for match/statistics pages but no longer affects the new ELO rating, ranks, or ELO chart. New matches with no usable timestamp are excluded until timestamped.
+- Removed the separate "Матчи" count row from the profile "История игры" card; the "Карты" count remains.
+- Refreshed JS cache keys and added static regression tests. No database rows or historical match data were modified. Browser QA and live DEV deployment are not verified.
+
+
 ## 2026-11-13 — BO3 Top K/D row colors
 
 - In the dedicated BO3 Top table, K/D above 1 colors K through +/− green; K/D exactly 1 keeps those cells white; K/D below 1 colors them red.
