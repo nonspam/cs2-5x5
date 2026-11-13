@@ -5639,3 +5639,11 @@ table td,table th,tr,.divider,hr{
 @media(max-width:700px){
   .stats-page>.section-head,.base-page>.section-head,.teams-page>.section-head,.records-page>.section-head,.maps-page>.section-head,.maps-page>.map-selected-head>.section-head{align-items:flex-start!important;gap:10px!important;flex-wrap:wrap!important;padding:10px 12px!important}
 }
+
+/* Lime strip is intentionally solid so the section hierarchy is unmistakable. */
+.stats-page>.section-head,.base-page>.section-head,.teams-page>.section-head,.records-page>.section-head,.maps-page>.section-head,.maps-page>.map-selected-head>.section-head{
+  background:var(--site-lime)!important;
+  border-color:var(--site-lime)!important;
+}
+.stats-page>.section-head h2,.base-page>.section-head h2,.teams-page>.section-head h2,.records-page>.section-head h2,.maps-page>.section-head h2,.maps-page>.map-selected-head>.section-head h3{color:#171d0c!important}
+.stats-page>.section-head .muted,.base-page>.section-head .muted,.teams-page>.section-head .muted,.records-page>.section-head .muted,.maps-page>.section-head .muted,.maps-page>.map-selected-head>.section-head .muted{color:#35421d!important}
