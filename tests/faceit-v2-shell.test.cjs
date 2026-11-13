@@ -89,9 +89,9 @@ test('player Statistics table removes Matches column and keeps Maps',()=>{
   const end=app.indexOf('function compare',start);
   const source=app.slice(start,end);
   assert.ok(start>=0&&end>start);
-  assert.match(source,/<th>Игрок<\\/th><th>Карты<\\/th><th>K<\\/th>/);
-  assert.doesNotMatch(source,/<th>Матчи<\\/th>/);
-  assert.doesNotMatch(source,/<td>\\$\\{q\\.x\\.matches\\}<\\/td>/);
+  assert.ok(source.includes('<th>Игрок</th><th>Карты</th><th>K</th>'));
+  assert.doesNotMatch(source,/<th>Матчи<\/th>/);
+  assert.doesNotMatch(source,/<td>\$\{q\.x\.matches\}<\/td>/);
 });
 test('ELO V3 starts every player at 1000 and ignores matches before the reset cutoff',()=>{
   assert.match(elo,/const START_RATING=1000/);
