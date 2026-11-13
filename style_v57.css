@@ -5548,3 +5548,29 @@ table td,table th,tr,.divider,hr{
 .match-top-table tbody tr.kd-positive-row td:nth-child(n+3):nth-child(-n+7){color:#43dc91!important;font-weight:850}
 .match-top-table tbody tr.kd-neutral-row td:nth-child(n+3):nth-child(-n+7){color:#edf0f2!important;font-weight:750}
 .match-top-table tbody tr.kd-negative-row td:nth-child(n+3):nth-child(-n+7){color:#ff6874!important;font-weight:850}
+
+
+/* 2026-11-13 — Map catalogue: remove the oversized square and fill the card with its image. */
+.maps-page .map-card-grid .map-card{
+  aspect-ratio:auto!important;
+  display:block!important;
+  min-height:0!important;
+  height:auto!important;
+}
+.maps-page .map-card-grid .map-card-image{
+  display:block!important;
+  position:relative!important;
+  width:100%!important;
+  height:150px!important;
+  min-height:150px!important;
+  max-height:150px!important;
+  align-self:auto!important;
+  overflow:hidden!important;
+}
+@media(max-width:900px){
+  .maps-page .map-card-grid .map-card-image{
+    height:120px!important;
+    min-height:120px!important;
+    max-height:120px!important;
+  }
+}
