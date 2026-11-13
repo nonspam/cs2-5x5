@@ -247,6 +247,10 @@ test('Match Center moves the BO3 ranking into a dedicated Top tab with resolved 
   for(const metric of ['<th>K</th>','<th>D</th>','<th>A</th>','<th>K/D</th>','<th>+/−</th>','<th>AVG</th>']) assert.ok(source.includes(metric),metric);
   assert.match(source,/match-top-tag best/);
   assert.match(source,/match-top-tag bad/);
+  assert.match(source,/r\.kd>1\?'kd-positive-row':r\.kd<1\?'kd-negative-row':'kd-neutral-row'/);
+  assert.match(css,/\.match-top-table tbody tr\.kd-positive-row td:nth-child\(n\+3\):nth-child\(-n\+7\)/);
+  assert.match(css,/\.match-top-table tbody tr\.kd-neutral-row td:nth-child\(n\+3\):nth-child\(-n\+7\)/);
+  assert.match(css,/\.match-top-table tbody tr\.kd-negative-row td:nth-child\(n\+3\):nth-child\(-n\+7\)/);
   assert.doesNotMatch(source,/match-overview-top10|MEDIAN|WORST/);
   assert.match(source,/AVG — среднее количество убийств за карту серии/);
   assert.match(css,/\.match-top-table\{[\s\S]*width:100%/);
