@@ -84,6 +84,15 @@ test('player center uses the compact requested column order and removes legacy r
   assert.ok(source.indexOf('<th>+/−</th>') < source.indexOf('<th>ELO</th>'));
 });
 
+test('player Statistics table removes Matches column and keeps Maps',()=>{
+  const start=app.indexOf('function players(v){');
+  const end=app.indexOf('function compare',start);
+  const source=app.slice(start,end);
+  assert.ok(start>=0&&end>start);
+  assert.match(source,/<th>Игрок<\\/th><th>Карты<\\/th><th>K<\\/th>/);
+  assert.doesNotMatch(source,/<th>Матчи<\\/th>/);
+  assert.doesNotMatch(source,/<td>\\$\\{q\\.x\\.matches\\}<\\/td>/);
+});
 test('ELO V3 starts every player at 1000 and ignores matches before the reset cutoff',()=>{
   assert.match(elo,/const START_RATING=1000/);
   assert.match(elo,/const RESET_AT=Date\.parse\('2026-11-13T03:08:26\+03:00'\)/);
