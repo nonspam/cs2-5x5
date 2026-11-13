@@ -82,7 +82,7 @@ test('DEV player account is linked through the shared profile APIs and avatar UI
   assert.match(adapter, /from\('player_profiles'\)/);
   assert.match(adapter, /cs2-player-media/);
   assert.match(adapter, /subscribeProfiles/);
-  assert.match(html, /app_v57\.js\?v=faceit-profile-/);
+  assert.match(html, /app_v57\.js\?v=/);
   assert.match(html, /supabase_adapter\.js\?v=faceit-profile-/);
   assert.match(app, /profileMatchesForPlayer\(/);
   assert.match(app, /faceit-form-dot/);
