@@ -2,6 +2,9 @@
 (function(root){
   'use strict';
   const START_RATING=1000;
+  // Reset all players to 1000 as of 2026-11-13 03:08:26 Europe/Helsinki (user-local time).
+  // Only matches with a reliable timestamp at or after this instant affect the new rating era.
+  const RESET_AT=Date.parse('2026-11-13T03:08:26+03:00');
   const TEAM_WEIGHT=.85;
   const IMPACT_WEIGHT=.15;
   const PROVISIONAL_K=32;
@@ -143,6 +146,10 @@
     const histories=new Map([...catalog.keys()].map(id=>[id,[]]));
     const matchRows=[];
     const matches=(typeof activeMatches==='function'?activeMatches():[])
+      .filter(match=>{
+        const timestamp=Date.parse(match?.played_at||match?.date||match?.created_at||'');
+        return Number.isFinite(timestamp)&&timestamp>=RESET_AT;
+      })
       .slice()
       .sort((a,b)=>(typeof matchOrder==='function'?matchOrder(a):0)-(typeof matchOrder==='function'?matchOrder(b):0)
         ||String(a.match_id||'').localeCompare(String(b.match_id||'')));
@@ -217,6 +224,7 @@
       ratedSeries:matchRows.length,
       coverage:matches.length?matchRows.length/matches.length:0,
       startRating:START_RATING,
+      resetAt:new Date(RESET_AT).toISOString(),
       teamWeight:TEAM_WEIGHT,
       impactWeight:IMPACT_WEIGHT,
       calibrationMatches:CALIBRATION_MATCHES,
@@ -281,7 +289,8 @@
       establishedK:ESTABLISHED_K,
       impactFormula:'50 + 6 × (K−D за карту) + 2 × (A за карту − 4), ограничено 0–100',
       resultRule:'Победа всегда даёт положительное изменение, поражение — отрицательное; импакт корректирует величину изменения, но не переворачивает результат.',
-      granularity:'Одно обновление на серию BO1/BO3/BO5. Неполные составы или неизвестный исход не учитываются.'
+      granularity:'Одно обновление на серию BO1/BO3/BO5. Неполные составы или неизвестный исход не учитываются.',
+      resetPolicy:'Все игроки стартуют с 1000; матчи до resetAt исключены из новой ELO-истории.'
     };
   }
 
