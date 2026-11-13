@@ -41,6 +41,7 @@ function makeMatch(overrides = {}) {
     team_a: ['p1', 'p2', 'p3', 'p4', 'p5'],
     team_b: ['p6', 'p7', 'p8', 'p9', 'p10'],
     map_ids: [],
+    played_at: '2026-11-13T03:09:00+03:00',
     ...overrides
   };
 }
