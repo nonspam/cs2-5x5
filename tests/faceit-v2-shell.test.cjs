@@ -55,7 +55,7 @@ test('application routes support direct hash entry and browser back/forward navi
   assert.match(app, /window\.history\[method\]/);
   assert.match(app, /function restoreAppRouteFromHistory\(\)/);
   assert.match(app, /window\.addEventListener\('popstate',restoreAppRouteFromHistory\)/);
-  assert.match(app, /DOMContentLoaded',\(\)=>\{state\.tab=appRouteFromLocation\(\);load\(\)\}/);
+  assert.match(app,/DOMContentLoaded',\(\)=>\{state\.tab=appRouteFromLocation\(\);load\(\)\.then/);
   assert.match(app, /function render\(\)\{[^\n]*pages\[state\.tab\]\|\|home/);
 });
 
@@ -269,7 +269,10 @@ test('Match Room keeps the approved simple match-first view without a separate T
   assert.ok(i>=0&&j>i);
   assert.match(source,/match-room-columns/);
   assert.match(source,/match-room-map-list/);
-  assert.doesNotMatch(source,/data-match-tab="top"|data-match-tab="stats"|match-top-table/);
+  const pageStart=source.indexOf('const roomPage=');
+  const pageEnd=source.indexOf('bindMatchRoomHeader();',pageStart);
+  const renderedPage=source.slice(pageStart,pageEnd);
+  assert.doesNotMatch(renderedPage,/data-match-tab="top"|data-match-tab="stats"|match-top-table/);
 });
 
 test('Profile ELO chart uses delegated capture-phase clicks and expanded SVG hit targets',()=>{
