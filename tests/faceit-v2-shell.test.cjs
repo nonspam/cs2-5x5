@@ -299,3 +299,20 @@ test('Profile ELO point actions resolve the canonical match id before opening it
   assert.match(app,/openMatchDetail\(resolvedMatch\.match_id\)/);
   assert.match(app,/Матч для этой точки ELO не найден в текущей базе/);
 });
+
+test('Section headers and active controls use the shared lime accent across core pages',()=>{
+  assert.match(app,/class="section stats-page"/);
+  assert.match(app,/class="section base-page"/);
+  assert.match(app,/class="section teams-page"/);
+  assert.match(app,/class="section records-page"/);
+  assert.match(app,/class="section maps-page"/);
+  assert.match(css,/:root\\{--site-lime:#b8ef45/);
+  for(const page of ['stats-page','base-page','teams-page','records-page','maps-page']){
+    assert.match(css,new RegExp('\\\\.'+page+'(?:>|\\\\s).*section-head'));
+  }
+  assert.match(css,/\.maps-page \.map-card\.selected\\{[\\s\\S]*border:2px solid var\\(--site-lime\\)/);
+  assert.match(css,/\.base-page>.section-head \.toolbar \.btn\.primary/);
+  assert.match(css,/\.teams-page>.section-head \.toolbar \.btn\.primary/);
+  assert.match(css,/\.records-page>.section-head \.toolbar \.btn\.primary/);
+  assert.match(css,/padding-left:3px!important/);
+});
