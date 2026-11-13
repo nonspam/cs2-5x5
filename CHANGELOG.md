@@ -3498,3 +3498,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T18:37:22+03:00 — fix: preserve team labels and navigation from Match Room
+
+- Commit: 2b023d4ddd7d5657980bf7772b3c4c3f6d32e2d2
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
