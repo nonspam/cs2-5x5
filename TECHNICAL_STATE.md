@@ -1,5 +1,12 @@
 
 
+## 2026-11-14 — Match Room temporary initial avatars
+
+- Match Room now uses a consistent circular avatar placeholder containing the first letter of each player's display name. This is scoped to the Match Room and its player search; other profile/avatar surfaces retain their existing behavior.
+- This is a temporary visual fallback until a trusted avatar source is connected. No generated profile photos or invented player imagery are used.
+- Added a regression test for the Match Room avatar renderer. No browser QA or deployment performed.
+
+
 ## 2026-11-14 — Match Room screenshot follow-up
 
 - Fixed two visual integration defects found in the user's screenshot: the global `main` max-width was constraining the room layout, and legacy `.match-room-hero-art` rules hid the map banner behind its parent background. The Match Room now explicitly uses the full viewport width and layers the map artwork between the hero background and readable foreground content.

@@ -367,3 +367,11 @@ test('Match Room main content is full-width and not constrained by the global ma
   assert.match(css,/#matchRoomPage>\.match-room-content\{display:block!important;width:100%!important;max-width:none!important/);
   assert.match(css,/#matchRoomPage \.match-room-columns\{width:100%!important;max-width:none!important/);
 });
+
+test('Match Room uses temporary first-letter avatars instead of image placeholders',()=>{
+  assert.match(app,/function matchRoomInitialAvatar\(id,size='md'\)/);
+  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
+  assert.ok(source.includes('matchRoomInitialAvatar('));
+  assert.doesNotMatch(source,/profileAvatarMarkup\(/);
+  assert.match(source,/matchRoomInitialAvatar\(p\.player_id,'xs'\)/);
+});
