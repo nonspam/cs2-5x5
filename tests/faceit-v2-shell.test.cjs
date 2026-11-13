@@ -356,3 +356,14 @@ test('match room excludes unavailable demo, matchmaking, deposit and promotional
   const source=app.slice(start,end);
   for(const label of ['СМОТРЕТЬ ДЕМО','К ПОДБОРУ ИГРОКОВ','WINLINE','ВНЕСИТЕ ДЕПОЗИТ']) assert.ok(!source.includes(label),'match room excludes '+label);
 });
+
+test('Match Room hero map artwork is layered above the hero background and below readable content',()=>{
+  assert.match(css,/#matchRoomPage \.match-room-hero-art\{display:block!important;position:absolute!important;z-index:0!important/);
+  assert.match(css,/#matchRoomPage \.match-room-hero-art:after\{content:""!important;display:block!important;position:absolute!important;z-index:1!important/);
+  assert.match(css,/#matchRoomPage \.match-room-hero-meta,#matchRoomPage \.match-room-result\{position:relative!important;z-index:2!important/);
+  assert.match(css,/#matchRoomPage \.match-room-hero-art \.map-thumb-photo\{display:block!important/);
+});
+test('Match Room main content is full-width and not constrained by the global main max-width',()=>{
+  assert.match(css,/#matchRoomPage>\.match-room-content\{display:block!important;width:100%!important;max-width:none!important/);
+  assert.match(css,/#matchRoomPage \.match-room-columns\{width:100%!important;max-width:none!important/);
+});

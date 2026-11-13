@@ -5826,3 +5826,20 @@ body.match-room-open .modal-back{z-index:12050!important}
 .match-room-center-column .match-map-row-cover .match-map-row-copy small{color:#e2e2e2!important;font-size:8px!important;font-weight:850!important;letter-spacing:.14em!important}
 .match-room-center-column .match-map-row-cover .match-map-row-copy strong{color:#fff!important;font-size:18px!important;line-height:1.05!important;font-weight:950!important;text-shadow:0 2px 10px #000!important}
 .match-room-center-column .match-map-row-cover .match-map-row-score{position:relative!important;z-index:2!important;align-self:end!important;color:#fff!important;font-size:21px!important;line-height:1!important;font-weight:950!important;text-shadow:0 2px 10px #000!important;white-space:nowrap!important}
+
+
+/* 2026-11-14 — Match Room screenshot corrections */
+#matchRoomPage.match-room-page{width:100vw!important;max-width:none!important;min-width:0!important;left:0!important;right:0!important}
+#matchRoomPage>.match-room-content{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:18px clamp(16px,2vw,34px) 38px!important}
+#matchRoomPage .match-room-hero{position:relative!important;isolation:isolate!important;overflow:hidden!important}
+#matchRoomPage .match-room-hero-art{display:block!important;position:absolute!important;z-index:0!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;opacity:1!important;pointer-events:none!important}
+#matchRoomPage .match-room-hero-art:after{content:""!important;display:block!important;position:absolute!important;z-index:1!important;inset:0!important;background:linear-gradient(90deg,rgba(0,0,0,.52) 0%,rgba(0,0,0,.20) 48%,rgba(0,0,0,.52) 100%),linear-gradient(0deg,rgba(0,0,0,.30),rgba(0,0,0,.08))!important;pointer-events:none!important}
+#matchRoomPage .match-room-hero-art .map-thumb{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;border-radius:0!important;box-shadow:none!important}
+#matchRoomPage .match-room-hero-art .map-thumb-photo{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 44%!important;opacity:1!important;filter:none!important}
+#matchRoomPage .match-room-hero-art .map-logo-mini{display:none!important}
+#matchRoomPage .match-room-hero-meta,#matchRoomPage .match-room-result{position:relative!important;z-index:2!important}
+#matchRoomPage .match-room-columns{width:100%!important;max-width:none!important;grid-template-columns:minmax(0,1fr) minmax(320px,1.12fr) minmax(0,1fr)!important;gap:clamp(14px,1.5vw,26px)!important}
+#matchRoomPage .match-room-team{min-width:0!important}
+#matchRoomPage .match-room-center-column{min-width:0!important}
+@media(max-width:1100px){#matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr) minmax(260px,1fr)!important}}
+@media(max-width:760px){#matchRoomPage>.match-room-content{padding:14px 12px 28px!important}#matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr)!important}}

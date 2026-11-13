@@ -1,5 +1,11 @@
 
 
+## 2026-11-14 — Match Room screenshot follow-up
+
+- Fixed two visual integration defects found in the user's screenshot: the global `main` max-width was constraining the room layout, and legacy `.match-room-hero-art` rules hid the map banner behind its parent background. The Match Room now explicitly uses the full viewport width and layers the map artwork between the hero background and readable foreground content.
+- Added regression contracts for hero image visibility/layer order and full-width content. No browser QA or deployment performed; the screenshot itself was used as visual evidence. No DB/SQL/schema changes or edits outside `faceit-dev`.
+
+
 ## 2026-11-13 — Match Room Quality Gate confirmation
 
 - Corrected the full-page Match Room renderer, route restoration contract, and map-card artwork styling after CI exposed stale modal-era assertions and two integration issues.
