@@ -202,3 +202,10 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - `index.html` asset cache key bumped to `faceit-profile-match-top-elo-hitfix-20261113-v1`.
 - Tests added/updated in `tests/faceit-v2-shell.test.cjs`.
 - CI/browser QA/deployed SHA are not confirmed. No DB writes, SQL, schema/RLS/grants/migrations, main, or production changes.
+
+
+## 2026-11-13 — Statistics player table: remove Matches column
+- Corrected the **СТАТИСТИКА ИГРОКОВ** table in `players(v)`: removed the Matches header and per-player match-count cell; Maps remains the first gameplay count column.
+- Did not alter profile `gameHistory`, other statistics, sorting, aggregates, or match data.
+- Added a focused regression contract in `tests/faceit-v2-shell.test.cjs` and bumped the app JS cache key to `faceit-statistics-maps-only-20261113-v1`.
+- Updated only `faceit-dev`; no DB writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
