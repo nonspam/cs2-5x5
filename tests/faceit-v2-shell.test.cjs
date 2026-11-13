@@ -312,3 +312,15 @@ test('Section headers and active controls use the shared lime accent across core
   assert.ok(css.includes('.records-page>.section-head .toolbar .btn.primary'));
   assert.ok(css.includes('padding-left:3px!important'));
 });
+
+test('Nested Maps, Teams and Records headers get lime backgrounds while titles stay white',()=>{
+  assert.ok(css.includes('.maps-page .map-lab-panel>.section-head'));
+  assert.ok(css.includes('.teams-page .team-roster-picker>.section-head'));
+  assert.ok(css.includes('.records-page .record-block>.section-head'));
+  assert.ok(css.includes('.records-page>.section>.section-head'));
+  assert.ok(css.includes('.maps-page .map-lab-panel>.section-head h3{color:#fff!important'));
+  assert.ok(css.includes('.teams-page .team-roster-picker>.section-head h3{color:#fff!important'));
+  assert.ok(css.includes('.records-page .record-block>.section-head h3{color:#fff!important'));
+  assert.ok(css.includes('.stats-page>.section-head h2,.base-page>.section-head h2'));
+  assert.ok(css.includes('color:#fff!important'));
+});
