@@ -5843,3 +5843,127 @@ body.match-room-open .modal-back{z-index:12050!important}
 #matchRoomPage .match-room-center-column{min-width:0!important}
 @media(max-width:1100px){#matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr) minmax(260px,1fr)!important}}
 @media(max-width:760px){#matchRoomPage>.match-room-content{padding:14px 12px 28px!important}#matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr)!important}}
+
+
+/* 2026-11-14 — Match Room reference geometry and ELO badge refinement */
+#matchRoomPage>.match-room-content{
+  width:100%!important;max-width:none!important;min-width:0!important;
+  padding:18px clamp(18px,1.75vw,32px) 38px!important;
+}
+#matchRoomPage .match-room-hero{min-height:146px!important}
+#matchRoomPage .match-room-columns{
+  display:grid!important;width:100%!important;max-width:none!important;min-width:0!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.18fr) minmax(0,1fr)!important;
+  gap:24px!important;align-items:start!important;margin-top:22px!important;
+}
+#matchRoomPage .match-room-team .match-team-roster{gap:16px!important}
+#matchRoomPage .match-room-team .match-player-card-ref{
+  display:flex!important;flex-direction:column!important;justify-content:space-between!important;
+  min-height:116px!important;padding:0!important;gap:0!important;
+  border:1px solid #242424!important;border-radius:8px!important;background:#101010!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-identity{
+  display:grid!important;grid-template-columns:56px minmax(0,1fr) auto 30px!important;
+  align-items:center!important;gap:10px!important;min-height:70px!important;
+  margin:0!important;padding:7px 10px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap,
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap .player-avatar{
+  display:grid!important;position:relative!important;inset:auto!important;
+  width:56px!important;height:56px!important;min-width:56px!important;flex:0 0 56px!important;
+  place-items:center!important;border-radius:50%!important;overflow:hidden!important;
+  border:1px solid #363636!important;background:#292929!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap .player-avatar>span{
+  display:grid!important;position:relative!important;z-index:2!important;width:100%!important;height:100%!important;
+  place-items:center!important;color:#f5f5f5!important;font-size:17px!important;font-weight:850!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-main strong{
+  color:#f4f4f4!important;font-size:14px!important;font-weight:800!important;line-height:1.2!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-rating{
+  color:#f2f2f2!important;font-size:13px!important;font-weight:850!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-level{
+  width:30px!important;height:30px!important;min-width:30px!important;
+  display:grid!important;place-items:center!important;border-radius:50%!important;
+  background:#090909!important;color:#fff!important;font-size:10px!important;font-weight:900!important;
+  border:2px solid #858585!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-grid{
+  display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  min-height:44px!important;margin:0!important;padding:4px 4px 3px!important;
+  border-top:1px solid #292929!important;background:#090909!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-metric{
+  min-height:36px!important;display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;gap:3px!important;
+  border-right:1px solid #242424!important;padding:1px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-metric b{
+  color:#f4f4f4!important;font-size:12px!important;font-weight:850!important;
+  line-height:1.05!important;white-space:nowrap!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-metric small{
+  color:#858585!important;font-size:7px!important;line-height:1.05!important;white-space:nowrap!important;
+}
+#matchRoomPage .match-room-center-column .match-map-row-cover{
+  height:94px!important;min-height:94px!important;padding:12px 14px!important;
+  border:1px solid #292929!important;background:#111!important;
+}
+#matchRoomPage .match-room-center-column .match-map-row-cover:after{
+  background:linear-gradient(90deg,rgba(0,0,0,.18),rgba(0,0,0,.02) 70%),linear-gradient(0deg,rgba(0,0,0,.25),transparent 72%)!important;
+}
+#matchRoomPage .match-room-center-column .match-map-row-cover .match-map-row-thumb .map-thumb-photo{
+  opacity:1!important;filter:none!important;object-position:center 42%!important;
+}
+#matchRoomPage .match-room-hero .match-room-side{gap:12px!important;min-width:0!important}
+#matchRoomPage .match-room-hero .match-room-side.right{flex-direction:row-reverse!important}
+#matchRoomPage .match-room-team-elo{
+  display:flex!important;align-items:center!important;gap:8px!important;flex:0 0 auto!important;
+  padding:7px 8px!important;border:1px solid rgba(20,20,20,.9)!important;
+  border-radius:9px!important;background:rgba(0,0,0,.76)!important;
+}
+#matchRoomPage .match-room-team-elo>b{
+  color:#f4f4f4!important;font-size:15px!important;font-weight:900!important;
+  font-variant-numeric:tabular-nums!important;
+}
+#matchRoomPage .match-room-team-elo .match-player-level{
+  display:grid!important;place-items:center!important;width:28px!important;height:28px!important;
+  min-width:28px!important;border-radius:50%!important;background:#080808!important;
+  color:#fff!important;font-size:10px!important;font-weight:900!important;border:3px solid #ff9d00!important;
+}
+#matchRoomPage .elo-level-1,#matchRoomPage .elo-level-2,#matchRoomPage .elo-level-3{border-color:#21c55d!important}
+#matchRoomPage .elo-level-4,#matchRoomPage .elo-level-5,#matchRoomPage .elo-level-6{border-color:#facc15!important}
+#matchRoomPage .elo-level-7,#matchRoomPage .elo-level-8,#matchRoomPage .elo-level-9{border-color:#f97316!important}
+#matchRoomPage .elo-level-10{border-color:#ef4444!important}
+#matchRoomPage .elo-level-unknown{border-color:#777!important}
+#matchRoomPage .match-room-side.winner .match-room-team-score{color:#00d15b!important}
+#matchRoomPage .match-room-side:not(.winner) .match-room-team-score{color:#f3f3f3!important}
+@media(max-width:1100px){
+ #matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr) minmax(260px,1fr)!important;gap:18px!important}
+ #matchRoomPage .match-room-center-column{grid-column:1/-1!important;grid-row:1!important}
+ #matchRoomPage .match-room-center-column .match-room-map-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+ #matchRoomPage>.match-room-content{padding:14px 12px 28px!important}
+ #matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr)!important;gap:18px!important}
+ #matchRoomPage .match-room-center-column{grid-column:auto!important;grid-row:auto!important}
+ #matchRoomPage .match-room-center-column .match-room-map-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #matchRoomPage .match-room-team .match-player-card-ref{min-height:108px!important}
+ #matchRoomPage .match-room-team .match-player-card-ref .match-player-identity{grid-template-columns:44px minmax(0,1fr) auto 28px!important;min-height:64px!important;gap:8px!important}
+ #matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap,
+ #matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap .player-avatar{width:44px!important;height:44px!important;min-width:44px!important;flex-basis:44px!important}
+ #matchRoomPage .match-room-hero{min-height:145px!important;padding:12px!important}
+ #matchRoomPage .match-room-hero .match-room-side{gap:6px!important}
+ #matchRoomPage .match-room-hero .match-room-faction-info strong{font-size:12px!important}
+ #matchRoomPage .match-room-hero .match-room-team-elo{gap:4px!important;padding:4px!important}
+ #matchRoomPage .match-room-hero .match-room-team-elo>b{font-size:11px!important}
+}
+@media(max-width:480px){
+ #matchRoomPage .match-room-center-column .match-room-map-list{grid-template-columns:minmax(0,1fr)!important}
+ #matchRoomPage .match-room-hero .match-room-result{grid-template-columns:minmax(0,1fr)!important}
+ #matchRoomPage .match-room-hero .match-room-side,
+ #matchRoomPage .match-room-hero .match-room-side.right{flex-direction:row!important;justify-content:center!important;text-align:center!important}
+ #matchRoomPage .match-room-hero .match-room-score{grid-row:2!important;justify-content:center!important}
+}

@@ -1,5 +1,14 @@
 
 
+## 2026-11-14 — Match Room precision pass
+
+- Rebound temporary avatar initials to the resolved display name (including guest rows and player search), rather than deriving the initial from an internal ID.
+- Added team-average CS2 ELO badges and circular level indicators using live CS2 ELO V3 values; level ring colors follow the project's own level value. No external FACEIT ELO or country flags are fabricated.
+- Tightened desktop geometry against the approved 1492px reference: content side padding 1.75vw (26px at 1492px), 1:1.18:1 columns with 24px gaps, 146px match banner, 116px player cards, 94px map tiles. Added explicit tablet/mobile layouts.
+- Updated stale tests that still expected photo-avatar rendering after the owner requested temporary initials; added tests for guest-safe initials, ELO badges, reference geometry, and responsive breakpoints.
+- Visual browser QA and DEV deployment have not been run. Automated CI validates syntax and DOM/CSS contracts, not pixel-level output.
+
+
 ## 2026-11-14 — Match Room temporary initial avatars
 
 - Match Room now uses a consistent circular avatar placeholder containing the first letter of each player's display name. This is scoped to the Match Room and its player search; other profile/avatar surfaces retain their existing behavior.

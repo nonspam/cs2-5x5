@@ -233,7 +233,7 @@ test('Match Overview player metrics are one FACEIT-style strip and player names 
 
 test('Match Overview player card follows the FACEIT single-surface column layout',()=>{
   assert.match(app,/match-career-grid/);
-  assert.match(app,/profileAvatarMarkup\(r\.id,'md'\)/);
+  assert.match(app,/matchRoomInitialAvatar\(r\.id,'md',r\.name\)/);
   assert.match(app,/match-player-rating/);
   assert.match(app,/match-player-level/);
   assert.match(css,/\.match-room-team \.match-player-card-ref\{[\s\S]*padding:10px 11px 8px 52px!important/);
@@ -246,7 +246,7 @@ test('Match Overview player card follows the FACEIT single-surface column layout
 
 test('Match Overview corrective player card keeps avatar visible and restores readable proportions',()=>{
   assert.match(app,/match-player-avatar-wrap/);
-  assert.match(app,/match-player-avatar-wrap[^]*profileAvatarMarkup\(r\.id,'md'\)/);
+  assert.match(app,/match-player-avatar-wrap[^]*matchRoomInitialAvatar\(r\.id,'md',r\.name\)/);
   assert.match(css,/min-height:126px!important/);
   assert.match(css,/grid-template-columns:40px minmax\(0,1fr\) auto 30px!important/);
   assert.match(css,/\.match-player-avatar-wrap \.player-avatar\{[\s\S]*width:40px!important;height:40px!important/);
@@ -374,4 +374,29 @@ test('Match Room uses temporary first-letter avatars instead of image placeholde
   assert.ok(source.includes('matchRoomInitialAvatar('));
   assert.doesNotMatch(source,/profileAvatarMarkup\(/);
   assert.match(source,/matchRoomInitialAvatar\(p\.player_id,'xs'\)/);
+});
+
+test('Match Room uses resolved player display names for initials, including guests and search results',()=>{
+  assert.match(app,/function matchRoomInitialAvatar\(id,size='md',displayName=''\)/);
+  assert.match(app,/matchRoomInitialAvatar\(r\.id,'md',r\.name\)/);
+  assert.match(app,/matchRoomInitialAvatar\(candidate\?\.id,'md',candidate\?\.name\)/);
+  assert.match(app,/matchRoomInitialAvatar\(p\.player_id,'xs',p\.display_name\)/);
+});
+test('Match Room hero includes real team-average ELO and a level ring derived from CS2 ELO V3',()=>{
+  assert.match(app,/const teamLevel=rs=>/);
+  assert.match(app,/const eloBadge=\(rating,level\)=>/);
+  assert.match(app,/eloBadge\(elo,teamLevel\(rs\)\)/);
+  assert.match(app,/CS2EloV3\?\.player\(r\.id\)\?\.level/);
+});
+test('Match Room desktop geometry follows the approved 1 : 1.18 : 1 three-column reference',()=>{
+  assert.match(css,/#matchRoomPage \.match-room-columns\{[^}]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1\.18fr\) minmax\(0,1fr\)!important/);
+  assert.match(css,/#matchRoomPage>\.match-room-content\{[^}]*padding:18px clamp\(18px,1\.75vw,32px\) 38px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-hero\{[^}]*min-height:146px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref\{[^}]*min-height:116px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{[^}]*height:94px!important/);
+});
+test('Match Room has explicit tablet and mobile layout breakpoints without horizontal overflow',()=>{
+  assert.match(css,/@media\(max-width:1100px\)\{#matchRoomPage \.match-room-columns\{grid-template-columns:minmax\(0,1fr\) minmax\(260px,1fr\)!important\}/);
+  assert.match(css,/@media\(max-width:760px\)\{#matchRoomPage>\.match-room-content/);
+  assert.match(css,/#matchRoomPage\.match-room-page\{[^}]*overflow-x:hidden!important/);
 });
