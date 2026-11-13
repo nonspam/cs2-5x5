@@ -5704,3 +5704,41 @@ table td,table th,tr,.divider,hr{
 }
 .records-page>.section>.section-head h3{color:#fff!important}
 .records-page>.section>.section-head .muted{color:#263018!important}
+
+
+/* 2026-11-13 — Restore the soft lime-to-charcoal header treatment (avoid solid neon fills). */
+.stats-page>.section-head,
+.base-page>.section-head,
+.teams-page>.section-head,
+.records-page>.section-head,
+.maps-page>.section-head,
+.maps-page>.map-selected-head>.section-head,
+.maps-page .map-lab-panel>.section-head,
+.teams-page .team-roster-picker>.section-head,
+.records-page .record-block>.section-head,
+.records-page>.section>.section-head{
+  background:linear-gradient(100deg,rgba(184,239,69,.20) 0%,rgba(115,151,49,.13) 34%,rgba(30,36,28,.72) 70%,rgba(12,15,17,.96) 100%)!important;
+  border-color:rgba(184,239,69,.28)!important;
+  border-left-color:rgba(184,239,69,.58)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+.stats-page>.section-head h2,
+.base-page>.section-head h2,
+.teams-page>.section-head h2,
+.records-page>.section-head h2,
+.maps-page>.section-head h2,
+.maps-page>.map-selected-head>.section-head h3,
+.maps-page .map-lab-panel>.section-head h3,
+.teams-page .team-roster-picker>.section-head h3,
+.records-page .record-block>.section-head h3,
+.records-page>.section>.section-head h3{color:#fff!important}
+.stats-page>.section-head .muted,
+.base-page>.section-head .muted,
+.teams-page>.section-head .muted,
+.records-page>.section-head .muted,
+.maps-page>.section-head .muted,
+.maps-page>.map-selected-head>.section-head .muted,
+.maps-page .map-lab-panel>.section-head .muted,
+.teams-page .team-roster-picker>.section-head .muted,
+.records-page .record-block>.section-head .muted,
+.records-page>.section>.section-head .muted{color:#c6cbbd!important}
