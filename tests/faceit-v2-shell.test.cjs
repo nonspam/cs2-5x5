@@ -334,10 +334,10 @@ test('Section headers use soft lime-to-charcoal gradients instead of solid lime 
 });
 
 test('Lime gradient remains only on main page headers, not nested module headers',()=>{
-  for(const selector of ['.maps-page .map-selected-head>.section-head','.maps-page .map-lab-panel>.section-head','.teams-page .team-roster-picker>.section-head','.records-page .record-block>.section-head','.records-page>.section>.section-head']){
-    assert.ok(css.includes(selector+'{'));
-  }
-  assert.ok(css.includes('background:transparent!important'));
+  for(const selector of ['.maps-page .map-selected-head>.section-head','.maps-page .map-lab-panel>.section-head','.teams-page .team-roster-picker>.section-head','.records-page .record-block>.section-head','.records-page>.section>.section-head']) assert.ok(css.includes(selector));
+  const reset=css.slice(css.lastIndexOf('/* 2026-11-13 — Reduce lime usage'));
+  assert.ok(reset.includes('background:transparent!important'));
+  assert.ok(reset.includes('border:0!important'));
   assert.ok(css.includes('.stats-page>.section-head'));
   assert.ok(css.includes('.base-page>.section-head'));
   assert.ok(css.includes('.teams-page>.section-head'));
