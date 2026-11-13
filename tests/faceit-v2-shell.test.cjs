@@ -8,6 +8,7 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const app = read('app_v57.js');
 const account = read('account_module.js');
 const css = read('style_v57.css');
+const elo = read('elo_v3.js');
 
 test('FACEIT V2 exposes existing site sections from one profile-inspired rail', () => {
   assert.match(app, /function faceitAppRailMarkup\(\)/);
@@ -83,6 +84,20 @@ test('player center uses the compact requested column order and removes legacy r
   assert.ok(source.indexOf('<th>+/−</th>') < source.indexOf('<th>ELO</th>'));
 });
 
+test('ELO V3 starts every player at 1000 and ignores matches before the reset cutoff',()=>{
+  assert.match(elo,/const START_RATING=1000/);
+  assert.match(elo,/const RESET_AT=Date\.parse\('2026-11-13T03:08:26\+03:00'\)/);
+  assert.match(elo,/\.filter\(match=>\{[\s\S]*timestamp>=RESET_AT/);
+  assert.match(elo,/resetPolicy:'Все игроки стартуют с 1000/);
+});
+test('profile game history keeps only the map count row',()=>{
+  const start=app.indexOf("const gameHistory=");
+  const end=app.indexOf("const activity=",start);
+  const source=app.slice(start,end);
+  assert.ok(start>=0&&end>start);
+  assert.match(source,/<span>Карты<\/span>/);
+  assert.doesNotMatch(source,/<span>Матчи<\/span>/);
+});
 test('profile and route workspaces keep the rail fixed and scroll their content panes', () => {
   assert.match(css, /\.faceit-exact-shell:not\(\.faceit-route-shell\) \.faceit-exact-content\{height:100vh;min-height:0;overflow-y:auto/);
   assert.match(css, /\.faceit-route-shell\{height:100vh;min-height:100vh!important;overflow:hidden!important;grid-template-columns:170px minmax\(0,1fr\)!important\}/);
