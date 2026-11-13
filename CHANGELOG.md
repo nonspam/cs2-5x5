@@ -3146,3 +3146,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:12:55+03:00 — Fix Statistics column regression test
+
+- Commit: 8af54dcccc447a842d47046683de0588950a4b4d
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
