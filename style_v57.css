@@ -5647,3 +5647,60 @@ table td,table th,tr,.divider,hr{
 }
 .stats-page>.section-head h2,.base-page>.section-head h2,.teams-page>.section-head h2,.records-page>.section-head h2,.maps-page>.section-head h2,.maps-page>.map-selected-head>.section-head h3{color:#171d0c!important}
 .stats-page>.section-head .muted,.base-page>.section-head .muted,.teams-page>.section-head .muted,.records-page>.section-head .muted,.maps-page>.section-head .muted,.maps-page>.map-selected-head>.section-head .muted{color:#35421d!important}
+
+
+/* 2026-11-13 — Lime header strips: keep section names white, tint nested modules too. */
+.stats-page>.section-head,.base-page>.section-head,.teams-page>.section-head,.records-page>.section-head,.maps-page>.section-head,.maps-page>.map-selected-head>.section-head{
+  background:var(--site-lime)!important;
+  border-color:var(--site-lime)!important;
+  border-left-color:var(--site-lime)!important;
+}
+.stats-page>.section-head h2,.base-page>.section-head h2,.teams-page>.section-head h2,.records-page>.section-head h2,.maps-page>.section-head h2,.maps-page>.map-selected-head>.section-head h3{
+  color:#fff!important;
+}
+.stats-page>.section-head .muted,.base-page>.section-head .muted,.teams-page>.section-head .muted,.records-page>.section-head .muted,.maps-page>.section-head .muted,.maps-page>.map-selected-head>.section-head .muted{
+  color:#263018!important;
+}
+/* Maps: the Map Lab heading is a nested section, not just the page heading. */
+.maps-page .map-lab-panel>.section-head{
+  background:var(--site-lime)!important;
+  border:1px solid var(--site-lime)!important;
+  border-left:4px solid var(--site-lime)!important;
+  border-radius:7px!important;
+  padding:10px 14px!important;
+  margin:0 0 14px!important;
+}
+.maps-page .map-lab-panel>.section-head h3{color:#fff!important;margin:0 0 3px!important}
+.maps-page .map-lab-panel>.section-head .muted{color:#263018!important}
+/* Teams: tint the Players picker header only; keep the roster itself unchanged. */
+.teams-page .team-roster-picker>.section-head{
+  background:var(--site-lime)!important;
+  border:1px solid var(--site-lime)!important;
+  border-left:4px solid var(--site-lime)!important;
+  border-radius:7px!important;
+  padding:10px 14px!important;
+  margin:0 0 14px!important;
+}
+.teams-page .team-roster-picker>.section-head h3{color:#fff!important;margin:0 0 3px!important}
+.teams-page .team-roster-picker>.section-head .muted{color:#263018!important}
+/* Records: every Top 10 / category block gets the lime strip, title stays white. */
+.records-page .record-block>.section-head{
+  background:var(--site-lime)!important;
+  border:1px solid var(--site-lime)!important;
+  border-left:4px solid var(--site-lime)!important;
+  border-radius:7px!important;
+  padding:9px 12px!important;
+  margin:0 0 12px!important;
+}
+.records-page .record-block>.section-head h3{color:#fff!important;margin:0!important}
+.records-page .record-block>.section-head .muted{color:#263018!important}
+.records-page>.section>.section-head{
+  background:var(--site-lime)!important;
+  border:1px solid var(--site-lime)!important;
+  border-left:4px solid var(--site-lime)!important;
+  border-radius:7px!important;
+  padding:9px 12px!important;
+  margin:0 0 12px!important;
+}
+.records-page>.section>.section-head h3{color:#fff!important}
+.records-page>.section>.section-head .muted{color:#263018!important}
