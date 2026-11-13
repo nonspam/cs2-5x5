@@ -232,3 +232,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Kept descriptions dark for contrast and left data rows/cards unchanged.
 - Bumped stylesheet cache key to `lime-nested-header-strips-20261113-v2`; added regression contracts.
 - Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
+
+
+## 2026-11-13 — Restore soft lime-to-charcoal section headers
+- Replaced harsh solid lime fills on primary and nested section strips with a restrained left-to-right gradient: soft lime tint fading through muted olive/charcoal into near-black.
+- Kept section titles white and subtitles muted; retained a subtle lime accent border.
+- Applied consistently to Player Statistics, Matches/Series, Teams, Records, Maps, Map Lab, Players picker, and record category headers.
+- Bumped stylesheet cache key to `lime-soft-gradient-20261113-v3`; added regression coverage.
+- Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
