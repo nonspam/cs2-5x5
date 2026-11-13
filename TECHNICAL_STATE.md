@@ -1,4 +1,10 @@
 
+## 2026-11-13 — BO3 Top K/D row colors
+
+- In the dedicated BO3 Top table, K/D above 1 colors K through +/− green; K/D exactly 1 keeps those cells white; K/D below 1 colors them red.
+- Player name and AVG remain unchanged. No WG/AVG styling, match-home behavior, database logic, or other sections were changed.
+- Added static regression contracts and refreshed app/CSS cache keys. Browser QA and live DEV deployment are not verified.
+
 
 ## BO3 scope guard — 2026-11-13
 
