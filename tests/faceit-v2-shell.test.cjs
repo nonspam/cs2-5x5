@@ -185,12 +185,13 @@ test('Track and season archive live inside Profile instead of occupying permanen
   assert.ok(profile.includes('widgetSeason.label'));
 });
 
-test('Match Center renders compact player rows, rectangular map score rows and match awards',()=>{
+test('Match Room renders the approved standalone roster, map and veto layout',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);
-  for(const x of ['match-room-hero','match-room-result','match-overview-grid','match-room-center','match-room-map-list','match-map-row','match-room-team','match-stat-teams','match-scoreboard','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','match-awards','match-mvp-card','НАИБОЛЬШИЙ УРОН','KAST','ЭНТРИ-УБИЙСТВА','data-match-tab="overview"','profileSummary(profileMatchesForPlayer','ADR','stat-positive','stat-negative','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
+  for(const x of ['match-room-hero','match-room-result','match-room-team','match-room-center-column','match-room-map-list','match-room-veto','match-room-global-header','matchRoomPlayerSearch','matchRoomAccountMenu','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','profileSummary(profileMatchesForPlayer','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
   assert.doesNotMatch(s,/CS2EloV3\?\.playerData/);
-  assert.doesNotMatch(s,/AVG MAP|5x5 stats|match local/i);
+  assert.doesNotMatch(s,/СМОТРЕТЬ ДЕМО|К ПОДБОРУ ИГРОКОВ|WINLINE|ВНЕСИТЕ ДЕПОЗИТ/);
 });
+
 test('Match Center responsive styles include full-screen layout and map artwork',()=>{
   for(const x of ['.match-detail-modal','.match-room-hero','.match-room-layout','.match-room-team','.match-room-map-list','.match-scoreboard','.match-detail-tabs']) assert.ok(css.includes(x),x);
   assert.match(css,/@media\(max-width:600px\)/);
@@ -201,17 +202,16 @@ test('Match Center reference styling uses compact rectangular map rows and squar
   assert.ok(css.includes('.match-awards{display:grid'));
 });
 
-test('Match Overview follows the supplied FACEIT room hierarchy without inventing unavailable match metadata',()=>{
+test('Match Room follows the approved full-page FACEIT-inspired hierarchy without inventing match metadata',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(i>=0&&j>i);
-  for(const marker of ['Комната матча','match-room-tabs','match-room-breadcrumbs','match-room-top-meta','match-room-result','ТЕКУЩИЙ AVG ELO','match-room-roster-heading','match-overview-maps match-room-center','match-room-map-list']) assert.ok(source.includes(marker),marker);
+  for(const marker of ['matchRoomPage','match-room-global-header','match-room-hero-meta','match-room-result','match-room-roster-heading','match-room-map-list','match-room-veto','matchRoomPlayerSearch','matchRoomAccountMenu']) assert.ok(source.includes(marker),marker);
   assert.match(source,/CS2EloV3\?\.player\(r\.id\)\?\.rating/);
-  assert.ok(source.includes("metric(c.wins+'/'+c.losses,'W/L')"));
-  assert.doesNotMatch(source,/match-room-rank-mark|>CS2<\/span>/);
-  assert.match(source,/match-room-team-score/);
   assert.match(source,/Пики и баны не записаны в источнике матча/);
-  assert.doesNotMatch(source,/Moscow|XPLAY\.GG|EXT · ПРОГНОЗ|Смотреть демо/);
+  assert.doesNotMatch(source,/Moscow|XPLAY\.GG|EXT · ПРОГНОЗ|Смотреть демо|WINLINE/);
+  assert.doesNotMatch(source,/match-detail-backdrop|data-match-tab=/);
 });
+
 test('Match Overview uses the dark FACEIT surface palette and adapts the scorecard and roster grid',()=>{
   for(const selector of ['.match-room-nav','.match-room-tabs','.match-room-breadcrumbs','.match-room-result','.match-room-roster-heading']) assert.ok(css.includes(selector),selector);
   assert.match(css,/\.match-room-hero\{[\s\S]*background:#121212/);
@@ -264,27 +264,14 @@ test('Match Overview map result tiles use map-specific full-bleed artwork',()=>{
 });
 
 
-test('Match Center moves the BO3 ranking into a dedicated Top tab with resolved names and series metrics',()=>{
+test('Match Room keeps the approved simple match-first view without a separate Top or Statistics tab',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(i>=0&&j>i);
-  assert.match(source,/const isBo3=String\(m\.format\|\|''\)\.toUpperCase\(\)\.includes\('BO3'\)/);
-  assert.match(source,/data-match-tab="top"/);
-  assert.match(source,/data-match-section="top"/);
-  assert.match(source,/resolveSeriesPlayerName/);
-  assert.match(source,/owner\.display_name/);
-  for(const metric of ['<th>K</th>','<th>D</th>','<th>A</th>','<th>K/D</th>','<th>+/−</th>','<th>AVG</th>']) assert.ok(source.includes(metric),metric);
-  assert.match(source,/match-top-tag best/);
-  assert.match(source,/match-top-tag bad/);
-  assert.match(source,/r\.kd>1\?'kd-positive-row':r\.kd<1\?'kd-negative-row':'kd-neutral-row'/);
-  assert.match(css,/\.match-top-table tbody tr\.kd-positive-row td:nth-child\(n\+3\):nth-child\(-n\+7\)/);
-  assert.match(css,/\.match-top-table tbody tr\.kd-neutral-row td:nth-child\(n\+3\):nth-child\(-n\+7\)/);
-  assert.match(css,/\.match-top-table tbody tr\.kd-negative-row td:nth-child\(n\+3\):nth-child\(-n\+7\)/);
-  assert.doesNotMatch(source,/match-overview-top10|MEDIAN|WORST/);
-  assert.match(source,/AVG — среднее количество убийств за карту серии/);
-  assert.match(css,/\.match-top-table\{[\s\S]*width:100%/);
-  assert.match(css,/\.match-top-table tbody tr\.is-best/);
-  assert.match(css,/\.match-top-table tbody tr\.is-bad/);
+  assert.match(source,/match-room-columns/);
+  assert.match(source,/match-room-map-list/);
+  assert.doesNotMatch(source,/data-match-tab="top"|data-match-tab="stats"|match-top-table/);
 });
+
 test('Profile ELO chart uses delegated capture-phase clicks and expanded SVG hit targets',()=>{
   assert.match(app,/const pointFromEvent=e=>/);
   assert.match(app,/root\.addEventListener\('click',[\s\S]*?\},true\)/);
