@@ -5574,3 +5574,68 @@ table td,table th,tr,.divider,hr{
     max-height:120px!important;
   }
 }
+
+
+/* 2026-11-13 — unify section headers and active controls with the site's lime accent. */
+:root{--site-lime:#b8ef45;--site-lime-soft:rgba(184,239,69,.14);--site-lime-border:rgba(184,239,69,.62)}
+.stats-page>.section-head,
+.base-page>.section-head,
+.teams-page>.section-head,
+.records-page>.section-head,
+.maps-page>.section-head,
+.maps-page>.map-selected-head>.section-head{
+  min-height:60px!important;
+  padding:10px 16px!important;
+  margin:0 0 14px!important;
+  border:1px solid var(--site-lime-border)!important;
+  border-left:4px solid var(--site-lime)!important;
+  border-radius:7px!important;
+  background:linear-gradient(100deg,rgba(184,239,69,.19),rgba(184,239,69,.075) 58%,rgba(184,239,69,.035))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+.stats-page>.section-head h2,
+.base-page>.section-head h2,
+.teams-page>.section-head h2,
+.records-page>.section-head h2,
+.maps-page>.section-head h2,
+.maps-page>.map-selected-head>.section-head h3{
+  color:var(--site-lime)!important;
+  margin:0 0 3px!important;
+  padding-left:3px!important;
+  line-height:1.2!important;
+}
+.stats-page>.section-head .muted,
+.base-page>.section-head .muted,
+.teams-page>.section-head .muted,
+.records-page>.section-head .muted,
+.maps-page>.section-head .muted,
+.maps-page>.map-selected-head>.section-head .muted{
+  color:#c0c99f!important;
+  padding-left:3px!important;
+}
+.stats-page>.section-head{padding-top:12px!important;padding-bottom:12px!important}
+.stats-page .stats-season-filter select,
+.records-page>.section-head .control,
+.maps-page>.section-head .control{
+  border-color:var(--site-lime-border)!important;
+  box-shadow:0 0 0 1px rgba(184,239,69,.07)!important;
+}
+.base-page>.section-head .toolbar .btn.primary,
+.teams-page>.section-head .toolbar .btn.primary,
+.records-page>.section-head .toolbar .btn.primary{
+  color:#14190a!important;
+  background:var(--site-lime)!important;
+  border-color:var(--site-lime)!important;
+  box-shadow:0 0 16px rgba(184,239,69,.13)!important;
+}
+.maps-page .map-card.selected{
+  border:2px solid var(--site-lime)!important;
+  box-shadow:0 0 0 1px rgba(184,239,69,.24),0 0 18px rgba(184,239,69,.13)!important;
+}
+.maps-page .map-card.selected .map-card-body b,
+.maps-page .map-card.selected .map-card-body strong{color:var(--site-lime)!important}
+.maps-page .map-selected-head{border-color:var(--site-lime-border)!important}
+.maps-page .map-selected-head .pill{border-color:var(--site-lime-border)!important;color:var(--site-lime)!important;background:var(--site-lime-soft)!important}
+@media(max-width:700px){
+  .stats-page>.section-head,.base-page>.section-head,.teams-page>.section-head,.records-page>.section-head,.maps-page>.section-head,.maps-page>.map-selected-head>.section-head{align-items:flex-start!important;gap:10px!important;flex-wrap:wrap!important;padding:10px 12px!important}
+}
