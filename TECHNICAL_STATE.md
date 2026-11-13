@@ -224,3 +224,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Highlighted active toolbar controls and the selected map card / selected-map subheader with the same lime treatment; ordinary data colors and table content remain unchanged.
 - Bumped `style_v57.css` cache key to `lime-section-headers-20261113-v1`; added CSS regression contracts.
 - Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
+
+
+## 2026-11-13 — Lime section strips: nested modules and white labels
+- Clarified section hierarchy: the primary page header strips use a solid lime background while titles such as `СТАТИСТИКА ИГРОКОВ`, `СТАТИСТИКА ИГР`, `СОСТАВЫ`, `РЕКОРДЫ`, and `КАРТЫ` remain white.
+- Added matching lime header strips to Maps `ЛАБОРАТОРИЯ КАРТ`, Teams `ИГРОКИ`, and each Records block (`ТОП 10`, `МАКСИМУМ УБИЙСТВ`, `ЛУЧШИЙ K/D`, etc.); nested header labels remain white.
+- Kept descriptions dark for contrast and left data rows/cards unchanged.
+- Bumped stylesheet cache key to `lime-nested-header-strips-20261113-v2`; added regression contracts.
+- Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
