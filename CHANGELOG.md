@@ -3422,3 +3422,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:41:33+03:00 — Correct nested header regression test selectors
+
+- Commit: 391578a433a07cf8f0e61582c4a532d2a35ad017
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
