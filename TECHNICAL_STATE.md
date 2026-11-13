@@ -1,3 +1,10 @@
+
+
+## 2026-11-13 — Match Room Quality Gate confirmation
+
+- Corrected the full-page Match Room renderer, route restoration contract, and map-card artwork styling after CI exposed stale modal-era assertions and two integration issues.
+- Final GitHub Quality Gate: **203 passed, 0 failed** on commit `db9b4c5058656d72d74dd850843081b8cb6d82ee`; run [43455191692](https://github.com/nonspam/cs2-5x5/actions/runs/43455191692).
+- This confirms syntax and automated regression tests only. No browser visual QA, live DEV deployment, database writes, SQL, migrations, schema/RLS/grants, `main`, or production changes were performed.
 ## 2026-11-13 — Owner-approved full-page Match Room implementation
 
 - Replaced the old match-detail modal with a dedicated full-viewport Match Room page and a `?match=<id>` URL state that supports browser back/forward and direct link restoration.
