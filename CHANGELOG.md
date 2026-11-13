@@ -3098,3 +3098,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:08:42+03:00 — Reset all player ELO ratings to 1000 from cutoff
+
+- Commit: 9dcf3c5518153854d653358864efb3e8a7027a9d
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	elo_v3.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
