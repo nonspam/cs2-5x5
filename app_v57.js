@@ -245,7 +245,7 @@ function navigateApp(tab,options={}){
  state.tab=tab;state.accountMenuOpen=false;render();
 }
 function restoreAppRouteFromHistory(){
- const routeMatch=(String(window.location.search||'').match(/[?&]match=([^&]+)/)||[])[1]||'';if(window.__activeMatchRoomId&&decodeURIComponent(routeMatch)!==window.__activeMatchRoomId)closeMatchRoom({fromPop:true});
+ const routeMatch=(String(window.location.search||'').match(/[?&]match=([^&]+)/)||[])[1]||'';if(window.__activeMatchRoomId&&decodeURIComponent(routeMatch)!==window.__activeMatchRoomId)closeMatchRoom({fromPop:true});else if(routeMatch&&!window.__activeMatchRoomId)openMatchDetail(decodeURIComponent(routeMatch),{restore:true});
  const tab=appRouteFromLocation();
  if(state.tab===tab)return;
  state.tab=tab;state.accountMenuOpen=false;render();
