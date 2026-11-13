@@ -3049,3 +3049,16 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-13T03:00:20+03:00 — Keep profile asset cache key contract while refreshing Match Center assets
+
+- Commit: 6e3e2d3cb77e6604acb2bb01a056a4d1f57c85f9
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
