@@ -3573,3 +3573,18 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T01:15:14+03:00 — fix: restore full-width Match Room map hero artwork
+
+- Commit: 09df89358668cbe0eed03a95d890bafe4f0d994f
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
