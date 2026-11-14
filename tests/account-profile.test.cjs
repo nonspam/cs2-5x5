@@ -62,11 +62,13 @@ test('ordinary player accounts do not acquire administrator privileges', () => {
 });
 
 
-test('profile cover background is a single non-repeating image scaled to the profile width', () => {
+test('site wallpaper is a full viewport account-scoped layer rather than a profile cover hero', () => {
   const css = fs.readFileSync(path.join(__dirname, '..', 'style_v57.css'), 'utf8');
-  assert.match(css, /\.faceit-exact-shell\[style\*="background-image"\]\{[\s\S]*?background-repeat:no-repeat!important/);
-  assert.match(css, /background-size:auto,100% auto!important/);
-  assert.match(css, /background-position:center top!important/);
+  assert.match(app, /function accountWallpaperUrl\(\)/);
+  assert.match(app, /document\.body\.style\.setProperty\('--account-wallpaper'/);
+  assert.match(css, /body\.has-account-wallpaper:before\{[\s\S]*?position:fixed;inset:0/);
+  assert.match(css, /background-size:cover;background-position:center;background-repeat:no-repeat/);
+  assert.doesNotMatch(app, /profileCoverStyle|profileCoverUrl|profileCoverFile/);
 });
 
 test('Track fills and centers in the shared route content area while keeping compact panel rhythm', () => {
