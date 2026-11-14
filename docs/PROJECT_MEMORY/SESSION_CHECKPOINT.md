@@ -88,3 +88,10 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Added explicit wallpaper background-image to Profile panel and Match Room page using --account-wallpaper; made inner Profile shell and Match Room content transparent with subtle translucent surfaces. Updated CSS cache key.
 - Commits: CSS 73bbb25a83fd611cc1ca1ebf73e481c2367f5734; index 31cfe855268dd1b97bc09e7ff4615650560e48cc; tests c2980ad2beb2e0b46354ce00fc938104ce3ee644.
 - Status: IN PROGRESS until DEV browser confirms image visible in Profile and Match Room. No deployment, DB/storage policy or production changes.
+
+
+## Owner-approved Teams palette unification (2026-11-15)
+- Owner approved the exact dark graphite palette from the Teams page for Matches, Statistics, Home and Records; Maps is already approved and must remain unchanged. Screenshots show Teams tile #121617 and deep panel/slot #0d1012 with graphite border #2a3035; the Statistics table has a cooler, lighter row fill that should be removed.
+- Added shared CSS surface tokens and scoped overrides: Matches/base table and Match Room player/stat cards; Statistics player table; Home panels/metric tiles/recent games (illustrated hero preserved); Records panels, Top-10 cards and rows. Positive/negative metric colors and lime interactions remain intact. Maps selectors are deliberately untouched.
+- Commits: CSS 41e31ee097a7eb6f0beb6f6496a241ebccc4214f; cache key fbaa22fc8b5921e3d92c29cd01295f5c299bb4ec; regression tests 4e141bbeece3315328fe08f01a30324ceefa8017.
+- Status: IN PROGRESS pending CI and owner screenshot/browser confirmation. No deployment, DB, storage policy or production changes.
