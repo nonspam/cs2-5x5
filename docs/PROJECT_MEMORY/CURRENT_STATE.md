@@ -1,18 +1,19 @@
 # CS2 Analytics — Current State
 
 > Краткая рабочая сводка. Подробная история хранится в DEVELOPMENT_LOG.md и TECHNICAL_STATE.md.
-> Этот файл должен обновляться после каждой законченной задачи.
+> Этот файл обновляется после каждой законченной задачи. Всегда сверяй его с живым репозиторием.
 
 ## Snapshot metadata
 
-- Snapshot prepared: 2026-11-14
+- Snapshot refreshed: 2026-11-14
 - Repository: `nonspam/cs2-5x5`
 - Required branch: `faceit-dev`
-- Last branch HEAD checked while preparing this memory system: `365d5ae5bb32034231e272b8e6d7de18bc0928ca`
-- Last code commit visible before the journal-only HEAD: `bb8c161d9d2d4e66c48a6bf06f1d938286941e62` — linked profile avatars in Match Room.
-- Latest code quality gate: run [43614439431](https://github.com/nonspam/cs2-5x5/actions/runs/43614439431), code commit `bb8c161d9d2d4e66c48a6bf06f1d938286941e62`, **226 passed / 0 failed**. A follow-up docs-only commit was also checked by [run 43615475472](https://github.com/nonspam/cs2-5x5/actions/runs/43615475472), **226 passed / 0 failed**.
-- Snapshot is a repository-source/CI review. It is not a browser QA or deployment confirmation.
-- Before acting on this snapshot, fetch the current branch HEAD again. A newer commit may already exist.
+- Live branch HEAD checked during this refresh: `0c285116b4fe40ab495412121d4ad9f374128962`
+- The last inspected application-code commit remains `bb8c161d9d2d4e66c48a6bf06f1d938286941e62` — linked profile avatars in Match Room. Commits after it in the inspected sequence are project-memory/documentation updates, not new runtime feature work.
+- Latest verified quality gate at this refresh: [run 43615568846](https://github.com/nonspam/cs2-5x5/actions/runs/43615568846), tested commit `dbe2e982cf7b712413ace4981f2424012b46450f`, **226 passed / 0 failed** (verified from job log).
+- The run above predates the current Project Memory hardening commits. Do not describe those newest documentation commits as CI-verified until their own runs complete.
+- This is a repository-source and CI review. It is not browser QA or deployment confirmation.
+- Before acting, fetch the current branch HEAD again. This snapshot SHA is not a permanent pointer.
 
 ## Product direction
 
@@ -22,7 +23,7 @@ FACEIT is a visual/UX reference, not a source of player data or CS2 business rul
 
 ## Current development focus — Match Room
 
-The latest code history on 2026-11-14 confirms active work on the full-page Match Room. This is newer than the original 2026-11-12 Match Overview handoff.
+The latest inspected application-code history on 2026-11-14 confirms active work on the full-page Match Room. This is newer than the original 2026-11-12 Match Overview handoff.
 
 Confirmed from recent commits and source diffs:
 - Full-page Match Room with Overview, Statistics and TOP tabs.
@@ -75,11 +76,11 @@ This is a compact status summary, not a substitute for route inventory and direc
 
 ## Latest verified quality evidence
 
-- GitHub Actions run [43614439431](https://github.com/nonspam/cs2-5x5/actions/runs/43614439431)
-- Commit: `bb8c161d9d2d4e66c48a6bf06f1d938286941e62`
-- Result: **226 passed / 0 failed**
-- Job executed the repository syntax and regression quality gate.
-- This does not mean 226 browser tests or a visual pixel comparison.
+- GitHub Actions run [43615568846](https://github.com/nonspam/cs2-5x5/actions/runs/43615568846)
+- Tested commit: `dbe2e982cf7b712413ace4981f2424012b46450f`
+- Result: **226 passed / 0 failed**, confirmed in the `validate` job log.
+- The job ran repository syntax and Node regression/static contract checks.
+- This does not mean 226 browser tests or a visual pixel comparison. It does not prove browser QA, live DEV data correctness or deployment.
 
 ## Immediate continuation protocol
 
