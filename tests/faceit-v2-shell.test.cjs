@@ -619,7 +619,7 @@ test('Match Room opens as a contained desktop window while the global site rail 
  assert.match(css,/body\.match-room-open:before\{\s*content:"";position:fixed/);
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
  assert.match(css,/@media\(max-width:700px\)[\s\S]*#matchRoomPage\.match-room-page\{inset:0!important/);
- assert.match(app,/function openMatchDetail\(id\)/);
+ assert.match(app,/function openMatchDetail\(id,options=\{\}\)/);
  assert.match(app,/function closeMatchRoom\(options=\{\}\)/);
 });
 
@@ -640,7 +640,7 @@ test('profile window stays mounted and rerenders for all profile sections and pr
 
 test('FACEIT workspace windows meet the persistent side rails without a dim full-page gap',()=>{
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
- assert.match(css,/body\.match-room-open:before\{[\s\S]*background:rgba\(0,0,0,\.14\)/);
+ assert.match(css,/body\.match-room-open:before\{[\s\S]*background:rgba\(0,0,0,\.08\)/);
  assert.match(css,/#playerProfileWindow\.player-profile-window\{[\s\S]*inset:0 64px 0 138px!important/);
  assert.match(css,/\.faceit-utility-rail\{[\s\S]*width:64px!important/);
 });
@@ -674,7 +674,7 @@ test('profile shell cover image is not overwritten by a transparent background s
 test('profile keeps the original horizontal tabs and no longer renders a cover editor',()=>{
  assert.match(app,/faceit-exact-game-tabs/);
  assert.doesNotMatch(app,/profileCoverFile|▧ ОБЛОЖКА|faceit-profile-vertical-nav/);
- assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{display:flex!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{\s*display:flex!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*background:rgba\(8,8,8,\.58\)!important\}/);
 });
 test('utility rail is limited to avatar and VS, with transparent hover-only controls and semantic score colors',()=>{
