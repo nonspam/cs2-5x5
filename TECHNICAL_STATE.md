@@ -1,3 +1,11 @@
+## 2026-11-14 — Match Room sizing, score alignment and stat semantics
+
+- Match Room now covers the full viewport; the underlying profile/page cannot bleed through above the match overlay. The global site search remains on normal site pages and the global header is hidden while the standalone match view is open.
+- Narrowed the centered match content and three-column roster to a 310px / 420px / 310px composition; player cards are taller (94px) and the map tiles are shorter (72px).
+- Score uses a centered score–VS–score group; VS is plain text with no circular badge.
+- Career strip now shows average kills / deaths / assists per played map rather than per-match K/D/A totals. K/D and win rate receive threshold-based semantic colors (K/D >= 1 green; win rate >= 70% green, >=45% yellow, otherwise red).
+- No browser visual QA or deployment performed.
+
 ## 2026-11-14 — Match Room structure aligned to the approved mockup
 
 - Removed the duplicate navigation/search/account header rendered inside Match Room. The existing site header remains global and is kept above the match view; moved player lookup to that global header.

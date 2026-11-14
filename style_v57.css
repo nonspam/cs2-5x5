@@ -6189,3 +6189,81 @@ body.match-room-open>.topbar .site-player-search{display:flex!important}
   background:transparent!important;border:0!important;box-shadow:none!important;
   padding:0!important;border-radius:0!important;
 }
+
+
+/* 2026-11-14 — final compact Match Room proportions and full-viewport cover */
+body.match-room-open{overflow:hidden!important;background:#050505!important}
+body.match-room-open>.topbar{display:none!important}
+body.match-room-open .match-room-page{
+  position:fixed!important;inset:0!important;top:0!important;left:0!important;right:0!important;bottom:0!important;
+  z-index:12050!important;width:100vw!important;height:100dvh!important;min-height:100dvh!important;
+  overflow-y:auto!important;background:#050505!important;
+}
+#matchRoomPage>.match-room-content{
+  width:min(calc(100% - 32px),1140px)!important;max-width:1140px!important;
+  margin:0 auto!important;padding:14px 0 36px!important;background:#050505!important;
+}
+#matchRoomPage .match-room-hero{
+  width:min(100%,1280px)!important;max-width:1280px!important;min-height:126px!important;
+  margin:0 auto!important;padding:12px 16px!important;border-radius:10px!important;
+}
+#matchRoomPage .match-room-result{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+  align-items:center!important;gap:18px!important;
+}
+#matchRoomPage .match-room-score{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-width:100px!important;gap:9px!important;white-space:nowrap!important;
+}
+#matchRoomPage .match-room-score>span{
+  display:inline!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;
+  padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;
+  box-shadow:none!important;font-size:13px!important;line-height:1!important;color:#f3f3f3!important;
+}
+#matchRoomPage .match-room-score b{font-size:clamp(28px,2.4vw,38px)!important}
+#matchRoomPage .match-room-columns{
+  display:grid!important;width:100%!important;max-width:1080px!important;margin:14px auto 0!important;
+  grid-template-columns:minmax(0,310px) minmax(0,420px) minmax(0,310px)!important;
+  justify-content:center!important;gap:20px!important;align-items:start!important;
+}
+#matchRoomPage .match-room-team{width:100%!important;max-width:310px!important;min-width:0!important}
+#matchRoomPage .match-room-team .match-team-roster{gap:10px!important}
+#matchRoomPage .match-room-team .match-player-card-ref{
+  width:100%!important;height:94px!important;min-height:94px!important;max-height:94px!important;
+  border-radius:7px!important;background:#111!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-identity{
+  height:53px!important;min-height:53px!important;max-height:53px!important;
+  grid-template-columns:42px minmax(0,1fr) auto 25px!important;gap:8px!important;padding:5px 9px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap,
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap .player-avatar{
+  width:40px!important;height:40px!important;min-width:40px!important;flex-basis:40px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-grid{
+  grid-template-columns:44px repeat(5,minmax(0,1fr))!important;height:39px!important;min-height:39px!important;max-height:39px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-metric{min-height:37px!important;gap:3px!important}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-metric b{font-size:10px!important}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-metric small{font-size:6px!important}
+#matchRoomPage .match-career-metric.metric-kd.is-good b{color:#18d66b!important}
+#matchRoomPage .match-career-metric.metric-kd.is-bad b{color:#f05252!important}
+#matchRoomPage .match-career-metric.metric-winrate.is-good b{color:#18d66b!important}
+#matchRoomPage .match-career-metric.metric-winrate.is-mid b{color:#e7c44b!important}
+#matchRoomPage .match-career-metric.metric-winrate.is-bad b{color:#f05252!important}
+#matchRoomPage .match-room-center-column{width:100%!important;max-width:420px!important}
+#matchRoomPage .match-room-center-column .match-map-row-cover{height:72px!important;min-height:72px!important}
+@media(max-width:1120px){
+ #matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;max-width:720px!important}
+ #matchRoomPage .match-room-center-column{grid-column:1/-1!important;grid-row:1!important;max-width:none!important}
+ #matchRoomPage .match-room-center-column .match-room-map-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #matchRoomPage .match-room-team{max-width:none!important}
+}
+@media(max-width:700px){
+ #matchRoomPage>.match-room-content{width:calc(100% - 20px)!important}
+ #matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr)!important;max-width:440px!important}
+ #matchRoomPage .match-room-center-column{grid-column:auto!important;grid-row:auto!important}
+ #matchRoomPage .match-room-center-column .match-room-map-list{grid-template-columns:1fr!important}
+ #matchRoomPage .match-room-result{grid-template-columns:minmax(0,1fr)!important}
+ #matchRoomPage .match-room-score{grid-row:2!important}
+}

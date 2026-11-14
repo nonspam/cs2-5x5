@@ -225,6 +225,7 @@ test('Match Overview uses the dark FACEIT surface palette and adapts the scoreca
 test('Match Overview player metrics are one FACEIT-style strip and player names are not forcibly ellipsized',()=>{
   assert.ok(app.includes("metric(c.matches,'МАТЧИ')"));
   assert.ok(app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
+  assert.ok(app.includes("metric(fmt(c.avg,1)+' / '+fmt(c.avgDeaths,1)+' / '+fmt(c.avgAssists,1),'AVG K/D/A')"));
   assert.ok(app.includes("metric(c.matches?fmt(c.wr,0)+'%':'—','WIN RATE')"));
   assert.match(app,/<strong title="'\+esc\(r\.name\)\+'">'\+esc\(r\.name\)/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(5,minmax\(0,1fr\)\)!important/);
@@ -354,7 +355,7 @@ test('match room uses the site-wide header and approved three-column layout',()=
   const roomEnd=app.indexOf("document.getElementById('matchRoomPage')?.remove()",roomStart);
   const room=app.slice(roomStart,roomEnd);
   assert.doesNotMatch(room,/match-room-global-header|matchRoomPlayerSearch/);
-  assert.match(css,/body\.match-room-open \.match-room-page\{[\s\S]*top:64px!important/);
+  assert.match(css,/body\.match-room-open \.match-room-page\{[\s\S]*inset:0!important/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*repeat\(5,minmax\(0,1fr\)\)/);
 });
 test('match room excludes unavailable demo, matchmaking, deposit and promotional integrations',()=>{
