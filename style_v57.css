@@ -7022,8 +7022,8 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  box-shadow:none!important;padding:0!important;cursor:pointer!important
 }
 .faceit-utility-profile{
- width:38px!important;height:38px!important;flex:0 0 38px!important;
- overflow:hidden!important;border-radius:50%!important
+ width:46px!important;height:62px!important;flex:0 0 62px!important;
+ overflow:hidden!important;border-radius:7px!important
 }
 .faceit-utility-avatar-image{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:7px!important}
 .faceit-utility-profile .faceit-utility-avatar-fallback{
