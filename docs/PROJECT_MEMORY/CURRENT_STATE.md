@@ -128,3 +128,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Scoped CSS now applies the palette to Matches and Match Room cards/tables, Statistics player table, Home panels/metrics/recent games (hero art preserved), and Records panels/rows. Semantic positive/negative colors and lime states remain.
 - Commits: 41e31ee097a7eb6f0beb6f6496a241ebccc4214f, fbaa22fc8b5921e3d92c29cd01295f5c299bb4ec, 4e141bbeece3315328fe08f01a30324ceefa8017.
 - CI and browser visual QA pending; no deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — Profile return path and hard palette correction (IN PROGRESS)
+- Added dedicated “Вернуться в профиль” action when Match Room was opened from a public Profile. Existing “К матчам” remains a separate route action; pending profile context is cleared when leaving to Matches.
+- Owner screenshot feedback showed prior CSS selectors were not strong enough to beat later/ID-scoped blue styles. Added high-specificity graphite overrides for Matches route table/panel, Statistics table/panel, and Match Room roster/stat cards.
+- Commits: app `8f2e6964eaac56e628ac9e2549dfe9ced5dcca2f`; CSS `fd5bec0334540d2e0797d2642f90f0293e99b0c3`; cache `cd5039ec4da5b26150ec6c2d944e269d02c2730e`; tests `d88c824a458749e7f8e78b238fa937566fb35ba1`.
+- CI and browser visual QA pending; no deployment or DB changes.
