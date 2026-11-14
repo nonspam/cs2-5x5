@@ -691,3 +691,36 @@ test('global navigation uses transparent controls with lime hover instead of pil
  assert.match(css,/\.faceit-exact-global-rail nav button:hover[\s\S]*color:#c6ff45!important/);
  assert.match(css,/\.faceit-exact-global-rail nav button,\.faceit-exact-rail-bottom button\{[\s\S]*border-radius:0!important/);
 });
+
+test('global route navigation closes both contained windows before rendering the selected route',()=>{
+ assert.match(app,/function navigateApp\(tab,options=\{\}\)\{[\s\S]*closePlayerProfileWindow\(\);[\s\S]*closeMatchRoom\(\);/);
+ assert.match(app,/function bindAppShell\(root\)[\s\S]*navigateApp\(button\.dataset\.appRoute\)/);
+});
+test('match room back returns to the matches list and closing clears stale modal state',()=>{
+ assert.match(app,/onclick="matchRoomNavigate\('base'\)">‹　К матчам/);
+ assert.match(app,/function closeMatchRoom\(options=\{\}\)\{[\s\S]*page\?\.remove\(\);[\s\S]*classList\.remove\('match-room-open'\)/);
+ assert.match(app,/function closePlayerProfileWindow\(options=\{\}\)\{[\s\S]*root\?\.remove\(\);[\s\S]*classList\.remove\('profile-window-open'\)/);
+});
+test('every map row opens the shared Match Room statistics view scoped to that map',()=>{
+ assert.match(app,/function openMapDetail\(mapId\)[\s\S]*openMatchDetail\(match\.match_id,\{initialView:'statistics',mapId:map\.map_id\}\)/);
+ assert.match(app,/function openMatchDetail\(id,options=\{\}\)/);
+ assert.match(app,/const selectedMap=options\.mapId\?maps\.find/);
+ assert.match(app,/if\(options\.initialView\)setMatchRoomView\(options\.initialView\)/);
+});
+test('profile provides a direct site-wallpaper action while retaining the avatar editor',()=>{
+ assert.match(app,/profileWallpaperFile/);
+ assert.match(app,/ОБОИ САЙТА/);
+ assert.match(app,/profileAvatarFile/);
+});
+test('account wallpaper is a full-viewport layer and is shared behind all workspaces',()=>{
+ assert.match(app,/document\.body\.style\.setProperty\('--account-wallpaper'/);
+ assert.match(css,/body\.has-account-wallpaper:before\{[\s\S]*position:fixed;inset:0;z-index:0/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-avatar-frame\{[\s\S]*height:300px!important/);
+});
+test('right rail uses the current account avatar as a large portrait tile above VS',()=>{
+ const rail=app.slice(app.indexOf('function renderUtilityRail'),app.indexOf('function render(){',app.indexOf('function renderUtilityRail')));
+ assert.match(rail,/state\.myPlayerId\|\|state\.myProfile\?\.player_id/);
+ assert.match(rail,/faceit-utility-avatar-image/);
+ assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:46px!important;height:62px!important/);
+});
