@@ -7,9 +7,9 @@
 - Updated: 2026-11-14
 - Repository: nonspam/cs2-5x5
 - Working branch: faceit-dev
-- Current HEAD at checkpoint preparation: 5558161c1870aa1487cd2f28e1f4fee0c38968fd
+- Current HEAD before final checkpoint refresh: b8fdcdeffebb82e11b16606b8c394d95e1625c5e
 - Application/test implementation commit: ff3a4e4b038c31b6c89be15e71ddc559f9e4aede
-- Quality Gate: [run 43635690684](https://github.com/nonspam/cs2-5x5/actions/runs/43635690684), **244 passed / 0 failed / 0 skipped**, verified from actual validate job log.
+- Quality Gate: [run 43635690684](https://github.com/nonspam/cs2-5x5/actions/runs/43635690684), **244 passed / 0 failed / 0 skipped**, tested implementation commit ff3a4e4b038c31b6c89be15e71ddc559f9e4aede. The latest documentation HEAD also passed [run 43635880184](https://github.com/nonspam/cs2-5x5/actions/runs/43635880184): **244 passed / 0 failed / 0 skipped**.
 - Automated syntax and Node regression/static contracts only. Browser QA, screenshot comparison and deployment are NOT verified.
 
 ## Current owner-approved correction — IN PROGRESS
