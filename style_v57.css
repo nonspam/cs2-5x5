@@ -6897,3 +6897,10 @@ body.match-room-open .match-room-page{
 }
 #matchRoomPage .match-faceit-level-svg{width:28px;height:28px}
 #matchRoomPage .match-faceit-level-svg text{font-size:12px!important;font-weight:750}
+
+
+/* Match Room — color the full K/D/A score by the player's K/D ratio. */
+#matchRoomPage .match-scoreboard tbody td.stat-positive{color:#35d69a!important}
+#matchRoomPage .match-scoreboard tbody td.stat-neutral{color:#f2f2f2!important}
+#matchRoomPage .match-scoreboard tbody td.stat-negative{color:#ff5656!important}
+#matchRoomPage .match-faceit-level-svg text{transform:translateY(-1.2px)}

@@ -573,3 +573,13 @@ test('Match Room Statistics uses compact centered player/rank columns and FACEIT
  assert.match(css,/#matchRoomPage \.match-faceit-level-svg\{[\s\S]*width:28px;height:28px/);
  assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-stat-team-head>div>span,\s*#matchRoomPage \.match-stat-team\.team-b \.match-stat-team-score\{color:#f0c52e/);
 });
+
+
+// Match Room score coloring: K, D, A and K/D share the player's K/D status.
+assert.match(app,/stat-k .*stat-positive/);
+assert.match(app,/stat-d .*stat-negative/);
+assert.match(app,/stat-a .*stat-neutral/);
+assert.match(app,/<text x="16" y="18\.4"/);
+assert.match(css,/tbody td\.stat-positive\{color:#35d69a!important/);
+assert.match(css,/tbody td\.stat-neutral\{color:#f2f2f2!important/);
+assert.match(css,/tbody td\.stat-negative\{color:#ff5656!important/);
