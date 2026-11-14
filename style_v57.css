@@ -6663,3 +6663,36 @@ body.match-room-open .match-room-page{
  .match-stat-top-row{grid-template-columns:24px 34px minmax(80px,1fr) auto 46px;gap:7px;padding:7px}
  .match-stat-top-row>.player-avatar{width:32px;height:32px}
 }
+
+
+/* Match Room — owner refinement: plain text tabs, compact leaders, unboxed team tables. */
+#matchRoomPage .match-room-view-tabs button{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline-offset:3px;padding:0 8px!important}
+#matchRoomPage .match-room-view-tabs button.active{color:#f4f4f4!important}
+#matchRoomPage .match-room-view-tabs button.active:after{left:0!important;right:0!important;background:#ff4b00!important}
+#matchRoomPage .match-stat-highlight{grid-template-columns:40px minmax(0,1fr) minmax(0,max-content);gap:12px;padding:8px 12px;border-radius:6px}
+#matchRoomPage .match-stat-highlight-value{max-width:142px}
+#matchRoomPage .match-stat-highlight-value small{max-width:142px;white-space:normal;line-height:1.25}
+#matchRoomPage .match-stat-mvp-card{grid-template-columns:148px minmax(0,1fr);gap:20px}
+#matchRoomPage .match-stat-mvp-profile>.player-avatar{width:108px;height:108px;flex-basis:108px}
+#matchRoomPage .match-stat-team{padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+#matchRoomPage .match-stat-team-head{min-height:42px;margin:0 0 8px!important;padding:0 2px 8px;border:0!important;border-bottom:1px solid #242424!important}
+#matchRoomPage .match-stat-team.team-a .match-stat-team-head>div>span{color:#6da8ff!important}
+#matchRoomPage .match-stat-team.team-b .match-stat-team-head>div>span{color:#e7bd55!important}
+#matchRoomPage .match-stat-team.team-a .match-stat-team-score{color:#6da8ff}
+#matchRoomPage .match-stat-team.team-b .match-stat-team-score{color:#e7bd55}
+#matchRoomPage .match-stat-team-score.is-winning{color:#35e66b!important}
+#matchRoomPage .match-stat-teams .table-wrap{border:0!important;border-radius:0!important;background:transparent!important}
+#matchRoomPage .match-stat-teams .match-scoreboard{min-width:620px}
+#matchRoomPage .match-stat-top-list{max-width:1080px;gap:5px;margin-top:12px}
+#matchRoomPage .match-stat-top-row{grid-template-columns:28px 38px minmax(180px,1fr) minmax(170px,auto) 58px;gap:12px;min-height:52px;padding:6px 12px;border-radius:6px}
+#matchRoomPage .match-stat-top-row>strong{overflow:visible;text-overflow:clip;white-space:normal;overflow-wrap:anywhere}
+#matchRoomPage .match-stat-top-row>.match-stat-top-score{white-space:nowrap;font-variant-numeric:tabular-nums}
+#matchRoomPage .match-stat-top-row>b:last-child{font-variant-numeric:tabular-nums}
+#matchRoomPage .match-stat-top-row .stat-neutral{color:#f2f2f2!important}
+@media(max-width:760px){
+#matchRoomPage .match-statistics-summary{grid-template-columns:minmax(0,1fr)}
+#matchRoomPage .match-stat-mvp-card{grid-template-columns:92px minmax(0,1fr);gap:12px;padding:12px}
+#matchRoomPage .match-stat-mvp-profile>.player-avatar{width:76px;height:76px;flex-basis:76px}
+#matchRoomPage .match-stat-top-row{grid-template-columns:22px 32px minmax(0,1fr) auto 44px;gap:7px;padding:7px}
+#matchRoomPage .match-stat-top-row>.player-avatar{width:30px;height:30px}
+}

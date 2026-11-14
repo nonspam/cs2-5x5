@@ -526,3 +526,16 @@ test('Match Room active binder leaves direct Overview / Statistics actions avail
 });
 
 
+
+
+test('Match Room Statistics/TOP owner refinements preserve initials, compact rows and side identity',()=>{
+ assert.match(app,/function profileAvatarMarkup\(id,size='sm',displayName=''\)/);
+ assert.match(app,/profileAvatarMarkup\(id,size,name\)/);
+ assert.match(app,/r\.kd>1\?'stat-positive':r\.kd<1\?'stat-negative':'stat-neutral'/);
+ assert.match(app,/class="match-stat-top-score/);
+ assert.match(css,/#matchRoomPage \.match-room-view-tabs button\{[\s\S]*border-radius:0!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-team\{[\s\S]*background:transparent!important;border:0!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-team\.team-a \.match-stat-team-head>div>span\{color:#6da8ff/);
+ assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-stat-team-head>div>span\{color:#e7bd55/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-list\{max-width:1080px/);
+});
