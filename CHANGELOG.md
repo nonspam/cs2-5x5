@@ -4276,3 +4276,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	PROJECT_MASTER.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T19:25:54+03:00 — docs: record project memory quality gate
+
+- Commit: c8932e434b82e178ee349812fc7b395222b6f4fb
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
