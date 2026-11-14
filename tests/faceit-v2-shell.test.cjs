@@ -604,14 +604,15 @@ test('both Match Room rank-column right dividers stay neutral grey',()=>{
 });
 
 
-test('player profiles open in a contained window with compact vertical navigation',()=>{
+test('player profiles open in a contained window with the original horizontal top navigation',()=>{
  assert.match(app,/id="playerProfileWindow"/);
  assert.match(app,/id="playerProfileMount"/);
  assert.match(app,/function closePlayerProfileWindow\(options=\{\}\)/);
- assert.match(app,/faceit-profile-vertical-nav/);
+ assert.match(app,/faceit-exact-game-tabs/);
+ assert.doesNotMatch(app,/faceit-profile-vertical-nav/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*grid-template-columns:252px minmax\(0,1fr\)/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-global-rail\{display:none!important\}/);
- assert.match(css,/#playerProfileWindow \.faceit-profile-vertical-nav/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{display:flex!important/);
 });
 
 test('Match Room opens as a contained desktop window while the global site rail stays visible',()=>{
@@ -622,11 +623,11 @@ test('Match Room opens as a contained desktop window while the global site rail 
  assert.match(app,/function closeMatchRoom\(options=\{\}\)/);
 });
 
-test('profile window vertical section controls rerender the profile mount instead of replacing the underlying site route',()=>{
- assert.match(app,/function setPlayerProfileSection\(section\)/);
- assert.match(app,/state\.profileSection=section;[\s\S]*document\.getElementById\('playerProfileMount'\)/);
- assert.ok(app.includes("setPlayerProfileSection(\\'overview\\')"));
- assert.ok(app.includes("setPlayerProfileSection(\\'history\\')"));
+test('profile horizontal tabs keep Overview, Match History and Track in the top content header',()=>{
+ assert.match(app,/faceit-exact-game-tabs/);
+ assert.match(app,/state\.profileSection=\\\\'overview\\\\';render\(\)/);
+ assert.match(app,/state\.profileSection=\\\\'history\\\\';render\(\)/);
+ assert.match(app,/data-profile-section=\\\"track\\\"/);
 });
 
 
@@ -674,7 +675,7 @@ test('profile keeps the original horizontal tabs and no longer renders a cover e
  assert.match(app,/faceit-exact-game-tabs/);
  assert.doesNotMatch(app,/profileCoverFile|▧ ОБЛОЖКА|faceit-profile-vertical-nav/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{display:flex!important/);
- assert.match(css,/#playerProfileWindow \.faceit-exact-content\{background:#080808!important\}/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-content\{background:rgba\(8,8,8,\.78\)!important\}/);
 });
 test('utility rail is limited to avatar and VS, with transparent hover-only controls and semantic score colors',()=>{
  const fn=app.slice(app.indexOf('function renderUtilityRail'),app.indexOf('function render(){',app.indexOf('function renderUtilityRail')));
