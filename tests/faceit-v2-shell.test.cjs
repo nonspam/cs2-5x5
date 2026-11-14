@@ -224,11 +224,11 @@ test('Match Overview uses the dark FACEIT surface palette and adapts the scoreca
 
 test('Match Overview player metrics are one FACEIT-style strip and player names are not forcibly ellipsized',()=>{
   assert.ok(app.includes("metric(c.matches,'МАТЧИ')"));
-  assert.ok(app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
+  assert.ok(!app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
   assert.ok(app.includes('metric-avg-kda'));
   assert.match(app,/metric-winrate '\+\(c\.wr>=60\?'is-good':c\.wr>=40\?'is-mid':'is-bad'\)/);
   assert.match(app,/<strong title="'\+esc\(r\.name\)\+'">'\+esc\(r\.name\)/);
-  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(5,minmax\(0,1fr\)\)!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(4,minmax\(0,1fr\)\)!important/);
   assert.match(css,/background:transparent!important/);
   assert.match(css,/white-space:normal!important/);
   assert.match(css,/\.match-room-side\{grid-template-columns:minmax\(0,1fr\) 40px auto!important\}/);
@@ -449,4 +449,20 @@ test('Match Room AVG KDA remains a visible single-line metric and neutral K/D is
 test('Match Room score is unbadged and slightly raised within the hero',()=>{
   assert.match(css,/#matchRoomPage \.match-room-score\{[\s\S]*transform:translateY\(-4px\)!important/);
   assert.match(css,/#matchRoomPage \.match-room-score>span\{[\s\S]*border-radius:0!important[\s\S]*background:transparent!important/);
+});
+
+test('Match Room player career strip omits rating, uses rounded integer KDA and four compact metrics',()=>{
+ assert.match(app,/Math\.round\(c\.avg\)\+' \/ '\+Math\.round\(c\.avgDeaths\)\+' \/ '\+Math\.round\(c\.avgAssists\)/);
+ assert.match(app,/<small>KDA<\/small>/);
+ assert.doesNotMatch(app,/metric\(c\.rating==null\?'—':fmt\(c\.rating,0\),'РЕЙТИНГ'\)/);
+ assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(4,minmax\(0,1fr\)\)!important/);
+});
+test('Match Room uses balanced medium-width rosters, taller cards and larger map artwork',()=>{
+ assert.match(css,/#matchRoomPage \.match-room-columns\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1\.16fr\) minmax\(0,1fr\)!important/);
+ assert.match(css,/#matchRoomPage \.match-player-card-ref\{[^}]*height:104px!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{[^}]*height:112px!important/);
+ assert.match(css,/#matchRoomPage>\.match-room-content\{[\s\S]*max-width:1560px!important/);
+});
+test('Match Room VS has no oval container or background',()=>{
+ assert.match(css,/#matchRoomPage \.match-room-score\{[\s\S]*border-radius:0!important[\s\S]*background:transparent!important[\s\S]*transform:translateY\(-6px\)!important/);
 });
