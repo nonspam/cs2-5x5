@@ -404,3 +404,12 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - **Files:** `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
 - **Commits:** `9e5e7b66cc74f772c33ae2ccb5881e953d70da29`, `e4d7dd2ee2b8e09e5fece037a2971afa20497488`, `f6384f26873818a46ff7470685db7ed8136824b0`.
 - **Verification:** Browser QA pending; no deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — Extend account wallpaper to Profile and Match Room
+- Problem: Wallpaper is visible on main routes but absent from Profile and Match Room.
+- Cause confirmed in CSS: Profile inner shell uses opaque rgba(8,8,8,.94); Match Room page and content later set opaque #050505 backgrounds.
+- Change: Apply --account-wallpaper directly to Profile panel and Match Room page; make Profile shell and Match Room content transparent/translucent; bump CSS cache key; add regression tests.
+- Files: style_v57.css, index.html, tests/faceit-v2-shell.test.cjs.
+- Commits: 73bbb25a83fd611cc1ca1ebf73e481c2367f5734, 31cfe855268dd1b97bc09e7ff4615650560e48cc, c2980ad2beb2e0b46354ce00fc938104ce3ee644.
+- Browser verification pending; no deployment or DB/storage-policy changes.
