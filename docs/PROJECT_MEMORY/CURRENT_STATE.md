@@ -89,3 +89,12 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Cover upload now explicitly reapplies the wallpaper and checks that the public storage URL returns a loadable image; failure is surfaced in the toast.
 - Latest implementation/test commits: `eb9b4b465e0e6fbfa387da5ae90507096b187b0c`, `37301675bd4c56080b9b42121b37bce79c737811`, `757ae2f8ba96c8fadf0f5ff10d0ec53dc4c9a13f`, `718b26e5cb32d665ee9b91f4754c6c64c1c13896`.
 - CI and browser/upload verification pending; no deployment performed.
+
+
+## 2026-11-15 — VS / profile scroll / wallpaper follow-up (IN PROGRESS)
+- VS popover now has explicit compact layout rules to stop inherited oversized button typography and wrapping.
+- Toast is reparented to document.body to avoid being trapped inside the app stacking context.
+- Profile 5/10/20 selector updates only the profile mount and restores its scroll position.
+- Wallpaper overlay reduced and route/profile shells explicitly transparent; live storage application still needs verification.
+- Implementation/test commits: `f3168228b399239118efe46665fce5d3cfceffc3`, `554b5be7252241165450223379cc093f2450acd7`, `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`, `8ecf3848e9f1fa6ba31114cbe2aeebb8c98d40e0`.
+- No CI result, browser QA or deployment yet.
