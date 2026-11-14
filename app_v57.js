@@ -514,7 +514,10 @@ async function handleProfileImage(kind,file){
     catch(saveError){await CS2Cloud.deleteProfileMedia(uploaded.path).catch(()=>{});throw saveError}
     state.myProfile=saved;state.profileRows=(state.profileRows||[]).filter(q=>q.player_id!==saved.player_id).concat(saved);
     if(oldPath&&oldPath!==uploaded.path)await CS2Cloud.deleteProfileMedia(oldPath).catch(()=>{});
-    render();toast(kind==='avatar'?'Аватар обновлён':'Обои сайта обновлены для вашего аккаунта');
+    applyAccountWallpaper();render();renderUtilityRail();
+    const savedUrl=CS2Cloud.publicMediaUrl(uploaded.path);
+    if(savedUrl){const probe=new Image();probe.src=savedUrl;await new Promise(resolve=>{if(probe.complete)return resolve();probe.onload=resolve;probe.onerror=resolve;setTimeout(resolve,5000)});if(!probe.naturalWidth)throw Error('Файл сохранён, но изображение не открывается из хранилища');}
+    toast(kind==='avatar'?'Аватар обновлён':'Обои сайта применены');
   }catch(e){toast('Не удалось сохранить изображение: '+(e?.message||'ошибка'))}
   finally{state.profileBusy=false}
 }
