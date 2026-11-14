@@ -1,53 +1,65 @@
 # SESSION CHECKPOINT — read this first
 
-> The single most important handoff file for continuing work after a chat ends or is interrupted.
-> Always read this file before relying on older project notes. The latest checkpoint overrides older summaries when they conflict.
+> The single latest recovery point for a new chat or an interrupted session. Read this before older summaries.
 
 ## Snapshot
 
 - Updated: 2026-11-14
 - Repository: `nonspam/cs2-5x5`
 - Working branch: `faceit-dev`
-- Branch HEAD checked before the final checkpoint refresh: `fceb2048302f0f7db48fb2feaed4ecb99d45df59`
-- Latest application-code commit identified in the recent history: `71dca4dcee8b0dca0092b3565735c54cb0011634`
-- The newer commits after it are project-memory/documentation journal commits.
-- Last confirmed Quality Gate evidence: run [43631741156](https://github.com/nonspam/cs2-5x5/actions/runs/43631741156), 236 passed / 0 failed / 0 skipped (per previous verified job-log review). This is automated checks only, not browser QA or deployment.
+- Branch HEAD checked before this checkpoint refresh: `057b66f53963ce79b04330e11fcca9cc7867d754`
+- Latest implementation package Quality Gate commit: `35c5381e6beee2ddae42640fe0509bf657967c4a`
+- Latest confirmed Quality Gate: [run 43633959427](https://github.com/nonspam/cs2-5x5/actions/runs/43633959427) — **241 passed / 0 failed / 0 skipped**, confirmed from the actual job log.
+- This is automated syntax + Node regression/static-contract evidence only. No browser QA, screenshot comparison or deployment is evidenced.
 
-## Current task — IN PROGRESS
+## Current task — IN PROGRESS: FACEIT-style central workspace shell
 
-The owner is refining the FACEIT-style Match Room opening/overlay behavior.
+### Owner's latest direction (from four screenshots and the latest clarification)
 
-**Latest explicit feedback in the current chat:**
-- Opening a match currently makes the whole site feel too dark.
-- The desired FACEIT behavior keeps the site's left navigation/menu visible while the match view opens over the main workspace.
-- The owner is about to send the latest messages/screenshots to clarify the exact expected appearance and remaining changes.
+1. Preserve the visible left global navigation when opening Match Room and other sections; the content should live in the central workspace, not cover the whole site.
+2. The Match Room should meet the side-rail boundaries. Remove the awkward empty gap and the heavy dim overlay that makes the whole site look muddy.
+3. Move Profile out of the left navigation. Add a compact persistent right-side rail with the user's avatar/profile and a VS action that opens recent personal matches. Other actions may be added after design/approval.
+4. Reuse the profile cover image as the background layer behind the current workspace/window, including Match Room and relevant route sections, with readable dark overlays.
+5. The long-term direction includes Match Room, Profile, Track, Seasons and other sections in one consistent central workspace. Do not claim all routes have been converted unless verified in source.
 
-**Related latest visual feedback from the immediately preceding conversation:**
-- Match Overview is broadly acceptable.
-- The MVP player's position needs to move slightly to the right relative to the supplied reference.
-- Treat this as a pending visual adjustment only if the owner's upcoming screenshots/messages confirm it is still current.
+### Implemented in the current source package
 
-**Do not assume:** that the overlay/backdrop or MVP positioning has already been fixed, visually accepted, browser-tested, or deployed. Wait for the owner's promised latest screenshots/messages, then inspect current source and make a scoped change.
+- Match Room desktop frame now aligns flush between a 170px left rail and a 48px right utility rail; below 900px the left offset is 82px; below 700px the content is full-screen.
+- Match Room dim layer is constrained to the central workspace and reduced from 0.56 opacity to 0.14.
+- The existing current-user `cover_path` URL is reused for route workspace and Match Room backgrounds. Profile keeps its existing cover renderer; no duplicate media storage was introduced.
+- Added persistent right utility rail:
+  - Avatar opens the signed-in user's profile; signed-out state opens account auth.
+  - VS opens up to six recent matches from the existing `profileMatchesForPlayer` result; selecting a match opens the existing Match Room.
+  - Settings navigates to the settings route.
+- Removed Profile from the left global rail and hid the duplicate topbar account avatar.
+- Existing match/player data, statistics, match tabs and calculations were not intentionally changed.
 
-## Confirmed implementation baseline
+### Files changed
 
-- Profile opens in a contained window reusing the existing profile renderer; profile navigation is vertical: Overview, Match History, Track, Close.
-- Match Room is designed as a contained workspace window, with the global left rail intended to remain visible on desktop.
-- At widths up to 700px, Profile and Match Room switch to full-screen behavior.
-- Relevant source files identified in the previous implementation: `app_v57.js`, `style_v57.css`; regression contracts: `tests/faceit-v2-shell.test.cjs`.
-- Implementation commit: `71dca4dcee8b0dca0092b3565735c54cb0011634`.
-- Browser visual/interaction QA and deployment verification were not performed in the recorded evidence.
+- `app_v57.js`
+- `style_v57.css`
+- `index.html` (cache keys)
+- `tests/faceit-v2-shell.test.cjs`
 
-## Next actions
+### Verification
 
-1. Read the owner's latest messages and screenshots in the current conversation; they take precedence over this provisional visual handoff.
-2. Re-check live `faceit-dev` HEAD and recent commits before editing.
-3. Inspect the relevant Match Room shell/overlay CSS and JS, plus existing regression tests.
-4. Make only the approved visual/shell changes; preserve existing match data, statistics, tabs and profile behavior.
-5. Run relevant tests and record the exact results.
-6. Update this checkpoint, CURRENT_STATE.md, DEVELOPMENT_LOG.md and QUALITY_HISTORY.md before ending the task/chat. Mark unfinished work IN PROGRESS.
-7. Do not claim browser QA or deployment unless actually performed with authorization.
+- Quality Gate run [43633959427](https://github.com/nonspam/cs2-5x5/actions/runs/43633959427), tested commit `35c5381e6beee2ddae42640fe0509bf657967c4a`: 241 passed / 0 failed / 0 skipped.
+- Intermediate CI attempts failed due to a JS string-escaping syntax issue and stale/new rail test expectations; these were corrected before the final passing run.
+- Browser visual/interaction QA: NOT performed.
+- Screenshot comparison: NOT performed.
+- DEV deployment: NOT verified.
+- Production deployment: NOT performed.
+- Notifications, friends/social actions and additional right-rail items: NOT implemented.
+
+## Next step
+
+The code package is committed and CI-green. Before calling it visually accepted:
+1. Obtain explicit owner authorization for browser QA (project rule: do not perform browser QA without separate permission).
+2. Verify at desktop and mobile sizes: left/right rail adjacency, Match Room edges, lightness of the central overlay, cover image crop/readability, avatar-to-profile action, VS panel content and dismissal, selecting a recent match, settings navigation.
+3. Ask the owner for a screenshot from DEV if browser QA cannot be performed directly.
+4. Fix only evidenced visual/interaction issues, then update this checkpoint and project logs.
+5. Do not deploy without separate explicit permission.
 
 ## Confidence and limits
 
-This checkpoint is a handoff based on the latest messages and repository history inspected on 2026-11-14. The branch HEAD must be fetched again on every new chat. The owner's forthcoming screenshots/messages may supersede the provisional visual task above.
+The implementation is present in `faceit-dev` and the final recorded Quality Gate is green. This does not prove that the live DEV site has the new build or that the design matches the reference in a browser. Treat visual acceptance as pending.
