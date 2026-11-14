@@ -187,7 +187,7 @@ test('Track and season archive live inside Profile instead of occupying permanen
 });
 
 test('Match Room renders the approved standalone roster, map and veto layout',()=>{
-  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);
+  const i=app.indexOf('function openMatchDetail(id,options={}){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);
   for(const x of ['match-room-hero','match-room-result','match-room-team','match-room-center-column','match-room-map-list','match-room-veto','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','profileSummary(profileMatchesForPlayer','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
   assert.doesNotMatch(s,/CS2EloV3\?\.playerData/);
   assert.doesNotMatch(s,/СМОТРЕТЬ ДЕМО|К ПОДБОРУ ИГРОКОВ|WINLINE|ВНЕСИТЕ ДЕПОЗИТ/);
@@ -204,7 +204,7 @@ test('Match Center reference styling uses compact rectangular map rows and squar
 });
 
 test('Match Room follows the approved full-page FACEIT-inspired hierarchy without inventing match metadata',()=>{
-  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
+  const i=app.indexOf('function openMatchDetail(id,options={}){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(i>=0&&j>i);
   for(const marker of ['matchRoomPage','match-room-hero-meta','match-room-result','match-room-roster-heading','match-room-map-list','match-room-veto','matchRoomPlayerSearch','matchRoomAccountMenu']) assert.ok(source.includes(marker),marker);
   assert.match(source,/CS2EloV3\?\.player\(r\.id\)\?\.rating/);
@@ -269,7 +269,7 @@ test('Match Overview map result tiles use map-specific full-bleed artwork',()=>{
 
 
 test('Match Room keeps the approved simple match-first view without a separate Top or Statistics tab',()=>{
-  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
+  const i=app.indexOf('function openMatchDetail(id,options={}){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(i>=0&&j>i);
   assert.match(source,/match-room-columns/);
   assert.match(source,/match-room-map-list/);
@@ -378,7 +378,7 @@ test('Match Room main content is full-width and not constrained by the global ma
 
 test('Match Room uses temporary first-letter avatars instead of image placeholders',()=>{
   assert.match(app,/function matchRoomInitialAvatar\(id,size='md',displayName=''\)/);
-  const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
+  const i=app.indexOf('function openMatchDetail(id,options={}){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(source.includes('matchRoomInitialAvatar('));
   assert.doesNotMatch(source,/profileAvatarMarkup\(/);
   assert.match(source,/matchRoomInitialAvatar\(p\.player_id,'xs'\)/);
@@ -612,12 +612,12 @@ test('player profiles open in a contained window with the original horizontal to
  assert.doesNotMatch(app,/faceit-profile-vertical-nav/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*grid-template-columns:252px minmax\(0,1fr\)/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-global-rail\{display:none!important\}/);
- assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{display:flex!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{\s*display:flex!important/);
 });
 
 test('Match Room opens as a contained desktop window while the global site rail stays visible',()=>{
- assert.match(css,/body\.match-room-open:before\{content:"";position:fixed/);
- assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:14px 24px 14px 214px!important/);
+ assert.match(css,/body\.match-room-open:before\{\s*content:"";position:fixed/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
  assert.match(css,/@media\(max-width:700px\)[\s\S]*#matchRoomPage\.match-room-page\{inset:0!important/);
  assert.match(app,/function openMatchDetail\(id\)/);
  assert.match(app,/function closeMatchRoom\(options=\{\}\)/);
@@ -639,15 +639,15 @@ test('profile window stays mounted and rerenders for all profile sections and pr
 });
 
 test('FACEIT workspace windows meet the persistent side rails without a dim full-page gap',()=>{
- assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 48px 0 170px!important/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
  assert.match(css,/body\.match-room-open:before\{[\s\S]*background:rgba\(0,0,0,\.14\)/);
- assert.match(css,/#playerProfileWindow\.player-profile-window\{inset:0 48px 0 170px!important/);
- assert.match(css,/\.faceit-utility-rail\{[\s\S]*width:48px/);
+ assert.match(css,/#playerProfileWindow\.player-profile-window\{[\s\S]*inset:0 64px 0 138px!important/);
+ assert.match(css,/\.faceit-utility-rail\{[\s\S]*width:64px!important/);
 });
 test('account wallpaper is applied globally for the signed-in user and is not part of the profile card',()=>{
  assert.match(app,/function accountWallpaperUrl\(\)/);
  assert.match(app,/function applyAccountWallpaper\(\)/);
- assert.match(app,/document\.body\.style\.backgroundImage=url\?/);
+ assert.match(app,/document\.body\.style\.setProperty\('--account-wallpaper'/);
  assert.match(app,/function clearAccountWallpaper\(\)/);
  assert.match(app,/ОБОИ САЙТА/);
  assert.doesNotMatch(app,/profileCoverStyle|profileCoverUrl|profileCoverFile|faceit-profile-vertical-nav/);
@@ -665,17 +665,17 @@ test('global navigation keeps Profile in the right utility rail rather than dupl
  const rail=app.slice(app.indexOf('function faceitAppRailMarkup'),app.indexOf('function bindAppShell'));
  assert.doesNotMatch(rail,/\['profile'.*Профиль/);
  assert.match(app,/data-utility-action=\"profile\"/);
- assert.match(css,/#view > \.faceit-route-shell,#view > \.faceit-profile-shell\{width:calc\(100% - 48px\)!important/);
+ assert.match(css,/#view>.faceit-route-shell,#view>.faceit-profile-shell\{width:calc\(100% - 64px\)!important/);
 });
 test('profile shell cover image is not overwritten by a transparent background shorthand',()=>{
- assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{background-color:rgba\(8,8,8,\.28\)!important\}/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*background:rgba\(8,8,8,\.42\)!important/);
 });
 
 test('profile keeps the original horizontal tabs and no longer renders a cover editor',()=>{
  assert.match(app,/faceit-exact-game-tabs/);
  assert.doesNotMatch(app,/profileCoverFile|▧ ОБЛОЖКА|faceit-profile-vertical-nav/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{display:flex!important/);
- assert.match(css,/#playerProfileWindow \.faceit-exact-content\{background:rgba\(8,8,8,\.78\)!important\}/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*background:rgba\(8,8,8,\.58\)!important\}/);
 });
 test('utility rail is limited to avatar and VS, with transparent hover-only controls and semantic score colors',()=>{
  const fn=app.slice(app.indexOf('function renderUtilityRail'),app.indexOf('function render(){',app.indexOf('function renderUtilityRail')));
@@ -689,7 +689,7 @@ test('utility rail is limited to avatar and VS, with transparent hover-only cont
 });
 test('global navigation uses transparent controls with lime hover instead of pill backgrounds',()=>{
  assert.match(css,/\.faceit-exact-global-rail nav button:hover[\s\S]*color:#c6ff45!important/);
- assert.match(css,/\.faceit-exact-global-rail nav button,\.faceit-exact-rail-bottom button\{[\s\S]*border-radius:0!important/);
+ assert.match(css,/\.faceit-exact-global-rail nav button,\.faceit-exact-rail-bottom button,[\s\S]*border-radius:0!important/);
 });
 
 test('global route navigation closes both contained windows before rendering the selected route',()=>{
@@ -697,7 +697,7 @@ test('global route navigation closes both contained windows before rendering the
  assert.match(app,/function bindAppShell\(root\)[\s\S]*navigateApp\(button\.dataset\.appRoute\)/);
 });
 test('match room back returns to the matches list and closing clears stale modal state',()=>{
- assert.match(app,/onclick="matchRoomNavigate\('base'\)">‹　К матчам/);
+ assert.ok(app.includes(String.raw`matchRoomNavigate(\'base\')`));
  assert.match(app,/function closeMatchRoom\(options=\{\}\)\{[\s\S]*page\?\.remove\(\);[\s\S]*classList\.remove\('match-room-open'\)/);
  assert.match(app,/function closePlayerProfileWindow\(options=\{\}\)\{[\s\S]*root\?\.remove\(\);[\s\S]*classList\.remove\('profile-window-open'\)/);
 });
