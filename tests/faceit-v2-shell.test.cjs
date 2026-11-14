@@ -342,7 +342,18 @@ test('match room opens as a standalone full-page route, not a modal overlay',()=
   assert.match(app,/function closeMatchRoom\(options=\{\}\)/);
   assert.doesNotMatch(app,/modal-back match-detail-backdrop/);
 });
-test('match room uses the site-wide header and approved three-column layout',()=>{\n  assert.match(html,/sitePlayerSearchInput/);\n  assert.match(app,/bindSitePlayerSearch/);\n  assert.doesNotMatch(app,/matchRoomPlayerSearch/);\n  assert.match(app,/match-room-columns/);\n  assert.match(app,/match-room-score-a/);\n  assert.match(css,/body\\.match-room-open \\.match-room-page\\{[\\s\\S]*top:64px!important/);\n  assert.match(css,/#matchRoomPage \\.match-room-team \\.match-player-card-ref \\.match-career-grid\\{[\\s\\S]*repeat\\(5,minmax\\(0,1fr\\)\\)/);\n});
+test('match room uses the site-wide header and approved three-column layout',()=>{
+  assert.match(html,/sitePlayerSearchInput/);
+  assert.match(app,/bindSitePlayerSearch/);
+  assert.match(app,/match-room-columns/);
+  assert.match(app,/match-room-score-a/);
+  const roomStart=app.indexOf('const roomPage=');
+  const roomEnd=app.indexOf("document.getElementById('matchRoomPage')?.remove()",roomStart);
+  const room=app.slice(roomStart,roomEnd);
+  assert.doesNotMatch(room,/match-room-global-header|matchRoomPlayerSearch/);
+  assert.match(css,/body\.match-room-open \.match-room-page\{[\s\S]*top:64px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*repeat\(5,minmax\(0,1fr\)\)/);
+});
 test('match room excludes unavailable demo, matchmaking, deposit and promotional integrations',()=>{
   const start=app.indexOf('const roomPage=');
   const end=app.indexOf('bindMatchRoomHeader();',start);
