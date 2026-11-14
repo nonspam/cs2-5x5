@@ -114,3 +114,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - CSS now paints `--account-wallpaper` directly on `.app` instead of relying on the behind-app body pseudo-element; shells remain transparent and cache-bust updated.
 - CSS/index/test commits: `9e5e7b66cc74f772c33ae2ccb5881e953d70da29`, `e4d7dd2ee2b8e09e5fece037a2971afa20497488`, `f6384f26873818a46ff7470685db7ed8136824b0`.
 - Browser verification not performed; no deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — Wallpaper in Profile and Match Room (IN PROGRESS)
+- Owner screenshot confirms global wallpaper works on main routes but not Profile/Match Room.
+- Source cause: Profile shell .faceit-exact-shell is 94% opaque; Match Room page and content later set opaque #050505 backgrounds. Added direct wallpaper image backgrounds to both independent surfaces and made their inner shells transparent/translucent. CSS cache key bumped.
+- Commits: 73bbb25a83fd611cc1ca1ebf73e481c2367f5734, 31cfe855268dd1b97bc09e7ff4615650560e48cc, c2980ad2beb2e0b46354ce00fc938104ce3ee644.
+- Browser verification pending; no deployment or DB/storage-policy changes.
