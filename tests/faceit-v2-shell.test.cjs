@@ -754,3 +754,22 @@ test('utility avatar is circular and the account wallpaper remains visible behin
  assert.match(css,/body\.has-account-wallpaper \.app\{background:transparent!important\}/);
  assert.match(css,/body\.has-account-wallpaper:before\{background-image:linear-gradient\(rgba\(5,5,5,\.34\),rgba\(5,5,5,\.44\)\),var\(--account-wallpaper,none\)!important\}/);
 });
+
+
+test('toast is moved out of the app stacking context before showing upload feedback',()=>{
+ assert.match(app,/function toast\(message\)[\s\S]*if\(box\.parentElement!==document\.body\)document\.body\.appendChild\(box\)/);
+});
+test('VS recent matches panel uses compact rows with explicit grid layout',()=>{
+ assert.match(css,/\.faceit-utility-match-list\{display:flex!important;flex-direction:column!important/);
+ assert.match(css,/\.faceit-utility-match\{display:grid!important;grid-template-columns:1fr auto!important/);
+ assert.match(css,/\.faceit-utility-match-result\{grid-area:result!important/);
+});
+test('profile 5 10 20 selector updates profile content without full page rerender',()=>{
+ assert.match(app,/function setProfileWindowSize\(size\)[\s\S]*profilePage\(mount\);enhanceSelects\(mount\)/);
+ assert.match(app,/const scrollTop=content\?\.scrollTop\|\|0;[\s\S]*refreshed\.scrollTop=scrollTop/);
+ assert.match(app,/onclick="setProfileWindowSize\('+n+'\)"/);
+});
+test('account wallpaper has a visible layer behind transparent route shells',()=>{
+ assert.match(css,/body\.has-account-wallpaper \.faceit-route-shell,body\.has-account-wallpaper \.faceit-profile-shell\{background:transparent!important/);
+ assert.match(css,/body\.has-account-wallpaper:before\{background-image:linear-gradient\(rgba\(5,5,5,\.20\),rgba\(5,5,5,\.28\)\),var\(--account-wallpaper,none\)!important/);
+});
