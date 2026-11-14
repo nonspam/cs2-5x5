@@ -8,7 +8,7 @@
 - Updated: 2026-11-14
 - Repository: `nonspam/cs2-5x5`
 - Working branch: `faceit-dev`
-- Branch HEAD checked before this checkpoint update: `e13320fc8069fb78d650c0ff2ea01d3a1168acc0`
+- Branch HEAD checked before the final checkpoint refresh: `fceb2048302f0f7db48fb2feaed4ecb99d45df59`
 - Latest application-code commit identified in the recent history: `71dca4dcee8b0dca0092b3565735c54cb0011634`
 - The newer commits after it are project-memory/documentation journal commits.
 - Last confirmed Quality Gate evidence: run [43631741156](https://github.com/nonspam/cs2-5x5/actions/runs/43631741156), 236 passed / 0 failed / 0 skipped (per previous verified job-log review). This is automated checks only, not browser QA or deployment.
