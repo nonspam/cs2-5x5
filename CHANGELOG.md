@@ -5406,3 +5406,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/CURRENT_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T23:33:16+03:00 — docs: record modal lifecycle and global wallpaper implementation
+
+- Commit: 479c3bfc524adefceabb24d0478fa30aafa78c4a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
