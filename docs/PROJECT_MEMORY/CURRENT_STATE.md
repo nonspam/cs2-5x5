@@ -27,16 +27,16 @@ CS2 Analytics is one integrated FACEIT-inspired application for the team's CS2 5
 
 ## Current focus
 
-The active owner-directed task is the FACEIT-style persistent workspace shell. See [SESSION_CHECKPOINT.md](SESSION_CHECKPOINT.md) for the precise IN PROGRESS handoff.
+The active owner-directed task is the FACEIT-style central workspace shell with corrected profile presentation and personal account wallpaper. See SESSION_CHECKPOINT.md for the latest IN PROGRESS handoff.
 
-Implemented in the latest source package:
-- Match Room now uses flush central-workspace geometry between the persistent left navigation and the new 48px right utility rail.
-- The Match Room backdrop is limited to the central workspace and is much lighter than the previous full-page dim.
-- Existing profile cover media is reused as the background for route workspaces and Match Room.
-- The Profile entry was moved out of the left rail to the right avatar action.
-- The right utility rail currently provides Profile, VS/recent matches and Settings.
+Implemented in source:
+- Profile restored to left avatar/player card + horizontal top content tabs. No profile-cover editor or vertical nav below the avatar.
+- Existing cover_path is reused as the current user's site wallpaper across route workspace, Match Room and the right utility rail; Settings hosts choose/remove controls.
+- Right utility rail contains only avatar/profile and VS. Settings remains bottom-left.
+- Global nav and utility controls are transparent with lime hover/focus glow.
+- VS win/loss scores use green/red.
 
-**Not yet confirmed:** visual fit, cover crop/readability, interactions and responsive behavior in a real browser. The owner’s long-term direction is for other workspace sections (Track, seasons, etc.) to follow the same central-shell behavior; do not assume that all such sections are already converted.
+**Not yet confirmed:** browser appearance, avatar loading, wallpaper crop/visibility across routes, VS click behavior and responsive layout. No DEV deployment or browser QA is evidenced.
 
 ## Confirmed implementation baseline
 
