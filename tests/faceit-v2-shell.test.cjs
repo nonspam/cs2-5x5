@@ -500,19 +500,19 @@ test('Match Room exposes working Overview and Statistics tabs with source-backed
  assert.match(app,/data-match-view-tab="statistics"/);
  assert.match(app,/data-match-view="overview"/);
  assert.match(app,/data-match-view="statistics"/);
- assert.match(app,/onclick="setMatchRoomView\('statistics'\)"/);
- assert.match(app,/function setMatchRoomView\(target\)[\s\S]*view\.hidden=view\.dataset\.matchView!==target/);
- assert.match(app,/statMvp=leaderBy\('kills'\)/);
- assert.match(app,/table\(A,'a'\)\+table\(B,'b'\)/);
- assert.match(css,/\.match-room-view-tabs button\.active:after/);
- assert.match(css,/\.match-statistics-summary\{display:grid/);
+ assert.match(app,/onclick="setMatchRoomView\\(&quot;statistics&quot;\\)"/);
+ assert.match(app,/function setMatchRoomView\\(target\\)[\\s\\S]*view\\.hidden=view\\.dataset\\.matchView!==target/);
+ assert.match(app,/statMvp=leaderBy\\('kills'\\)/);
+ assert.match(app,/table\\(A,'a'\\)\\+table\\(B,'b'\\)/);
+ assert.match(css,/\\.match-room-view-tabs button\\.active:after/);
+ assert.match(css,/\\.match-statistics-summary\\{display:grid/);
 });
 
-
-test('Match Room active bindMatchRoomHeader attaches the Overview / Statistics click handler',()=>{
- const declarations=app.match(/function bindMatchRoomHeader\s*\(/g)||[];
+test('Match Room active binder leaves direct Overview / Statistics actions available',()=>{
+ const declarations=app.match(/function bindMatchRoomHeader\\s*\\(/g)||[];
  assert.equal(declarations.length,1,'Match Room must have a single active header binder');
  const activeBind=app.slice(app.lastIndexOf('function bindMatchRoomHeader'));
- assert.match(activeBind,/root\.querySelectorAll\('\[data-match-view-tab\]'\)\.forEach/);
- assert.match(activeBind,/root\.querySelectorAll\('\[data-match-view\]'\)\.forEach/);
+ assert.match(activeBind,/Tab buttons call setMatchRoomView\\(\\) directly/);
+ assert.match(app,/function setMatchRoomView\\(target\\)[\\s\\S]*buttons\\.forEach[\\s\\S]*views\\.forEach/);
 });
+
