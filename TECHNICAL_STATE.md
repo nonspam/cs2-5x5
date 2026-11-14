@@ -395,3 +395,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - `tests/faceit-v2-shell.test.cjs`: updated badge and color contracts. `index.html` cache key refreshed to `match-room-rank-svg-amber-20261114-v9`.
 - Final Quality Gate run `43623604285`: 229/229 passed at `5a68847bec8e083960baa53019a6b2eb0566daca`.
 - No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Match Room Statistics neutral rank and corrected FACEIT badge geometry
+- `app_v57.js`: replaced prior arc geometry with 270-degree SVG path, neutral track and level-scaled progress; reduced numeral sizing.
+- `style_v57.css`: forced rank header/cells to neutral background for both teams; retained vertical separators and player-only team tint.
+- `tests/faceit-v2-shell.test.cjs`: regression checks for neutral rank cells and SVG path progress. `index.html` cache key: `match-room-neutral-rank-faceit-arc-20261114-v10`.
+- Quality Gate run `43624895321`: 229/229 passed at `c86bac0a9e4260ad697d85e3e0f1ada62777f558`.
+- No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.

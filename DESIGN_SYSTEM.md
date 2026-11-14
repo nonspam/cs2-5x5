@@ -98,3 +98,8 @@ This pass is source-level and covered by [quality gate run 43128656306](https://
 ## Match Room Statistics — losing-team amber and refined FACEIT badge (2026-11-14)
 - Losing Team B identity treatment is amber/yellow: team label, score, player identity cells and left row accent. Do not use winner green for the losing team. Rank column remains neutral and is not tinted by team identity.
 - FACEIT level badge uses compact inline SVG: dark center, neutral circular track, level-colored progress arc, smaller centered numeral. Arc length is proportional to level 1–10. Colors: 1 white, 2–3 green, 4–7 yellow, 8–9 orange, 10 red. Missing level stays unknown; never infer from rating.
+
+
+## Match Room Statistics — neutral rank column and corrected FACEIT arc (2026-11-14)
+- Team tint is restricted to the player-name column. Both the rank header and rank cells must remain neutral/default for either team; keep vertical separators. Never allow team tint to bleed into rank cells.
+- FACEIT badge progress uses an SVG 270-degree arc from lower-left over the top to lower-right, with neutral track, colored progress and smaller centered numeral. Do not use the previous broken partial-circle dash geometry.

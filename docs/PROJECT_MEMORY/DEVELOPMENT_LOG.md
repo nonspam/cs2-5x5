@@ -159,3 +159,21 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Verification:** Quality Gate run [43623604285](https://github.com/nonspam/cs2-5x5/actions/runs/43623604285), tested commit `5a68847bec8e083960baa53019a6b2eb0566daca`: **229 passed / 0 failed / 0 skipped**, verified from the job log. An earlier run failed only because the static assertion still expected the old span-based badge markup; the assertion was updated for the SVG markup before the passing run.
 
 **Not performed:** browser QA, screenshot comparison, deployment, database/SQL changes, or `main` changes. CI is not visual acceptance.
+
+
+## 2026-11-14 — Neutral rank column and corrected FACEIT arc geometry
+
+**Owner correction:** The rank column must remain a default neutral column; team tint belongs only to the player-name column. The previous level-4 arc was visibly malformed and the numeral did not resemble the reference.
+
+**Implemented:**
+- Explicitly neutralized both the rank header and every rank cell for both teams, with the existing vertical separators retained. Team-specific background and accent remain confined to the player-name column.
+- Rebuilt the badge progress as an SVG 270-degree arc beginning at the lower-left and sweeping over the top toward the lower-right, with a neutral track, level-colored progress, and smaller centered numeral. This replaces the previous partial-circle dash geometry that produced the visibly misplaced arc.
+- Updated the static regression contract and refreshed the app cache key.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+
+**Implementation commit:** `c86bac0a9e4260ad697d85e3e0f1ada62777f558`.
+
+**Verification:** Quality Gate run [43624895321](https://github.com/nonspam/cs2-5x5/actions/runs/43624895321), tested commit `c86bac0a9e4260ad697d85e3e0f1ada62777f558`: **229 passed / 0 failed / 0 skipped**, confirmed from the actual job log.
+
+**Not performed:** browser QA, visual screenshot comparison, deployment, database/SQL changes, or `main` changes. CI does not prove visual similarity to the FACEIT reference.
