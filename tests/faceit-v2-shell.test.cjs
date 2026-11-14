@@ -628,3 +628,11 @@ test('profile window vertical section controls rerender the profile mount instea
  assert.ok(app.includes("setPlayerProfileSection(\\'overview\\')"));
  assert.ok(app.includes("setPlayerProfileSection(\\'history\\')"));
 });
+
+
+test('profile window stays mounted and rerenders for all profile sections and profile-local controls',()=>{
+ assert.match(app,/function render\(\)[\s\S]*const profileMount=document\.getElementById\('playerProfileMount'\);if\(profileMount\)\{profilePage\(profileMount\);enhanceSelects\(profileMount\)\}/);
+ assert.match(app,/\['overview','history','track'\]\.includes\(section\)/);
+ assert.match(app,/if\(section==='track'\)state\.trackSeasonKey=state\.profileSeasonKey\|\|'all'/);
+ assert.match(app,/data-profile-section\]'.*setPlayerProfileSection\(button\.dataset\.profileSection\)/);
+});

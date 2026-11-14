@@ -400,7 +400,7 @@ function profilePage(v){
  v.querySelectorAll('[data-season-picker-close]').forEach(button=>button.addEventListener('click',()=>{state.seasonPickerOpen=false;render()}));
  v.querySelectorAll('[data-profile-season]').forEach(button=>button.addEventListener('click',()=>selectProfileSeason(button.dataset.profileSeason)));
  bindProfileEloChart(v,eloHistory,id);
- v.querySelectorAll('[data-profile-section]').forEach(button=>button.addEventListener('click',()=>{state.trackSeasonKey=state.profileSeasonKey||'all';state.profileSection=button.dataset.profileSection;render()}));
+ v.querySelectorAll('[data-profile-section]').forEach(button=>button.addEventListener('click',()=>setPlayerProfileSection(button.dataset.profileSection)));
  const trackMount=v.querySelector('#profileTrackMount');if(trackMount){track(trackMount,true);v.querySelector('.faceit-exact-results')?.remove();v.querySelector('.faceit-exact-stats-heading')?.remove();v.querySelector('.faceit-exact-stat-strip')?.remove();}
 }function bindProfileEloChart(root,history,playerId){
  const svg=root.querySelector('.faceit-elo-chart');
@@ -650,7 +650,7 @@ function bindTrackChart(root,points,metric,metricLabel,playerId){
  document.addEventListener('pointerdown',event=>{if(pinnedIndex!==null&&!tooltip.contains(event.target)&&!event.target.closest?.('.track-point-wrap'))hide()},{signal:controller.signal});
  document.addEventListener('keydown',event=>{if(event.key==='Escape')hide()},{signal:controller.signal});
 }
-function render(){renderEpoch++;window.__cs2TrackTooltipCleanup?.();window.__cs2ProfileEloCleanup?.();detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v)}
+function render(){renderEpoch++;window.__cs2TrackTooltipCleanup?.();window.__cs2ProfileEloCleanup?.();detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v);const profileMount=document.getElementById('playerProfileMount');if(profileMount){profilePage(profileMount);enhanceSelects(profileMount)}}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
    selection chrome cannot leak into the UI. The native select stays in the DOM as
@@ -1098,7 +1098,8 @@ function openPlayerDrilldown(id,kind,arg){
 function closePlayerDrilldown(){$('#playerDrilldown')?.remove()}
 
 function setPlayerProfileSection(section){
- if(!['overview','history'].includes(section))return;
+ if(!['overview','history','track'].includes(section))return;
+ if(section==='track')state.trackSeasonKey=state.profileSeasonKey||'all';
  state.profileSection=section;
  const mount=document.getElementById('playerProfileMount');
  if(mount){profilePage(mount);enhanceSelects(mount)}
