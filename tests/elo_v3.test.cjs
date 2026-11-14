@@ -204,3 +204,16 @@ test('series aggregate K/D/A produces the same ELO event as the sum of map-level
     mapApi.player('p1').rating
   );
 });
+
+test('FACEIT-style ELO level thresholds match the supplied reference bands',()=>{
+  assert.equal(levelForRating(100),1); assert.equal(levelForRating(500),1);
+  assert.equal(levelForRating(501),2); assert.equal(levelForRating(750),2);
+  assert.equal(levelForRating(751),3); assert.equal(levelForRating(900),3);
+  assert.equal(levelForRating(901),4); assert.equal(levelForRating(1050),4);
+  assert.equal(levelForRating(1051),5); assert.equal(levelForRating(1200),5);
+  assert.equal(levelForRating(1201),6); assert.equal(levelForRating(1300),6);
+  assert.equal(levelForRating(1301),7); assert.equal(levelForRating(1530),7);
+  assert.equal(levelForRating(1531),8); assert.equal(levelForRating(1750),8);
+  assert.equal(levelForRating(1751),9); assert.equal(levelForRating(2000),9);
+  assert.equal(levelForRating(2001),10);
+});

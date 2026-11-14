@@ -241,7 +241,7 @@
     if(rating>=2001)return 10;
     if(rating>=1751)return 9;
     if(rating>=1531)return 8;
-    if(rating>=1351)return 7;
+    if(rating>=1301)return 7;
     if(rating>=1201)return 6;
     if(rating>=1051)return 5;
     if(rating>=901)return 4;

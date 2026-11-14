@@ -1,5 +1,12 @@
 
 
+## 2026-11-14 — FACEIT level badge reference alignment
+
+- Updated CS2 ELO level 7 lower bound from 1351 to 1301 to match the user's supplied level reference. All ten rating bands now match: L1 100–500, L2 501–750, L3 751–900, L4 901–1050, L5 1051–1200, L6 1201–1300, L7 1301–1530, L8 1531–1750, L9 1751–2000, L10 2001+.
+- Match Room level badges now use numeric labels and a circular dark track with a colored conic progress arc. Palette follows the supplied reference: L1 white; L2–3 green; L4–7 yellow; L8–9 orange; L10 red.
+- Added exact boundary tests for all ten rating bands and UI contracts for numeric labels, arc, and palette. No browser visual QA or DEV deployment performed.
+
+
 ## 2026-11-14 — Compact Match Room UI quality gate
 
 - Implemented compact player rows (98px desktop / 94px mobile), smaller avatar and level rings, explicit per-level color classes (level 4 yellow), and removed the gray map-tile overlay so full-bleed map art carries the title and score directly.

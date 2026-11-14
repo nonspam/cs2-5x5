@@ -6008,3 +6008,26 @@ body.match-room-open .modal-back{z-index:12050!important}
  #matchRoomPage .match-room-team .match-player-card-ref .match-player-avatar-wrap .player-avatar{width:40px!important;height:40px!important;min-width:40px!important;flex-basis:40px!important}
  #matchRoomPage .match-room-team .match-player-card-ref .match-career-grid{height:37px!important;min-height:37px!important}
 }
+
+
+/* FACEIT level badge reference: dark track + colored progress arc */
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-level,
+#matchRoomPage .match-room-team-elo .match-player-level{
+  position:relative!important;isolation:isolate!important;display:grid!important;place-items:center!important;
+  overflow:hidden!important;border:0!important;border-radius:50%!important;
+  background:radial-gradient(circle,#090909 0 60%,transparent 62%),conic-gradient(from 225deg,var(--level-color,#777) 0 var(--level-arc,0deg),#292b30 var(--level-arc,0deg) 270deg,transparent 270deg 360deg)!important;
+  color:var(--level-color,#f4f4f4)!important;font-size:11px!important;font-weight:950!important;
+}
+#matchRoomPage .elo-level-1{--level-color:#f4f4f4!important;--level-arc:28deg!important}
+#matchRoomPage .elo-level-2{--level-color:#20d83a!important;--level-arc:48deg!important}
+#matchRoomPage .elo-level-3{--level-color:#20d83a!important;--level-arc:82deg!important}
+#matchRoomPage .elo-level-4{--level-color:#ffd21a!important;--level-arc:116deg!important}
+#matchRoomPage .elo-level-5{--level-color:#ffd21a!important;--level-arc:150deg!important}
+#matchRoomPage .elo-level-6{--level-color:#ffd21a!important;--level-arc:184deg!important}
+#matchRoomPage .elo-level-7{--level-color:#ffd21a!important;--level-arc:218deg!important}
+#matchRoomPage .elo-level-8{--level-color:#ff7900!important;--level-arc:248deg!important}
+#matchRoomPage .elo-level-9{--level-color:#ff7900!important;--level-arc:268deg!important}
+#matchRoomPage .elo-level-10{--level-color:#ff2424!important;--level-arc:270deg!important}
+#matchRoomPage .elo-level-unknown{--level-color:#777!important;--level-arc:0deg!important}
+#matchRoomPage .match-room-team-elo .match-player-level{width:28px!important;height:28px!important;min-width:28px!important;font-size:12px!important}
+#matchRoomPage .match-room-team .match-player-card-ref .match-player-level{width:26px!important;height:26px!important;min-width:26px!important;font-size:11px!important}

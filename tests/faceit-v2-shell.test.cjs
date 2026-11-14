@@ -411,3 +411,13 @@ test('Match Room map cards have no gray overlay and show score directly over unf
   assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover \.match-map-row-thumb \.map-thumb-photo\{opacity:1!important;filter:none!important/);
   assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover \.match-map-row-score\{font-size:21px!important;font-weight:950!important/);
 });
+
+test('FACEIT level badge uses numeric labels and circular progress arc palette',()=>{
+  assert.match(app,/level\?String\(level\):'—'/);
+  assert.match(app,/c\?\.level\?String\(c\.level\):'—'/);
+  for(const [level,color] of [['1','#f4f4f4'],['2','#20d83a'],['3','#20d83a'],['4','#ffd21a'],['5','#ffd21a'],['6','#ffd21a'],['7','#ffd21a'],['8','#ff7900'],['9','#ff7900'],['10','#ff2424']]){
+    assert.ok(css.includes('#matchRoomPage .elo-level-'+level+'{--level-color:'+color));
+  }
+  assert.match(css,/radial-gradient\(circle,#090909 0 60%,transparent 62%\),conic-gradient/);
+  assert.match(css,/--level-arc:270deg!important/);
+});
