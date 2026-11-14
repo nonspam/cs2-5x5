@@ -6,6 +6,29 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 
 ---
 
+## 2026-11-14 — Match Room Statistics/TOP layout correction (second pass)
+
+**Owner feedback:** The first refinement still left the three leader cards visually cramped, the TOP list left-aligned with excessive internal whitespace, player names wrapping, and team rows lacking individual identity boundaries.
+
+**Implemented in `app_v57.js`:**
+- MVP always renders the large player avatar component using the display name as its initials fallback when no profile ID/avatar exists.
+- TOP removes the right-side sort hint.
+- Each TOP player's name, K/D/A line and K/D value share one result class based on the actual K/D ratio: >1 green, =1 neutral white, <1 red.
+
+**Implemented in `style_v57.css`:**
+- Leader cards now have a clear left identity group and a right-aligned value/label group.
+- Statistics team tables keep the outer team wrapper removed, but each player row now has its own separated dark row surface. The player + rank cells form a tinted team-color block with a visible right boundary: blue/purple for team A, teal/green for team B.
+- TOP list is centered with a 980px desktop maximum width; rows use non-wrapping player names and a more compact content-driven grid.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+
+**Commit:** `88d0c7c27e0f9db5d9e5b506994c0d3eaf4f60b5`.
+
+**Verification:** Quality Gate run [43622133983](https://github.com/nonspam/cs2-5x5/actions/runs/43622133983), actual `validate` job log: **228 passed / 0 failed / 0 skipped**.
+
+**Not performed:** browser QA, live screenshot comparison, deployment, database/SQL changes, or changes to `main`. CI covers syntax and Node regression/static contracts only; visual acceptance remains pending.
+
+
 ## 2026-11-14 — Match Room Statistics and TOP visual refinement
 
 **Goal:** Apply the owner's next visual corrections to the Match Room Statistics and TOP views without changing Overview behavior or match data.

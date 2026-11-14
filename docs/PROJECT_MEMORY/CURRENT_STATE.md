@@ -9,7 +9,7 @@
 - Repository: `nonspam/cs2-5x5`
 - Required branch: `faceit-dev`
 - Live branch HEAD checked immediately before this snapshot update: `e25065ac65712bd6f89bb7195bd2bf8dd9c92d5d`
-- Latest inspected application-code commit: `fc402e571e117eb4f74d462bddfb274b145f653d` — Match Room Statistics/TOP visual refinement. Cache-key commit: `0a82131ad0788618cad16a9a15c96b13a93b1a4b`.nked profile avatars in Match Room. Commits after it in the inspected sequence are Project Memory/documentation updates, not new runtime feature work.
+- Latest inspected application-code commit: `88d0c7c27e0f9db5d9e5b506994c0d3eaf4f60b5` — second Match Room Statistics/TOP layout correction.nement. Cache-key commit: `0a82131ad0788618cad16a9a15c96b13a93b1a4b`.nked profile avatars in Match Room. Commits after it in the inspected sequence are Project Memory/documentation updates, not new runtime feature work.
 - Latest verified quality gate for the finalized Project Memory snapshot: [run 43616036526](https://github.com/nonspam/cs2-5x5/actions/runs/43616036526), tested commit `1390c1ebbad62b857dcac4f20d2b038a88e3dbfe`, **226 passed / 0 failed / 0 skipped** (verified from job log).
 - The run covers the finalized memory snapshot before the subsequent quality-history-only update. Check newer runs before relying on it.
 - This is a repository-source and CI review. It is not browser QA or deployment confirmation.

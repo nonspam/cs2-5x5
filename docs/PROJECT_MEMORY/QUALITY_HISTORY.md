@@ -74,3 +74,10 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Quality Gate run [43621076848](https://github.com/nonspam/cs2-5x5/actions/runs/43621076848), tested UI/test commit: **227 passed / 0 failed / 0 skipped**; actual `validate` job log inspected.
 - Quality Gate run [43621142715](https://github.com/nonspam/cs2-5x5/actions/runs/43621142715), tested cache-key commit: **227 passed / 0 failed / 0 skipped**; actual `validate` job log inspected.
 - Scope: syntax checks and Node regression/static contracts. No browser QA, visual comparison, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Match Room Statistics/TOP second layout correction
+
+- Commit: `88d0c7c27e0f9db5d9e5b506994c0d3eaf4f60b5`.
+- Quality Gate run [43622133983](https://github.com/nonspam/cs2-5x5/actions/runs/43622133983): **228 passed / 0 failed / 0 skipped**, verified from the actual `validate` job log.
+- Scope: syntax and Node regression/static contracts. No browser QA, visual comparison, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.

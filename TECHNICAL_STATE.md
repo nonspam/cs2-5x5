@@ -371,3 +371,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - UI/test commit: `fc402e571e117eb4f74d462bddfb274b145f653d`; cache key commit: `0a82131ad0788618cad16a9a15c96b13a93b1a4b`.
 - CI: run `43621076848` and `43621142715`, both 227 passed / 0 failed / 0 skipped.
 - Browser QA and deployment not performed; owner visual acceptance pending. No database or production changes.
+
+
+## 2026-11-14 — Match Room Statistics/TOP second layout correction
+- `app_v57.js`: MVP avatar fallback now uses the display name even without player_id; TOP sort hint removed; each TOP name, K/D/A and K/D share a single result class derived from K/D (>1 positive, =1 neutral, <1 negative).
+- `style_v57.css`: leader value/label aligned to the right of the identity; Statistics team tables now have individually separated rows and tinted player/rank identity blocks (team A blue, team B teal) while the enclosing team card remains absent; TOP list centered at 980px max width with no name wrapping.
+- Regression contract added; `index.html` asset cache key refreshed.
+- Commit `88d0c7c27e0f9db5d9e5b506994c0d3eaf4f60b5`; Quality Gate run `43622133983`: 228/228 passed.
+- No browser QA, visual acceptance, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.

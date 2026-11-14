@@ -77,3 +77,11 @@ This pass is source-level and covered by [quality gate run 43128656306](https://
 - Statistics team tables should not be enclosed in an additional tinted team card. Use restrained side identity (first roster blue, second roster yellow) in the team heading.
 - Prefer compact information density: leader cards and TOP rows should use space for actual identity/metrics rather than empty width. Long player names must remain readable, not be silently truncated.
 - TOP result colors: K/D > 1.00 green, K/D = 1.00 neutral white, K/D < 1.00 red; the K/D/A score string follows the same row result state.
+
+
+## Match Room Statistics/TOP — second owner refinement (2026-11-14)
+- Leader cards use a left identity group and right-aligned value/label group.
+- Each Statistics player row is visually separated; team color is confined to the player/rank identity block with a distinct boundary. Do not reintroduce an enclosing team-wide card.
+- TOP list is centered and compact (desktop max-width 980px); long names remain on one line rather than wrapping by character.
+- TOP name, K/D/A and K/D use the same state derived from K/D: >1 green, =1 white, <1 red.
+- MVP avatar must still render when the match stat row has no linked profile ID: use the display name's initial as fallback.
