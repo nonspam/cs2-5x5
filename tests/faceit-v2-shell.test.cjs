@@ -506,3 +506,12 @@ test('Match Room exposes working Overview and Statistics tabs with source-backed
  assert.match(css,/\.match-room-view-tabs button\.active:after/);
  assert.match(css,/\.match-statistics-summary\{display:grid/);
 });
+
+
+test('Match Room active bindMatchRoomHeader attaches the Overview / Statistics click handler',()=>{
+ const declarations=app.match(/function bindMatchRoomHeader\s*\(/g)||[];
+ assert.equal(declarations.length,2,'legacy duplicate declarations are currently present; both must bind tabs');
+ const activeBind=app.slice(app.lastIndexOf('function bindMatchRoomHeader'));
+ assert.match(activeBind,/root\.querySelectorAll\('\[data-match-view-tab\]'\)\.forEach/);
+ assert.match(activeBind,/root\.querySelectorAll\('\[data-match-view\]'\)\.forEach/);
+});
