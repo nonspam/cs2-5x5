@@ -81,4 +81,4 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Desktop Profile window aligns to the 170px global rail; tablet/mobile offsets are preserved.
 - Right utility avatar is a compact circular 38px tile.
 - Match Room previously reused body::before, overriding the global wallpaper pseudo-element. That conflict is removed; Match Room now uses the same account wallpaper variable on its own surface.
-- New source contracts are committed/pending CI. Browser QA, live DEV deployment SHA and screenshot comparison remain unverified.
+- New source contracts passed Quality Gate run 43639401323 (253/253) at 6640706cf6ffae0377715a3e95da5b04723eb8c4. Browser QA, live DEV deployment SHA and screenshot comparison remain unverified.

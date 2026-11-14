@@ -365,3 +365,6 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Not changed:** upload/save handlers, account/profile schema, player/match data, database, storage policy, production or deployment.
 
 **Status:** source/test update committed; Quality Gate pending. Browser QA and deployed DEV appearance remain unverified.
+
+
+**Quality Gate result:** run [43639401323](https://github.com/nonspam/cs2-5x5/actions/runs/43639401323), source/test commit 6640706cf6ffae0377715a3e95da5b04723eb8c4: **253 passed / 0 failed / 0 skipped**, verified from the actual validate job log. The first attempt exposed one stale test expecting the old body pseudo-element overlay; that contract was corrected before the passing run.

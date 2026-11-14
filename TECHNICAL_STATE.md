@@ -471,3 +471,5 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Right utility avatar is 38×38px and circular, preserving existing avatar URL and update logic.
 - Automated regression coverage added. Browser QA/deployment remain unverified.
 - Implementation commit: pending CI.
+
+- Quality Gate run 43639401323 passed **253/253** at source/test commit 6640706cf6ffae0377715a3e95da5b04723eb8c4; actual validate job log inspected. Browser QA and DEV deployment remain unverified.

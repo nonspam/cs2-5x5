@@ -145,3 +145,11 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Coverage added/updated for route navigation closing both contained windows, stale modal body-class cleanup, Match Room back-to-Matches behavior, map rows opening the shared Match Room Statistics view with map-specific stats, direct profile wallpaper picker, full-viewport wallpaper layer, taller profile avatar and right-side current-account portrait tile.
 - Intermediate CI failures occurred on temporary commits during inline-handler escaping and static-contract updates. The final commit above passed.
 - Browser QA, screenshot comparison and deployment remain unverified. No DB/schema/migration/RLS/grants/storage-policy changes.
+
+
+## 2026-11-14 — Profile isolation, circular utility avatar and Match Room wallpaper
+- Source/test commit: `6640706cf6ffae0377715a3e95da5b04723eb8c4`.
+- Quality Gate run [43639401323](https://github.com/nonspam/cs2-5x5/actions/runs/43639401323): **253 passed / 0 failed / 0 skipped**, verified from the actual validate job log.
+- Scope: syntax and Node regression/static contracts. Includes profile overlay isolation, shared wallpaper in Profile and Match Room, no body pseudo-element conflict, and circular 38px utility avatar.
+- One initial run failed on a stale assertion that expected the removed Match Room body pseudo-element; the test was corrected and the final run passed.
+- No browser QA, screenshot comparison, DEV deployment verification, database writes, SQL, migrations, RLS/grants/storage policy changes, or production changes.
