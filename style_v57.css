@@ -6945,8 +6945,8 @@ body.has-account-wallpaper .faceit-utility-rail{
 #playerProfileWindow .player-profile-window-panel{
  position:relative;z-index:1;width:100%;height:100%;min-width:0;overflow:hidden;
  border:0!important;border-left:1px solid #292929!important;border-right:1px solid #292929!important;
- border-radius:0!important;box-shadow:none!important;background-color:rgba(8,8,8,.18)!important;
- background-image:linear-gradient(rgba(8,8,8,.54),rgba(8,8,8,.70)),var(--account-wallpaper,none)!important;
+ border-radius:0!important;box-shadow:none!important;background-color:#080808!important;
+ background-image:linear-gradient(rgba(8,8,8,.86),rgba(8,8,8,.91)),var(--account-wallpaper,none)!important;
  background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important
 }
 #playerProfileWindow #playerProfileMount{width:100%;height:100%;min-height:0;overflow:hidden}
@@ -6963,7 +6963,7 @@ body.has-account-wallpaper .faceit-utility-rail{
 }
 #playerProfileWindow .faceit-exact-player-card{width:100%!important;min-height:0!important}
 #playerProfileWindow .faceit-exact-avatar-frame{
- width:100%!important;height:300px!important;aspect-ratio:auto!important;
+ width:100%!important;height:333px!important;aspect-ratio:auto!important;
  border-radius:13px!important;overflow:hidden!important
 }
 #playerProfileWindow .faceit-exact-avatar-frame img{width:100%!important;height:100%!important;object-fit:cover!important}
@@ -7025,7 +7025,7 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  width:38px!important;height:38px!important;flex:0 0 38px!important;
  overflow:hidden!important;border-radius:50%!important
 }
-.faceit-utility-avatar-image{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important}
+.faceit-utility-avatar-image{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:7px!important}
 .faceit-utility-profile .faceit-utility-avatar-fallback{
  display:grid!important;width:100%!important;height:100%!important;place-items:center!important;
  background:rgba(255,255,255,.05)!important;color:#ddd!important;font-size:19px!important;border-radius:7px!important
