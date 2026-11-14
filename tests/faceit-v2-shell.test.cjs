@@ -13,7 +13,7 @@ const elo = read('elo_v3.js');
 
 test('FACEIT V2 exposes existing site sections from one profile-inspired rail', () => {
   assert.match(app, /function faceitAppRailMarkup\(\)/);
-  for (const route of ['home','analytics','base','maps','teams','records','profile']) {
+  for (const route of ['home','analytics','base','maps','teams','records']) {
     assert.ok(app.includes("['" + route + "'"), 'rail should include route ' + route);
   }
   assert.match(app, /function navigateApp\(tab,options=\{\}\)/);
@@ -69,7 +69,7 @@ test('cross-route dashboard links use the common navigation function', () => {
 test('the active application rail item exposes the current page to assistive technology', () => {
   assert.match(app, /state\.tab===id\?'aria-current="page" '/);
   assert.match(app, /state\.tab==='settings'\?'aria-current="page" '/);
-  assert.match(app, /\['profile','◉','Профиль'\]/);
+  assert.match(app, /data-utility-action=\\\"profile\\\"/);
   assert.ok(app.includes('items.map(([id,ico,label])=>'), 'rail renders all routes from its shared item list');
 });
 
