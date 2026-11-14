@@ -6517,3 +6517,22 @@ body.match-room-open .match-room-page{
 @media(max-width:700px){
   #matchRoomPage .match-room-columns>.match-room-team{top:0!important}
 }
+
+
+/* 2026-11-14 — Match Room: tighten KDA track and align career metrics */
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-grid{
+  grid-template-columns:48px 58px minmax(120px,150px) 64px minmax(64px,1fr)!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-avg-kda{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-width:0!important;padding-left:2px!important;padding-right:2px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-avg-kda b{
+  display:block!important;width:100%!important;text-align:center!important;
+  white-space:nowrap!important;letter-spacing:-.04em!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-avg-kda small,
+#matchRoomPage .match-room-team .match-player-card-ref .metric-kd small,
+#matchRoomPage .match-room-team .match-player-card-ref .metric-winrate small{
+  text-align:center!important;width:100%!important;
+}

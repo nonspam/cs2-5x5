@@ -487,7 +487,7 @@ test('Match Room keeps separate compact KDA/KD cells, slightly wider rosters and
   assert.match(app,/metric-avg-kda"><b>'\+Math\.round\(c\.avg\)/);
   assert.match(app,/class="match-career-metric metric-kd '\+\(Math\.abs\(c\.kd-1\)/);
   assert.doesNotMatch(app,/class="match-kda-values"/);
-  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:48px 48px minmax\(0,1fr\) 54px 62px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:48px 58px minmax\(120px,150px\) 64px minmax\(64px,1fr\)!important/);
   assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*max-width:1300px!important[\s\S]*grid-template-columns:minmax\(0,400px\) minmax\(0,440px\) minmax\(0,400px\)!important[\s\S]*gap:30px!important/);
   assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-team\{[\s\S]*position:relative!important;top:44px!important/);
   assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-center-column\{[\s\S]*position:relative!important;top:12px!important/);
