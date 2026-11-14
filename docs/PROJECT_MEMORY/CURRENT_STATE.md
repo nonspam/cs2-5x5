@@ -10,7 +10,7 @@
 - Required branch: `faceit-dev`
 - Last branch HEAD checked while preparing this memory system: `365d5ae5bb32034231e272b8e6d7de18bc0928ca`
 - Last code commit visible before the journal-only HEAD: `bb8c161d9d2d4e66c48a6bf06f1d938286941e62` — linked profile avatars in Match Room.
-- Latest confirmed quality gate inspected: run [43614439431](https://github.com/nonspam/cs2-5x5/actions/runs/43614439431), commit `bb8c161d9d2d4e66c48a6bf06f1d938286941e62`, **226 passed / 0 failed**.
+- Latest code quality gate: run [43614439431](https://github.com/nonspam/cs2-5x5/actions/runs/43614439431), code commit `bb8c161d9d2d4e66c48a6bf06f1d938286941e62`, **226 passed / 0 failed**. A follow-up docs-only commit was also checked by [run 43615475472](https://github.com/nonspam/cs2-5x5/actions/runs/43615475472), **226 passed / 0 failed**.
 - Snapshot is a repository-source/CI review. It is not a browser QA or deployment confirmation.
 - Before acting on this snapshot, fetch the current branch HEAD again. A newer commit may already exist.
 
