@@ -1,3 +1,12 @@
+## 2026-11-14 — Match Room structure aligned to the approved mockup
+
+- Removed the duplicate navigation/search/account header rendered inside Match Room. The existing site header remains global and is kept above the match view; moved player lookup to that global header.
+- Rebuilt the hero score as one centered `left score · VS · right score` group; team sides now contain rating/level, team label, and captain avatar only.
+- Made the hero map art visible behind the result content without an opaque hero fill.
+- Constrained Match Room content to 1500px and tightened the three-column proportions and player-card widths.
+- Rebuilt player cards as a compact two-band row: identity/avatar/name/rating/level above; darker statistics strip below with last-five result dots, match count, rating, K/D/A, K/D and win rate. No ADR or invented substitute values.
+- No browser visual QA or deployment performed.
+
 ## 2026-11-14 — Player cards compactness and visible level rings
 
 - Corrected the ring layering: the progress arc is rendered on a masked `:before` pseudo-element; the numeric level remains visible above the arc and is not clipped by the mask.
