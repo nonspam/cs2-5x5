@@ -1,3 +1,13 @@
+## 2026-11-14 — Player profile and Match Room contained windows
+- `openPublicPlayerProfile(id)` mounts the existing profile renderer in `#playerProfileWindow` instead of navigating the underlying application route.
+- Profile window adds Overview / Match History / Track / Close vertical navigation. Overview and History rerender the profile mount via `setPlayerProfileSection(section)`; they do not call the global `render()` route path.
+- Profile close supports close button, backdrop click and Escape. Route links inside the profile close the window before navigating.
+- Match Room desktop geometry is constrained to the central workspace; the global left rail remains visible. Existing match tabs/data are unchanged.
+- Mobile breakpoint up to 700px uses full-screen presentation for both windows.
+- Regression contracts added for both window shells and profile section mount behavior.
+- Quality Gate run `43631386438`: 235/235 passed at `e609976d0f7f040631dab8b9088f70c87b1107a2`.
+- Browser QA, screenshot comparison and deployment verification remain pending.
+
 ## 2026-11-14 — Match Room sizing, score alignment and stat semantics
 
 - Match Room now covers the full viewport; the underlying profile/page cannot bleed through above the match overlay. The global site search remains on normal site pages and the global header is hidden while the standalone match view is open.

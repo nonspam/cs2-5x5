@@ -1,3 +1,24 @@
+## 2026-11-14 — Profile and Match Room contained-window prototype
+
+**Owner direction:** Try player profiles as a separate window with compact vertical navigation, and keep the Match Room in a separate window while leaving the main site navigation available.
+
+**Implemented:**
+- Player links now open the existing profile renderer inside `#playerProfileWindow`; the underlying application route is not replaced.
+- Added a compact vertical profile menu: Overview, Match History, Track, and Close Profile.
+- Profile Overview/History controls rerender the profile mount itself, rather than rerendering the underlying route.
+- Profile window supports close button, backdrop click, and Escape.
+- Match Room desktop layout is now a contained overlay over the workspace; the global left rail remains visible. Existing Overview / Statistics / TOP tabs and match data renderers are retained.
+- On narrow screens both windows use full-screen layout.
+- No match/player calculations, data contracts, DB schema, or DB contents were changed.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, plus decision/design/technical/project-memory documentation.
+
+**Code commits:** `eebccfff8cb4405770d86ff0e04476c606928956` (initial window prototype), `68583e754eea50628635c0eb07f44352e285812f` (profile section navigation fix), `e609976d0f7f040631dab8b9088f70c87b1107a2` (test assertion correction).
+
+**Verification:** Quality Gate run [43631386438](https://github.com/nonspam/cs2-5x5/actions/runs/43631386438), tested code commit `e609976d0f7f040631dab8b9088f70c87b1107a2`: **235 passed / 0 failed / 0 skipped**, verified from the actual job log. An earlier run `43631304007` exposed one incorrectly escaped test regex; the assertion was corrected and the follow-up run passed.
+
+**Not performed:** browser QA, screenshot comparison, DEV deployment verification, production deployment, database/SQL writes, migrations, RLS/grants changes, or `main` changes.
+
 # Semantic Development Log
 
 This is the human/AI-readable history of completed project tasks. It complements, but does not duplicate, the automatic root [CHANGELOG.md](../../CHANGELOG.md).

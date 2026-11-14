@@ -1,3 +1,10 @@
+## 2026-11-14 — Profile and Match Room contained-window prototype
+- Code under test: `e609976d0f7f040631dab8b9088f70c87b1107a2`.
+- Quality Gate run [43631386438](https://github.com/nonspam/cs2-5x5/actions/runs/43631386438): **235 passed / 0 failed / 0 skipped**, confirmed from actual `validate` job log.
+- Scope: repository syntax checks and Node regression/static contracts, including new profile-window mount/navigation and Match Room contained-window/responsive-layout contracts.
+- Earlier run [43631304007](https://github.com/nonspam/cs2-5x5/actions/runs/43631304007) failed one newly added assertion because its test regex escaped quotes incorrectly; the assertion was rewritten as a literal substring check and the follow-up passed.
+- No browser QA, screenshot comparison, DEV deployment verification or production deployment. CI does not prove visual correctness or actual browser interaction.
+
 # Quality History
 
 This file stores verifiable evidence, not optimistic status claims.
