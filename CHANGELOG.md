@@ -4914,3 +4914,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T22:45:57+03:00 — test: assert profile navigation moves to utility rail
+
+- Commit: c7ea1195e8f290ac99cfe61b4ecb925e68ddfee1
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
