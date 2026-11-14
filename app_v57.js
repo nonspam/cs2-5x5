@@ -669,7 +669,7 @@ function applyAccountWallpaper(){
  document.body.style.backgroundSize=url?'cover':'';
  document.body.style.backgroundPosition=url?'center center':'';
  document.body.style.backgroundAttachment=url?'fixed':'';
- document.body.style.setProperty('--account-wallpaper',url?'url(\\"'+esc(url)+'\\")':'none');
+ document.body.style.setProperty('--account-wallpaper',url?'url("'+esc(url)+'")':'none');
  document.body.classList.toggle('has-account-wallpaper',!!url);
 }
 function renderUtilityRail(){
