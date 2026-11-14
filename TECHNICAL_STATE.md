@@ -451,3 +451,14 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Navigation controls use transparent resting styles and lime hover/focus. VS result score is green on WIN and red on LOSS.
 - Quality Gate run 43635690684: 244/244 passed at implementation/test commit ff3a4e4b038c31b6c89be15e71ddc559f9e4aede.
 - No browser QA, screenshot comparison or deployment. No DB/schema/storage policy changes; existing media storage semantics remain.
+
+
+## 2026-11-14 — Modal lifecycle, map-scoped Match Room Statistics and global wallpaper
+- navigateApp closes Profile and Match Room before route render. Cleanup removes stale body state even if the modal DOM node is already absent.
+- Match Room back action uses matchRoomNavigate('base') and always returns to the Matches route.
+- openMatchDetail(id, options) supports initialView and mapId. openMapDetail now routes map rows into the shared Match Room Statistics tab using selected map player_stats, historical team grouping and map score. The old map-stat modal was removed.
+- Profile's owner-only action row includes a direct wallpaper picker using existing handleProfileImage('cover', file); Settings retains its existing wallpaper upload/removal.
+- Utility rail resolves current player id through myPlayerId / myProfile.player_id and renders current avatar as a 46×62 portrait tile above VS. Profile avatar frame is 300px desktop.
+- CSS shell rules were consolidated after the prior appended modal overrides. A body fixed pseudo-element now draws the account wallpaper across the viewport; contained windows and both side rails are transparent/translucent layers above it. Match Room uses fixed inset edges rather than a fixed height.
+- Quality Gate run 43637929383: 250/250 passed at test commit dcce90cd009caa8ff6b2733cb96dad22a4291009.
+- Browser QA, screenshot comparison and deployment are not performed. No database, schema, storage policy or migration changes.
