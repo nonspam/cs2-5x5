@@ -98,3 +98,12 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Wallpaper overlay reduced and route/profile shells explicitly transparent; live storage application still needs verification.
 - Implementation/test commits: `f3168228b399239118efe46665fce5d3cfceffc3`, `554b5be7252241165450223379cc093f2450acd7`, `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`, `8ecf3848e9f1fa6ba31114cbe2aeebb8c98d40e0`.
 - No CI result, browser QA or deployment yet.
+
+
+## 2026-11-15 — Latest profile interaction corrections (IN PROGRESS)
+- Compact VS recent-match list and header layout.
+- Toast moved to body root to appear above the Profile window.
+- 5/10/20 profile selector rerenders only profile content and restores scrollTop.
+- Wallpaper overlay reduced and route/profile shells made transparent; real upload remains unverified.
+- Latest regression test commit: `4522c4fc3b9685cf4f0775e5c37d0649e0ba0c7f`.
+- No CI/browser QA/deployment evidence yet.
