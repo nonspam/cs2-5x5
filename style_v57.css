@@ -6843,3 +6843,16 @@ body.match-room-open .match-room-page{
  #matchRoomPage .match-stat-teams{width:100%}
  #matchRoomPage .match-stat-teams .match-scoreboard{min-width:560px}
 }
+
+
+/* Match Room — losing team uses amber identity; FACEIT rank badge refined to compact original-style SVG. */
+#matchRoomPage .match-stat-team.team-b .match-stat-team-head>div>span,
+#matchRoomPage .match-stat-team.team-b .match-stat-team-score{color:#f0c52e!important}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td.name{background:#30270f!important}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:first-child{border-left-color:#d8ad25!important}
+#matchRoomPage .match-faceit-level-svg{
+ display:inline-block;width:28px;height:28px;vertical-align:middle;overflow:visible;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard td.match-stat-rank{
+ background:#101010!important;color:#c8c8c8!important;
+}
