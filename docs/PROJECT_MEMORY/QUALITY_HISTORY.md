@@ -125,3 +125,9 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 ## 2026-11-14 — Team A rank divider follow-up
 - Added regression check and neutralized Team A's previously blue right rank divider to `#424242`, matching Team B.
 - Quality run for this follow-up is pending at documentation time; no browser QA.
+
+
+## 2026-11-14 — FACEIT workspace rails and cover propagation
+- Quality Gate run [43633959427](https://github.com/nonspam/cs2-5x5/actions/runs/43633959427), tested commit `35c5381e6beee2ddae42640fe0509bf657967c4a`: **241 passed / 0 failed / 0 skipped**, verified from the actual `validate` job log.
+- Earlier implementation attempts had failing runs: an initial JS quote-escaping syntax error, then stale/new rail contract assertions. These were corrected; the final run above passed.
+- Scope: Node syntax checks and regression/static contracts. No browser QA, screenshot comparison, deployment, DB/SQL, schema/RLS/grants, or `main` changes. Visual behavior remains unverified.
