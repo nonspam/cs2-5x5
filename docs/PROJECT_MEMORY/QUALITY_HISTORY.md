@@ -27,7 +27,16 @@ This file stores verifiable evidence, not optimistic status claims.
 - Command: `npm run check`.
 - Result confirmed in the actual job log: **226 passed / 0 failed**, 0 skipped.
 - Scope: repository syntax checks and Node regression/static contract tests.
-- Important boundary: this run predates the later Project Memory hardening commits. Their CI must be checked separately; this result is not evidence that those later commits passed.
+
+## 2026-11-14 — Project Memory recovery hardening quality gate
+
+- Workflow: [CS2-5x5 quality gate](https://github.com/nonspam/cs2-5x5/actions/runs/43615940711)
+- Commit tested: `1644527855ec257b10c7d2999531f6a974e80b66`, containing the Project Memory recovery hardening and semantic log update.
+- Job: `validate`, completed successfully.
+- Command: `npm run check`.
+- Actual job log: **226 passed / 0 failed / 0 skipped**.
+- Scope: repository syntax checks and Node regression/static contract tests. The changes in this run were documentation-only; the test result confirms the repository quality gate remained green, not browser rendering or product behavior.
+- This run covers the accumulated Project Memory documentation commits preceding the tested SHA.
 
 ## Evidence rules
 
@@ -49,4 +58,4 @@ A failed or partial run must remain in history. A later successful run can super
 
 ## Current verification boundary
 
-The latest confirmed CI evidence recorded here is run `43615568846` on commit `dbe2e982cf7b712413ace4981f2424012b46450f`. Check newer runs before relying on it. No browser QA or deployment is confirmed by these CI runs.
+The latest confirmed CI evidence recorded here is run `43615940711` on commit `1644527855ec257b10c7d2999531f6a974e80b66`. Check newer runs before relying on it. No browser QA or deployment is confirmed by these CI runs.
