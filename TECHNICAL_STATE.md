@@ -1,5 +1,12 @@
 
 
+## 2026-11-14 — Compact Match Room UI quality gate
+
+- Implemented compact player rows (98px desktop / 94px mobile), smaller avatar and level rings, explicit per-level color classes (level 4 yellow), and removed the gray map-tile overlay so full-bleed map art carries the title and score directly.
+- Automated Quality Gate: **212 passed, 0 failed** on commit `4142bb14bcb171960651107c3ae3a0c190e1baa1`; run [43531873960](https://github.com/nonspam/cs2-5x5/actions/runs/43531873960).
+- These checks validate JavaScript and static DOM/CSS contracts, not browser pixel matching. No DEV deployment or browser QA was performed.
+
+
 ## 2026-11-14 — Match Room compact cards and clean map tiles
 
 - Reduced desktop player cards from 116px to 98px, identity row from 70px to 58px, avatar from 56px to 46px, and level ring from 30px to 26px; reduced typography and metrics proportionally. Mobile cards now target 94px.
