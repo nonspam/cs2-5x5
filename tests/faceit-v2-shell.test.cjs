@@ -8,6 +8,7 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const app = read('app_v57.js');
 const account = read('account_module.js');
 const css = read('style_v57.css');
+const html = read('index.html');
 const elo = read('elo_v3.js');
 
 test('FACEIT V2 exposes existing site sections from one profile-inspired rail', () => {
