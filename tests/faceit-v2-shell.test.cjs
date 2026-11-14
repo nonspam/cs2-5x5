@@ -473,3 +473,11 @@ test('Match Room desktop gently spreads the side rosters, lowers them and shifts
  assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*\.match-room-center-column\{\s*width:calc\(100% \+ 16px\)!important;[\s\S]*transform:translateX\(8px\)!important/);
  assert.match(css,/@media\(max-width:1120px\)\{[\s\S]*\.match-room-columns>\.match-room-team\{\s*transform:translateY\(8px\)!important/);
 });
+
+
+test('Match Room player cards are compact, with a narrower K/D cell and more space between cards',()=>{
+  assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*#matchRoomPage \.match-room-columns\{[\s\S]*max-width:1196px!important[\s\S]*grid-template-columns:minmax\(0,350px\) minmax\(320px,440px\) minmax\(0,350px\)!important[\s\S]*gap:28px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-team-roster\{\s*gap:15px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{\s*grid-template-columns:40px minmax\(0,1\.2fr\) minmax\(0,\.45fr\) minmax\(0,\.8fr\) minmax\(0,\.85fr\)!important/);
+  assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-team\{\s*transform:translateY\(16px\)!important/);
+});

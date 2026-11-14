@@ -6384,3 +6384,36 @@ body.match-room-open .match-room-page{
     transform:none!important;
   }
 }
+
+
+/* 2026-11-14 — Match Room: compact player cards and tighter K/D metric */
+@media(min-width:1121px){
+  #matchRoomPage .match-room-columns{
+    width:100%!important;max-width:1196px!important;
+    margin:18px auto 0!important;
+    grid-template-columns:minmax(0,350px) minmax(320px,440px) minmax(0,350px)!important;
+    justify-content:center!important;gap:28px!important;
+  }
+  #matchRoomPage .match-room-columns>.match-room-team{
+    transform:translateY(16px)!important;
+  }
+}
+#matchRoomPage .match-room-team .match-team-roster{
+  gap:15px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-grid{
+  grid-template-columns:40px minmax(0,1.2fr) minmax(0,.45fr) minmax(0,.8fr) minmax(0,.85fr)!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-kd{
+  padding-left:1px!important;padding-right:1px!important;
+}
+@media(max-width:1120px){
+  #matchRoomPage .match-room-columns>.match-room-team{
+    transform:translateY(16px)!important;
+  }
+}
+@media(max-width:700px){
+  #matchRoomPage .match-room-columns>.match-room-team{
+    transform:none!important;
+  }
+}
