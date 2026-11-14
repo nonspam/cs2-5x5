@@ -418,3 +418,12 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - `tests/faceit-v2-shell.test.cjs`: assertions for all score statuses and numeral alignment.
 - Quality Gate run `43625641567`: 229/229 passed at `74e280a4ebba26c6f99a73841f187e35ea0b72cc`.
 - No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Neutral rank divider and site-wide hint cleanup
+- `style_v57.css`: Team B rank-column right divider now `#424242`, matching the left separator.
+- `app_v57.js`: removed Match Room statistics helper subtitle/footnote, native title attributes and dynamic title setters.
+- `account_module.js` and `index.html`: removed native title hover labels; retained accessible aria labels.
+- `tests/faceit-v2-shell.test.cjs`: added site-wide no-title/helper-hint and neutral-divider regression assertions.
+- Quality Gate run `43626860712`: 231/231 passed at `999bcb8cb684f68ce613f6606f51370e9daa0856`.
+- Interactive chart data tooltips remain. No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.

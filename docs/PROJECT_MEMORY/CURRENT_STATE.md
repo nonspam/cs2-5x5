@@ -9,7 +9,7 @@
 - Repository: `nonspam/cs2-5x5`
 - Required branch: `faceit-dev`
 - Live branch HEAD checked immediately before this snapshot update: `e25065ac65712bd6f89bb7195bd2bf8dd9c92d5d`
-- Latest inspected application-code commit: `610600ebd533ec5476f30a2219498fbdf6b7d845` — full K/D/A score coloring by player K/D and slight upward FACEIT numeral adjustment.
+- Latest inspected application-code commit: `999bcb8cb684f68ce613f6606f51370e9daa0856` — neutral rank divider and removal of helper/native hover hints.
 - Latest verified quality gate for the finalized Project Memory snapshot: [run 43616036526](https://github.com/nonspam/cs2-5x5/actions/runs/43616036526), tested commit `1390c1ebbad62b857dcac4f20d2b038a88e3dbfe`, **226 passed / 0 failed / 0 skipped** (verified from job log).
 - The run covers the finalized memory snapshot before the subsequent quality-history-only update. Check newer runs before relying on it.
 - This is a repository-source and CI review. It is not browser QA or deployment confirmation.

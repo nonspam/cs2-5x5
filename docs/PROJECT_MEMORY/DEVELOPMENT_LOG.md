@@ -213,3 +213,23 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Verification:** Quality Gate run [43625641567](https://github.com/nonspam/cs2-5x5/actions/runs/43625641567), tested commit `74e280a4ebba26c6f99a73841f187e35ea0b72cc`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log. The run includes the implementation commit plus subsequent automated documentation journal changes.
 
 **Not performed:** browser QA, visual screenshot comparison, deployment, database/SQL changes, or `main` changes.
+
+
+## 2026-11-14 — Neutral rank divider and site-wide helper tooltip cleanup
+
+**Owner request:** Make the lower team's rank-column right divider the same neutral grey as the left divider; remove the explanatory Match Room statistics footnote and similar helper/native hover hints across the site.
+
+**Implemented:**
+- Changed the lower/losing team's right rank-column divider from amber to neutral grey `#424242`, matching the opposite divider. Rank cell backgrounds remain neutral.
+- Removed the explanatory Match Room statistics subtitle and footnote shown in the supplied screenshot.
+- Removed native browser `title` hover hints from generated app markup, account controls and static shell controls; removed dynamic `setAttribute('title', ...)` assignments as well. Accessible labels such as `aria-label` remain.
+- Kept interactive chart data tooltips; these show actual chart data on interaction and are not static helper hints.
+- Added regression coverage and retained the settings button's accessible label.
+
+**Files changed:** `app_v57.js`, `account_module.js`, `index.html`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`.
+
+**Implementation commit:** `999bcb8cb684f68ce613f6606f51370e9daa0856`.
+
+**Verification:** Quality Gate run [43626860712](https://github.com/nonspam/cs2-5x5/actions/runs/43626860712), tested commit `999bcb8cb684f68ce613f6606f51370e9daa0856`: **231 passed / 0 failed / 0 skipped**, confirmed from actual job log.
+
+**Not performed:** browser QA, screenshot comparison, deployment, database/SQL changes, or `main` changes.

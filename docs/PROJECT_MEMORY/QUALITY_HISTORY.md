@@ -108,3 +108,8 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 ## 2026-11-14 — K/D-based full score coloring and FACEIT numeral alignment
 - Quality Gate run [43625641567](https://github.com/nonspam/cs2-5x5/actions/runs/43625641567), tested commit `74e280a4ebba26c6f99a73841f187e35ea0b72cc`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
 - Scope: syntax and Node regression/static contracts only. No browser QA or screenshot comparison.
+
+
+## 2026-11-14 — Neutral rank divider and site-wide helper tooltip cleanup
+- Quality Gate run [43626860712](https://github.com/nonspam/cs2-5x5/actions/runs/43626860712), tested commit `999bcb8cb684f68ce613f6606f51370e9daa0856`: **231 passed / 0 failed / 0 skipped**, confirmed from actual job log.
+- Scope: syntax and Node regression/static contracts only. No browser QA or screenshot comparison.

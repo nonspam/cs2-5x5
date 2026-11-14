@@ -113,3 +113,9 @@ This pass is source-level and covered by [quality gate run 43128656306](https://
 ## Match Room Statistics — full K/D/A score colors (2026-11-14)
 - Color all four score values (K, D, A, K/D) from the player's K/D: >1 green, exactly 1 white, <1 red. If K/D is missing, keep the cells neutral; do not infer.
 - FACEIT SVG level numeral is shifted upward by 1.2px; ring geometry and 28px badge size unchanged.
+
+
+## Match Room — neutral rank divider and helper hint cleanup (2026-11-14)
+- Rank column dividers should be neutral grey on both sides; Team B's right divider uses `#424242`, matching the left separator. Rank column remains neutral.
+- Match Room statistics no longer displays the source-data subtitle or K/D/A explanatory footnote.
+- Remove native browser `title` hover hints throughout the app, including dynamically assigned title attributes. Preserve accessible `aria-label` text. Interactive chart data tooltips remain because they expose actual chart values on demand.
