@@ -412,14 +412,16 @@ test('Match Room map cards have no gray overlay and show score directly over unf
   assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover \.match-map-row-score\{font-size:21px!important;font-weight:950!important/);
 });
 
-test('FACEIT level badge uses numeric labels and circular progress arc palette',()=>{
+test('FACEIT level badges use the supplied palette and visible progressive ring',()=>{
   assert.match(app,/level\?String\(level\):'—'/);
   assert.match(app,/c\?\.level\?String\(c\.level\):'—'/);
   for(const [level,color] of [['1','#f4f4f4'],['2','#20d83a'],['3','#20d83a'],['4','#ffd21a'],['5','#ffd21a'],['6','#ffd21a'],['7','#ffd21a'],['8','#ff7900'],['9','#ff7900'],['10','#ff2424']]){
     assert.ok(css.includes('#matchRoomPage .elo-level-'+level+'{--level-color:'+color));
   }
-  assert.match(css,/radial-gradient\(circle,#090909 0 60%,transparent 62%\),conic-gradient/);
-  assert.match(css,/--level-arc:270deg!important/);
+  assert.match(css,/\.match-player-level:before/);
+  assert.match(css,/mask:radial-gradient/);
+  assert.match(css,/z-index:1/);
+  for(const degrees of [12,36,60,84,108,132,162,198,234,270]) assert.ok(css.includes('--level-arc:'+degrees+'deg!important'));
 });
 
 test('FACEIT level rings keep the numeric label visible above the masked arc',()=>{const expected=[12,36,60,84,108,132,162,198,234,270];expected.forEach((degrees,index)=>{assert.ok(css.includes('--level-arc:'+degrees+'deg!important'));if(index>0)assert.ok(degrees>expected[index-1]);});assert.match(css,/\.match-player-level:before/);assert.match(css,/mask:radial-gradient/);assert.match(css,/z-index:1/);});
