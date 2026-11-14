@@ -6856,3 +6856,36 @@ body.match-room-open .match-room-page{
 #matchRoomPage .match-stat-teams .match-scoreboard td.match-stat-rank{
  background:#101010!important;color:#c8c8c8!important;
 }
+
+
+/* Match Room — rank column is neutral; only the player-name column carries team color. */
+#matchRoomPage .match-stat-teams .match-scoreboard thead th:nth-child(2),
+#matchRoomPage .match-stat-teams .match-scoreboard tbody td.match-stat-rank{
+ background:#101010!important;color:#c8c8c8!important;box-shadow:none!important;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard tbody td.match-stat-rank{
+ border-left:1px solid #424242!important;border-right:1px solid #424242!important;
+}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td.match-stat-rank,
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td.match-stat-rank{background:#101010!important}
+#matchRoomPage .match-faceit-level-svg{
+ display:inline-block;width:26px;height:26px;vertical-align:middle;overflow:visible;
+}
+#matchRoomPage .match-faceit-level-svg .level-track,
+#matchRoomPage .match-faceit-level-svg .level-progress{
+ fill:none;stroke-width:4;stroke-linecap:butt;
+}
+#matchRoomPage .match-faceit-level-svg .level-track{stroke:#303238}
+#matchRoomPage .match-faceit-level-svg text{
+ fill:currentColor;font-size:10px;font-weight:750;dominant-baseline:middle;
+}
+#matchRoomPage .match-faceit-level-svg.level-1 text{fill:#f2f2f2}
+#matchRoomPage .match-faceit-level-svg.level-2 text,
+#matchRoomPage .match-faceit-level-svg.level-3 text{fill:#35df32}
+#matchRoomPage .match-faceit-level-svg.level-4 text,
+#matchRoomPage .match-faceit-level-svg.level-5 text,
+#matchRoomPage .match-faceit-level-svg.level-6 text,
+#matchRoomPage .match-faceit-level-svg.level-7 text{fill:#f2d326}
+#matchRoomPage .match-faceit-level-svg.level-8 text,
+#matchRoomPage .match-faceit-level-svg.level-9 text{fill:#ff741c}
+#matchRoomPage .match-faceit-level-svg.level-10 text{fill:#f22e22}

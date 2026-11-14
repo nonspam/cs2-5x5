@@ -563,7 +563,10 @@ test('Match Room Statistics uses compact centered player/rank columns and FACEIT
  assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard col\.match-col-player\{width:28%\}/);
  assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard td\.match-stat-rank\{[\s\S]*border-left:1px solid[\s\S]*border-right:1px solid/);
  assert.match(app,/match-faceit-level-svg level-/);
- assert.match(app,/stroke-dasharray=.*font-size="12"/);
+ assert.match(app,/pathLength="270" stroke=/);
+ assert.match(app,/stroke-dasharray=.*270/);
+ assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard tbody td\.match-stat-rank\{\s*background:#101010!important/);
+ assert.match(css,/#matchRoomPage \.match-faceit-level-svg \.level-track,\s*#matchRoomPage \.match-faceit-level-svg \.level-progress\{[\s\S]*stroke-width:4/);
  assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td\.name\{background:#30270f/);
  assert.match(css,/#matchRoomPage \.match-faceit-level-svg\{[\s\S]*width:28px;height:28px/);
  assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-stat-team-head>div>span,\s*#matchRoomPage \.match-stat-team\.team-b \.match-stat-team-score\{color:#f0c52e/);
