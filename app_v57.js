@@ -656,7 +656,7 @@ function profileCoverUrl(){
 }
 function profileCoverStyle(){
  const url=profileCoverUrl();
- return url?'background-image:linear-gradient(90deg,rgba(8,8,8,.72),rgba(8,8,8,.60)),url(\\''+esc(url)+'\\');background-size:cover;background-position:center;background-attachment:fixed;':'';
+ return url?'background-image:linear-gradient(90deg,rgba(8,8,8,.72),rgba(8,8,8,.60)),url(\"'+esc(url)+'\");background-size:cover;background-position:center;background-attachment:fixed;':'';
 }
 function renderUtilityRail(){
  let rail=document.getElementById('faceitUtilityRail');
