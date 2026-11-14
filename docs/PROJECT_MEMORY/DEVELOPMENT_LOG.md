@@ -233,3 +233,9 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Verification:** Quality Gate run [43626860712](https://github.com/nonspam/cs2-5x5/actions/runs/43626860712), tested commit `999bcb8cb684f68ce613f6606f51370e9daa0856`: **231 passed / 0 failed / 0 skipped**, confirmed from actual job log.
 
 **Not performed:** browser QA, screenshot comparison, deployment, database/SQL changes, or `main` changes.
+
+
+## 2026-11-14 — Match Room top-team rank divider correction
+- Follow-up screenshot revealed the Team A rank-column right divider still had a blue override while Team B was neutral grey.
+- Changed Team A right rank divider to the same neutral grey `#424242` and added an explicit final rule covering both teams.
+- Files: `style_v57.css`, `tests/faceit-v2-shell.test.cjs`. No runtime logic, DB, deployment or browser QA changes.

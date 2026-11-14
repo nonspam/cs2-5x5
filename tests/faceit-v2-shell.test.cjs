@@ -597,3 +597,8 @@ test('site-wide helper and native hover hints are removed while accessible label
 test('Match Room rank column divider remains neutral grey for both teams',()=>{
   assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td:nth-child\(2\)\{\s*border-right-color:#424242!important/);
 });
+
+
+test('both Match Room rank-column right dividers stay neutral grey',()=>{
+  assert.match(css,/#matchRoomPage \.match-stat-team\.team-a \.match-scoreboard tbody td:nth-child\(2\),[\s\S]*#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td:nth-child\(2\)\{border-right-color:#424242!important\}/);
+});

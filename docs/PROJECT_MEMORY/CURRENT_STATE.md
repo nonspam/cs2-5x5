@@ -9,7 +9,7 @@
 - Repository: `nonspam/cs2-5x5`
 - Required branch: `faceit-dev`
 - Live branch HEAD checked immediately before this snapshot update: `e25065ac65712bd6f89bb7195bd2bf8dd9c92d5d`
-- Latest inspected application-code commit: `999bcb8cb684f68ce613f6606f51370e9daa0856` — neutral rank divider and removal of helper/native hover hints.
+- Latest inspected application-code commit: `4a325be037ec2d3d6abf9d494207d76c953a0496` — Match Room rank dividers and site-wide helper hint cleanup; follow-up Team A divider fix pending CI.
 - Latest verified quality gate for the finalized Project Memory snapshot: [run 43616036526](https://github.com/nonspam/cs2-5x5/actions/runs/43616036526), tested commit `1390c1ebbad62b857dcac4f20d2b038a88e3dbfe`, **226 passed / 0 failed / 0 skipped** (verified from job log).
 - The run covers the finalized memory snapshot before the subsequent quality-history-only update. Check newer runs before relying on it.
 - This is a repository-source and CI review. It is not browser QA or deployment confirmation.
@@ -89,3 +89,8 @@ This is a compact status summary, not a substitute for route inventory and direc
 3. Ask for/inspect the newest screenshot or reference if visual intent is ambiguous.
 4. Continue the active owner-approved task; do not assume old handoff priorities remain current.
 5. After completing a logical task, update this file and the memory records listed in [README.md](README.md).
+
+
+## 2026-11-14 — Team A rank divider follow-up
+- The top/Team A rank-column right divider had retained a blue override. It is now neutral grey `#424242`, matching the bottom/Team B divider.
+- Regression assertion covers both teams. CI pending; browser screenshot verification not performed.

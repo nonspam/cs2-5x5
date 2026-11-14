@@ -427,3 +427,8 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - `tests/faceit-v2-shell.test.cjs`: added site-wide no-title/helper-hint and neutral-divider regression assertions.
 - Quality Gate run `43626860712`: 231/231 passed at `999bcb8cb684f68ce613f6606f51370e9daa0856`.
 - Interactive chart data tooltips remain. No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Team A rank divider follow-up
+- `style_v57.css`: Team A rank-column right separator changed from blue `#44467a` to neutral grey `#424242`; final explicit selector now applies the same neutral grey to Team A and Team B.
+- `tests/faceit-v2-shell.test.cjs`: added regression assertion for both teams.

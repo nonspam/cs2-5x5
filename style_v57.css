@@ -6745,7 +6745,7 @@ body.match-room-open .match-room-page{
 #matchRoomPage .match-stat-team .match-scoreboard tbody td:last-child{
  border-radius:0 5px 5px 0;
 }
-#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td:nth-child(2){border-right-color:#44467a!important}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td:nth-child(2){border-right-color:#424242!important}
 #matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:nth-child(2){border-right-color:#326b5d!important}
 #matchRoomPage .match-stat-top-list{
  width:min(100%,980px);max-width:980px;margin:12px auto 0;gap:5px;
@@ -6910,3 +6910,7 @@ body.match-room-open .match-room-page{
 #matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:nth-child(2){
  border-right-color:#424242!important;
 }
+
+/* Keep both teams' right rank separators neutral grey. */
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td:nth-child(2),
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:nth-child(2){border-right-color:#424242!important}
