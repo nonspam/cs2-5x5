@@ -500,7 +500,8 @@ test('Match Room exposes working Overview and Statistics tabs with source-backed
  assert.match(app,/data-match-view-tab="statistics"/);
  assert.match(app,/data-match-view="overview"/);
  assert.match(app,/data-match-view="statistics"/);
- assert.match(app,/root\.addEventListener\('click',[\s\S]*event\.target\.closest\('\[data-match-view-tab\]'\)/);
+ assert.match(app,/onclick="setMatchRoomView\('statistics'\)"/);
+ assert.match(app,/function setMatchRoomView\(target\)[\s\S]*view\.hidden=view\.dataset\.matchView!==target/);
  assert.match(app,/statMvp=leaderBy\('kills'\)/);
  assert.match(app,/table\(A,'a'\)\+table\(B,'b'\)/);
  assert.match(css,/\.match-room-view-tabs button\.active:after/);

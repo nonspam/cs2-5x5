@@ -979,7 +979,7 @@ function openMatchDetail(id){
   const statLeaderCard=(label,r,value)=>'<article class="match-stat-highlight">'+(r?.player_id?matchRoomInitialAvatar(r.player_id,'md'):'<span class="match-stat-highlight-avatar">—</span>')+'<div><small>'+label+'</small><strong>'+(r?esc(r.name):'Нет данных')+'</strong></div><b>'+(r?value:'—')+'</b></article>';
   const statMvpCard='<section class="match-stat-mvp-card">'+(statMvp?.player_id?matchRoomInitialAvatar(statMvp.player_id,'lg'):'<span class="match-stat-mvp-avatar">MVP</span>')+'<div><small>★ MVP МАТЧА · ПО УБИЙСТВАМ</small><h2>'+(statMvp?esc(statMvp.name):'Недостаточно данных')+'</h2><strong>'+(statMvp?statMvp.kills+' / '+statMvp.deaths+' / '+statMvp.assists:'—')+'</strong><span>K / D / A'+(statMvp?'　·　K/D '+fmt(statMvp.kd,2):'')+'</span></div></section>';
   const statsView='<section class="match-room-statistics-view" data-match-view="statistics" hidden><div class="match-statistics-summary">'+statMvpCard+'<div class="match-stat-highlights">'+statLeaderCard('БОЛЬШЕ ВСЕГО УБИЙСТВ',leaderBy('kills'),statPlayers.length?String(leaderBy('kills').kills):'—')+statLeaderCard('ЛУЧШИЙ K/D',statKdLeader,statKdLeader?fmt(statKdLeader.kd,2):'—')+statLeaderCard('БОЛЬШЕ ВСЕГО АССИСТОВ',statAssistLeader,statAssistLeader?String(statAssistLeader.assists):'—')+'</div></div><div class="match-statistics-controls"><span>СТАТИСТИКА ИГРОКОВ</span><small>Только показатели, полученные из источника матча</small></div><div class="match-stat-teams">'+table(A,'a')+table(B,'b')+'</div><div class="match-statistics-footnote">K — убийства · D — смерти · A — ассисты · K/D — отношение убийств к смертям. Недоступные в источнике показатели не подменяются расчётными догадками.</div></section>';
-  const roomPage='<div class="match-room-page" id="matchRoomPage" data-match-id="'+esc(id)+'"><main class="match-room-content"><button class="match-room-back" type="button" onclick="closeMatchRoom()">‹　К матчам</button>'+roomHero+'<nav class="match-room-view-tabs" aria-label="Раздел матча"><button type="button" class="active" data-match-view-tab="overview" aria-selected="true">ОБЗОР</button><button type="button" data-match-view-tab="statistics" aria-selected="false">СТАТИСТИКА</button></nav><section class="match-room-overview-view" data-match-view="overview"><div class="match-room-columns">'+panel(A,'a')+'<section class="match-room-center-column"><div class="match-room-center-heading"><strong>КАРТА МАТЧА</strong><span>'+maps.length+' / '+esc(m.format||'')+'</span></div><div class="match-room-map-list">'+(mapsHtml||'<div class="match-room-empty">Карты не указаны.</div>')+'</div><section class="match-room-veto"><h3>VETO</h3>'+vetoMarkup+'</section></section>'+panel(B,'b')+'</div></section>'+statsView+'</main></div>';
+  const roomPage='<div class="match-room-page" id="matchRoomPage" data-match-id="'+esc(id)+'"><main class="match-room-content"><button class="match-room-back" type="button" onclick="closeMatchRoom()">‹　К матчам</button>'+roomHero+'<nav class="match-room-view-tabs" aria-label="Раздел матча"><button type="button" class="active" data-match-view-tab="overview" aria-selected="true" onclick="setMatchRoomView('overview')">ОБЗОР</button><button type="button" data-match-view-tab="statistics" aria-selected="false" onclick="setMatchRoomView('statistics')">СТАТИСТИКА</button></nav><section class="match-room-overview-view" data-match-view="overview"><div class="match-room-columns">'+panel(A,'a')+'<section class="match-room-center-column"><div class="match-room-center-heading"><strong>КАРТА МАТЧА</strong><span>'+maps.length+' / '+esc(m.format||'')+'</span></div><div class="match-room-map-list">'+(mapsHtml||'<div class="match-room-empty">Карты не указаны.</div>')+'</div><section class="match-room-veto"><h3>VETO</h3>'+vetoMarkup+'</section></section>'+panel(B,'b')+'</div></section>'+statsView+'</main></div>';
   document.getElementById('matchRoomPage')?.remove();document.body.insertAdjacentHTML('beforeend',roomPage);document.body.classList.add('match-room-open');window.__activeMatchRoomId=id;
   if(!options.restore){const roomUrl=new URL(window.location.href);roomUrl.searchParams.set('match',id);try{history.pushState({...history.state,cs2MatchRoom:id},'',roomUrl)}catch{}}
   bindMatchRoomHeader();
@@ -991,28 +991,23 @@ function matchRoomNavigate(route){closeMatchRoom();navigateApp(route)}
 function closeMatchRoom(options={}){const page=document.getElementById('matchRoomPage');if(!page)return;page.remove();document.body.classList.remove('match-room-open');window.__activeMatchRoomId=null;if(!options.fromPop&&!options.preserveUrl){const url=new URL(window.location.href);url.searchParams.delete('match');try{history.replaceState({...history.state,cs2MatchRoom:null},'',url)}catch{}}}
 
 
+function setMatchRoomView(target){
+ const root=document.getElementById('matchRoomPage');
+ if(!root||!['overview','statistics'].includes(target))return false;
+ const buttons=root.querySelectorAll('[data-match-view-tab]');
+ const views=root.querySelectorAll('[data-match-view]');
+ if(!buttons.length||!views.length)return false;
+ buttons.forEach(button=>{
+  const active=button.dataset.matchViewTab===target;
+  button.classList.toggle('active',active);
+  button.setAttribute('aria-selected',active?'true':'false');
+ });
+ views.forEach(view=>{view.hidden=view.dataset.matchView!==target;});
+ return true;
+}
 function bindMatchRoomHeader(){
  const root=document.getElementById('matchRoomPage');if(!root)return;
- // Capture tab clicks at the room root so nested targets and other handlers cannot swallow them.
- root.addEventListener('click',event=>{
-  const button=event.target.closest('[data-match-view-tab]');
-  if(!button||!root.contains(button))return;
-  event.preventDefault();
-  const target=button.dataset.matchViewTab;
-  root.querySelectorAll('[data-match-view-tab]').forEach(tab=>{
-   const selected=tab===button;
-   tab.classList.toggle('active',selected);
-   tab.setAttribute('aria-selected',selected?'true':'false');
-  });
-  root.querySelectorAll('[data-match-view]').forEach(view=>{
-   view.hidden=view.dataset.matchView!==target;
-  });
- },true);
- root.querySelectorAll('[data-match-view-tab]').forEach(button=>button.addEventListener('click',()=>{
-  const target=button.dataset.matchViewTab;
-  root.querySelectorAll('[data-match-view-tab]').forEach(tab=>{const active=tab===button;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',active?'true':'false')});
-  root.querySelectorAll('[data-match-view]').forEach(view=>{view.hidden=view.dataset.matchView!==target});
- }));
+ // Tab buttons call setMatchRoomView() directly from their inline action.
  const input=root.querySelector('#matchRoomPlayerSearch'),results=root.querySelector('#matchRoomSearchResults');
  const show=()=>{const q=String(input?.value||'').trim().toLocaleLowerCase('ru');if(!results)return;const found=q?activePlayers().filter(p=>String(p.display_name||p.player_id).toLocaleLowerCase('ru').includes(q)).slice(0,8):[];results.innerHTML=found.map(p=>'<button type="button" data-player-id="'+esc(p.player_id)+'">'+matchRoomInitialAvatar(p.player_id,'xs')+'<span>'+esc(p.display_name||p.player_id)+'</span></button>').join('')||(q?'<div class="match-room-search-empty">Игрок не найден</div>':'');results.hidden=!q;results.querySelectorAll('[data-player-id]').forEach(button=>button.addEventListener('click',()=>{const pid=button.dataset.playerId;closeMatchRoom({preserveUrl:true});openPublicPlayerProfile(pid)}))};
  input?.addEventListener('input',show);input?.addEventListener('keydown',event=>{if(event.key==='Enter')results?.querySelector('[data-player-id]')?.click();if(event.key==='Escape'){results.hidden=true;input.blur()}});
