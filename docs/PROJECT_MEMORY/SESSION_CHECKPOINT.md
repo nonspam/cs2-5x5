@@ -52,3 +52,13 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - CSS now places upload feedback above the Profile window, restores a 42px circular utility avatar, makes the app surface transparent over the global wallpaper layer, and reduces wallpaper dark overlays so the image is actually visible.
 - Verification: source changes committed on faceit-dev. Combined status returned no statuses and workflow-run lookup returned no runs for latest test commit. Browser upload/persistence and screenshot QA are not verified. No deployment or database/storage policy changes were made.
 - Status: IN PROGRESS — awaiting CI and owner browser verification.
+
+
+## Owner feedback — VS match list, wallpaper and profile scroll (2026-11-15)
+- Latest screenshot shows the VS recent-match popover's rows inheriting oversized/global button styling, causing text to wrap and controls to fill the panel incorrectly. Added explicit compact grid row layout, fixed panel width, header flex layout, and a scrollable match list.
+- The upload toast was initially inside `.app`, which is a positioned stacking context below the contained Profile window. `toast()` now reparents the toast to `document.body` before showing it; a higher z-index alone was insufficient.
+- Profile 5/10/20 controls previously called global `render()`, replacing the route and profile DOM and resetting the inner profile scroll container. They now call `setProfileWindowSize()`, rerender only the profile mount, and restore the profile content scrollTop.
+- Wallpaper visibility layer is less dark and route/profile shells remain transparent so the body wallpaper pseudo-element can be seen behind the UI. This is source-level only; actual persisted wallpaper selection still needs live verification.
+- Commits: app `f3168228b399239118efe46665fce5d3cfceffc3`; CSS `554b5be7252241165450223379cc093f2450acd7`; cache `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`; tests `8ecf3848e9f1fa6ba31114cbe2aeebb8c98d40e0`.
+- No deployment, browser QA, live upload test, DB, or storage-policy change.
+- Status: IN PROGRESS pending CI and live visual/upload verification.
