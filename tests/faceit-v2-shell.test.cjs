@@ -227,7 +227,7 @@ test('Match Overview player metrics are one FACEIT-style strip and player names 
   assert.ok(!app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
   assert.ok(app.includes('metric-avg-kda'));
   assert.match(app,/metric-winrate '\+\(c\.wr>=60\?'is-good':c\.wr>=40\?'is-mid':'is-bad'\)/);
-  assert.match(app,/<strong title="'\+esc\(r\.name\)\+'">'\+esc\(r\.name\)/);
+  assert.match(app,/<strong>'\+esc\(r\.name\)/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(4,minmax\(0,1fr\)\)!important/);
   assert.match(css,/background:transparent!important/);
   assert.match(css,/white-space:normal!important/);
@@ -583,3 +583,17 @@ assert.match(app,/<text x="16" y="18\.4"/);
 assert.match(css,/tbody td\.stat-positive\{color:#35d69a!important/);
 assert.match(css,/tbody td\.stat-neutral\{color:#f2f2f2!important/);
 assert.match(css,/tbody td\.stat-negative\{color:#ff5656!important/);
+
+
+test('site-wide helper and native hover hints are removed while accessible labels remain',()=>{
+  assert.doesNotMatch(app,/\s+title="/);
+  assert.doesNotMatch(account,/\s+title="/);
+  assert.doesNotMatch(html,/\s+title="/);
+  assert.doesNotMatch(app,/setAttribute\(['"]title['"]/);
+  assert.doesNotMatch(app,/match-statistics-footnote|Только показатели, полученные из источника матча/);
+  assert.match(html,/aria-label="Настройки"/);
+});
+
+test('Match Room rank column divider remains neutral grey for both teams',()=>{
+  assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td:nth-child\(2\)\{\s*border-right-color:#424242!important/);
+});

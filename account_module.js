@@ -291,7 +291,7 @@
     const id=state.myPlayerId;
     const avatar=id?profileAvatarMarkup(id,'sm'):'♙';
     const label=state.accountUser?(id?playerName(id):'Аккаунт'): 'Войти в аккаунт';
-    root.innerHTML='<button class="account-menu-trigger" type="button" aria-label="Аккаунт" title="'+esc(label)+'">'+avatar+'</button>';
+    root.innerHTML='<button class="account-menu-trigger" type="button" aria-label="Аккаунт">'+avatar+'</button>';
     root.querySelector('button')?.addEventListener('click',()=>openAccountAuth());
   }
 
