@@ -7129,3 +7129,15 @@ body.has-account-wallpaper .faceit-route-shell,body.has-account-wallpaper .facei
 body.has-account-wallpaper:before{background-image:linear-gradient(rgba(5,5,5,.20),rgba(5,5,5,.28)),var(--account-wallpaper,none)!important;}
 body.has-account-wallpaper .faceit-route-shell>.faceit-exact-content{background:rgba(8,8,8,.18)!important;}
 .toast{z-index:2147483000!important;}
+
+
+/* 2026-11-15 — paint account wallpaper on the actual app surface */
+body.has-account-wallpaper .app{
+ background-color:#080808!important;
+ background-image:linear-gradient(rgba(5,5,5,.18),rgba(5,5,5,.26)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;background-attachment:fixed!important;
+}
+body.has-account-wallpaper:before{background-image:none!important;}
+body.has-account-wallpaper .faceit-route-shell,
+body.has-account-wallpaper .faceit-profile-shell{background:transparent!important;background-image:none!important;}
+body.has-account-wallpaper .faceit-route-shell>.faceit-exact-content{background:rgba(8,8,8,.12)!important;}
