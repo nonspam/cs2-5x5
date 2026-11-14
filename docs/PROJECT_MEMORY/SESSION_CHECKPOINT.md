@@ -102,3 +102,11 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Owner reports prior palette rollout did not visually change Matches and Statistics: blue fills persisted. Inspection found existing late/high-specificity Match Room rules (`#matchRoomPage...`) and legacy route table styles could override earlier generic selectors. Added explicit high-specificity graphite overrides for Matches route panel/table, Statistics panel/table rows, and Match Room player/stat surfaces. Kept Home/Records/Maps untouched in this corrective pass; existing semantic stat colors retained.
 - Commits: app `8f2e6964eaac56e628ac9e2549dfe9ced5dcca2f`; CSS `fd5bec0334540d2e0797d2642f90f0293e99b0c3`; cache `cd5039ec4da5b26150ec6c2d944e269d02c2730e`; tests `d88c824a458749e7f8e78b238fa937566fb35ba1`.
 - Status: source and regression assertions updated; CI/browser QA pending. No deployment, DB, production or main-branch changes.
+
+
+## Profile navigation and Match Room statistics polish (2026-11-15)
+- Owner screenshot feedback: profile game tabs should stay pinned while scrolling; level 4 ring must be yellow (red reserved for level 10); Match Room should expose one plain “Вернуться” control (no pill/oval and no “К матчам”) returning to the originating profile's match-history section; Match Room statistics table still had blue row fills.
+- Added stronger sticky positioning for profile tabs in the profile's own scroll container. Profile ring color now follows level tiers: 1–3 muted grey, 4–6 yellow, 7–9 orange, 10 red. Match Room back action simplified to plain text “‹ Вернуться”; return opens the original profile directly on History. Removed the separate “К матчам” control from Match Room header.
+- Added exact CSS overrides for the Match Room statistics roster table rows and route Matches/Statistics table surfaces, using the approved graphite palette.
+- Commits: app e5e8443d0fe4208a202c43639c8a3b18105c9fe5; CSS 0f9a4ce148dcb228a480fad5b578f5dd65f9e2ed; cache 34c824b8efbbe8fbf48b716c4cbb6f5f8f03200b; tests e777ea141fb456ea9a1fabc023befe6d471afd04.
+- Source anchors re-fetched and confirmed. CI and browser visual QA pending; no deployment, DB, production or main changes.
