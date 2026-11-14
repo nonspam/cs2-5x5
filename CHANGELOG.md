@@ -4494,3 +4494,18 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T20:45:19+03:00 — ui: compact Match Room statistics and add FACEIT rank badges
+
+- Commit: 2577465ad1440e107e21cea0ef245cd687bc63dd
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
