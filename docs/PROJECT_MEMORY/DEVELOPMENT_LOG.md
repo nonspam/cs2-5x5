@@ -13,9 +13,9 @@
 
 **Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, plus decision/design/technical/project-memory documentation.
 
-**Code commits:** `eebccfff8cb4405770d86ff0e04476c606928956` (initial window prototype), `68583e754eea50628635c0eb07f44352e285812f` (profile section navigation fix), `e609976d0f7f040631dab8b9088f70c87b1107a2` (test assertion correction).
+**Code commits:** `eebccfff8cb4405770d86ff0e04476c606928956` (initial window prototype), `68583e754eea50628635c0eb07f44352e285812f` (profile section navigation fix), `e609976d0f7f040631dab8b9088f70c87b1107a2` (test assertion correction), `71dca4dcee8b0dca0092b3565735c54cb0011634` (keep profile mount in sync for Overview/History/Track and profile-local rerenders).
 
-**Verification:** Quality Gate run [43631386438](https://github.com/nonspam/cs2-5x5/actions/runs/43631386438), tested code commit `e609976d0f7f040631dab8b9088f70c87b1107a2`: **235 passed / 0 failed / 0 skipped**, verified from the actual job log. An earlier run `43631304007` exposed one incorrectly escaped test regex; the assertion was corrected and the follow-up run passed.
+**Verification:** Quality Gate run [43631637819](https://github.com/nonspam/cs2-5x5/actions/runs/43631637819), tested code commit `71dca4dcee8b0dca0092b3565735c54cb0011634`: **236 passed / 0 failed / 0 skipped**, verified from the actual job log. Earlier runs include one failed test-only assertion caused by an incorrectly escaped regex; corrected assertion and final run passed.
 
 **Not performed:** browser QA, screenshot comparison, DEV deployment verification, production deployment, database/SQL writes, migrations, RLS/grants changes, or `main` changes.
 

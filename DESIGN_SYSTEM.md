@@ -123,7 +123,7 @@ This pass is source-level and covered by [quality gate run 43128656306](https://
 
 ## 2026-11-14 — Profile and Match Room contained-window prototype
 - Player profile opens over the current page instead of replacing the route. Keep the global left rail visible.
-- Profile window uses a compact vertical navigation: Overview, Match History, Track, Close Profile. Do not duplicate the global rail inside the profile window.
+- Profile window uses a compact vertical navigation: Overview, Match History, Track, Close Profile. All three profile sections must rerender inside the profile window; profile-local season/period interactions must not leave stale modal content. Do not duplicate the global rail inside the profile window.
 - Match Room opens in the workspace as a contained window on desktop; preserve the existing text-only Overview / Statistics / TOP tabs.
 - On narrow/mobile screens, use full-screen windows to avoid squeezing the content.
 - This is an owner-approved prototype direction. Desktop/mobile browser screenshot and interaction acceptance are still pending; do not label it visually final.

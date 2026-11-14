@@ -1,11 +1,11 @@
 ## 2026-11-14 — Profile and Match Room contained-window prototype
-- Latest verified code commit: `e609976d0f7f040631dab8b9088f70c87b1107a2` (before this documentation-only update).
+- Latest verified code commit: `71dca4dcee8b0dca0092b3565735c54cb0011634` (before this documentation-only update).
 - Player profile links open a contained window reusing the existing profile renderer; the underlying route remains in place.
-- Profile window has compact vertical navigation: Overview, Match History, Track, Close. Overview/History rerender the modal mount, not the main route.
+- Profile window has compact vertical navigation: Overview, Match History, Track, Close. Overview/History/Track rerender the modal mount; profile-local `render()` calls also refresh the mounted window instead of leaving stale content.
 - Match Room desktop view is constrained to the workspace and leaves the global left rail visible. Its existing Overview / Statistics / TOP tabs and content are preserved.
 - At widths up to 700px both windows fall back to full-screen.
 - Source files: `app_v57.js`, `style_v57.css`; regression contracts in `tests/faceit-v2-shell.test.cjs`.
-- Quality Gate: run [43631386438](https://github.com/nonspam/cs2-5x5/actions/runs/43631386438), 235 passed / 0 failed / 0 skipped.
+- Quality Gate: run [43631637819](https://github.com/nonspam/cs2-5x5/actions/runs/43631637819), 236 passed / 0 failed / 0 skipped.
 - Browser visual/interaction QA and deployment verification remain unperformed. Do not call this visually accepted or deployed until checked in DEV at desktop and mobile viewports.
 
 # CS2 Analytics — Current State
