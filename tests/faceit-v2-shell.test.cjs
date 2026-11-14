@@ -558,7 +558,7 @@ test('Match Room Statistics uses compact centered player/rank columns and FACEIT
  assert.match(app,/match-faceit-level level-/);
  assert.match(app,/aria-label="FACEIT уровень /);
  assert.match(app,/<th>ИГРОК<\/th><th>РАНГ<\/th><th>K<\/th>/);
- assert.doesNotMatch(app,/<th>#<\/th><th>ИГРОК<\/th>/);
+ assert.match(app,/colgroup><col class="match-col-player"><col class="match-col-rank">/);
  assert.match(css,/#matchRoomPage \.match-stat-teams\{\s*width:min\(100%,1080px\);margin:0 auto/);
  assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard col\.match-col-player\{width:28%\}/);
  assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard td\.match-stat-rank\{[\s\S]*border-left:1px solid[\s\S]*border-right:1px solid/);
