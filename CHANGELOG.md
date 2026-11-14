@@ -5824,3 +5824,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T17:30:23-05:00 — Document profile return and palette correction
+
+- Commit: fc22e4ab404e6ed8fd6c1429ea7f299021e08a7b
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
