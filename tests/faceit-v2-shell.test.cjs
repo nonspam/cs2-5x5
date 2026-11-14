@@ -636,3 +636,22 @@ test('profile window stays mounted and rerenders for all profile sections and pr
  assert.match(app,/if\(section==='track'\)state\.trackSeasonKey=state\.profileSeasonKey\|\|'all'/);
  assert.match(app,/data-profile-section\]'.*setPlayerProfileSection\(button\.dataset\.profileSection\)/);
 });
+
+test('FACEIT workspace windows meet the persistent side rails without a dim full-page gap',()=>{
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 48px 0 170px!important/);
+ assert.match(css,/body\.match-room-open:before\{[\s\S]*background:rgba\(0,0,0,\.14\)/);
+ assert.match(css,/#playerProfileWindow\.player-profile-window\{inset:0 48px 0 170px!important/);
+ assert.match(css,/\.faceit-utility-rail\{[\s\S]*width:48px/);
+});
+test('profile cover media is reused on route workspace and Match Room without changing stored profile media',()=>{
+ assert.match(app,/function profileCoverUrl\(\)/);
+ assert.match(app,/style=\"'\+profileCoverStyle\(\)\+'\"/);
+ assert.match(app,/faceit-route-shell\" style=\"'\+profileCoverStyle\(\)/);
+ assert.match(app,/const roomPage='<div class=\"match-room-page\" id=\"matchRoomPage\" data-match-id=\"'\+esc\(id\)\+'\" style=\"'\+profileCoverStyle\(\)/);
+});
+test('right utility rail exposes the signed-in profile and real recent match history',()=>{
+ assert.match(app,/function renderUtilityRail\(\)/);
+ assert.match(app,/profileMatchesForPlayer\(id\)\.slice\(0,6\)/);
+ assert.match(app,/data-utility-match=/);
+ assert.match(app,/renderUtilityRail\(\)\}/);
+});
