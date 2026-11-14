@@ -696,7 +696,7 @@ function renderUtilityRail(){
    if(match){rail.querySelector('[data-utility-panel]')?.setAttribute('hidden','');openMatchDetail(match);return}
    if(action==='matches'){const panel=rail.querySelector('[data-utility-panel]');if(panel){panel.hidden=!panel.hidden;rail.querySelector('[data-utility-action="matches"]')?.setAttribute('aria-expanded',String(!panel.hidden))}return}
    if(action==='close'){rail.querySelector('[data-utility-panel]')?.setAttribute('hidden','');rail.querySelector('[data-utility-action="matches"]')?.setAttribute('aria-expanded','false');return}
-   if(action==='profile'){if(id)openPublicPlayerProfile(id);else window.openAccountAuth?.();return}
+   if(action==='profile'){const currentId=state.myPlayerId||state.myProfile?.player_id||null;if(currentId)openPublicPlayerProfile(currentId);else window.openAccountAuth?.();return}
   });
   document.addEventListener('click',event=>{if(!event.target.closest('#faceitUtilityRail')){const panel=rail.querySelector('[data-utility-panel]');if(panel)panel.hidden=true;rail.querySelector('[data-utility-action="matches"]')?.setAttribute('aria-expanded','false')}});
  }
@@ -985,7 +985,7 @@ function drawHomeChart(){const box=$('#homeChart');if(!box)return;const metric=s
 function setMatchTab(tab){const modal=$('#modal');if(!modal)return;modal.querySelectorAll('[data-match-section]').forEach(el=>el.hidden=el.dataset.matchSection!==tab);modal.querySelectorAll('[data-match-tab]').forEach(el=>el.classList.toggle('active',el.dataset.matchTab===tab))}
 function openMatchDetail(id,options={}){
  const m=DB.matches.find(x=>x.match_id===id);if(!m)return;const drill=$('#playerDrilldown');if(drill)drill.style.display='none';
- closePlayerProfileWindow({preserveUrl:true});
+ closePlayerProfileWindow();
  const maps=matchMaps(m,m.archived===true).slice().sort((a,b)=>Number(a.map_index||0)-Number(b.map_index||0));
  const selectedMap=options.mapId?maps.find(x=>x.map_id===options.mapId)||null:null;
  const rows=selectedMap?(selectedMap.player_stats||[]).map(s=>{const k=Number(s.kills),d=Number(s.deaths);return{...s,name:s.name||s.raw_name||(s.player_id?playerName(s.player_id):'Неопознанный игрок'),kd:s.kd!=null?Number(s.kd):d>0?k/d:null,diff:s.diff!=null?Number(s.diff):(Number.isFinite(k)&&Number.isFinite(d)?k-d:null)}}):seriesAggregateRows(m,m.archived===true);
@@ -1169,7 +1169,7 @@ function setPlayerProfileSection(section){
 }
 function openPublicPlayerProfile(id){
  const p=player(id);if(!p)return;
- if(window.__activeMatchRoomId)closeMatchRoom({preserveUrl:true});
+ if(window.__activeMatchRoomId)closeMatchRoom();
  state.profileTargetId=id;state.profileSection='overview';state.accountMenuOpen=false;state.seasonPickerOpen=false;
  let root=document.getElementById('playerProfileWindow');
  if(!root){document.body.insertAdjacentHTML('beforeend','<div id="playerProfileWindow" class="player-profile-window" role="dialog" aria-modal="true" aria-label="Профиль игрока"><button class="player-profile-window-backdrop" type="button" aria-label="Закрыть профиль" onclick="closePlayerProfileWindow()"></button><section class="player-profile-window-panel"><button class="player-profile-window-close" type="button" aria-label="Закрыть профиль" onclick="closePlayerProfileWindow()">×</button><div id="playerProfileMount"></div></section></div>');root=document.getElementById('playerProfileWindow');document.body.classList.add('profile-window-open');}
