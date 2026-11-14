@@ -4830,3 +4830,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T22:33:24+03:00 — docs: add single latest-session recovery checkpoint
+
+- Commit: cbccab23ade4428933a904584bca9290fe2129cc
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
