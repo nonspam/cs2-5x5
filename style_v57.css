@@ -6935,17 +6935,19 @@ body.has-account-wallpaper .faceit-utility-rail{
  background:rgba(8,8,8,.54)!important;backdrop-filter:blur(6px)
 }
 #playerProfileWindow.player-profile-window{
- position:fixed!important;z-index:12040!important;inset:0 64px 0 138px!important;
+ position:fixed!important;z-index:12040!important;inset:0 64px 0 170px!important;
  display:flex;align-items:stretch;justify-content:center
 }
 #playerProfileWindow .player-profile-window-backdrop{
- position:fixed!important;inset:0 64px 0 138px!important;width:auto!important;height:auto!important;
- border:0!important;background:rgba(0,0,0,.72)!important;cursor:default
+ position:fixed!important;inset:0 64px 0 170px!important;width:auto!important;height:auto!important;
+ border:0!important;background:rgba(0,0,0,.97)!important;cursor:default
 }
 #playerProfileWindow .player-profile-window-panel{
  position:relative;z-index:1;width:100%;height:100%;min-width:0;overflow:hidden;
  border:0!important;border-left:1px solid #292929!important;border-right:1px solid #292929!important;
- border-radius:0!important;box-shadow:none!important;background:rgba(8,8,8,.20)!important
+ border-radius:0!important;box-shadow:none!important;background-color:rgba(8,8,8,.18)!important;
+ background-image:linear-gradient(rgba(8,8,8,.54),rgba(8,8,8,.70)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important
 }
 #playerProfileWindow #playerProfileMount{width:100%;height:100%;min-height:0;overflow:hidden}
 #playerProfileWindow .faceit-exact-shell{
@@ -6992,16 +6994,16 @@ body.has-account-wallpaper .faceit-utility-rail{
  font-size:22px;line-height:1;cursor:pointer
 }
 #playerProfileWindow .player-profile-window-close:hover{color:#c6ff45!important;text-shadow:0 0 12px rgba(190,255,55,.4)}
-body.match-room-open:before{
- content:"";position:fixed;z-index:12049;inset:0 64px 0 138px;
- background:rgba(0,0,0,.08);pointer-events:none
-}
+/* Match Room uses the account wallpaper on its own surface; keep body::before for the global wallpaper. */
 body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
- position:fixed!important;z-index:12050!important;inset:0 64px 0 138px!important;
+ position:fixed!important;z-index:12050!important;inset:0 64px 0 170px!important;
  width:auto!important;height:auto!important;min-height:0!important;
  border:0!important;border-left:1px solid #292929!important;border-right:1px solid #292929!important;
  border-radius:0!important;overflow-y:auto!important;overflow-x:hidden!important;
- box-shadow:none!important;background:rgba(8,8,8,.58)!important;background-image:none!important
+ box-shadow:none!important;background-color:rgba(8,8,8,.42)!important;
+ background-image:linear-gradient(rgba(8,8,8,.58),rgba(8,8,8,.68)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;
+ background-attachment:fixed!important
 }
 #matchRoomPage>.match-room-content{
  width:100%!important;max-width:none!important;min-height:100%!important;
@@ -7011,7 +7013,7 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
 .faceit-utility-rail{
  position:fixed!important;z-index:12070!important;top:0!important;right:0!important;bottom:0!important;
  width:64px!important;display:flex!important;flex-direction:column!important;align-items:center!important;
- gap:10px!important;padding:10px 7px!important;background:rgba(8,8,8,.78)!important;
+ gap:10px!important;padding:10px 7px!important;background:rgba(8,8,8,.54)!important;
  border-left:1px solid #292929!important;backdrop-filter:blur(6px)
 }
 .faceit-utility-button{
@@ -7020,13 +7022,13 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  box-shadow:none!important;padding:0!important;cursor:pointer!important
 }
 .faceit-utility-profile{
- width:46px!important;height:62px!important;flex:0 0 62px!important;
- overflow:hidden!important;border-radius:6px!important
+ width:38px!important;height:38px!important;flex:0 0 38px!important;
+ overflow:hidden!important;border-radius:50%!important
 }
-.faceit-utility-avatar-image{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:5px!important}
+.faceit-utility-avatar-image{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important}
 .faceit-utility-profile .faceit-utility-avatar-fallback{
  display:grid!important;width:100%!important;height:100%!important;place-items:center!important;
- background:rgba(255,255,255,.05)!important;color:#ddd!important;font-size:20px!important
+ background:rgba(255,255,255,.05)!important;color:#ddd!important;font-size:16px!important;border-radius:50%!important
 }
 .faceit-utility-vs{width:46px!important;height:34px!important;font-size:13px!important;letter-spacing:.02em!important}
 .faceit-utility-button:hover,.faceit-utility-button[aria-expanded="true"]{
@@ -7076,13 +7078,11 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  #playerProfileWindow .player-profile-window-backdrop{inset:0 64px 0 82px!important}
  #playerProfileWindow .faceit-exact-shell{grid-template-columns:220px minmax(0,1fr)!important}
  #playerProfileWindow .faceit-exact-avatar-frame{height:260px!important}
- body.match-room-open:before{inset:0 64px 0 82px}
  body.match-room-open .match-room-page,#matchRoomPage.match-room-page{inset:0 64px 0 82px!important}
 }
 @media(max-width:700px){
  #view>.faceit-route-shell,#view>.faceit-profile-shell{width:100%!important}
  .faceit-utility-rail{display:none!important}
- body.match-room-open:before{display:none!important}
  body.match-room-open .match-room-page,#matchRoomPage.match-room-page{inset:0!important;border:0!important}
  #playerProfileWindow.player-profile-window{inset:0!important}
  #playerProfileWindow .player-profile-window-backdrop{inset:0!important}

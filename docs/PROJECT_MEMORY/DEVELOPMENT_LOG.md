@@ -349,3 +349,19 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Not performed:** Browser QA, screenshot comparison, DEV deployment verification or production deployment. No DB/SQL/schema/migration/RLS/grants/storage-policy changes. Visual correctness and live wallpaper upload/persistence are still unverified.
 
 **Next step:** owner should reload the current DEV build and send screenshots after checking: (1) profile portrait size and direct wallpaper picker; (2) account avatar tile above VS; (3) wallpaper across home/profile/Match Room/rails with no Mexico strip; (4) left nav works while either contained window is open; (5) Match Room back always returns to Matches; (6) each “Все игры” map row opens the shared Statistics tab with that map's stats. Do not deploy or claim visual acceptance without explicit authorization and actual browser evidence.
+
+
+## 2026-11-14 — Profile isolation, round utility avatar and Match Room wallpaper correction (IN PROGRESS)
+
+**Owner feedback:** the Profile window showed the route underneath it; its left edge covered part of the global navigation labels; the right account avatar was rectangular; and the wallpaper disappeared in Match Room.
+
+**Implementation on faceit-dev:**
+- Made the Profile backdrop near-opaque so the underlying route cannot bleed through, while rendering the account wallpaper inside the Profile panel beneath a dark readability gradient.
+- Aligned the desktop Profile window to the 170px global navigation rail; retained 82px tablet and full-screen mobile offsets.
+- Found the wallpaper regression: body.has-account-wallpaper:before was the persistent wallpaper layer, but a later body.match-room-open:before rule reused and overrode that same pseudo-element. Removed the conflicting rule and applied the shared account wallpaper variable to the Match Room surface with a dark overlay.
+- Reduced the right utility avatar to a circular 38×38px tile; avatar image and fallback both use a 50% radius. Existing account avatar loading and media update behavior are preserved.
+- Added regression contracts and refreshed asset cache keys.
+
+**Not changed:** upload/save handlers, account/profile schema, player/match data, database, storage policy, production or deployment.
+
+**Status:** source/test update committed; Quality Gate pending. Browser QA and deployed DEV appearance remain unverified.

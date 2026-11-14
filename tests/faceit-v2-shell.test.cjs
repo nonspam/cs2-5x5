@@ -616,8 +616,8 @@ test('player profiles open in a contained window with the original horizontal to
 });
 
 test('Match Room opens as a contained desktop window while the global site rail stays visible',()=>{
- assert.match(css,/body\.match-room-open:before\{\s*content:"";position:fixed/);
- assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
+ assert.doesNotMatch(css,/body\.match-room-open:before/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 170px!important/);
  assert.match(css,/@media\(max-width:700px\)[\s\S]*#matchRoomPage\.match-room-page\{inset:0!important/);
  assert.match(app,/function openMatchDetail\(id,options=\{\}\)/);
  assert.match(app,/function closeMatchRoom\(options=\{\}\)/);
@@ -639,9 +639,9 @@ test('profile window stays mounted and rerenders for all profile sections and pr
 });
 
 test('FACEIT workspace windows meet the persistent side rails without a dim full-page gap',()=>{
- assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 170px!important/);
  assert.match(css,/body\.match-room-open:before\{[\s\S]*background:rgba\(0,0,0,\.08\)/);
- assert.match(css,/#playerProfileWindow\.player-profile-window\{[\s\S]*inset:0 64px 0 138px!important/);
+ assert.match(css,/#playerProfileWindow\.player-profile-window\{[\s\S]*inset:0 64px 0 170px!important/);
  assert.match(css,/\.faceit-utility-rail\{[\s\S]*width:64px!important/);
 });
 test('account wallpaper is applied globally for the signed-in user and is not part of the profile card',()=>{
@@ -715,12 +715,29 @@ test('profile provides a direct site-wallpaper action while retaining the avatar
 test('account wallpaper is a full-viewport layer and is shared behind all workspaces',()=>{
  assert.match(app,/document\.body\.style\.setProperty\('--account-wallpaper'/);
  assert.match(css,/body\.has-account-wallpaper:before\{[\s\S]*position:fixed;inset:0;z-index:0/);
- assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 138px!important/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 170px!important/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-avatar-frame\{[\s\S]*height:300px!important/);
 });
 test('right rail uses the current account avatar as a large portrait tile above VS',()=>{
  const rail=app.slice(app.indexOf('function renderUtilityRail'),app.indexOf('function render(){',app.indexOf('function renderUtilityRail')));
  assert.match(rail,/state\.myPlayerId\|\|state\.myProfile\?\.player_id/);
  assert.match(rail,/faceit-utility-avatar-image/);
- assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:46px!important;height:62px!important/);
+ assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:38px!important;height:38px!important/);
+});
+
+
+test("profile overlay isolates the underlying route while retaining account wallpaper",()=>{
+ assert.match(css,/#playerProfileWindow \.player-profile-window-backdrop\{[\s\S]*background:rgba\(0,0,0,\.97\)!important/);
+ assert.match(css,/#playerProfileWindow \.player-profile-window-panel\{[\s\S]*var\(--account-wallpaper,none\)/);
+ assert.match(css,/#playerProfileWindow\.player-profile-window\{[\s\S]*inset:0 64px 0 170px!important/);
+});
+test("Match Room no longer overrides the global body wallpaper pseudo-element",()=>{
+ assert.doesNotMatch(css,/body\.match-room-open:before/);
+ assert.match(css,/body\.has-account-wallpaper:before\{[\s\S]*var\(--account-wallpaper,none\)/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)/);
+});
+test("right utility avatar is compact and circular",()=>{
+ assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:38px!important;height:38px!important[\s\S]*border-radius:50%!important/);
+ assert.match(css,/\.faceit-utility-avatar-image\{[\s\S]*border-radius:50%!important/);
 });

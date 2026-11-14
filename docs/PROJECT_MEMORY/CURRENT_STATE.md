@@ -27,7 +27,7 @@ CS2 Analytics is one integrated FACEIT-inspired application for the team's CS2 5
 
 ## Current focus
 
-The active owner-directed task is stabilizing contained Profile / Match Room windows and applying the signed-in user's site wallpaper globally. Latest implementation is in progress pending visual confirmation.
+The active owner-directed task is stabilizing the contained Profile window and making the signed-in user's wallpaper visible consistently across all routes and Match Room. The latest CSS/test correction isolates the underlying route, aligns the Profile edge to the global rail, makes the utility avatar circular, and removes a conflicting Match Room body pseudo-element. Quality Gate and visual confirmation are pending.
 
 Implemented in source:
 - Global route navigation closes both contained windows; stale body modal classes are removed.
@@ -74,3 +74,11 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 4. Inspect current source and relevant regression tests.
 5. Continue only the current approved task.
 6. Update SESSION_CHECKPOINT.md after each logical stage and before ending the chat.
+
+
+## Latest owner correction — 2026-11-14 (IN PROGRESS)
+- Profile backdrop is designed to hide the route beneath it; the Profile panel separately paints the account wallpaper with a dark overlay.
+- Desktop Profile window aligns to the 170px global rail; tablet/mobile offsets are preserved.
+- Right utility avatar is a compact circular 38px tile.
+- Match Room previously reused body::before, overriding the global wallpaper pseudo-element. That conflict is removed; Match Room now uses the same account wallpaper variable on its own surface.
+- New source contracts are committed/pending CI. Browser QA, live DEV deployment SHA and screenshot comparison remain unverified.

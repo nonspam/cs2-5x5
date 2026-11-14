@@ -462,3 +462,12 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - CSS shell rules were consolidated after the prior appended modal overrides. A body fixed pseudo-element now draws the account wallpaper across the viewport; contained windows and both side rails are transparent/translucent layers above it. Match Room uses fixed inset edges rather than a fixed height.
 - Quality Gate run 43637929383: 250/250 passed at test commit dcce90cd009caa8ff6b2733cb96dad22a4291009.
 - Browser QA, screenshot comparison and deployment are not performed. No database, schema, storage policy or migration changes.
+
+
+## 2026-11-14 — Profile overlay isolation and shared wallpaper regression correction
+- Profile backdrop is near-opaque to prevent underlying route content from showing through; Profile panel paints the signed-in account wallpaper beneath a dark gradient.
+- Desktop Profile overlay begins at the 170px global rail boundary; tablet keeps 82px and mobile remains full-screen.
+- Removed body.match-room-open:before: it conflicted with body.has-account-wallpaper:before because both attempted to own the same body pseudo-element. Match Room now uses the same --account-wallpaper variable on its own surface.
+- Right utility avatar is 38×38px and circular, preserving existing avatar URL and update logic.
+- Automated regression coverage added. Browser QA/deployment remain unverified.
+- Implementation commit: pending CI.
