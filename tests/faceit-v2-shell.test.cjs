@@ -781,3 +781,15 @@ test('account wallpaper is painted directly on the app surface, not only behind 
  assert.match(wallpaperRule,/background-size:cover!important;background-position:center center!important/);
  assert.match(wallpaperRule,/body\.has-account-wallpaper:before\{background-image:none!important/);
 });
+
+
+test('account wallpaper is explicitly painted inside the Profile window',()=>{
+ const wallpaperRules=css.slice(css.lastIndexOf('/* 2026-11-15 — account wallpaper continuity inside Profile and Match Room */'));
+ assert.match(wallpaperRules,/body\.has-account-wallpaper #playerProfileWindow \.player-profile-window-panel\{[\s\S]*var\(--account-wallpaper,none\)!important/);
+ assert.match(wallpaperRules,/body\.has-account-wallpaper #playerProfileWindow \.faceit-exact-shell,[\s\S]*background:transparent!important/);
+});
+test('account wallpaper is explicitly painted inside Match Room despite its opaque base styles',()=>{
+ const wallpaperRules=css.slice(css.lastIndexOf('/* 2026-11-15 — account wallpaper continuity inside Profile and Match Room */'));
+ assert.match(wallpaperRules,/body\.has-account-wallpaper #matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)!important/);
+ assert.match(wallpaperRules,/body\.has-account-wallpaper #matchRoomPage>\.match-room-content\{[\s\S]*background:transparent!important/);
+});
