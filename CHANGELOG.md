@@ -4264,3 +4264,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - A	docs/PROJECT_MEMORY/NEW_CHAT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T19:24:54+03:00 — docs: link unified project memory from project master
+
+- Commit: cb7fade324acde39b2bcb6f764b3ffde9d9a2786
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	PROJECT_MASTER.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
