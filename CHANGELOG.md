@@ -4446,3 +4446,20 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T20:29:02+03:00 — docs: record Match Room Statistics and TOP refinement
+
+- Commit: d22da59921cbe22c9aa826cbd62a4c88c31567bd
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	DECISIONS.md
+- M	DESIGN_SYSTEM.md
+- M	TECHNICAL_STATE.md
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+- M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
