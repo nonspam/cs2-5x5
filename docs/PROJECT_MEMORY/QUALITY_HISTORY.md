@@ -153,3 +153,7 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Scope: syntax and Node regression/static contracts. Includes profile overlay isolation, shared wallpaper in Profile and Match Room, no body pseudo-element conflict, and circular 38px utility avatar.
 - One initial run failed on a stale assertion that expected the removed Match Room body pseudo-element; the test was corrected and the final run passed.
 - No browser QA, screenshot comparison, DEV deployment verification, database writes, SQL, migrations, RLS/grants/storage policy changes, or production changes.
+
+
+## 2026-11-15 — Profile return and palette corrective pass
+- Source/test changes committed on `faceit-dev`; no CI evidence returned yet. Browser QA and deployment not performed. See SESSION_CHECKPOINT for commit SHAs and scope.
