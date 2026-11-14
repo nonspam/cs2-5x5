@@ -5010,3 +5010,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T23:01:07+03:00 — fix: restore profile tabs and move wallpaper controls to settings
+
+- Commit: 85bd6bb89c3c402b00a5ed2ffa5f24f424da5045
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
