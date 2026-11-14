@@ -510,7 +510,7 @@ test('Match Room exposes working Overview and Statistics tabs with source-backed
 
 test('Match Room active bindMatchRoomHeader attaches the Overview / Statistics click handler',()=>{
  const declarations=app.match(/function bindMatchRoomHeader\s*\(/g)||[];
- assert.equal(declarations.length,2,'legacy duplicate declarations are currently present; both must bind tabs');
+ assert.equal(declarations.length,1,'Match Room must have a single active header binder');
  const activeBind=app.slice(app.lastIndexOf('function bindMatchRoomHeader'));
  assert.match(activeBind,/root\.querySelectorAll\('\[data-match-view-tab\]'\)\.forEach/);
  assert.match(activeBind,/root\.querySelectorAll\('\[data-match-view\]'\)\.forEach/);
