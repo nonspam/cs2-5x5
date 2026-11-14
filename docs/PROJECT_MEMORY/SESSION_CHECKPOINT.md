@@ -62,3 +62,13 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Commits: app `f3168228b399239118efe46665fce5d3cfceffc3`; CSS `554b5be7252241165450223379cc093f2450acd7`; cache `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`; tests `8ecf3848e9f1fa6ba31114cbe2aeebb8c98d40e0`.
 - No deployment, browser QA, live upload test, DB, or storage-policy change.
 - Status: IN PROGRESS pending CI and live visual/upload verification.
+
+
+## Owner feedback — VS panel / profile window switch / wallpaper (follow-up 2, 2026-11-15)
+- VS popover issue: the compact match panel inherited oversized button styling. Added fixed panel width, flex header, grid-based rows, compact typography and a bounded scroll list.
+- Toast issue: `#toast` was initially rendered inside `.app`, which forms a stacking context below the Profile window. `toast()` now moves the node to `document.body` before showing feedback.
+- Profile 5/10/20 buttons no longer call global `render()`. `setProfileWindowSize()` updates the selected count, rerenders only the profile mount and restores the profile content scrollTop.
+- Wallpaper visibility: route/app/profile shells are transparent over the body wallpaper pseudo-element and the dark overlay has been reduced. This is CSS/JS source work only; actual successful upload and visible wallpaper still require browser verification.
+- Latest app commit: `f3168228b399239118efe46665fce5d3cfceffc3`; CSS: `554b5be7252241165450223379cc093f2450acd7`; cache: `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`; final regression tests (including updated circular-avatar expectation): `4522c4fc3b9685cf4f0775e5c37d0649e0ba0c7f`; docs commit prior to this note: `fa5af253392d3654eb1d986225f0d1dd1b7b5975`.
+- Latest combined CI status and workflow-run lookup returned no checks/runs. No browser QA, live upload verification or deployment. Production and DB/storage policies untouched.
+- Status: IN PROGRESS — waiting for CI and owner verification.
