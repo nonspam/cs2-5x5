@@ -7015,3 +7015,56 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
 #view > .faceit-route-shell,#view > .faceit-profile-shell{width:calc(100% - 48px)!important;max-width:none!important}
 .topbar{padding-right:62px!important}
 .account-menu-root{display:none!important}
+
+
+/* 2026-11-14 owner correction: restore the original profile composition and clean controls */
+#playerProfileWindow .player-profile-window-backdrop{background:rgba(0,0,0,.78)!important}
+#playerProfileWindow .player-profile-window-panel{background:#080808!important}
+#playerProfileWindow .faceit-exact-shell{background:#080808!important;background-image:none!important}
+#playerProfileWindow .faceit-exact-player-column{background:#0b0b0b!important}
+#playerProfileWindow .faceit-exact-content{background:#080808!important}
+#playerProfileWindow .faceit-exact-game-tabs{display:flex!important;position:sticky;top:0;z-index:4;background:#080808!important;border-bottom:1px solid #292929;padding:12px 0!important}
+#playerProfileWindow .faceit-profile-vertical-nav{display:none!important}
+#playerProfileWindow .faceit-exact-player-actions button{background:transparent!important;border:0!important;border-radius:0!important;color:#aaa!important}
+#playerProfileWindow .faceit-exact-player-actions button:hover{color:#c6ff45!important;text-shadow:0 0 12px rgba(190,255,55,.38)!important}
+.faceit-utility-rail{background:rgba(8,8,8,.30)!important;backdrop-filter:blur(3px);border-left:1px solid rgba(130,130,130,.20)!important}
+.faceit-utility-button{width:36px;height:36px;border:0!important;border-radius:0!important;background:transparent!important;color:#d5d5d5!important;box-shadow:none!important;padding:0!important}
+.faceit-utility-button:hover,.faceit-utility-button[aria-expanded="true"]{border:0!important;border-radius:0!important;background:transparent!important;color:#c6ff45!important;text-shadow:0 0 14px rgba(190,255,55,.56)!important;box-shadow:0 0 18px rgba(190,255,55,.10)!important}
+.faceit-utility-profile{width:36px!important;height:36px!important;border-radius:50%!important;overflow:hidden!important}
+.faceit-utility-profile .player-avatar{width:30px!important;height:30px!important;border-radius:50%!important}
+.faceit-utility-profile .player-avatar img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important}
+.faceit-utility-avatar-fallback{color:#ddd!important}
+.faceit-utility-vs{font-size:13px!important;letter-spacing:.02em}
+.faceit-utility-match{border:1px solid rgba(100,100,100,.28)!important;border-radius:5px!important;background:rgba(18,20,22,.88)!important}
+.faceit-utility-match:hover{border-color:rgba(190,255,55,.58)!important;background:rgba(25,28,24,.94)!important}
+.faceit-utility-match.is-win strong{color:#35df91!important}
+.faceit-utility-match.is-loss strong{color:#ff5656!important}
+.faceit-utility-match-result.is-win{color:#35df91!important}.faceit-utility-match-result.is-loss{color:#ff5656!important}
+.faceit-utility-match strong{color:#e6e6e6}
+.faceit-utility-panel{background:rgba(8,9,10,.94)!important;border-radius:7px!important;backdrop-filter:blur(12px)}
+.faceit-utility-panel>header button{background:transparent!important;border-radius:0!important}
+.faceit-utility-panel>header button:hover{color:#c6ff45!important}
+.faceit-exact-global-rail nav button,.faceit-exact-rail-bottom button{
+ background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+ color:#aaa!important;transition:color .16s ease,text-shadow .16s ease!important
+}
+.faceit-exact-global-rail nav button:hover,.faceit-exact-rail-bottom button:hover{
+ background:transparent!important;color:#c6ff45!important;border:0!important;
+ text-shadow:0 0 12px rgba(190,255,55,.42)!important;box-shadow:none!important
+}
+.faceit-exact-global-rail nav button.active,.faceit-exact-rail-bottom button.active{
+ background:transparent!important;border:0!important;color:#c6ff45!important;
+ box-shadow:none!important;text-shadow:0 0 10px rgba(190,255,55,.22)!important
+}
+.faceit-exact-global-rail nav button:focus-visible,.faceit-exact-rail-bottom button:focus-visible,.faceit-utility-button:focus-visible{
+ outline:1px solid rgba(190,255,55,.65)!important;outline-offset:2px!important
+}
+.faceit-route-shell{background-color:transparent!important}
+body.has-account-wallpaper{background-color:#080808!important;background-repeat:no-repeat!important}
+body.has-account-wallpaper .faceit-route-shell{background-color:transparent!important}
+#playerProfileWindow .faceit-exact-player-card{background:transparent!important}
+.wallpaper-settings{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px;border-color:#343434}
+.wallpaper-settings h3{margin:0 0 6px;color:#c6ff45;font-size:13px}
+.wallpaper-settings p{margin:0;font-size:11px;max-width:520px}
+.wallpaper-upload{display:inline-flex;align-items:center}
+@media(max-width:700px){.wallpaper-settings{align-items:flex-start;flex-direction:column}}
