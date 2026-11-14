@@ -640,7 +640,7 @@ test('profile window stays mounted and rerenders for all profile sections and pr
 
 test('FACEIT workspace windows meet the persistent side rails without a dim full-page gap',()=>{
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 170px!important/);
- assert.match(css,/body\.match-room-open:before\{[\s\S]*background:rgba\(0,0,0,\.08\)/);
+ assert.doesNotMatch(css,/body\.match-room-open:before/);
  assert.match(css,/#playerProfileWindow\.player-profile-window\{[\s\S]*inset:0 64px 0 170px!important/);
  assert.match(css,/\.faceit-utility-rail\{[\s\S]*width:64px!important/);
 });
