@@ -453,7 +453,7 @@ test('Match Room score is unbadged and slightly raised within the hero',()=>{
 
 test('Match Room player career strip omits rating, uses rounded integer KDA and four compact metrics',()=>{
  assert.match(app,/Math\.round\(c\.avg\)\+' \/ '\+Math\.round\(c\.avgDeaths\)\+' \/ '\+Math\.round\(c\.avgAssists\)/);
- assert.match(app,/<small>KDA · K\/D<\/small>/);
+ assert.match(app,/<small>KDA<\/small>/);
  assert.doesNotMatch(app,/metric\(c\.rating==null\?'—':fmt\(c\.rating,0\),'РЕЙТИНГ'\)/);
  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(4,minmax\(0,1fr\)\)!important/);
 });
@@ -483,11 +483,13 @@ test('Match Room player cards are compact, with a narrower K/D cell and more spa
 });
 
 
-test('Match Room combines KDA and K/D in one readable cell, restores form width and reduces empty center space',()=>{
-  assert.match(app,/class="match-kda-values"/);
-  assert.match(app,/class="metric-kd '\+\(Math\.abs\(c\.kd-1\)/);
-  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{\s*grid-template-columns:48px 48px minmax\(0,1fr\) 62px!important/);
-  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-kda-values\{[\s\S]*display:flex!important/);
-  assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*max-width:1220px!important[\s\S]*grid-template-columns:minmax\(0,380px\) minmax\(0,400px\) minmax\(0,380px\)!important[\s\S]*gap:30px!important[\s\S]*translateY\(24px\)!important/);
+test('Match Room keeps KDA and K/D in separate cells and restores FACEIT-like card proportions',()=>{
+  assert.match(app,/metric-avg-kda"><b>'\+Math\.round\(c\.avg\)/);
+  assert.match(app,/class="match-career-metric metric-kd '\+\(Math\.abs\(c\.kd-1\)/);
+  assert.doesNotMatch(app,/class="match-kda-values"/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{\s*grid-template-columns:48px 48px minmax\(0,1fr\) 54px 62px!important/);
+  assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*max-width:1280px!important[\s\S]*grid-template-columns:minmax\(0,390px\) minmax\(0,440px\) minmax\(0,390px\)!important[\s\S]*gap:30px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-team\{[\s\S]*position:relative!important;top:36px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-center-column\{[\s\S]*position:relative!important;top:12px!important/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-team-roster\{gap:17px!important\}/);
 });
