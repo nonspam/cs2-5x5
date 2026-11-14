@@ -80,3 +80,11 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Follow-up CSS now paints the same variable directly on `.app` with cover sizing and a light dark overlay; the body pseudo-layer is disabled to avoid competing backgrounds. Route/profile shells remain transparent. Cache-bust updated.
 - Commits: CSS `9e5e7b66cc74f772c33ae2ccb5881e953d70da29`; index `e4d7dd2ee2b8e09e5fece037a2971afa20497488`; test `f6384f26873818a46ff7470685db7ed8136824b0`.
 - Status: IN PROGRESS. Source-level hypothesis corrected; browser visibility and persisted image URL still require live verification. No deployment, DB, storage policy, or production changes.
+
+
+## Owner screenshot — wallpaper missing only in Profile and Match Room (2026-11-15)
+- Owner confirms wallpaper now appears on main site routes (e.g. Records/Statistics) but is missing in the contained Profile window and Match Room. Supplied screenshots show Profile's inner shell remains nearly opaque and Match Room's page/content use opaque #050505 backgrounds.
+- Source cause confirmed: Profile panel has a strong dark overlay and .faceit-exact-shell has background:rgba(8,8,8,.94); Match Room later overrides its surface with background:#050505!important and content with the same opaque color. The wallpaper on .app cannot show through either independent surface.
+- Added explicit wallpaper background-image to Profile panel and Match Room page using --account-wallpaper; made inner Profile shell and Match Room content transparent with subtle translucent surfaces. Updated CSS cache key.
+- Commits: CSS 73bbb25a83fd611cc1ca1ebf73e481c2367f5734; index 31cfe855268dd1b97bc09e7ff4615650560e48cc; tests c2980ad2beb2e0b46354ce00fc938104ce3ee644.
+- Status: IN PROGRESS until DEV browser confirms image visible in Profile and Match Room. No deployment, DB/storage policy or production changes.
