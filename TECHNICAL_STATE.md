@@ -410,3 +410,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - `tests/faceit-v2-shell.test.cjs`: added regression checks for amber divider and numeral size. `index.html` cache key: `match-room-amber-divider-rank-size-20261114-v11`.
 - Quality Gate run `43625555498`: 229/229 passed at `532b204d4ab8194922107960539579676cfef572`.
 - No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — K/D-based score coloring and FACEIT numeral alignment
+- `app_v57.js`: K/D status now colors K, D, A and K/D together (>1 green, =1 white, <1 red; missing neutral); SVG numeral y-position adjusted from 19.6 to 18.4.
+- `style_v57.css`: explicit green/white/red score cell colors and 1.2px upward numeral transform. `index.html` cache key: `match-room-kda-full-score-color-20261114-v12`.
+- `tests/faceit-v2-shell.test.cjs`: assertions for all score statuses and numeral alignment.
+- Quality Gate run `43625641567`: 229/229 passed at `74e280a4ebba26c6f99a73841f187e35ea0b72cc`.
+- No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.

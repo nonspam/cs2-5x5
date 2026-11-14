@@ -195,3 +195,21 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Verification:** Quality Gate run [43625555498](https://github.com/nonspam/cs2-5x5/actions/runs/43625555498), tested commit `532b204d4ab8194922107960539579676cfef572`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
 
 **Not performed:** browser QA, visual screenshot comparison, deployment, database/SQL changes, or `main` changes.
+
+
+## 2026-11-14 — K/D-based full score coloring and FACEIT numeral alignment
+
+**Owner clarification:** Color the complete player score (K, D, A and K/D) by the player's K/D ratio, not just the K/D cell. The FACEIT level numeral needed a very small upward adjustment.
+
+**Implemented:**
+- K, D, A and K/D cells now share one status based on the player's K/D: above 1.00 green, exactly 1.00 white, below 1.00 red. If K/D is unavailable, values retain the default neutral color; no ratio is inferred.
+- Raised the numeral inside the FACEIT level SVG by 1.2px without changing the ring geometry or badge size.
+- Added regression assertions and refreshed the app cache key.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+
+**Implementation commit:** `610600ebd533ec5476f30a2219498fbdf6b7d845`.
+
+**Verification:** Quality Gate run [43625641567](https://github.com/nonspam/cs2-5x5/actions/runs/43625641567), tested commit `74e280a4ebba26c6f99a73841f187e35ea0b72cc`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log. The run includes the implementation commit plus subsequent automated documentation journal changes.
+
+**Not performed:** browser QA, visual screenshot comparison, deployment, database/SQL changes, or `main` changes.

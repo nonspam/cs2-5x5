@@ -103,3 +103,8 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 ## 2026-11-14 — Amber rank divider and FACEIT numeral sizing
 - Quality Gate run [43625555498](https://github.com/nonspam/cs2-5x5/actions/runs/43625555498), tested commit `532b204d4ab8194922107960539579676cfef572`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
 - Scope: syntax and Node regression/static contracts only. No browser QA or screenshot comparison.
+
+
+## 2026-11-14 — K/D-based full score coloring and FACEIT numeral alignment
+- Quality Gate run [43625641567](https://github.com/nonspam/cs2-5x5/actions/runs/43625641567), tested commit `74e280a4ebba26c6f99a73841f187e35ea0b72cc`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
+- Scope: syntax and Node regression/static contracts only. No browser QA or screenshot comparison.

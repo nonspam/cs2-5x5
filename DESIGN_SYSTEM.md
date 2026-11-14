@@ -108,3 +108,8 @@ This pass is source-level and covered by [quality gate run 43128656306](https://
 ## Match Room Statistics — amber divider and readable FACEIT numeral (2026-11-14)
 - Lower/losing Team B player identity stays amber. The right divider at the rank column's edge must also be amber (not leftover teal). Rank cell background remains neutral/default; team color is only on the player identity cell plus the narrow separator accents.
 - FACEIT badge is 28px with a 12px centered numeral, retaining the 270-degree progress arc and level color mapping.
+
+
+## Match Room Statistics — full K/D/A score colors (2026-11-14)
+- Color all four score values (K, D, A, K/D) from the player's K/D: >1 green, exactly 1 white, <1 red. If K/D is missing, keep the cells neutral; do not infer.
+- FACEIT SVG level numeral is shifted upward by 1.2px; ring geometry and 28px badge size unchanged.
