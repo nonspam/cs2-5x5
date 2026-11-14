@@ -276,3 +276,27 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Current handoff:** FACEIT-style Match Room opening should not darken the whole site; the global left navigation should remain visible. The owner is about to provide the newest screenshots/messages, which supersede provisional visual notes.
 
 **Verification:** Documentation-only. No application code, automated tests, browser QA, screenshot comparison, deployment, database or production changes were performed. The live branch HEAD must be checked again by the next chat.
+
+
+## 2026-11-14 — FACEIT workspace rails and profile-cover propagation (IN PROGRESS)
+
+**Owner direction, based on four supplied screenshots and clarification:**
+- Keep the existing CS2 Analytics left navigation visible and remove Profile from that left navigation.
+- Open Match Room as a central workspace that touches the side-rail boundaries; remove the empty offset/gap and stop dimming the whole page heavily.
+- Add a persistent right utility rail with the user's avatar/profile and a VS action that opens the user's recent matches. Settings is also exposed there.
+- Reuse the existing profile cover image as the background layer for route workspaces and Match Room. Do not duplicate or rewrite stored profile media.
+- Long-term direction is one consistent central workspace for match, profile, Track, seasons and other sections. Do not claim every route has been converted yet.
+
+**Implemented on `faceit-dev`:**
+- Adjusted Match Room window geometry to run flush from the 170px desktop left rail to a 48px right rail; responsive offsets use the narrower 82px left rail below 900px and full-screen behavior below 700px.
+- Reduced the Match Room backdrop dim from 0.56 to 0.14 and constrained it to the central workspace rather than dimming the side rails.
+- Applied the current user's existing `cover_path` URL to route workspace and Match Room backgrounds; Profile retains its existing cover renderer. Corrected CSS URL quoting after a syntax check failure.
+- Added a right-side utility rail: avatar opens the signed-in user's profile (or account auth when signed out); VS opens up to six recent matches from `profileMatchesForPlayer`; selecting a row opens that existing Match Room; Settings navigates to settings.
+- Removed the Profile item from the left global navigation and hid the duplicate topbar account avatar.
+- Kept all existing match/player data and match statistics unchanged.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+
+**Current status:** implementation committed; automated checks pass. Visual acceptance is still IN PROGRESS because no browser QA or screenshot comparison has been performed. The right rail currently implements Profile, VS/recent matches and Settings; notifications/friends/other actions are not implemented and must not be shown as working.
+
+**Next steps:** inspect the live DEV browser at desktop and mobile sizes after owner authorization; verify rail alignment, cover image cropping/readability, avatar, VS recent-match list, panel dismissal, profile opening, and route behavior. Then tune from screenshots. Do not deploy without explicit permission.
