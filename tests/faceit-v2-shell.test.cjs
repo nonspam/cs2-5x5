@@ -555,7 +555,7 @@ test('Match Room second Statistics/TOP refinement adds row barriers, centered co
 
 test('Match Room Statistics uses compact centered player/rank columns and FACEIT-style level badges',()=>{
  assert.match(app,/const faceitLevelBadge=level=>/);
- assert.match(app,/match-faceit-level level-/);
+ assert.match(app,/match-faceit-level-svg level-/);
  assert.match(app,/aria-label="FACEIT уровень /);
  assert.match(app,/<th>ИГРОК<\/th><th>РАНГ<\/th><th>K<\/th>/);
  assert.match(app,/colgroup><col class="match-col-player"><col class="match-col-rank">/);
