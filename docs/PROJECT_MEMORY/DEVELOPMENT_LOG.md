@@ -15,20 +15,21 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - Added a direct GitHub branch metadata endpoint to the recovery procedure so the assistant can resolve the live `faceit-dev` HEAD instead of trusting an old SHA in a snapshot.
 - Added a strict failure path: if GitHub or a required file cannot be opened, the assistant must disclose the exact gap, ask for access/the missing file, and must not edit based on assumptions.
 - NEW_CHAT now requires checking commits specifically on `faceit-dev`, inspecting diffs newer than the snapshot, and reading actual CI job logs before claiming test results.
-- CURRENT_STATE refreshed with the live branch HEAD checked during this update and the latest verified CI evidence.
-- QUALITY_HISTORY now records run `43615568846` with its tested SHA and actual log result: 226 passed / 0 failed. It explicitly states that this run predates the new documentation-hardening commits.
+- CURRENT_STATE refreshed with the branch HEAD checked during this update and the latest confirmed quality evidence.
+- QUALITY_HISTORY records run `43615940711`, tested commit `1644527855ec257b10c7d2999531f6a974e80b66`, and the actual job-log result: **226 passed / 0 failed / 0 skipped**.
 
-**Files changed:** `docs/PROJECT_MEMORY/README.md`, `docs/PROJECT_MEMORY/NEW_CHAT.md`, `docs/PROJECT_MEMORY/CURRENT_STATE.md`, `docs/PROJECT_MEMORY/QUALITY_HISTORY.md`.
+**Files changed:** `docs/PROJECT_MEMORY/README.md`, `docs/PROJECT_MEMORY/NEW_CHAT.md`, `docs/PROJECT_MEMORY/CURRENT_STATE.md`, `docs/PROJECT_MEMORY/QUALITY_HISTORY.md`, `docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md`.
 
 **Commits created in this sequence:**
 - `a2c61f5aa86eaf8be591bbcae09e597ca07c43c4` — strengthen entry point.
 - `0c285116b4fe40ab495412121d4ad9f374128962` — explicit new-chat recovery protocol.
 - `d860a99a170b6e8dff7d58a362f325a5f364d8cc` — refresh current snapshot.
-- `39168ee0b71adab3a913f326fe5f4a5ecbd728a8` — record latest verified quality evidence.
+- `39168ee0b71adab3a913f326fe5f4a5ecbd728a8` — record prior verified quality evidence.
+- `1644527855ec257b10c7d2999531f6a974e80b66` — semantic log and completed recovery-hardening package.
 
-**Verification boundary:** GitHub source files and branch metadata were read successfully. The earlier quality run `43615568846` was inspected at job-log level and reported 226 passed / 0 failed on `dbe2e982cf7b712413ace4981f2424012b46450f`. No runtime code, database, deployment or browser QA was changed/performed. CI for the new hardening commits must be checked separately.
+**Verification:** GitHub source files and live branch metadata were read successfully. Quality run `43615940711` completed successfully on the final package commit; its job log reports 226 passed / 0 failed / 0 skipped. No runtime code, database, deployment or browser QA was changed/performed.
 
-**Remaining:** Verify the new commits' own GitHub Actions runs, then update this entry and CURRENT_STATE with the resulting evidence and final branch HEAD.
+**Remaining:** None for this documentation-hardening package. Future tasks must continue the same update/test/evidence cycle.
 
 ---
 
