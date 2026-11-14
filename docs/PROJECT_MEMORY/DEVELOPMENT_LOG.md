@@ -300,3 +300,27 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Current status:** implementation committed; automated checks pass. Visual acceptance is still IN PROGRESS because no browser QA or screenshot comparison has been performed. The right rail currently implements Profile, VS/recent matches and Settings; notifications/friends/other actions are not implemented and must not be shown as working.
 
 **Next steps:** inspect the live DEV browser at desktop and mobile sizes after owner authorization; verify rail alignment, cover image cropping/readability, avatar, VS recent-match list, panel dismissal, profile opening, and route behavior. Then tune from screenshots. Do not deploy without explicit permission.
+
+
+## 2026-11-14 — Profile layout rollback, account wallpaper and transparent navigation (IN PROGRESS)
+
+**Owner correction:** The previous contained-window pass put Overview / Match History / Track below the avatar, hid the original horizontal tabs, and allowed the underlying page to bleed through the profile window. The owner rejected this presentation and supplied a reference showing the original left player card with tabs across the top of the content area.
+
+**Implemented:**
+- Removed the vertical profile nav and the profile cover edit button/input. The profile now retains the left player/avatar column and restores the existing horizontal top tabs.
+- Reused the existing cover_path media as the signed-in user's site wallpaper, rather than painting it as a profile cover. The current user's own profile record is the source; wallpaper is applied to the document background and a shared CSS variable for contained windows.
+- Added wallpaper choose/remove controls to Settings. Existing upload/save flow is reused; no new DB schema, SQL, migration, storage bucket or RLS policy was introduced.
+- Right utility rail now contains only avatar/profile and VS. Settings remains at the bottom of the left rail.
+- Global navigation, utility buttons and profile top tabs now use transparent resting states and lime hover/focus glow. Removed pill treatment from the right-side controls.
+- VS match score uses green for WIN and red for LOSS.
+- Increased the profile backdrop opacity and made the central profile content opaque enough to prevent the underlying route from bleeding through, while allowing the current account wallpaper to remain behind the workspace.
+
+**Files changed:** app_v57.js, style_v57.css, index.html, tests/account-profile.test.cjs, tests/faceit-v2-shell.test.cjs, DECISIONS.md.
+
+**Implementation/test commit:** ff3a4e4b038c31b6c89be15e71ddc559f9e4aede.
+
+**Verification:** Quality Gate run [43635690684](https://github.com/nonspam/cs2-5x5/actions/runs/43635690684), tested commit ff3a4e4b038c31b6c89be15e71ddc559f9e4aede: **244 passed / 0 failed / 0 skipped**, verified from the actual job log.
+
+**Not performed:** browser QA, screenshot comparison, DEV deployment verification, production deployment, DB/SQL/migration/RLS/grants changes. The wallpaper reuses the existing cover_path and storage policy; the frontend only applies it for the signed-in user's own site. This does not create new private-file guarantees.
+
+**Current status:** source and CI are updated; visual acceptance remains IN PROGRESS pending a fresh DEV screenshot / explicitly authorized browser QA.
