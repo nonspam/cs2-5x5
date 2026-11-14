@@ -6,6 +6,32 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 
 ---
 
+## 2026-11-14 — Project Memory recovery hardening
+
+**Goal:** Make the single-link handoff more reliable and prevent a new chat from guessing when repository access or required documents are unavailable.
+
+**Changes:**
+- README now explicitly treats the single Project Memory URL as the entry point and gives the new assistant a mandatory read order.
+- Added a direct GitHub branch metadata endpoint to the recovery procedure so the assistant can resolve the live `faceit-dev` HEAD instead of trusting an old SHA in a snapshot.
+- Added a strict failure path: if GitHub or a required file cannot be opened, the assistant must disclose the exact gap, ask for access/the missing file, and must not edit based on assumptions.
+- NEW_CHAT now requires checking commits specifically on `faceit-dev`, inspecting diffs newer than the snapshot, and reading actual CI job logs before claiming test results.
+- CURRENT_STATE refreshed with the live branch HEAD checked during this update and the latest verified CI evidence.
+- QUALITY_HISTORY now records run `43615568846` with its tested SHA and actual log result: 226 passed / 0 failed. It explicitly states that this run predates the new documentation-hardening commits.
+
+**Files changed:** `docs/PROJECT_MEMORY/README.md`, `docs/PROJECT_MEMORY/NEW_CHAT.md`, `docs/PROJECT_MEMORY/CURRENT_STATE.md`, `docs/PROJECT_MEMORY/QUALITY_HISTORY.md`.
+
+**Commits created in this sequence:**
+- `a2c61f5aa86eaf8be591bbcae09e597ca07c43c4` — strengthen entry point.
+- `0c285116b4fe40ab495412121d4ad9f374128962` — explicit new-chat recovery protocol.
+- `d860a99a170b6e8dff7d58a362f325a5f364d8cc` — refresh current snapshot.
+- `39168ee0b71adab3a913f326fe5f4a5ecbd728a8` — record latest verified quality evidence.
+
+**Verification boundary:** GitHub source files and branch metadata were read successfully. The earlier quality run `43615568846` was inspected at job-log level and reported 226 passed / 0 failed on `dbe2e982cf7b712413ace4981f2424012b46450f`. No runtime code, database, deployment or browser QA was changed/performed. CI for the new hardening commits must be checked separately.
+
+**Remaining:** Verify the new commits' own GitHub Actions runs, then update this entry and CURRENT_STATE with the resulting evidence and final branch HEAD.
+
+---
+
 ## 2026-11-14 — Match Room refinement sequence (baseline reconstructed from branch history)
 
 **Scope:** Match Room / match detail page. This baseline consolidates the recent sequence; it is not a claim that every intermediate chat message has been recovered.
