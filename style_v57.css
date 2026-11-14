@@ -6958,7 +6958,7 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
 #playerProfileWindow.player-profile-window{inset:0 48px 0 170px!important}
 #playerProfileWindow .player-profile-window-backdrop{inset:0 48px 0 170px!important;background:rgba(0,0,0,.14)!important}
 #playerProfileWindow .player-profile-window-panel{border:0!important;border-left:1px solid #292929!important;border-right:1px solid #292929!important;border-radius:0!important;box-shadow:none!important;background:transparent!important}
-#playerProfileWindow .faceit-exact-shell{background:transparent!important}
+#playerProfileWindow .faceit-exact-shell{background-color:rgba(8,8,8,.28)!important}
 #playerProfileWindow .faceit-exact-player-column{background:rgba(8,8,8,.76)!important}
 #playerProfileWindow .faceit-exact-content{background:rgba(8,8,8,.62)!important}
 .faceit-route-shell{background-repeat:no-repeat!important;background-size:cover!important;background-position:center!important}
@@ -7010,3 +7010,8 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  #playerProfileWindow.player-profile-window{inset:0!important}
  #playerProfileWindow .player-profile-window-backdrop{inset:0!important}
 }
+
+/* Keep the center workspace clear of the new persistent right utility rail. */
+.faceit-route-shell,.faceit-profile-shell{width:calc(100% - 48px)!important;max-width:none!important}
+.topbar{padding-right:62px!important}
+.account-menu-root{display:none!important}
