@@ -177,3 +177,21 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Verification:** Quality Gate run [43624895321](https://github.com/nonspam/cs2-5x5/actions/runs/43624895321), tested commit `c86bac0a9e4260ad697d85e3e0f1ada62777f558`: **229 passed / 0 failed / 0 skipped**, confirmed from the actual job log.
 
 **Not performed:** browser QA, visual screenshot comparison, deployment, database/SQL changes, or `main` changes. CI does not prove visual similarity to the FACEIT reference.
+
+
+## 2026-11-14 — Amber rank divider and FACEIT numeral sizing
+
+**Owner feedback:** The losing team's rank column still showed a teal divider; the level numeral was too small.
+
+**Implemented:**
+- Changed the lower/losing team's right divider on the rank column from teal to amber, matching its player-cell left accent. The rank cell background remains neutral; no team fill is applied to the rank column.
+- Increased the FACEIT SVG badge to 28px and the centered level numeral to 12px for better legibility while retaining the corrected 270-degree progress arc.
+- Updated regression assertions and refreshed the application cache key.
+
+**Files changed:** `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+
+**Implementation commit:** `532b204d4ab8194922107960539579676cfef572`.
+
+**Verification:** Quality Gate run [43625555498](https://github.com/nonspam/cs2-5x5/actions/runs/43625555498), tested commit `532b204d4ab8194922107960539579676cfef572`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
+
+**Not performed:** browser QA, visual screenshot comparison, deployment, database/SQL changes, or `main` changes.

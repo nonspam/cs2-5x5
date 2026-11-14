@@ -98,3 +98,8 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 ## 2026-11-14 — Neutral rank column and corrected FACEIT SVG arc
 - Quality Gate run [43624895321](https://github.com/nonspam/cs2-5x5/actions/runs/43624895321), tested commit `c86bac0a9e4260ad697d85e3e0f1ada62777f558`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
 - Scope: syntax and Node regression/static contracts only. No browser QA or visual screenshot comparison.
+
+
+## 2026-11-14 — Amber rank divider and FACEIT numeral sizing
+- Quality Gate run [43625555498](https://github.com/nonspam/cs2-5x5/actions/runs/43625555498), tested commit `532b204d4ab8194922107960539579676cfef572`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
+- Scope: syntax and Node regression/static contracts only. No browser QA or screenshot comparison.

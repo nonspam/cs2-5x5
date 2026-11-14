@@ -103,3 +103,8 @@ This pass is source-level and covered by [quality gate run 43128656306](https://
 ## Match Room Statistics — neutral rank column and corrected FACEIT arc (2026-11-14)
 - Team tint is restricted to the player-name column. Both the rank header and rank cells must remain neutral/default for either team; keep vertical separators. Never allow team tint to bleed into rank cells.
 - FACEIT badge progress uses an SVG 270-degree arc from lower-left over the top to lower-right, with neutral track, colored progress and smaller centered numeral. Do not use the previous broken partial-circle dash geometry.
+
+
+## Match Room Statistics — amber divider and readable FACEIT numeral (2026-11-14)
+- Lower/losing Team B player identity stays amber. The right divider at the rank column's edge must also be amber (not leftover teal). Rank cell background remains neutral/default; team color is only on the player identity cell plus the narrow separator accents.
+- FACEIT badge is 28px with a 12px centered numeral, retaining the 270-degree progress arc and level color mapping.

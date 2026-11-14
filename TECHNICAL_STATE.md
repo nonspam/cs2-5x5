@@ -403,3 +403,10 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - `tests/faceit-v2-shell.test.cjs`: regression checks for neutral rank cells and SVG path progress. `index.html` cache key: `match-room-neutral-rank-faceit-arc-20261114-v10`.
 - Quality Gate run `43624895321`: 229/229 passed at `c86bac0a9e4260ad697d85e3e0f1ada62777f558`.
 - No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Amber rank divider and FACEIT numeral size
+- `style_v57.css`: changed Team B rank-column right divider to amber `#d8ad25`; enlarged badge to 28px and numeral to 12px.
+- `tests/faceit-v2-shell.test.cjs`: added regression checks for amber divider and numeral size. `index.html` cache key: `match-room-amber-divider-rank-size-20261114-v11`.
+- Quality Gate run `43625555498`: 229/229 passed at `532b204d4ab8194922107960539579676cfef572`.
+- No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.
