@@ -135,3 +135,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Owner screenshot feedback showed prior CSS selectors were not strong enough to beat later/ID-scoped blue styles. Added high-specificity graphite overrides for Matches route table/panel, Statistics table/panel, and Match Room roster/stat cards.
 - Commits: app `8f2e6964eaac56e628ac9e2549dfe9ced5dcca2f`; CSS `fd5bec0334540d2e0797d2642f90f0293e99b0c3`; cache `cd5039ec4da5b26150ec6c2d944e269d02c2730e`; tests `d88c824a458749e7f8e78b238fa937566fb35ba1`.
 - CI and browser visual QA pending; no deployment or DB changes.
+
+
+## 2026-11-15 — Profile navigation and Match Room statistics polish (IN PROGRESS)
+- Profile tabs pinned with sticky positioning; FACEIT level ring now uses tier colors (4–6 yellow, 7–9 orange, 10 red). Match Room has a single plain “Вернуться” action and returns to the originating Profile's History section. “К матчам” removed from this header.
+- Explicit dark graphite overrides added to Match Room statistics roster table and Matches/Statistics route tables after owner screenshot still showed blue fills.
+- Commits: app e5e8443d0fe4208a202c43639c8a3b18105c9fe5; CSS 0f9a4ce148dcb228a480fad5b578f5dd65f9e2ed; cache 34c824b8efbbe8fbf48b716c4cbb6f5f8f03200b; tests e777ea141fb456ea9a1fabc023befe6d471afd04.
+- CI/browser QA pending; no deployment or DB changes.
