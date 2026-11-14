@@ -496,23 +496,26 @@ test('Match Room keeps separate compact KDA/KD cells, slightly wider rosters and
 
 
 test('Match Room exposes working Overview and Statistics tabs with source-backed player data',()=>{
- assert.match(app,/data-match-view-tab="overview"/);
- assert.match(app,/data-match-view-tab="statistics"/);
- assert.match(app,/data-match-view="overview"/);
- assert.match(app,/data-match-view="statistics"/);
- assert.match(app,/onclick="setMatchRoomView\\(&quot;statistics&quot;\\)"/);
- assert.match(app,/function setMatchRoomView\\(target\\)[\\s\\S]*view\\.hidden=view\\.dataset\\.matchView!==target/);
- assert.match(app,/statMvp=leaderBy\\('kills'\\)/);
- assert.match(app,/table\\(A,'a'\\)\\+table\\(B,'b'\\)/);
- assert.match(css,/\\.match-room-view-tabs button\\.active:after/);
- assert.match(css,/\\.match-statistics-summary\\{display:grid/);
+ assert.ok(app.includes('data-match-view-tab="overview"'));
+ assert.ok(app.includes('data-match-view-tab="statistics"'));
+ assert.ok(app.includes('data-match-view="overview"'));
+ assert.ok(app.includes('data-match-view="statistics"'));
+ assert.ok(app.includes('onclick="setMatchRoomView(&quot;statistics&quot;)'));
+ assert.ok(app.includes('function setMatchRoomView(target)'));
+ assert.ok(app.includes('view.hidden=view.dataset.matchView!==target'));
+ assert.ok(app.includes("statMvp=leaderBy('kills')"));
+ assert.ok(app.includes("table(A,'a')+table(B,'b')"));
+ assert.match(css,/\.match-room-view-tabs button\.active:after/);
+ assert.match(css,/\.match-statistics-summary\{display:grid/);
 });
 
 test('Match Room active binder leaves direct Overview / Statistics actions available',()=>{
- const declarations=app.match(/function bindMatchRoomHeader\\s*\\(/g)||[];
- assert.equal(declarations.length,1,'Match Room must have a single active header binder');
+ assert.equal(app.split('function bindMatchRoomHeader(){').length-1,1,'Match Room must have a single active header binder');
  const activeBind=app.slice(app.lastIndexOf('function bindMatchRoomHeader'));
- assert.match(activeBind,/Tab buttons call setMatchRoomView\\(\\) directly/);
- assert.match(app,/function setMatchRoomView\\(target\\)[\\s\\S]*buttons\\.forEach[\\s\\S]*views\\.forEach/);
+ assert.ok(activeBind.includes('Tab buttons call setMatchRoomView() directly'));
+ assert.ok(app.includes('function setMatchRoomView(target)'));
+ assert.ok(app.includes('buttons.forEach'));
+ assert.ok(app.includes('views.forEach'));
 });
+
 
