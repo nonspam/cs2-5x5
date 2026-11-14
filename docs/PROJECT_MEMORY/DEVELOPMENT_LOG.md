@@ -368,3 +368,11 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 
 
 **Quality Gate result:** run [43639401323](https://github.com/nonspam/cs2-5x5/actions/runs/43639401323), source/test commit 6640706cf6ffae0377715a3e95da5b04723eb8c4: **253 passed / 0 failed / 0 skipped**, verified from the actual validate job log. The first attempt exposed one stale test expecting the old body pseudo-element overlay; that contract was corrected before the passing run.
+
+
+## 2026-11-15 — Profile media feedback, round utility avatar and wallpaper visibility
+- **Problem:** Owner reported hidden upload feedback, rectangular right-rail avatar and wallpaper upload with no visible effect.
+- **Implementation:** Raised toast above contained windows and moved it clear of the utility rail; made utility avatar circular (42×42); exposed the global wallpaper layer by keeping the app surface transparent and reducing dark overlays; explicitly reapplied wallpaper after successful cover upload and verifies the uploaded public image can load.
+- **Files:** `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+- **Commits:** `eb9b4b465e0e6fbfa387da5ae90507096b187b0c`, `37301675bd4c56080b9b42121b37bce79c737811`, `757ae2f8ba96c8fadf0f5ff10d0ec53dc4c9a13f`, `718b26e5cb32d665ee9b91f4754c6c64c1c13896`.
+- **Verification:** CI pending; no browser QA or live upload test. No deployment or DB/storage-policy changes.
