@@ -7165,3 +7165,67 @@ body.has-account-wallpaper #matchRoomPage.match-room-page{
 body.has-account-wallpaper #matchRoomPage>.match-room-content{
  background:transparent!important;background-image:none!important;
 }
+
+
+/* 2026-11-15 — unify card surfaces with the approved Teams palette */
+:root{
+ --team-surface:#0d1012;
+ --team-card:#121617;
+ --team-border:#2a3035;
+}
+/* Matches: list rows and Match Room player/stat cards */
+.base-page>.panel.card,
+.base-page .data-table tbody tr,
+.match-room-page .match-player-card-ref,
+.match-room-page .match-stat-mvp-card,
+.match-room-page .match-stat-top-row,
+.match-room-page .match-scoreboard tbody tr{
+ background:var(--team-card)!important;
+ background-image:none!important;
+ border-color:var(--team-border)!important;
+}
+.match-room-page .match-statistics-view,
+.match-room-page .match-stat-team .table-wrap{
+ background:transparent!important;
+}
+.match-room-page .match-stat-team-head{border-color:var(--team-border)!important}
+/* Player statistics: same deep graphite surface, without the blue-grey wash */
+.stats-page>.panel.card,
+.stats-page .players-table tbody tr{
+ background:var(--team-card)!important;
+ background-image:none!important;
+ border-color:var(--team-border)!important;
+}
+.stats-page .players-table tbody tr:nth-child(even){background:#0f1315!important}
+/* Home: panels and metric tiles follow the Teams surfaces; preserve the illustrated hero */
+.home-rebuild .home-panel,
+.home-rebuild .home-metrics .metric-card,
+.home-rebuild .home-chart-panel,
+.home-rebuild .home-recent-panel,
+.home-rebuild .home-leaderboard,
+.home-rebuild .recent-game{
+ background:var(--team-surface)!important;
+ background-image:none!important;
+ border-color:var(--team-border)!important;
+ box-shadow:none!important;
+}
+.home-rebuild .home-last-table tbody tr{background:var(--team-card)!important;border-color:var(--team-border)!important}
+/* Records: main panel, Top-10 cards and individual rows */
+.records-page>.panel.card,
+.records-page .record-block{
+ background:var(--team-surface)!important;
+ background-image:none!important;
+ border-color:var(--team-border)!important;
+ box-shadow:none!important;
+}
+.records-page .record-row{
+ background:var(--team-card)!important;
+ background-image:none!important;
+ border-color:var(--team-border)!important;
+ box-shadow:none!important;
+}
+.records-page .record-row:hover{
+ background:#171d1f!important;
+ border-color:rgba(200,255,61,.34)!important;
+ box-shadow:inset 3px 0 var(--acid)!important;
+}
