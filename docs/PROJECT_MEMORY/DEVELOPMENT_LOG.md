@@ -386,3 +386,12 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - Files: `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
 - Commits: `f3168228b399239118efe46665fce5d3cfceffc3`, `554b5be7252241165450223379cc093f2450acd7`, `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`, `8ecf3848e9f1fa6ba31114cbe2aeebb8c98d40e0`.
 - CI, live browser QA and real wallpaper upload remain unverified; no deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — VS panel, scroll reset and wallpaper visibility correction
+- VS recent matches panel now has explicit compact geometry, typography and grid row layout.
+- Toast node is moved to document.body before display to escape the app stacking context that hid upload feedback behind the Profile overlay.
+- 5/10/20 profile controls use profile-only rendering and restore the scroll position rather than invoking full application render.
+- Global wallpaper is exposed by transparent route/profile shells and reduced darkening overlay.
+- Latest test commit: `4522c4fc3b9685cf4f0775e5c37d0649e0ba0c7f`; app/CSS/cache commits: `f3168228b399239118efe46665fce5d3cfceffc3`, `554b5be7252241165450223379cc093f2450acd7`, `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`.
+- CI/browser/live upload verification pending. No deployment or DB/storage policy changes.
