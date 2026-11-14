@@ -643,12 +643,16 @@ test('FACEIT workspace windows meet the persistent side rails without a dim full
  assert.match(css,/#playerProfileWindow\.player-profile-window\{inset:0 48px 0 170px!important/);
  assert.match(css,/\.faceit-utility-rail\{[\s\S]*width:48px/);
 });
-test('profile cover media is reused on route workspace and Match Room without changing stored profile media',()=>{
- assert.match(app,/function profileCoverUrl\(\)/);
- assert.match(app,/style=\"'\+profileCoverStyle\(\)\+'\"/);
- assert.match(app,/faceit-route-shell\" style=\"'\+profileCoverStyle\(\)/);
- assert.match(app,/const roomPage='<div class=\"match-room-page\" id=\"matchRoomPage\" data-match-id=\"'\+esc\(id\)\+'\" style=\"'\+profileCoverStyle\(\)/);
+test('account wallpaper is applied globally for the signed-in user and is not part of the profile card',()=>{
+ assert.match(app,/function accountWallpaperUrl\(\)/);
+ assert.match(app,/function applyAccountWallpaper\(\)/);
+ assert.match(app,/document\.body\.style\.backgroundImage=url\?/);
+ assert.match(app,/function clearAccountWallpaper\(\)/);
+ assert.match(app,/ОБОИ САЙТА/);
+ assert.doesNotMatch(app,/profileCoverStyle|profileCoverUrl|profileCoverFile|faceit-profile-vertical-nav/);
+ assert.match(app,/handleProfileImage\('cover'/);
 });
+
 test('right utility rail exposes the signed-in profile and real recent match history',()=>{
  assert.match(app,/function renderUtilityRail\(\)/);
  assert.match(app,/profileMatchesForPlayer\(id\)\.slice\(0,6\)/);
@@ -664,4 +668,25 @@ test('global navigation keeps Profile in the right utility rail rather than dupl
 });
 test('profile shell cover image is not overwritten by a transparent background shorthand',()=>{
  assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{background-color:rgba\(8,8,8,\.28\)!important\}/);
+});
+
+test('profile keeps the original horizontal tabs and no longer renders a cover editor',()=>{
+ assert.match(app,/faceit-exact-game-tabs/);
+ assert.doesNotMatch(app,/profileCoverFile|▧ ОБЛОЖКА|faceit-profile-vertical-nav/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{display:flex!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-content\{background:#080808!important\}/);
+});
+test('utility rail is limited to avatar and VS, with transparent hover-only controls and semantic score colors',()=>{
+ const fn=app.slice(app.indexOf('function renderUtilityRail'),app.indexOf('function render(){',app.indexOf('function renderUtilityRail')));
+ assert.match(fn,/data-utility-action="profile"/);
+ assert.match(fn,/data-utility-action="matches"/);
+ assert.doesNotMatch(fn,/data-utility-action="settings"/);
+ assert.match(fn,/is-win/);assert.match(fn,/is-loss/);
+ assert.match(css,/\.faceit-utility-button\{[^}]*border:0!important[^}]*background:transparent!important/);
+ assert.match(css,/\.faceit-utility-match\.is-win strong\{color:#35df91!important\}/);
+ assert.match(css,/\.faceit-utility-match\.is-loss strong\{color:#ff5656!important\}/);
+});
+test('global navigation uses transparent controls with lime hover instead of pill backgrounds',()=>{
+ assert.match(css,/\.faceit-exact-global-rail nav button:hover[\s\S]*color:#c6ff45!important/);
+ assert.match(css,/\.faceit-exact-global-rail nav button,\.faceit-exact-rail-bottom button\{[\s\S]*border-radius:0!important/);
 });
