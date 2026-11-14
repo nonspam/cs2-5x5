@@ -5620,3 +5620,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T16:53:10-05:00 — Document VS popover and profile interaction fixes
+
+- Commit: fa5af253392d3654eb1d986225f0d1dd1b7b5975
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
