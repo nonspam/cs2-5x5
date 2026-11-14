@@ -6939,3 +6939,74 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{position:fi
 #matchRoomPage>.match-room-content{width:min(calc(100% - 28px),1320px)!important;max-width:1320px!important;padding:14px 0 32px!important}
 @media(max-width:900px){#playerProfileWindow.player-profile-window{inset:10px 10px 10px 82px}#playerProfileWindow .faceit-exact-shell{grid-template-columns:210px minmax(0,1fr)!important}#playerProfileWindow .faceit-exact-avatar-frame{height:170px!important}#playerProfileWindow .faceit-exact-content{padding-right:42px!important}body.match-room-open .match-room-page,#matchRoomPage.match-room-page{inset:10px 10px 10px 82px!important}}
 @media(max-width:700px){#playerProfileWindow.player-profile-window{inset:0}#playerProfileWindow .player-profile-window-panel{border:0;border-radius:0}#playerProfileWindow .faceit-exact-shell{grid-template-columns:74px minmax(0,1fr)!important}#playerProfileWindow .faceit-exact-player-column{padding:10px 6px!important}#playerProfileWindow .faceit-exact-player-card>h1,#playerProfileWindow .faceit-exact-player-meta,#playerProfileWindow .faceit-exact-country,#playerProfileWindow .faceit-exact-game-history,#playerProfileWindow .faceit-exact-badges,#playerProfileWindow .faceit-exact-player-actions,#playerProfileWindow .faceit-exact-season-link{display:none!important}#playerProfileWindow .faceit-profile-vertical-nav button{font-size:0;text-align:center;padding:0 3px}#playerProfileWindow .faceit-profile-vertical-nav button:before{font-size:11px}#playerProfileWindow .faceit-profile-vertical-nav button:nth-child(1):before{content:"О"}#playerProfileWindow .faceit-profile-vertical-nav button:nth-child(2):before{content:"И"}#playerProfileWindow .faceit-profile-vertical-nav button:nth-child(3):before{content:"T"}#playerProfileWindow .faceit-profile-vertical-nav button:nth-child(4):before{content:"×"}#playerProfileWindow .faceit-exact-content{padding:0 12px 20px!important}body.match-room-open:before{display:none}body.match-room-open .match-room-page,#matchRoomPage.match-room-page{inset:0!important;border:0!important;border-radius:0!important}}
+
+
+/* 2026-11-14 — FACEIT workspace frame, profile cover propagation and utility rail */
+body.match-room-open:before{
+ content:"";position:fixed;z-index:12049;inset:0 48px 0 170px;
+ background:rgba(0,0,0,.14);pointer-events:none
+}
+body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
+ position:fixed!important;z-index:12050!important;inset:0 48px 0 170px!important;
+ width:auto!important;height:100dvh!important;min-height:0!important;
+ border:0!important;border-left:1px solid #292929!important;border-right:1px solid #292929!important;
+ border-radius:0!important;overflow-y:auto!important;overflow-x:hidden!important;
+ box-shadow:none!important;background-color:#080808!important;background-repeat:no-repeat!important;
+ background-size:cover!important;background-position:center!important
+}
+#matchRoomPage>.match-room-content{width:100%!important;max-width:none!important;padding:18px clamp(18px,2vw,34px) 38px!important}
+#playerProfileWindow.player-profile-window{inset:0 48px 0 170px!important}
+#playerProfileWindow .player-profile-window-backdrop{inset:0 48px 0 170px!important;background:rgba(0,0,0,.14)!important}
+#playerProfileWindow .player-profile-window-panel{border:0!important;border-left:1px solid #292929!important;border-right:1px solid #292929!important;border-radius:0!important;box-shadow:none!important;background:transparent!important}
+#playerProfileWindow .faceit-exact-shell{background:transparent!important}
+#playerProfileWindow .faceit-exact-player-column{background:rgba(8,8,8,.76)!important}
+#playerProfileWindow .faceit-exact-content{background:rgba(8,8,8,.62)!important}
+.faceit-route-shell{background-repeat:no-repeat!important;background-size:cover!important;background-position:center!important}
+.faceit-route-shell>.faceit-exact-content{background:rgba(8,8,8,.60)!important}
+.faceit-utility-rail{
+ position:fixed;z-index:12070;top:0;right:0;bottom:0;width:48px;
+ display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 5px;
+ background:#111;border-left:1px solid #292929
+}
+.faceit-utility-button{
+ width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+ border:1px solid #292929;border-radius:8px;background:#191919;color:#eee;
+ font-size:13px;font-weight:900;cursor:pointer
+}
+.faceit-utility-button:hover,.faceit-utility-button[aria-expanded="true"]{border-color:#ff4b00;color:#ff6a24;background:#21150f}
+.faceit-utility-profile{padding:3px;border-radius:50%;overflow:hidden}
+.faceit-utility-profile .player-avatar{width:28px!important;height:28px!important;border-radius:50%!important}
+.faceit-utility-avatar-fallback{font-size:18px;color:#aaa}
+.faceit-utility-panel{
+ position:fixed;z-index:12071;right:48px;top:50%;transform:translateY(-50%);
+ width:min(320px,calc(100vw - 72px));max-height:min(72vh,620px);overflow:hidden;
+ border:1px solid #303030;border-radius:10px;background:#101010;
+ box-shadow:0 16px 48px rgba(0,0,0,.55)
+}
+.faceit-utility-panel[hidden]{display:none!important}
+.faceit-utility-panel>header{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid #292929}
+.faceit-utility-panel>header div{display:grid;gap:4px}
+.faceit-utility-panel>header small{font-size:9px;color:#ff5a13;font-weight:900;letter-spacing:.1em}
+.faceit-utility-panel>header strong{font-size:11px;color:#eee}
+.faceit-utility-panel>header button{width:28px;height:28px;border:0;background:#202020;color:#ddd;border-radius:6px;font-size:18px;cursor:pointer}
+.faceit-utility-match-list{display:grid;gap:6px;padding:9px;max-height:calc(min(72vh,620px) - 58px);overflow:auto}
+.faceit-utility-match{display:grid;grid-template-columns:1fr auto;gap:4px 12px;text-align:left;padding:10px;border:1px solid #292929;border-radius:7px;background:#171717;color:#eee;cursor:pointer}
+.faceit-utility-match:hover{border-color:#ff4b00;background:#1d1713}
+.faceit-utility-match-result{font-size:9px;font-weight:900;color:#aaa}
+.faceit-utility-match-result.is-win{color:#00d46a}.faceit-utility-match-result.is-loss{color:#ff5555}
+.faceit-utility-match strong{font-size:13px;font-variant-numeric:tabular-nums}
+.faceit-utility-match>span:nth-of-type(2),.faceit-utility-match small{grid-column:1/-1;color:#999;font-size:10px}
+.faceit-utility-empty{padding:20px 14px;color:#999;font-size:11px;line-height:1.5}
+@media(max-width:900px){
+ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{inset:0 48px 0 82px!important}
+ body.match-room-open:before{inset:0 48px 0 82px}
+ #playerProfileWindow.player-profile-window{inset:0 48px 0 82px!important}
+ #playerProfileWindow .player-profile-window-backdrop{inset:0 48px 0 82px!important}
+}
+@media(max-width:700px){
+ .faceit-utility-rail{display:none!important}
+ body.match-room-open:before{display:none!important}
+ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{inset:0!important;border:0!important}
+ #playerProfileWindow.player-profile-window{inset:0!important}
+ #playerProfileWindow .player-profile-window-backdrop{inset:0!important}
+}
