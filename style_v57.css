@@ -7096,3 +7096,14 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  #playerProfileWindow .faceit-exact-player-actions button{font-size:8px!important}
  #playerProfileWindow .faceit-exact-content{padding:0 12px 20px!important}
 }
+
+
+/* 2026-11-15 — profile media feedback, circular utility avatar and visible account wallpaper */
+body.has-account-wallpaper .app{background:transparent!important}
+body.has-account-wallpaper:before{background-image:linear-gradient(rgba(5,5,5,.34),rgba(5,5,5,.44)),var(--account-wallpaper,none)!important}
+.faceit-route-shell>.faceit-exact-content{background:rgba(8,8,8,.30)!important}
+#playerProfileWindow .player-profile-window-panel{background-image:linear-gradient(rgba(8,8,8,.68),rgba(8,8,8,.76)),var(--account-wallpaper,none)!important}
+.faceit-utility-profile{width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important;overflow:hidden!important}
+.faceit-utility-avatar-image,.faceit-utility-profile .faceit-utility-avatar-fallback{width:100%!important;height:100%!important;border-radius:50%!important;object-fit:cover!important}
+.toast{z-index:12110!important;right:78px!important;max-width:min(420px,calc(100vw - 110px))!important;border-color:rgba(198,255,69,.42)!important;background:rgba(12,14,12,.98)!important;color:#eff5e8!important;box-shadow:0 12px 38px rgba(0,0,0,.65)!important}
+@media(max-width:700px){.toast{right:14px!important;max-width:calc(100vw - 28px)!important}}
