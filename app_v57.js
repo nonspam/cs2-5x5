@@ -658,6 +658,18 @@ function profileCoverStyle(){
  const url=profileCoverUrl();
  return url?'background-image:linear-gradient(90deg,rgba(8,8,8,.72),rgba(8,8,8,.60)),url(\"'+esc(url)+'\");background-size:cover;background-position:center;background-attachment:fixed;':'';
 }
+function accountWallpaperUrl(){
+ const row=profileRecord(state.myPlayerId)||state.myProfile||null;
+ return row?.cover_path&&window.CS2Cloud?.publicMediaUrl?window.CS2Cloud.publicMediaUrl(row.cover_path):'';
+}
+function applyAccountWallpaper(){
+ const url=accountWallpaperUrl();
+ document.body.style.backgroundImage=url?'linear-gradient(rgba(5,5,5,.62),rgba(5,5,5,.70)),url("'+esc(url)+'")':'';
+ document.body.style.backgroundSize=url?'cover':'';
+ document.body.style.backgroundPosition=url?'center center':'';
+ document.body.style.backgroundAttachment=url?'fixed':'';
+ document.body.classList.toggle('has-account-wallpaper',!!url);
+}
 function renderUtilityRail(){
  let rail=document.getElementById('faceitUtilityRail');
  if(!rail){document.body.insertAdjacentHTML('beforeend','<aside id="faceitUtilityRail" class="faceit-utility-rail" aria-label="Быстрые действия"></aside>');rail=document.getElementById('faceitUtilityRail');}
@@ -667,9 +679,9 @@ function renderUtilityRail(){
  const matchRows=recent.length?recent.map(q=>{
   const score=playerSeriesScoreLabel(q.m,id)||q.m.series_score||'—';
   const result=q.result==='WIN'?'ПОБЕДА':q.result==='LOSS'?'ПОРАЖЕНИЕ':q.result==='DRAW'?'НИЧЬЯ':'МАТЧ';
-  return '<button type="button" class="faceit-utility-match" data-utility-match="'+esc(q.m.match_id)+'"><span class="faceit-utility-match-result '+(q.result==='WIN'?'is-win':q.result==='LOSS'?'is-loss':'')+'">'+result+'</span><strong>'+esc(score)+'</strong><span>'+esc(q.map||'Без карты')+'</span><small>'+esc(dateLabel(q.m.played_at||q.m.date||q.m.created_at)||'Дата не указана')+'</small></button>';
+  return '<button type="button" class="faceit-utility-match '+(q.result==='WIN'?'is-win':q.result==='LOSS'?'is-loss':'')+'" data-utility-match="'+esc(q.m.match_id)+'"><span class="faceit-utility-match-result">'+result+'</span><strong>'+esc(score)+'</strong><span>'+esc(q.map||'Без карты')+'</span><small>'+esc(dateLabel(q.m.played_at||q.m.date||q.m.created_at)||'Дата не указана')+'</small></button>';
  }).join(''):'<div class="faceit-utility-empty">'+(id?'История матчей пока пуста.':'Войди в аккаунт, чтобы видеть свои матчи.')+'</div>';
- rail.innerHTML='<button type="button" class="faceit-utility-button faceit-utility-profile" data-utility-action="profile" aria-label="Открыть профиль">'+avatar+'</button><button type="button" class="faceit-utility-button faceit-utility-vs" data-utility-action="matches" aria-label="Последние матчи" aria-expanded="false">VS</button><button type="button" class="faceit-utility-button" data-utility-action="settings" aria-label="Настройки">⚙</button><section class="faceit-utility-panel" data-utility-panel hidden><header><div><small>CS2 ANALYTICS</small><strong>ПОСЛЕДНИЕ МАТЧИ</strong></div><button type="button" data-utility-action="close" aria-label="Закрыть">×</button></header><div class="faceit-utility-match-list">'+matchRows+'</div></section>';
+ rail.innerHTML='<button type="button" class="faceit-utility-button faceit-utility-profile" data-utility-action="profile" aria-label="Открыть профиль">'+avatar+'</button><button type="button" class="faceit-utility-button faceit-utility-vs" data-utility-action="matches" aria-label="Последние матчи" aria-expanded="false">VS</button><section class="faceit-utility-panel" data-utility-panel hidden><header><div><small>CS2 ANALYTICS</small><strong>ПОСЛЕДНИЕ МАТЧИ</strong></div><button type="button" data-utility-action="close" aria-label="Закрыть">×</button></header><div class="faceit-utility-match-list">'+matchRows+'</div></section>';
  if(!rail.dataset.bound){
   rail.dataset.bound='1';
   rail.addEventListener('click',event=>{
@@ -679,11 +691,12 @@ function renderUtilityRail(){
    if(action==='matches'){const panel=rail.querySelector('[data-utility-panel]');if(panel){panel.hidden=!panel.hidden;rail.querySelector('[data-utility-action="matches"]')?.setAttribute('aria-expanded',String(!panel.hidden))}return}
    if(action==='close'){rail.querySelector('[data-utility-panel]')?.setAttribute('hidden','');rail.querySelector('[data-utility-action="matches"]')?.setAttribute('aria-expanded','false');return}
    if(action==='profile'){if(state.myPlayerId)openPublicPlayerProfile(state.myPlayerId);else window.openAccountAuth?.();return}
-   if(action==='settings'){closeMatchRoom({preserveUrl:true});closePlayerProfileWindow({preserveUrl:true});navigateApp('settings')}
   });
   document.addEventListener('click',event=>{if(!event.target.closest('#faceitUtilityRail')){const panel=rail.querySelector('[data-utility-panel]');if(panel)panel.hidden=true;rail.querySelector('[data-utility-action="matches"]')?.setAttribute('aria-expanded','false')}});
  }
+ applyAccountWallpaper();
 }
+
 function render(){renderEpoch++;window.__cs2TrackTooltipCleanup?.();window.__cs2ProfileEloCleanup?.();detailRowsCache.clear();detailRowsCacheEpoch=renderEpoch;nav();const v=$('#view');if(state.tab==='profile'){profilePage(v)}else{const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings};renderRouteShell(v,pages[state.tab]||home)}enhanceSelects(v);const profileMount=document.getElementById('playerProfileMount');if(profileMount){profilePage(profileMount);enhanceSelects(profileMount)}renderUtilityRail()}
 
 /* V33: replace native select popups with a small dark/lime menu so browser/OS blue
