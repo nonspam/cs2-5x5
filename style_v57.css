@@ -7141,3 +7141,27 @@ body.has-account-wallpaper:before{background-image:none!important;}
 body.has-account-wallpaper .faceit-route-shell,
 body.has-account-wallpaper .faceit-profile-shell{background:transparent!important;background-image:none!important;}
 body.has-account-wallpaper .faceit-route-shell>.faceit-exact-content{background:rgba(8,8,8,.12)!important;}
+
+
+/* 2026-11-15 — account wallpaper continuity inside Profile and Match Room */
+body.has-account-wallpaper #playerProfileWindow .player-profile-window-panel{
+ background-color:#080808!important;
+ background-image:linear-gradient(rgba(5,5,5,.30),rgba(5,5,5,.38)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;background-attachment:fixed!important;
+}
+body.has-account-wallpaper #playerProfileWindow .faceit-exact-shell,
+body.has-account-wallpaper #playerProfileWindow .faceit-exact-shell:before{
+ background:transparent!important;background-image:none!important;
+}
+body.has-account-wallpaper #playerProfileWindow .faceit-exact-player-column,
+body.has-account-wallpaper #playerProfileWindow .faceit-exact-content{
+ background:rgba(8,8,8,.18)!important;
+}
+body.has-account-wallpaper #matchRoomPage.match-room-page{
+ background-color:#080808!important;
+ background-image:linear-gradient(rgba(5,5,5,.30),rgba(5,5,5,.40)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;background-attachment:fixed!important;
+}
+body.has-account-wallpaper #matchRoomPage>.match-room-content{
+ background:transparent!important;background-image:none!important;
+}
