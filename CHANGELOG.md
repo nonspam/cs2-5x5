@@ -3717,3 +3717,17 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/elo_v3.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T03:20:14+03:00 — ui: compact player cards and keep level ring numbers visible
+
+- Commit: 3b77d2da1975260de694c309d0ebd5693c85740a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
