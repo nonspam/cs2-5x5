@@ -6492,3 +6492,28 @@ body.match-room-open .match-room-page{
 @media(max-width:700px){
   #matchRoomPage .match-room-columns>.match-room-team{top:0!important}
 }
+
+
+/* 2026-11-14 — Match Room final spacing refinement */
+@media(min-width:1121px){
+  #matchRoomPage .match-room-columns{
+    max-width:1300px!important;
+    grid-template-columns:minmax(0,400px) minmax(0,440px) minmax(0,400px)!important;
+    gap:30px!important;
+  }
+  #matchRoomPage .match-room-columns>.match-room-team{
+    top:44px!important;
+  }
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-avg-kda{
+  padding-left:2px!important;padding-right:2px!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-avg-kda b{
+  font-size:clamp(8px,.64vw,10px)!important;letter-spacing:-.04em!important;
+}
+@media(max-width:1120px){
+  #matchRoomPage .match-room-columns>.match-room-team{top:30px!important}
+}
+@media(max-width:700px){
+  #matchRoomPage .match-room-columns>.match-room-team{top:0!important}
+}

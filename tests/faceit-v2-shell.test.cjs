@@ -483,13 +483,13 @@ test('Match Room player cards are compact, with a narrower K/D cell and more spa
 });
 
 
-test('Match Room keeps KDA and K/D in separate cells and restores FACEIT-like card proportions',()=>{
+test('Match Room keeps separate compact KDA/KD cells, slightly wider rosters and lower player columns',()=>{
   assert.match(app,/metric-avg-kda"><b>'\+Math\.round\(c\.avg\)/);
   assert.match(app,/class="match-career-metric metric-kd '\+\(Math\.abs\(c\.kd-1\)/);
   assert.doesNotMatch(app,/class="match-kda-values"/);
-  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{\s*grid-template-columns:48px 48px minmax\(0,1fr\) 54px 62px!important/);
-  assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*max-width:1280px!important[\s\S]*grid-template-columns:minmax\(0,390px\) minmax\(0,440px\) minmax\(0,390px\)!important[\s\S]*gap:30px!important/);
-  assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-team\{[\s\S]*position:relative!important;top:36px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:48px 48px minmax\(0,1fr\) 54px 62px!important/);
+  assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*max-width:1300px!important[\s\S]*grid-template-columns:minmax\(0,400px\) minmax\(0,440px\) minmax\(0,400px\)!important[\s\S]*gap:30px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-team\{[\s\S]*position:relative!important;top:44px!important/);
   assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-center-column\{[\s\S]*position:relative!important;top:12px!important/);
-  assert.match(css,/#matchRoomPage \.match-room-team \.match-team-roster\{gap:17px!important\}/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.metric-avg-kda b\{[\s\S]*font-size:clamp\(8px,\.64vw,10px\)!important/);
 });
