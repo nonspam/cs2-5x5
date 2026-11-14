@@ -498,6 +498,13 @@ test('Match Room keeps separate compact KDA/KD cells, slightly wider rosters and
 test('Match Room exposes working Overview and Statistics tabs with source-backed player data',()=>{
  assert.ok(app.includes('data-match-view-tab="overview"'));
  assert.ok(app.includes('data-match-view-tab="statistics"'));
+ assert.ok(app.includes('data-match-view-tab="top"'));
+ assert.ok(app.includes('data-match-view="top"'));
+ assert.ok(app.includes('ТОП-10 ИГРОКОВ МАТЧА'));
+ assert.ok(app.includes('match-stat-team-score'));
+ assert.ok(app.includes('match-stat-rank'));
+ assert.ok(app.includes('match-stat-highlight-value'));
+ assert.ok(app.includes('match-stat-mvp-profile'));
  assert.ok(app.includes('data-match-view="overview"'));
  assert.ok(app.includes('data-match-view="statistics"'));
  assert.ok(app.includes('onclick="setMatchRoomView(&quot;statistics&quot;)'));
