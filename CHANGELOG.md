@@ -5430,3 +5430,21 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T23:47:30+03:00 — fix: isolate profile overlay and restore global wallpaper
+
+- Commit: 7a193cac42c75f961ab97da49d8b4e6a5231719a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+- M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
