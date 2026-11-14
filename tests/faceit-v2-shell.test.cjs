@@ -602,3 +602,22 @@ test('Match Room rank column divider remains neutral grey for both teams',()=>{
 test('both Match Room rank-column right dividers stay neutral grey',()=>{
   assert.match(css,/#matchRoomPage \.match-stat-team\.team-a \.match-scoreboard tbody td:nth-child\(2\),[\s\S]*#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td:nth-child\(2\)\{border-right-color:#424242!important\}/);
 });
+
+
+test('player profiles open in a contained window with compact vertical navigation',()=>{
+ assert.match(app,/id="playerProfileWindow"/);
+ assert.match(app,/id="playerProfileMount"/);
+ assert.match(app,/function closePlayerProfileWindow\(options=\{\}\)/);
+ assert.match(app,/faceit-profile-vertical-nav/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*grid-template-columns:252px minmax\(0,1fr\)/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-global-rail\{display:none!important\}/);
+ assert.match(css,/#playerProfileWindow \.faceit-profile-vertical-nav/);
+});
+
+test('Match Room opens as a contained desktop window while the global site rail stays visible',()=>{
+ assert.match(css,/body\.match-room-open:before\{content:"";position:fixed/);
+ assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:14px 24px 14px 214px!important/);
+ assert.match(css,/@media\(max-width:700px\)[\s\S]*#matchRoomPage\.match-room-page\{inset:0!important/);
+ assert.match(app,/function openMatchDetail\(id\)/);
+ assert.match(app,/function closeMatchRoom\(options=\{\}\)/);
+});

@@ -267,7 +267,7 @@ function faceitAppRailMarkup(){
   '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" '+(state.tab==='settings'?'aria-current="page" ':'')+'data-app-route="settings">⚙ <span>Настройки</span></button></div>';
 }
 function bindAppShell(root){
- root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.appRoute==='track')state.trackTargetId=null;navigateApp(button.dataset.appRoute)}));
+ root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>{if(document.getElementById('playerProfileWindow'))closePlayerProfileWindow({preserveUrl:true});if(button.dataset.appRoute==='track')state.trackTargetId=null;navigateApp(button.dataset.appRoute)}));
  root.querySelector('[data-account-open]')?.addEventListener('click',()=>window.openAccountAuth?.());
 }
 function renderRouteShell(v,page){
@@ -381,6 +381,7 @@ function profilePage(v){
      '<div class="faceit-exact-player-meta"><b>Игрок платформы</b><span>@'+esc(id)+'</span><span>Матчей: '+all.length+'</span></div>'+
      '<div class="faceit-exact-country"><span>◉</span> Игрок CS2</div>'+
      '<div class="faceit-exact-game-history"><b>История игр</b><div><span class="faceit-exact-cs-icon">CS</span><span><b>CS2</b><small>'+all.length+' матчей</small></span><i>ⓘ</i></div></div>'+
+    '<nav class="faceit-profile-vertical-nav" aria-label="Разделы профиля"><button type="button" class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button type="button" class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button type="button" class="'+(state.profileSection==='track'?'active':'')+'" data-profile-section="track">Track</button><button type="button" class="faceit-profile-exit" onclick="closePlayerProfileWindow()">← Закрыть профиль</button></nav>'+
    '</div>'+
    '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
    '<div class="faceit-exact-content">'+
@@ -1098,8 +1099,20 @@ function closePlayerDrilldown(){$('#playerDrilldown')?.remove()}
 
 function openPublicPlayerProfile(id){
  const p=player(id);if(!p)return;
- state.profileTargetId=id;state.profileSection='overview';state.accountMenuOpen=false;navigateApp('profile');
+ if(window.__activeMatchRoomId)closeMatchRoom({preserveUrl:true});
+ state.profileTargetId=id;state.profileSection='overview';state.accountMenuOpen=false;state.seasonPickerOpen=false;
+ let root=document.getElementById('playerProfileWindow');
+ if(!root){document.body.insertAdjacentHTML('beforeend','<div id="playerProfileWindow" class="player-profile-window" role="dialog" aria-modal="true" aria-label="Профиль игрока"><button class="player-profile-window-backdrop" type="button" aria-label="Закрыть профиль" onclick="closePlayerProfileWindow()"></button><section class="player-profile-window-panel"><button class="player-profile-window-close" type="button" aria-label="Закрыть профиль" onclick="closePlayerProfileWindow()">×</button><div id="playerProfileMount"></div></section></div>');root=document.getElementById('playerProfileWindow');document.body.classList.add('profile-window-open');}
+ const mount=root.querySelector('#playerProfileMount');if(mount){profilePage(mount);enhanceSelects(mount)}
+ window.__activePlayerProfileId=id;
 }
+function closePlayerProfileWindow(options={}){
+ const root=document.getElementById('playerProfileWindow');if(!root)return;
+ root.remove();document.body.classList.remove('profile-window-open');window.__activePlayerProfileId=null;
+ window.__cs2ProfileEloCleanup?.();window.__cs2TrackTooltipCleanup?.();
+ if(!options.preserveUrl){const url=new URL(window.location.href);url.searchParams.delete('player');try{history.replaceState({...history.state,cs2PlayerProfile:null},'',url)}catch{}}
+}
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('playerProfileWindow'))closePlayerProfileWindow()});
 function openPlayerDetail(id){
   const p=player(id); if(!p)return;
   const x=aggregate(id),st=stability(id),fo=form(id),imp=impact(id),idx=index(id),rows=detailRows(id);
