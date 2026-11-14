@@ -72,3 +72,11 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Latest app commit: `f3168228b399239118efe46665fce5d3cfceffc3`; CSS: `554b5be7252241165450223379cc093f2450acd7`; cache: `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`; final regression tests (including updated circular-avatar expectation): `4522c4fc3b9685cf4f0775e5c37d0649e0ba0c7f`; docs commit prior to this note: `fa5af253392d3654eb1d986225f0d1dd1b7b5975`.
 - Latest combined CI status and workflow-run lookup returned no checks/runs. No browser QA, live upload verification or deployment. Production and DB/storage policies untouched.
 - Status: IN PROGRESS — waiting for CI and owner verification.
+
+
+## Owner report — upload succeeds, wallpaper remains invisible (2026-11-15)
+- Owner confirms upload toast now appears and reports “Обои сайта применены”, but wallpaper still is not visible.
+- Source review: `applyAccountWallpaper()` assigns the public image URL to `--account-wallpaper`; previous CSS painted it only on `body::before` below the positioned app. The app's own surface could obscure that layer.
+- Follow-up CSS now paints the same variable directly on `.app` with cover sizing and a light dark overlay; the body pseudo-layer is disabled to avoid competing backgrounds. Route/profile shells remain transparent. Cache-bust updated.
+- Commits: CSS `9e5e7b66cc74f772c33ae2ccb5881e953d70da29`; index `e4d7dd2ee2b8e09e5fece037a2971afa20497488`; test `f6384f26873818a46ff7470685db7ed8136824b0`.
+- Status: IN PROGRESS. Source-level hypothesis corrected; browser visibility and persisted image URL still require live verification. No deployment, DB, storage policy, or production changes.
