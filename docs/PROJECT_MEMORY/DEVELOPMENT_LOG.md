@@ -324,3 +324,28 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Not performed:** browser QA, screenshot comparison, DEV deployment verification, production deployment, DB/SQL/migration/RLS/grants changes. The wallpaper reuses the existing cover_path and storage policy; the frontend only applies it for the signed-in user's own site. This does not create new private-file guarantees.
 
 **Current status:** source and CI are updated; visual acceptance remains IN PROGRESS pending a fresh DEV screenshot / explicitly authorized browser QA.
+## 2026-11-14 — Fix modal navigation, unify map details and restore wallpaper controls (IN PROGRESS)
+
+**Owner feedback and screenshots:** The owner reported that global navigation appeared frozen while Profile / Match Room was open; closing Match Room returned to whichever route had been selected behind it rather than consistently returning to Matches. The right-side account avatar was missing/too small, the left profile avatar needed a taller frame, wallpaper upload was hard to find, and wallpaper appeared as a narrow strip/underlay rather than across the viewport. The owner also asked for each entry in the “Все игры” (map rows) list to open the same Match Room Statistics interface.
+
+**Source changes:**
+- Centralized contained-window cleanup in navigateApp(): route navigation closes Profile and Match Room before rendering the selected route. Cleanup functions now remove stale body classes even if the corresponding window node is already absent.
+- Match Room “К матчам” now explicitly navigates to the Matches route (base) after closing the window, rather than merely revealing whichever page was behind it.
+- openMatchDetail accepts options; map rows now call openMatchDetail(seriesId, { initialView: 'statistics', mapId }). When opened from “Все игры”, Match Room uses the selected map's player_stats, team grouping and map score, then selects the same Statistics tab used by series details. This replaces the separate legacy map-stat modal.
+- Restored a direct “ОБОИ САЙТА” file picker beside the owner avatar action in the profile card; Settings retains its wallpaper controls. The media field and existing upload path remain cover_path / handleProfileImage('cover', ...).
+- Right utility rail now resolves the signed-in player's id from myPlayerId or myProfile.player_id, renders the actual avatar file directly, and uses a larger vertical portrait tile above VS. Its click handler resolves the current account dynamically instead of capturing a possibly-null id from the first render.
+- Increased the profile avatar frame to 300px on desktop (260px tablet / 190px mobile).
+- Replaced the contradictory appended shell CSS tail with one consolidated set of contained-window, full-viewport wallpaper, right-rail, profile-tab and transparent/lime-hover rules. Wallpaper is now a fixed viewport pseudo-layer behind route shell, Profile, Match Room and both rails; Match Room uses top/right/bottom/left insets rather than a fixed height that could leave an uncovered strip.
+- Updated source-contract tests for the new modal lifecycle and map-to-Match-Room flow.
+
+**Files changed:** app_v57.js, style_v57.css, index.html, tests/faceit-v2-shell.test.cjs, tests/account-profile.test.cjs.
+
+**Implementation commits:** app/markup and CSS updates include c644d6da8b878b39e5705f1cfe824ca25927838a, 1ae551391f3761f456b13ab62fe2279459bd6bfb, 59793e4b67246582712fde1bcd6363a1e103ec58, 0d39da40974303c2b70472ce1bc92ab46f4bcf7b, 35cbf61e8cbcc597d9f6e88194bafb9fae1c1ba8. Final test-contract commit: dcce90cd009caa8ff6b2733cb96dad22a4291009.
+
+**Quality Gate:** run [43637929383](https://github.com/nonspam/cs2-5x5/actions/runs/43637929383), final tested commit dcce90cd009caa8ff6b2733cb96dad22a4291009: **250 passed / 0 failed / 0 skipped**, verified from the actual validate job log.
+
+**Known intermediate failures:** Several intermediate commits failed CI while the new HTML inline handlers were over-escaped, then while older static contracts still expected the previous shell geometry. Those were corrected; the final run above passed.
+
+**Not performed:** Browser QA, screenshot comparison, DEV deployment verification or production deployment. No DB/SQL/schema/migration/RLS/grants/storage-policy changes. Visual correctness and live wallpaper upload/persistence are still unverified.
+
+**Next step:** owner should reload the current DEV build and send screenshots after checking: (1) profile portrait size and direct wallpaper picker; (2) account avatar tile above VS; (3) wallpaper across home/profile/Match Room/rails with no Mexico strip; (4) left nav works while either contained window is open; (5) Match Room back always returns to Matches; (6) each “Все игры” map row opens the shared Statistics tab with that map's stats. Do not deploy or claim visual acceptance without explicit authorization and actual browser evidence.
