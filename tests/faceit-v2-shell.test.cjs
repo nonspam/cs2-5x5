@@ -258,7 +258,7 @@ test('Match Overview map result tiles use map-specific full-bleed artwork',()=>{
   assert.match(app,/match-map-row match-map-row-cover/);
   assert.match(app,/mapThumb\(mp\.map,'match-map-thumb'\)/);
   assert.match(css,/\.match-map-row-cover \.match-map-row-thumb \.map-thumb-photo\{[\s\S]*object-fit:cover!important/);
-  assert.match(css,/\.match-map-row-cover::after\{[\s\S]*linear-gradient/);
+  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover:after\{background:transparent!important;opacity:0!important/);
   assert.match(css,/\.match-map-row-cover \.match-map-row-copy strong\{[\s\S]*font-size:18px!important/);
   assert.match(css,/\.match-map-row-cover \.match-map-row-score\{[\s\S]*font-size:21px!important/);
 });
@@ -392,11 +392,22 @@ test('Match Room desktop geometry follows the approved 1 : 1.18 : 1 three-column
   assert.match(css,/#matchRoomPage \.match-room-columns\{[^}]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1\.18fr\) minmax\(0,1fr\)!important/);
   assert.match(css,/#matchRoomPage>\.match-room-content\{[^}]*padding:18px clamp\(18px,1\.75vw,32px\) 38px!important/);
   assert.match(css,/#matchRoomPage \.match-room-hero\{[^}]*min-height:146px!important/);
-  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref\{[^}]*min-height:116px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref\{min-height:98px!important;height:98px!important\}/);
   assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{[^}]*height:94px!important/);
 });
 test('Match Room has explicit tablet and mobile layout breakpoints without horizontal overflow',()=>{
   assert.match(css,/@media\(max-width:1100px\)\{#matchRoomPage \.match-room-columns\{grid-template-columns:minmax\(0,1fr\) minmax\(260px,1fr\)!important\}/);
   assert.match(css,/@media\(max-width:760px\)\{#matchRoomPage>\.match-room-content/);
   assert.match(css,/\.match-room-page\{[^}]*overflow-x:hidden!important/);
+});
+
+test('Match Room player cards use explicit colored levels and compact FACEIT-like dimensions',()=>{
+  assert.match(app,/class="match-player-level elo-level-'\+\(c\?\.level\|\|'unknown'\)\+'/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-player-identity\{grid-template-columns:46px[\s\S]*min-height:58px!important;height:58px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.elo-level-4\{border-color:#facc15!important/);
+});
+test('Match Room map cards have no gray overlay and show score directly over unfiltered map art',()=>{
+  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover:after\{background:transparent!important;opacity:0!important/);
+  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover \.match-map-row-thumb \.map-thumb-photo\{opacity:1!important;filter:none!important/);
+  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover \.match-map-row-score\{font-size:21px!important;font-weight:950!important/);
 });

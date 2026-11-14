@@ -1,5 +1,14 @@
 
 
+## 2026-11-14 — Match Room compact cards and clean map tiles
+
+- Reduced desktop player cards from 116px to 98px, identity row from 70px to 58px, avatar from 56px to 46px, and level ring from 30px to 26px; reduced typography and metrics proportionally. Mobile cards now target 94px.
+- Player level badges now carry explicit level classes. Level 4 is yellow; levels 1–3 use neutral/cyan/blue, levels 5–6 amber, 7–9 orange, and 10 red. Both individual player badges and team ELO rings use the same level palette.
+- Removed the gray overlay from map tiles entirely; the original map image remains unfiltered and the map title/score sit directly over it with text shadow for readability.
+- Added regression checks for compact player dimensions, level-4 yellow ring, and unfiltered map photography. The approved match banner remains a photographic background with a dark inner score panel.
+- No deployment or browser visual QA performed.
+
+
 ## 2026-11-14 — Match Room precision-pass quality gate
 
 - Final Quality Gate for Match Room precision pass: **210 passed, 0 failed** on commit `6d9880ed37718038367bd3a4b4c487283bbd99ab`; run [43520187979](https://github.com/nonspam/cs2-5x5/actions/runs/43520187979).
