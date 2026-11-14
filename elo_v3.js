@@ -294,5 +294,5 @@
     };
   }
 
-  root.CS2EloV3={player:playerData,recentDelta,ratingAtMatch,deltaForMatch,match:matchData,leaderboard,summary,explain};
+  root.CS2EloV3={player:playerData,levelForRating,recentDelta,ratingAtMatch,deltaForMatch,match:matchData,leaderboard,summary,explain};
 })(window);

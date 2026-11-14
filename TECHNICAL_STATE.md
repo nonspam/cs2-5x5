@@ -1,3 +1,10 @@
+## 2026-11-14 — FACEIT level progress arc correction
+
+- Corrected the level-ring progression: arc spans are 12°, 30°, 50°, 80°, 105°, 135°, 165°, 205°, 240°, and 270° for levels 1–10. The available track fills gradually; level 10 completes the 270° arc.
+- Kept the supplied palette: L1 white, L2–3 green, L4–7 yellow, L8–9 orange, L10 red. Numeric center labels remain.
+- Exposed the pure `levelForRating` mapping via CS2EloV3 for deterministic boundary tests. Fixed the previous Quality Gate test issue where the test called a private helper directly.
+- No browser visual QA or DEV deployment performed.
+
 
 
 ## 2026-11-14 — FACEIT level badge reference alignment

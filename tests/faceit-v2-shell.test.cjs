@@ -421,3 +421,5 @@ test('FACEIT level badge uses numeric labels and circular progress arc palette',
   assert.match(css,/radial-gradient\(circle,#090909 0 60%,transparent 62%\),conic-gradient/);
   assert.match(css,/--level-arc:270deg!important/);
 });
+
+test('FACEIT level rings fill progressively instead of appearing equally full',()=>{const expected=[12,30,50,80,105,135,165,205,240,270];expected.forEach((degrees,index)=>{assert.ok(css.includes('--level-arc:'+degrees+'deg!important'));if(index>0)assert.ok(degrees>expected[index-1]);});assert.match(css,/conic-gradient\\(from 225deg,var\\(--level-color/);});
