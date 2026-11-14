@@ -625,6 +625,6 @@ test('Match Room opens as a contained desktop window while the global site rail 
 test('profile window vertical section controls rerender the profile mount instead of replacing the underlying site route',()=>{
  assert.match(app,/function setPlayerProfileSection\(section\)/);
  assert.match(app,/state\.profileSection=section;[\s\S]*document\.getElementById\('playerProfileMount'\)/);
- assert.match(app,/setPlayerProfileSection\\\('overview'\\\)/);
- assert.match(app,/setPlayerProfileSection\\\('history'\\\)/);
+ assert.ok(app.includes("setPlayerProfileSection(\\'overview\\')"));
+ assert.ok(app.includes("setPlayerProfileSection(\\'history\\')"));
 });
