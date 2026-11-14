@@ -85,3 +85,11 @@ This pass is source-level and covered by [quality gate run 43128656306](https://
 - TOP list is centered and compact (desktop max-width 980px); long names remain on one line rather than wrapping by character.
 - TOP name, K/D/A and K/D use the same state derived from K/D: >1 green, =1 white, <1 red.
 - MVP avatar must still render when the match stat row has no linked profile ID: use the display name's initial as fallback.
+
+
+## Match Room Statistics — compact table and FACEIT rank badges (2026-11-14)
+- Remove the leading ordinal column from the Statistics scoreboard; retain player, rank, K, D, A and K/D.
+- Keep the Statistics team tables centered and constrained to a compact desktop width. Explicitly size player and rank columns to prevent excessive empty space.
+- Tint only the player identity cell (team A blue/purple; team B green/teal). Rank cells are neutral and bounded by vertical separators; K/D/A metric cells remain neutral.
+- Team B header/score uses green, not yellow.
+- FACEIT level badge uses a circular dark center and growing colored arc. Level color mapping from supplied reference: 1 white, 2–3 green, 4–7 yellow, 8–9 orange, 10 red. Never infer missing levels.

@@ -81,3 +81,10 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Commit: `88d0c7c27e0f9db5d9e5b506994c0d3eaf4f60b5`.
 - Quality Gate run [43622133983](https://github.com/nonspam/cs2-5x5/actions/runs/43622133983): **228 passed / 0 failed / 0 skipped**, verified from the actual `validate` job log.
 - Scope: syntax and Node regression/static contracts. No browser QA, visual comparison, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Match Room Statistics compact table and FACEIT rank badge
+
+- Final Quality Gate run [43623053804](https://github.com/nonspam/cs2-5x5/actions/runs/43623053804), tested commit `83952fc1abd889420950c9fbae9efa3ca1ab6c1d`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
+- Two intermediate runs failed during implementation (JS quote-escaping syntax error; then a test assertion that matched legacy profile markup outside the Match Room). Both were corrected before final passing run.
+- CI scope: syntax and Node regression/static contracts only. No browser QA, visual comparison, or deployment.

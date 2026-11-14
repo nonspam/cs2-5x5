@@ -6,6 +6,26 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 
 ---
 
+## 2026-11-14 — Match Room Statistics compact layout and FACEIT level badges
+
+**Owner direction:** Keep the accepted compact TOP and Overview unchanged. Finish Statistics by removing the rank-row numbering, tightening and centering the table, tinting only the player identity cell, separating the rank column with vertical rules, and using FACEIT-style colored level rings.
+
+**Implemented:**
+- Statistics scoreboard now has six columns: player, rank, K, D, A, K/D. The leading row number and its blank gutter are removed.
+- Statistics team tables are centered and constrained to a 1080px desktop width. Player and rank columns have explicit compact widths.
+- Only the player identity cell is team-tinted: blue/purple for team A, green/teal for team B. Rank cells remain neutral and are separated from player and K/D/A metrics by vertical borders.
+- Team B label and score use green rather than yellow.
+- Numeric rank text/star is replaced with a circular FACEIT-style badge. Levels 1–10 use the supplied reference's color groups: level 1 white; 2–3 green; 4–7 yellow; 8–9 orange; 10 red. The arc grows with the level. Missing level remains a neutral placeholder; no level is inferred from rating.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+
+**Implementation commit:** `2577465ad1440e107e21cea0ef245cd687bc63dd`; follow-up syntax/test-contract corrections: `edc69431f6242903e8ad283c8e1ebdd5e47d99e9`, `08e30b6c2a0667c7a6bdb5ca5e497de7b9d84a74`, `83952fc1abd889420950c9fbae9efa3ca1ab6c1d`.
+
+**Verification:** Final Quality Gate run [43623053804](https://github.com/nonspam/cs2-5x5/actions/runs/43623053804), tested commit `83952fc1abd889420950c9fbae9efa3ca1ab6c1d`: **229 passed / 0 failed / 0 skipped**, confirmed from the actual `validate` job log. Two earlier runs failed during this implementation: first on a JS quote-escaping syntax error, then on an overly broad legacy-markup assertion; both were corrected before the passing run.
+
+**Not performed:** browser QA, live screenshot comparison, deployment, database/SQL changes, or changes to `main`. CI is not visual acceptance.
+
+
 ## 2026-11-14 — Match Room Statistics/TOP layout correction (second pass)
 
 **Owner feedback:** The first refinement still left the three leader cards visually cramped, the TOP list left-aligned with excessive internal whitespace, player names wrapping, and team rows lacking individual identity boundaries.

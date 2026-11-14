@@ -379,3 +379,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Regression contract added; `index.html` asset cache key refreshed.
 - Commit `88d0c7c27e0f9db5d9e5b506994c0d3eaf4f60b5`; Quality Gate run `43622133983`: 228/228 passed.
 - No browser QA, visual acceptance, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Match Room Statistics compact layout and FACEIT level badges
+- `app_v57.js`: removed Statistics scoreboard ordinal column; replaced star+number rank text with a FACEIT level badge using actual ELO level only; retained profile links.
+- `style_v57.css`: centered table container (1080px max), compact player/rank column widths, player-only team tint, neutral rank column with vertical separators, team B green, level 1–10 arc/color styling.
+- `tests/faceit-v2-shell.test.cjs`: regression coverage for compact centered table and rank badges. `index.html` cache key refreshed to `match-room-statistics-faceit-levels-20261114-v8`.
+- Final Quality Gate run `43623053804`: 229/229 passed at `83952fc1abd889420950c9fbae9efa3ca1ab6c1d`.
+- Intermediate syntax/test-contract failures were fixed before final passing run. No browser QA, visual acceptance, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.
