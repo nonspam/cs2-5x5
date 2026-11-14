@@ -987,24 +987,27 @@ function openMatchDetail(id){
 }
 
 function teamNameForRoom(match,side,candidate){return String((side==='a'?match?.team_a_name:match?.team_b_name)||candidate?.name||('СОСТАВ '+(side==='a'?'1':'2')))}
-function bindMatchRoomHeader(){
- const root=document.getElementById('matchRoomPage');if(!root)return;
- root.querySelectorAll('[data-match-view-tab]').forEach(button=>button.addEventListener('click',()=>{
-  const target=button.dataset.matchViewTab;
-  root.querySelectorAll('[data-match-view-tab]').forEach(tab=>{const active=tab===button;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',active?'true':'false')});
-  root.querySelectorAll('[data-match-view]').forEach(view=>{view.hidden=view.dataset.matchView!==target});
- }));
- const input=root.querySelector('#matchRoomPlayerSearch'),results=root.querySelector('#matchRoomSearchResults');
- const show=()=>{const q=String(input?.value||'').trim().toLocaleLowerCase('ru');if(!results)return;const found=q?activePlayers().filter(p=>String(p.display_name||p.player_id).toLocaleLowerCase('ru').includes(q)).slice(0,8):[];results.innerHTML=found.map(p=>'<button type="button" data-player-id="'+esc(p.player_id)+'">'+matchRoomInitialAvatar(p.player_id,'xs',p.display_name)+'<span>'+esc(p.display_name||p.player_id)+'</span></button>').join('')||(q?'<div class="match-room-search-empty">Игрок не найден</div>':'');results.hidden=!q;results.querySelectorAll('[data-player-id]').forEach(button=>button.addEventListener('click',()=>{const pid=button.dataset.playerId;closeMatchRoom();openPublicPlayerProfile(pid)}))};
- input?.addEventListener('input',show);input?.addEventListener('keydown',event=>{if(event.key==='Enter')results?.querySelector('[data-player-id]')?.click();if(event.key==='Escape'){results.hidden=true;input.blur()}});
- root.querySelector('#matchRoomAccountButton')?.addEventListener('click',()=>{const menu=root.querySelector('#matchRoomAccountMenu');if(menu)menu.hidden=!menu.hidden});
-}
 function matchRoomNavigate(route){closeMatchRoom();navigateApp(route)}
 function closeMatchRoom(options={}){const page=document.getElementById('matchRoomPage');if(!page)return;page.remove();document.body.classList.remove('match-room-open');window.__activeMatchRoomId=null;if(!options.fromPop&&!options.preserveUrl){const url=new URL(window.location.href);url.searchParams.delete('match');try{history.replaceState({...history.state,cs2MatchRoom:null},'',url)}catch{}}}
 
 
 function bindMatchRoomHeader(){
  const root=document.getElementById('matchRoomPage');if(!root)return;
+ // Capture tab clicks at the room root so nested targets and other handlers cannot swallow them.
+ root.addEventListener('click',event=>{
+  const button=event.target.closest('[data-match-view-tab]');
+  if(!button||!root.contains(button))return;
+  event.preventDefault();
+  const target=button.dataset.matchViewTab;
+  root.querySelectorAll('[data-match-view-tab]').forEach(tab=>{
+   const selected=tab===button;
+   tab.classList.toggle('active',selected);
+   tab.setAttribute('aria-selected',selected?'true':'false');
+  });
+  root.querySelectorAll('[data-match-view]').forEach(view=>{
+   view.hidden=view.dataset.matchView!==target;
+  });
+ },true);
  root.querySelectorAll('[data-match-view-tab]').forEach(button=>button.addEventListener('click',()=>{
   const target=button.dataset.matchViewTab;
   root.querySelectorAll('[data-match-view-tab]').forEach(tab=>{const active=tab===button;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',active?'true':'false')});
