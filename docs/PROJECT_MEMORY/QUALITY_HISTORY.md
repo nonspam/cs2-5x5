@@ -138,3 +138,10 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - The run covers syntax and Node regression/static contracts for account wallpaper, restored horizontal profile tabs, right utility rail and transparent lime-hover navigation.
 - Intermediate failed runs remain in workflow history: tests still expected the removed profileCoverFile and vertical nav; a later temporary test regex over-escaped the tab quotes. The contracts were updated before the final passing run.
 - No browser QA, screenshot comparison or deployment. No DB/SQL/migration/RLS/grants changes.
+
+
+## 2026-11-14 — Modal navigation, map statistics and wallpaper repair
+- Quality Gate run [43637929383](https://github.com/nonspam/cs2-5x5/actions/runs/43637929383), tested commit dcce90cd009caa8ff6b2733cb96dad22a4291009: **250 passed / 0 failed / 0 skipped**, verified from the actual validate job log.
+- Coverage added/updated for route navigation closing both contained windows, stale modal body-class cleanup, Match Room back-to-Matches behavior, map rows opening the shared Match Room Statistics view with map-specific stats, direct profile wallpaper picker, full-viewport wallpaper layer, taller profile avatar and right-side current-account portrait tile.
+- Intermediate CI failures occurred on temporary commits during inline-handler escaping and static-contract updates. The final commit above passed.
+- Browser QA, screenshot comparison and deployment remain unverified. No DB/schema/migration/RLS/grants/storage-policy changes.
