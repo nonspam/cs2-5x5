@@ -6771,3 +6771,75 @@ body.match-room-open .match-room-page{
  #matchRoomPage .match-stat-top-row>strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  #matchRoomPage .match-stat-highlight-value{min-width:100px}
 }
+
+
+/* Match Room — compact centered Statistics table and FACEIT level badges. */
+#matchRoomPage .match-stat-teams{
+ width:min(100%,1080px);margin:0 auto;gap:18px;
+}
+#matchRoomPage .match-stat-team.team-b .match-stat-team-head>div>span,
+#matchRoomPage .match-stat-team.team-b .match-stat-team-score{color:#35d69a!important}
+#matchRoomPage .match-stat-team-score.is-winning{color:#35e66b!important}
+#matchRoomPage .match-stat-teams .match-scoreboard{
+ width:100%;min-width:0;table-layout:fixed;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard col.match-col-player{width:28%}
+#matchRoomPage .match-stat-teams .match-scoreboard col.match-col-rank{width:12%}
+#matchRoomPage .match-stat-teams .match-scoreboard thead th{
+ padding:9px 12px!important;text-align:left;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard tbody td{
+ padding:7px 12px!important;height:39px;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard td.name{
+ min-width:0;width:28%;background:#17182d!important;
+ border-right:0!important;
+}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard td.name{
+ background:#191a31!important;
+}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard td.name{
+ background:#123128!important;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard td.match-stat-rank{
+ width:12%;min-width:0;padding:5px 10px!important;
+ background:#101010!important;color:#c8c8c8!important;
+ border-left:1px solid #424242!important;border-right:1px solid #424242!important;
+ text-align:center;vertical-align:middle;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard tbody td:first-child{
+ border-left:3px solid transparent!important;border-radius:5px 0 0 5px;
+}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td:first-child{border-left-color:#7479ef!important}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:first-child{border-left-color:#35c9ad!important}
+#matchRoomPage .match-stat-teams .match-scoreboard tbody td:last-child{border-radius:0 5px 5px 0}
+#matchRoomPage .match-stat-teams .match-scoreboard tbody td.match-stat-rank{border-radius:0!important}
+#matchRoomPage .match-faceit-level{
+ --level-color:#f3f3f3;--level-arc:22deg;
+ position:relative;display:inline-grid;place-items:center;width:30px;height:30px;
+ border-radius:50%;background:conic-gradient(from 225deg,var(--level-color) 0 var(--level-arc),#34363b var(--level-arc) 270deg,transparent 270deg 360deg);
+ vertical-align:middle;
+}
+#matchRoomPage .match-faceit-level:before{
+ content:"";position:absolute;inset:4px;border-radius:50%;background:#171719;
+}
+#matchRoomPage .match-faceit-level>b{
+ position:relative;z-index:1;font-size:14px;line-height:1;font-weight:900;color:var(--level-color);
+}
+#matchRoomPage .match-faceit-level.level-1{--level-color:#f2f2f2;--level-arc:18deg}
+#matchRoomPage .match-faceit-level.level-2{--level-color:#35df32;--level-arc:38deg}
+#matchRoomPage .match-faceit-level.level-3{--level-color:#35df32;--level-arc:76deg}
+#matchRoomPage .match-faceit-level.level-4{--level-color:#f2d326;--level-arc:116deg}
+#matchRoomPage .match-faceit-level.level-5{--level-color:#f2d326;--level-arc:148deg}
+#matchRoomPage .match-faceit-level.level-6{--level-color:#f2d326;--level-arc:180deg}
+#matchRoomPage .match-faceit-level.level-7{--level-color:#f2d326;--level-arc:210deg}
+#matchRoomPage .match-faceit-level.level-8{--level-color:#ff741c;--level-arc:238deg}
+#matchRoomPage .match-faceit-level.level-9{--level-color:#ff741c;--level-arc:258deg}
+#matchRoomPage .match-faceit-level.level-10{--level-color:#f22e22;--level-arc:270deg}
+#matchRoomPage .match-faceit-level.is-unknown{background:#303238;color:#aaa}
+#matchRoomPage .match-faceit-level.is-unknown:before{inset:4px}
+#matchRoomPage .match-faceit-level.is-unknown>b{font-size:11px}
+@media(max-width:700px){
+ #matchRoomPage .match-stat-teams{width:100%}
+ #matchRoomPage .match-stat-teams .match-scoreboard{min-width:560px}
+}
