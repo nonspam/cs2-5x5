@@ -4813,3 +4813,20 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T22:22:20+03:00 — docs: record profile window rerender verification
+
+- Commit: 819c630cd522c94e617eaa09dcde89501c1be8e7
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	DECISIONS.md
+- M	DESIGN_SYSTEM.md
+- M	TECHNICAL_STATE.md
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+- M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
