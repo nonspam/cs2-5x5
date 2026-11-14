@@ -95,3 +95,10 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Added shared CSS surface tokens and scoped overrides: Matches/base table and Match Room player/stat cards; Statistics player table; Home panels/metric tiles/recent games (illustrated hero preserved); Records panels, Top-10 cards and rows. Positive/negative metric colors and lime interactions remain intact. Maps selectors are deliberately untouched.
 - Commits: CSS 41e31ee097a7eb6f0beb6f6496a241ebccc4214f; cache key fbaa22fc8b5921e3d92c29cd01295f5c299bb4ec; regression tests 4e141bbeece3315328fe08f01a30324ceefa8017.
 - Status: IN PROGRESS pending CI and owner screenshot/browser confirmation. No deployment, DB, storage policy or production changes.
+
+
+## Match Room return-to-profile + graphite palette correction (2026-11-15)
+- Owner reports that opening a map/match from public Profile closes the Profile window; the existing “К матчам” button navigates to the Matches route instead of returning to the originating Profile. Added source-profile capture before closing the Profile window and a distinct “Вернуться в профиль” action in Match Room. “К матчам” remains separate and clears the pending profile return context.
+- Owner reports prior palette rollout did not visually change Matches and Statistics: blue fills persisted. Inspection found existing late/high-specificity Match Room rules (`#matchRoomPage...`) and legacy route table styles could override earlier generic selectors. Added explicit high-specificity graphite overrides for Matches route panel/table, Statistics panel/table rows, and Match Room player/stat surfaces. Kept Home/Records/Maps untouched in this corrective pass; existing semantic stat colors retained.
+- Commits: app `8f2e6964eaac56e628ac9e2549dfe9ced5dcca2f`; CSS `fd5bec0334540d2e0797d2642f90f0293e99b0c3`; cache `cd5039ec4da5b26150ec6c2d944e269d02c2730e`; tests `d88c824a458749e7f8e78b238fa937566fb35ba1`.
+- Status: source and regression assertions updated; CI/browser QA pending. No deployment, DB, production or main-branch changes.
