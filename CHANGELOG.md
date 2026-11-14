@@ -3658,3 +3658,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T03:06:35+03:00 — docs: record compact Match Room quality gate
+
+- Commit: c7ce227c73219c01656c2fa57550ebc20e1c1f03
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
