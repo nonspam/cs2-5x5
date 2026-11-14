@@ -566,6 +566,8 @@ test('Match Room Statistics uses compact centered player/rank columns and FACEIT
  assert.match(app,/pathLength="270" stroke=/);
  assert.match(app,/stroke-dasharray=.*270/);
  assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard tbody td\.match-stat-rank\{\s*background:#101010!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td:nth-child\(2\)\{\s*border-right-color:#d8ad25!important/);
+ assert.match(css,/#matchRoomPage \.match-faceit-level-svg text\{font-size:12px!important/);
  assert.match(css,/#matchRoomPage \.match-faceit-level-svg \.level-track,\s*#matchRoomPage \.match-faceit-level-svg \.level-progress\{[\s\S]*stroke-width:4/);
  assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td\.name\{background:#30270f/);
  assert.match(css,/#matchRoomPage \.match-faceit-level-svg\{[\s\S]*width:28px;height:28px/);

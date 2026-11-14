@@ -6889,3 +6889,11 @@ body.match-room-open .match-room-page{
 #matchRoomPage .match-faceit-level-svg.level-8 text,
 #matchRoomPage .match-faceit-level-svg.level-9 text{fill:#ff741c}
 #matchRoomPage .match-faceit-level-svg.level-10 text{fill:#f22e22}
+
+
+/* Match Room — remove the last teal divider from the amber team's rank column. */
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:nth-child(2){
+ border-right-color:#d8ad25!important;
+}
+#matchRoomPage .match-faceit-level-svg{width:28px;height:28px}
+#matchRoomPage .match-faceit-level-svg text{font-size:12px!important;font-weight:750}
