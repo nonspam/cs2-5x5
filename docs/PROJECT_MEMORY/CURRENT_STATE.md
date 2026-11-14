@@ -27,16 +27,19 @@ CS2 Analytics is one integrated FACEIT-inspired application for the team's CS2 5
 
 ## Current focus
 
-The active owner-directed task is the FACEIT-style central workspace shell with corrected profile presentation and personal account wallpaper. See SESSION_CHECKPOINT.md for the latest IN PROGRESS handoff.
+The active owner-directed task is stabilizing contained Profile / Match Room windows and applying the signed-in user's site wallpaper globally. Latest implementation is in progress pending visual confirmation.
 
 Implemented in source:
-- Profile restored to left avatar/player card + horizontal top content tabs. No profile-cover editor or vertical nav below the avatar.
-- Existing cover_path is reused as the current user's site wallpaper across route workspace, Match Room and the right utility rail; Settings hosts choose/remove controls.
-- Right utility rail contains only avatar/profile and VS. Settings remains bottom-left.
-- Global nav and utility controls are transparent with lime hover/focus glow.
-- VS win/loss scores use green/red.
+- Global route navigation closes both contained windows; stale body modal classes are removed.
+- Match Room back action returns to Matches (base).
+- “Все игры” map rows open the shared Match Room Statistics tab scoped to the selected map.
+- Profile includes direct “ОБОИ САЙТА” upload action; Settings retains upload/removal.
+- Right utility rail uses the current account avatar as a larger portrait tile above VS; profile avatar frame is taller.
+- Wallpaper is a fixed full-viewport layer behind the route shell, Profile, Match Room and side rails.
 
-**Not yet confirmed:** browser appearance, avatar loading, wallpaper crop/visibility across routes, VS click behavior and responsive layout. No DEV deployment or browser QA is evidenced.
+Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
+
+**Not yet confirmed:** browser appearance, actual upload/persistence, wallpaper visibility across all routes, avatar loading, route interaction while overlays are open, and responsive layout. No DEV deployment or browser QA is evidenced.
 
 ## Confirmed implementation baseline
 
