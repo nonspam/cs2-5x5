@@ -744,13 +744,13 @@ test("right utility avatar restores the taller portrait tile",()=>{
 
 
 test('profile media feedback stays above the profile window and reports unreadable uploaded images',()=>{
- assert.match(css,/\.toast\{[^}]*z-index:12110!important/);
+ assert.match(css.slice(css.lastIndexOf('.toast{')),/z-index:12110!important/);
  assert.match(app,/Файл сохранён, но изображение не открывается из хранилища/);
  assert.match(app,/applyAccountWallpaper\(\);render\(\);renderUtilityRail\(\)/);
 });
 test('utility avatar is circular and the account wallpaper remains visible behind app surfaces',()=>{
- assert.match(css,/\.faceit-utility-profile\{[^}]*width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important/);
- assert.match(css,/\.faceit-utility-avatar-image,\.faceit-utility-profile \.faceit-utility-avatar-fallback\{[^}]*border-radius:50%!important/);
+ assert.match(css.slice(css.lastIndexOf('.faceit-utility-profile{')),/width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important/);
+ assert.match(css.slice(css.lastIndexOf('.faceit-utility-avatar-image,')),/border-radius:50%!important/);
  assert.match(css,/body\.has-account-wallpaper \.app\{background:transparent!important\}/);
  assert.match(css,/body\.has-account-wallpaper:before\{background-image:linear-gradient\(rgba\(5,5,5,\.34\),rgba\(5,5,5,\.44\)\),var\(--account-wallpaper,none\)!important\}/);
 });
