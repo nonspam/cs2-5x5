@@ -376,3 +376,13 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - **Files:** `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
 - **Commits:** `eb9b4b465e0e6fbfa387da5ae90507096b187b0c`, `37301675bd4c56080b9b42121b37bce79c737811`, `757ae2f8ba96c8fadf0f5ff10d0ec53dc4c9a13f`, `718b26e5cb32d665ee9b91f4754c6c64c1c13896`.
 - **Verification:** CI pending; no browser QA or live upload test. No deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — VS popover, profile scroll and wallpaper layer follow-up
+- Corrected the VS recent-match popover with a compact fixed-width panel, explicit header layout and grid-based match rows; added a bounded scrollable list.
+- Fixed toast stacking by moving the toast node to document.body before display, escaping the app stacking context.
+- Replaced the profile 5/10/20 buttons' full app render with a profile-only update that preserves the profile content scroll position.
+- Reduced the wallpaper dark overlay and explicitly kept route/profile shells transparent so the global wallpaper layer can show.
+- Files: `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+- Commits: `f3168228b399239118efe46665fce5d3cfceffc3`, `554b5be7252241165450223379cc093f2450acd7`, `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`, `8ecf3848e9f1fa6ba31114cbe2aeebb8c98d40e0`.
+- CI, live browser QA and real wallpaper upload remain unverified; no deployment or DB/storage-policy changes.
