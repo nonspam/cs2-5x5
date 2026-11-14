@@ -395,3 +395,12 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - Global wallpaper is exposed by transparent route/profile shells and reduced darkening overlay.
 - Latest test commit: `4522c4fc3b9685cf4f0775e5c37d0649e0ba0c7f`; app/CSS/cache commits: `f3168228b399239118efe46665fce5d3cfceffc3`, `554b5be7252241165450223379cc093f2450acd7`, `3a97e7ce7b4450ed5b405bbeeb0501e2c0c51a34`.
 - CI/browser/live upload verification pending. No deployment or DB/storage policy changes.
+
+
+## 2026-11-15 — Paint wallpaper on app surface
+- **Problem:** User reports image upload success toast but no visible wallpaper.
+- **Source finding:** Wallpaper variable is applied to body pseudo-element behind the positioned app; app surface may obscure it.
+- **Change:** Paint wallpaper directly on `.app` with cover sizing and a modest dark overlay; disable competing body pseudo background; keep route/profile shells transparent; update cache-busting token.
+- **Files:** `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+- **Commits:** `9e5e7b66cc74f772c33ae2ccb5881e953d70da29`, `e4d7dd2ee2b8e09e5fece037a2971afa20497488`, `f6384f26873818a46ff7470685db7ed8136824b0`.
+- **Verification:** Browser QA pending; no deployment or DB/storage-policy changes.
