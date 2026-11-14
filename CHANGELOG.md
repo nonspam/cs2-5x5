@@ -5382,3 +5382,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T23:32:50+03:00 — docs: record 250 passing modal and wallpaper regression checks
+
+- Commit: 8cd97d69a8f70e9acf092bb0a9a6026120a25b89
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
