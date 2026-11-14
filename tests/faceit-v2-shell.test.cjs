@@ -349,6 +349,7 @@ test('match room uses the site-wide header and approved three-column layout',()=
   assert.match(app,/bindSitePlayerSearch/);
   assert.match(app,/match-room-columns/);
   assert.match(app,/match-room-score-a/);
+  assert.match(css,/#matchRoomPage \.match-room-result\{[\s\S]*background:transparent!important;border:0!important/);
   const roomStart=app.indexOf('const roomPage=');
   const roomEnd=app.indexOf("document.getElementById('matchRoomPage')?.remove()",roomStart);
   const room=app.slice(roomStart,roomEnd);

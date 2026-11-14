@@ -6183,3 +6183,9 @@ body.match-room-open>.topbar .site-player-search{display:flex!important}
 .site-player-search-results button{display:flex;align-items:center;gap:8px;width:100%;padding:7px;border:0;border-radius:5px;background:transparent;color:#eee;text-align:left;font-size:11px;cursor:pointer}
 .site-player-search-results button:hover{background:#252525}
 .site-player-search-empty{padding:10px;color:#888;font-size:11px}
+
+/* Keep the match score directly over the map artwork; no opaque scoreboard slab */
+#matchRoomPage .match-room-result{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  padding:0!important;border-radius:0!important;
+}
