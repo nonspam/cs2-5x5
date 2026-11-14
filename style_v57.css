@@ -6267,3 +6267,60 @@ body.match-room-open .match-room-page{
  #matchRoomPage .match-room-result{grid-template-columns:minmax(0,1fr)!important}
  #matchRoomPage .match-room-score{grid-row:2!important}
 }
+
+
+/* 2026-11-14 — Match Room desktop viewport fill and final metric semantics */
+#matchRoomPage>.match-room-content{
+  width:100%!important;max-width:none!important;min-width:0!important;
+  padding:14px clamp(18px,2vw,34px) 36px!important;
+}
+#matchRoomPage .match-room-columns{
+  display:grid!important;width:100%!important;max-width:none!important;
+  margin:14px 0 0!important;
+  grid-template-columns:minmax(0,1fr) minmax(320px,1.08fr) minmax(0,1fr)!important;
+  justify-content:stretch!important;gap:clamp(16px,1.6vw,26px)!important;
+  align-items:start!important;
+}
+#matchRoomPage .match-room-team,
+#matchRoomPage .match-room-center-column{
+  width:100%!important;max-width:none!important;min-width:0!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .match-career-grid{
+  grid-template-columns:44px repeat(5,minmax(0,1fr))!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-avg-kda b{
+  overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;
+  font-size:clamp(8px,.62vw,10px)!important;letter-spacing:-.035em!important;
+}
+#matchRoomPage .match-room-score{
+  transform:translateY(-4px)!important;
+}
+#matchRoomPage .match-room-score>span{
+  width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;
+  padding:0!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-kd.is-neutral b{
+  color:#f2f2f2!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-kd.is-good b{
+  color:#18d66b!important;
+}
+#matchRoomPage .match-room-team .match-player-card-ref .metric-kd.is-bad b{
+  color:#f05252!important;
+}
+@media(max-width:1120px){
+  #matchRoomPage .match-room-columns{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    max-width:900px!important;margin-left:auto!important;margin-right:auto!important;
+  }
+  #matchRoomPage .match-room-center-column{
+    grid-column:1/-1!important;grid-row:1!important;
+  }
+  #matchRoomPage .match-room-team{max-width:none!important}
+}
+@media(max-width:700px){
+  #matchRoomPage>.match-room-content{width:calc(100% - 20px)!important;padding-left:0!important;padding-right:0!important}
+  #matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr)!important;max-width:440px!important}
+  #matchRoomPage .match-room-center-column{grid-column:auto!important;grid-row:auto!important}
+}

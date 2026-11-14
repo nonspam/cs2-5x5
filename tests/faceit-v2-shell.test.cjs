@@ -226,7 +226,7 @@ test('Match Overview player metrics are one FACEIT-style strip and player names 
   assert.ok(app.includes("metric(c.matches,'МАТЧИ')"));
   assert.ok(app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
   assert.ok(app.includes("metric(fmt(c.avg,1)+' / '+fmt(c.avgDeaths,1)+' / '+fmt(c.avgAssists,1),'AVG K/D/A')"));
-  assert.match(app,/metric-winrate '\+\(c\.wr>=70\?'is-good':c\.wr>=45\?'is-mid':'is-bad'\)/);
+  assert.match(app,/metric-winrate '\+\(c\.wr>=60\?'is-good':c\.wr>=40\?'is-mid':'is-bad'\)/);
   assert.match(app,/<strong title="'\+esc\(r\.name\)\+'">'\+esc\(r\.name\)/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(5,minmax\(0,1fr\)\)!important/);
   assert.match(css,/background:transparent!important/);
@@ -433,3 +433,19 @@ test('FACEIT level badges use the supplied palette and visible progressive ring'
 });
 
 test('FACEIT level rings keep the numeric label visible above the masked arc',()=>{const expected=[12,36,60,84,108,132,162,198,234,270];expected.forEach((degrees,index)=>{assert.ok(css.includes('--level-arc:'+degrees+'deg!important'));if(index>0)assert.ok(degrees>expected[index-1]);});assert.match(css,/\.match-player-level:before/);assert.match(css,/mask:radial-gradient/);assert.match(css,/z-index:1/);});
+
+
+test('Match Room desktop layout expands beyond the former fixed 1080px roster width',()=>{
+  assert.match(css,/#matchRoomPage \.match-room-columns\{[^}]*max-width:none!important[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,320px\) minmax\(0,1fr\)!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team,[\s\S]*max-width:none!important/);
+});
+test('Match Room AVG KDA remains a visible single-line metric and neutral K/D is white',()=>{
+  assert.match(app,/metric-avg-kda/);
+  assert.match(app,/Math\.abs\(c\.kd-1\)<1e-9\?'is-neutral':c\.kd>1\?'is-good':'is-bad'/);
+  assert.match(css,/\.metric-avg-kda b\{[\s\S]*white-space:nowrap!important/);
+  assert.match(css,/\.metric-kd\.is-neutral b\{[\s\S]*color:#f2f2f2!important/);
+});
+test('Match Room score is unbadged and slightly raised within the hero',()=>{
+  assert.match(css,/#matchRoomPage \.match-room-score\{[\s\S]*transform:translateY\(-4px\)!important/);
+  assert.match(css,/#matchRoomPage \.match-room-score>span\{[\s\S]*border-radius:0!important[\s\S]*background:transparent!important/);
+});
