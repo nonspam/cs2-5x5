@@ -493,3 +493,16 @@ test('Match Room keeps separate compact KDA/KD cells, slightly wider rosters and
   assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-center-column\{[\s\S]*position:relative!important;top:12px!important/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.metric-avg-kda b\{[\s\S]*font-size:clamp\(8px,\.64vw,10px\)!important/);
 });
+
+
+test('Match Room exposes working Overview and Statistics tabs with source-backed player data',()=>{
+ assert.match(app,/data-match-view-tab="overview"/);
+ assert.match(app,/data-match-view-tab="statistics"/);
+ assert.match(app,/data-match-view="overview"/);
+ assert.match(app,/data-match-view="statistics"/);
+ assert.match(app,/root\.querySelectorAll\('\[data-match-view-tab\]'\)\.forEach/);
+ assert.match(app,/statMvp=leaderBy\('kills'\)/);
+ assert.match(app,/table\(A,'a'\)\+table\(B,'b'\)/);
+ assert.match(css,/\.match-room-view-tabs button\.active:after/);
+ assert.match(css,/\.match-statistics-summary\{display:grid/);
+});
