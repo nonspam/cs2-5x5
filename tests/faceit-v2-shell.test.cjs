@@ -188,7 +188,7 @@ test('Track and season archive live inside Profile instead of occupying permanen
 
 test('Match Room renders the approved standalone roster, map and veto layout',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),s=app.slice(i,j);
-  for(const x of ['match-room-hero','match-room-result','match-room-team','match-room-center-column','match-room-map-list','match-room-veto','match-room-global-header','matchRoomPlayerSearch','matchRoomAccountMenu','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','profileSummary(profileMatchesForPlayer','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
+  for(const x of ['match-room-hero','match-room-result','match-room-team','match-room-center-column','match-room-map-list','match-room-veto','match-career-grid','match-player-level','match-player-card-ref','match-player-rating','profileSummary(profileMatchesForPlayer','CS2EloV3?.player(id)']) assert.ok(s.includes(x),x);
   assert.doesNotMatch(s,/CS2EloV3\?\.playerData/);
   assert.doesNotMatch(s,/СМОТРЕТЬ ДЕМО|К ПОДБОРУ ИГРОКОВ|WINLINE|ВНЕСИТЕ ДЕПОЗИТ/);
 });
@@ -206,7 +206,7 @@ test('Match Center reference styling uses compact rectangular map rows and squar
 test('Match Room follows the approved full-page FACEIT-inspired hierarchy without inventing match metadata',()=>{
   const i=app.indexOf('function openMatchDetail(id){'),j=app.indexOf('function base(v){',i),source=app.slice(i,j);
   assert.ok(i>=0&&j>i);
-  for(const marker of ['matchRoomPage','match-room-global-header','match-room-hero-meta','match-room-result','match-room-roster-heading','match-room-map-list','match-room-veto','matchRoomPlayerSearch','matchRoomAccountMenu']) assert.ok(source.includes(marker),marker);
+  for(const marker of ['matchRoomPage','match-room-hero-meta','match-room-result','match-room-roster-heading','match-room-map-list','match-room-veto','matchRoomPlayerSearch','matchRoomAccountMenu']) assert.ok(source.includes(marker),marker);
   assert.match(source,/CS2EloV3\?\.player\(r\.id\)\?\.rating/);
   assert.match(source,/Пики и баны не записаны в источнике матча/);
   assert.doesNotMatch(source,/Moscow|XPLAY\.GG|EXT · ПРОГНОЗ|Смотреть демо|WINLINE/);
@@ -223,9 +223,11 @@ test('Match Overview uses the dark FACEIT surface palette and adapts the scoreca
 
 
 test('Match Overview player metrics are one FACEIT-style strip and player names are not forcibly ellipsized',()=>{
-  assert.ok(app.includes("metric(c.wins+'/'+c.losses,'W/L')"));
+  assert.ok(app.includes("metric(c.matches,'МАТЧИ')"));
+  assert.ok(app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
+  assert.ok(app.includes("metric(c.matches?fmt(c.wr,0)+'%':'—','WIN RATE')"));
   assert.match(app,/<strong title="'\+esc\(r\.name\)\+'">'\+esc\(r\.name\)/);
-  assert.match(css,/\.match-room-team \.match-career-grid\{[\s\S]*grid-template-columns:repeat\(6,minmax\(0,1fr\)\)!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(5,minmax\(0,1fr\)\)!important/);
   assert.match(css,/background:transparent!important/);
   assert.match(css,/white-space:normal!important/);
   assert.match(css,/\.match-room-side\{grid-template-columns:minmax\(0,1fr\) 40px auto!important\}/);
