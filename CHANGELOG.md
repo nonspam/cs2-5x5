@@ -3687,3 +3687,19 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T03:14:33+03:00 — ui: correct progressive FACEIT level ring fill
+
+- Commit: a163c2e8a77311aec47bbe01a8a145dd62902157
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+- M	elo_v3.js
+- M	style_v57.css
+- M	tests/elo_v3.test.cjs
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
