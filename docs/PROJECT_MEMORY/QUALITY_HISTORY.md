@@ -131,3 +131,10 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Quality Gate run [43633959427](https://github.com/nonspam/cs2-5x5/actions/runs/43633959427), tested commit `35c5381e6beee2ddae42640fe0509bf657967c4a`: **241 passed / 0 failed / 0 skipped**, verified from the actual `validate` job log.
 - Earlier implementation attempts had failing runs: an initial JS quote-escaping syntax error, then stale/new rail contract assertions. These were corrected; the final run above passed.
 - Scope: Node syntax checks and regression/static contracts. No browser QA, screenshot comparison, deployment, DB/SQL, schema/RLS/grants, or `main` changes. Visual behavior remains unverified.
+
+
+## 2026-11-14 — Profile restoration, account wallpaper and transparent navigation
+- Quality Gate run [43635690684](https://github.com/nonspam/cs2-5x5/actions/runs/43635690684), tested implementation/test commit ff3a4e4b038c31b6c89be15e71ddc559f9e4aede: **244 passed / 0 failed / 0 skipped**, verified from actual validate job log.
+- The run covers syntax and Node regression/static contracts for account wallpaper, restored horizontal profile tabs, right utility rail and transparent lime-hover navigation.
+- Intermediate failed runs remain in workflow history: tests still expected the removed profileCoverFile and vertical nav; a later temporary test regex over-escaped the tab quotes. The contracts were updated before the final passing run.
+- No browser QA, screenshot comparison or deployment. No DB/SQL/migration/RLS/grants changes.
