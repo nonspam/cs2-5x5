@@ -244,8 +244,8 @@ function appRouteFromLocation(){
 }
 function navigateApp(tab,options={}){
  if(!APP_ROUTE_IDS.includes(tab))return;
- closePlayerProfileWindow();
- closeMatchRoom();
+ if(typeof closePlayerProfileWindow==='function')closePlayerProfileWindow();
+ if(typeof closeMatchRoom==='function')closeMatchRoom();
  const hash='#/'+tab;
  if(window.location.hash!==hash){
   const method=options.replace||state.tab===tab?'replaceState':'pushState';
