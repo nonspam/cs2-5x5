@@ -5106,3 +5106,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T23:03:59+03:00 — fix: expose account wallpaper as shared workspace background layer
+
+- Commit: 2f9b34a8baf5d3ab4f04d85a6bc5b8230403b0f6
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
