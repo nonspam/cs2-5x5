@@ -6696,3 +6696,78 @@ body.match-room-open .match-room-page{
 #matchRoomPage .match-stat-top-row{grid-template-columns:22px 32px minmax(0,1fr) auto 44px;gap:7px;padding:7px}
 #matchRoomPage .match-stat-top-row>.player-avatar{width:30px;height:30px}
 }
+
+
+/* Match Room — second owner refinement: player row barriers, aligned leaders, centered compact TOP. */
+#matchRoomPage .match-stat-highlight{
+ grid-template-columns:40px minmax(0,1fr) auto;
+ gap:12px;padding:8px 14px;
+}
+#matchRoomPage .match-stat-highlight-value{
+ max-width:none;min-width:118px;align-items:flex-end;text-align:right;
+}
+#matchRoomPage .match-stat-highlight-value>b{font-size:20px;line-height:1}
+#matchRoomPage .match-stat-highlight-value small{
+ max-width:150px;text-align:right;white-space:normal;line-height:1.2;
+}
+#matchRoomPage .match-stat-highlight-player strong{white-space:nowrap}
+#matchRoomPage .match-stat-mvp-profile>.player-avatar,
+#matchRoomPage .match-stat-mvp-profile>.match-stat-mvp-avatar{
+ width:108px;height:108px;flex:0 0 108px;
+}
+#matchRoomPage .match-stat-team .match-scoreboard{
+ border-collapse:separate;border-spacing:0 4px;background:transparent!important;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody tr{background:transparent!important}
+#matchRoomPage .match-stat-team .match-scoreboard tbody td{
+ background:#101010!important;border-top:1px solid #222!important;border-bottom:1px solid #222!important;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody td:first-child{
+ border-left:3px solid transparent!important;border-radius:5px 0 0 5px;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody td.name,
+#matchRoomPage .match-stat-team .match-scoreboard tbody td.match-stat-rank{
+ background:rgba(87,91,185,.20)!important;
+}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td:first-child{border-left-color:#7479ef!important}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td.name,
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td.match-stat-rank{
+ background:rgba(87,91,185,.22)!important;
+}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:first-child{border-left-color:#35c9ad!important}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td.name,
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td.match-stat-rank{
+ background:rgba(47,151,123,.25)!important;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody td:nth-child(2){
+ border-right:1px solid #292929!important;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody td:last-child{
+ border-radius:0 5px 5px 0;
+}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td:nth-child(2){border-right-color:#44467a!important}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td:nth-child(2){border-right-color:#326b5d!important}
+#matchRoomPage .match-stat-top-list{
+ width:min(100%,980px);max-width:980px;margin:12px auto 0;gap:5px;
+}
+#matchRoomPage .match-stat-top-row{
+ grid-template-columns:28px 38px max-content max-content 58px;
+ justify-content:space-between;gap:14px;min-height:50px;padding:6px 14px;
+}
+#matchRoomPage .match-stat-top-row>strong{
+ min-width:0;white-space:nowrap;overflow:visible;text-overflow:clip;
+ overflow-wrap:normal;word-break:normal;
+}
+#matchRoomPage .match-stat-top-row>.match-stat-top-score{white-space:nowrap}
+#matchRoomPage .match-stat-top-row .stat-positive{color:#35e66b!important}
+#matchRoomPage .match-stat-top-row .stat-negative{color:#ff6262!important}
+#matchRoomPage .match-stat-top-row .stat-neutral{color:#f2f2f2!important}
+@media(max-width:760px){
+ #matchRoomPage .match-stat-top-list{width:100%;max-width:100%}
+ #matchRoomPage .match-stat-top-row{
+  grid-template-columns:22px 32px minmax(0,1fr) max-content 44px;
+  justify-content:initial;gap:7px;padding:7px;
+ }
+ #matchRoomPage .match-stat-top-row>strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #matchRoomPage .match-stat-highlight-value{min-width:100px}
+}

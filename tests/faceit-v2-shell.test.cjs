@@ -539,3 +539,15 @@ test('Match Room Statistics/TOP owner refinements preserve initials, compact row
  assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-stat-team-head>div>span\{color:#e7bd55/);
  assert.match(css,/#matchRoomPage \.match-stat-top-list\{max-width:1080px/);
 });
+
+
+test('Match Room second Statistics/TOP refinement adds row barriers, centered compact TOP and consistent player result colors',()=>{
+ assert.match(app,/statMvp\?matchRoomInitialAvatar\(statMvp\.player_id\|\|null,'lg',statMvp\.name\)/);
+ assert.match(app,/const resultClass=r\.kd>1\?'stat-positive':r\.kd<1\?'stat-negative':'stat-neutral'/);
+ assert.match(app,/<strong class="'\+resultClass\+'">'\+esc\(r\.name\)/);
+ assert.doesNotMatch(app,/Сортировка по суммарному K\/D · все карты серии/);
+ assert.match(css,/#matchRoomPage \.match-stat-team\.team-a \.match-scoreboard tbody td\.name[\s\S]*rgba\(87,91,185/);
+ assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td\.name[\s\S]*rgba\(47,151,123/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-list\{[\s\S]*margin:12px auto 0/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>strong\{[\s\S]*white-space:nowrap/);
+});
