@@ -157,3 +157,7 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 
 ## 2026-11-15 — Profile return and palette corrective pass
 - Source/test changes committed on `faceit-dev`; no CI evidence returned yet. Browser QA and deployment not performed. See SESSION_CHECKPOINT for commit SHAs and scope.
+
+
+## 2026-11-15 — Latest profile navigation and table palette correction
+- Regression assertions added for sticky profile tabs, level-tier ring color, Match Room profile-history return, and exact Match Room statistics table selector. No CI result available at checkpoint time; browser QA and deployment not performed.
