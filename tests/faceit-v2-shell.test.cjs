@@ -773,3 +773,11 @@ test('account wallpaper has a visible layer behind transparent route shells',()=
  assert.match(css,/body\.has-account-wallpaper \.faceit-route-shell,body\.has-account-wallpaper \.faceit-profile-shell\{background:transparent!important/);
  assert.match(css,/body\.has-account-wallpaper:before\{background-image:linear-gradient\(rgba\(5,5,5,\.20\),rgba\(5,5,5,\.28\)\),var\(--account-wallpaper,none\)!important/);
 });
+
+
+test('account wallpaper is painted directly on the app surface, not only behind it',()=>{
+ const wallpaperRule=css.slice(css.lastIndexOf('/* 2026-11-15 — paint account wallpaper on the actual app surface */'));
+ assert.match(wallpaperRule,/body\.has-account-wallpaper \.app\{[\s\S]*background-image:linear-gradient\(rgba\(5,5,5,\.18\),rgba\(5,5,5,\.26\)\),var\(--account-wallpaper,none\)!important/);
+ assert.match(wallpaperRule,/background-size:cover!important;background-position:center center!important/);
+ assert.match(wallpaperRule,/body\.has-account-wallpaper:before\{background-image:none!important/);
+});
