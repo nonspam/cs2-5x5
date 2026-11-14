@@ -5,7 +5,7 @@ state.trackTargetId=null;state.profileSeasonKey='all';state.statsSeasonKey='all'
 let renderEpoch=0;let detailRowsCacheEpoch=-1;const detailRowsCache=new Map();
 let SERVER_AUDIT=[]; let SERVER_EVENT_SOURCE=null; let SERVER_REFRESH_TIMER=null; let SERVER_REFRESH_SEQ=0;
 const $=s=>document.querySelector(s);
-function toast(message){let box=document.getElementById('toast');if(!box){box=document.createElement('div');box.id='toast';box.className='toast';document.body.appendChild(box)}box.textContent=String(message||'');box.classList.add('show');clearTimeout(window.__cs2ToastTimer);window.__cs2ToastTimer=setTimeout(()=>box.classList.remove('show'),2600)}
+function toast(message){let box=document.getElementById('toast');if(!box){box=document.createElement('div');box.id='toast';box.className='toast'}if(box.parentElement!==document.body)document.body.appendChild(box);box.textContent=String(message||'');box.classList.add('show');clearTimeout(window.__cs2ToastTimer);window.__cs2ToastTimer=setTimeout(()=>box.classList.remove('show'),3200)}
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const fmt=(x,n=2)=>Number.isFinite(x)?x.toFixed(n):'—';
@@ -329,7 +329,7 @@ function profilePage(v){
  }).join('');
  const performance='<div class="faceit-perf-card">'+
    '<div class="faceit-perf-head"><div><span class="faceit-kicker">ПОСЛЕДНИЕ '+size+' МАТЧЕЙ</span><h3>Последние показатели</h3></div>'+
-   '<div class="faceit-window-switch">'+[5,10,20].map(n=>'<button class="'+(size===n?'active':'')+'" onclick="state.profileWindow='+n+';render()">'+n+'</button>').join('')+'</div></div>'+
+   '<div class="faceit-window-switch">'+[5,10,20].map(n=>'<button type="button" class="'+(size===n?'active':'')+'" onclick="setProfileWindowSize('+n+')">'+n+'</button>').join('')+'</div></div>'+
    '<div class="faceit-performance-grid">'+
      '<div><span>СРЕДНИЙ УРОВЕНЬ</span><b>—</b><small>рейтинг соперников пока не рассчитывается</small></div>'+
      '<div><span>ИЗМЕНЕНИЕ ELO</span><b class="'+(eloChange>0?'positive':eloChange<0?'negative':'neutral')+'">'+(eloChange>0?'+':'')+fmt(eloChange,1)+'</b><small>за последние '+Math.min(size,eloInfo.matches)+' учтённых серий</small></div>'+
@@ -1163,6 +1163,17 @@ function openPlayerDrilldown(id,kind,arg){
 }
 function closePlayerDrilldown(){$('#playerDrilldown')?.remove()}
 
+function setProfileWindowSize(size){
+ if(![5,10,20].includes(Number(size)))return;
+ state.profileWindow=Number(size);
+ const mount=document.getElementById('playerProfileMount')||document.querySelector('#view>.faceit-profile-shell');
+ if(!mount)return;
+ const content=mount.querySelector('.faceit-exact-content');
+ const scrollTop=content?.scrollTop||0;
+ profilePage(mount);enhanceSelects(mount);
+ const refreshed=mount.querySelector('.faceit-exact-content');
+ if(refreshed)refreshed.scrollTop=scrollTop;
+}
 function setPlayerProfileSection(section){
  if(!['overview','history','track'].includes(section))return;
  if(section==='track')state.trackSeasonKey=state.profileSeasonKey||'all';
