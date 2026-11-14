@@ -459,7 +459,7 @@ test('Match Room player career strip omits rating, uses rounded integer KDA and 
 });
 test('Match Room uses balanced medium-width rosters, taller cards and larger map artwork',()=>{
  assert.match(css,/#matchRoomPage \.match-room-columns\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,1\.16fr\) minmax\(0,1fr\)!important/);
- assert.match(css,/#matchRoomPage \.match-player-card-ref\{[^}]*height:104px!important/);
+ assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref\{[^}]*height:104px!important/);
  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{[^}]*height:112px!important/);
  assert.match(css,/#matchRoomPage>\.match-room-content\{[\s\S]*max-width:1560px!important/);
 });
