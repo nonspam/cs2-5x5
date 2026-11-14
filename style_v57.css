@@ -7073,3 +7073,22 @@ body.has-account-wallpaper .faceit-route-shell{background-color:transparent!impo
 #view,.app,.faceit-app-shell{background-color:transparent!important}
 body.match-room-open .match-room-page,#matchRoomPage.match-room-page{background-color:rgba(8,8,8,.78)!important}
 body.has-account-wallpaper .faceit-utility-rail{background:rgba(8,8,8,.22)!important}
+
+#playerProfileWindow .player-profile-window-panel{
+ background-color:rgba(8,8,8,.16)!important;
+ background-image:linear-gradient(90deg,rgba(8,8,8,.76),rgba(8,8,8,.82)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important
+}
+body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
+ background-image:linear-gradient(90deg,rgba(8,8,8,.72),rgba(8,8,8,.78)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important
+}
+#playerProfileWindow .faceit-exact-game-tabs button{
+ border:0!important;border-radius:0!important;background:transparent!important;color:#aaa!important;
+ box-shadow:none!important;transition:color .16s ease,text-shadow .16s ease!important
+}
+#playerProfileWindow .faceit-exact-game-tabs button:hover,
+#playerProfileWindow .faceit-exact-game-tabs button.active{
+ background:transparent!important;color:#c6ff45!important;border:0!important;
+ text-shadow:0 0 12px rgba(190,255,55,.38)!important;box-shadow:none!important
+}
