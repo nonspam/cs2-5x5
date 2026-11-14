@@ -4561,3 +4561,17 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T20:53:34+03:00 — ui: amber losing team and refine FACEIT rank badge
+
+- Commit: bba653f52a7fcc047d95b018309aef9732e18a74
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
