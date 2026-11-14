@@ -810,3 +810,21 @@ test('Teams palette pass leaves the approved Maps page untouched',()=>{
  const palette=css.slice(css.lastIndexOf('/* 2026-11-15 — unify card surfaces with the approved Teams palette */'));
  assert.doesNotMatch(palette,/\.maps-page/);
 });
+
+
+test('opening a Match Room from a public profile preserves a dedicated return-to-profile action',()=>{
+ assert.match(app,/const profileReturnId=window\.__activePlayerProfileId\|\|null/);
+ assert.match(app,/window\.__matchRoomProfileReturnId=profileReturnId/);
+ assert.match(app,/match-room-back-profile[\s\S]*matchRoomReturnToProfile\(\)/);
+ assert.match(app,/function matchRoomReturnToProfile\(\)[\s\S]*openPublicPlayerProfile\(id\)/);
+});
+test('Match Room back-to-matches action remains separate from return-to-profile',()=>{
+ assert.match(app,/matchRoomNavigate\('base'\)/);
+ assert.match(app,/window\.__matchRoomProfileReturnId=null;closeMatchRoom\(\);navigateApp/);
+});
+test('legacy blue fills are explicitly overridden on Matches, Statistics and Match Room',()=>{
+ const fix=css.slice(css.lastIndexOf('/* 2026-11-15 — hard override for the two surfaces that retained legacy blue fills */'));
+ assert.match(fix,/#view \.base-page>\.panel\.card,[\s\S]*background:#0d1012!important/);
+ assert.match(fix,/#view \.stats-page \.players-table tbody tr:nth-child\(even\)\{background:#121617!important\}/);
+ assert.match(fix,/#matchRoomPage\.match-room-page \.match-room-team \.match-player-card,[\s\S]*background:#121617!important/);
+});
