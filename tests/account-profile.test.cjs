@@ -25,14 +25,17 @@ test('password recovery and password changes are supported with reauthentication
   assert.ok(account.includes('CS2Cloud.updateAccountPassword(password);'));
 });
 
-test('profile editing is restricted to avatar and cover media without player-name editing', () => {
+test('profile editing keeps avatar media while cover media is repurposed for account wallpaper', () => {
   assert.ok(adapter.includes('const allowed={avatar_path:patch.avatar_path,cover_path:patch.cover_path}'));
   assert.ok(adapter.includes("if(!['avatar','cover'].includes(kind))"));
   assert.ok(adapter.includes('file.size>5*1024*1024'));
   assert.ok(adapter.includes("cleanPath.startsWith(user.id+'/')"));
   assert.ok(app.includes('canEditProfile'));
   assert.ok(app.includes('handleProfileImage'));
-  assert.ok(app.includes('profileCoverFile'));
+  assert.ok(app.includes('accountWallpaperFile'));
+  assert.ok(app.includes("handleProfileImage('cover'"));
+  assert.ok(app.includes('function applyAccountWallpaper'));
+  assert.ok(!app.includes('profileCoverFile'));
   assert.doesNotMatch(app, /id=["']profileName/);
 });
 
