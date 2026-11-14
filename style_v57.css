@@ -4916,7 +4916,7 @@ html,body,*{
   overflow:hidden!important;
 }
 .match-room-team .match-player-card-ref .player-avatar img{
-  width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important;
+  width:100%!important;height:100%!important;object-fit:cover!important;border-radius:7px!important;
 }
 .match-room-team .match-player-card-ref .match-player-main{
   flex:1 1 auto!important;
@@ -6940,7 +6940,7 @@ body.has-account-wallpaper .faceit-utility-rail{
 }
 #playerProfileWindow .player-profile-window-backdrop{
  position:fixed!important;inset:0 64px 0 170px!important;width:auto!important;height:auto!important;
- border:0!important;background:rgba(0,0,0,.97)!important;cursor:default
+ border:0!important;background:rgba(0,0,0,.995)!important;cursor:default
 }
 #playerProfileWindow .player-profile-window-panel{
  position:relative;z-index:1;width:100%;height:100%;min-width:0;overflow:hidden;
@@ -6953,7 +6953,7 @@ body.has-account-wallpaper .faceit-utility-rail{
 #playerProfileWindow .faceit-exact-shell{
  display:grid!important;height:100%!important;min-height:0!important;
  grid-template-columns:252px minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;
- overflow:hidden!important;background:rgba(8,8,8,.42)!important
+ overflow:hidden!important;background:rgba(8,8,8,.94)!important
 }
 #playerProfileWindow .faceit-exact-global-rail{display:none!important}
 #playerProfileWindow .faceit-exact-player-column{
@@ -7028,7 +7028,7 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
 .faceit-utility-avatar-image{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important}
 .faceit-utility-profile .faceit-utility-avatar-fallback{
  display:grid!important;width:100%!important;height:100%!important;place-items:center!important;
- background:rgba(255,255,255,.05)!important;color:#ddd!important;font-size:16px!important;border-radius:50%!important
+ background:rgba(255,255,255,.05)!important;color:#ddd!important;font-size:19px!important;border-radius:7px!important
 }
 .faceit-utility-vs{width:46px!important;height:34px!important;font-size:13px!important;letter-spacing:.02em!important}
 .faceit-utility-button:hover,.faceit-utility-button[aria-expanded="true"]{
@@ -7077,7 +7077,7 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  #playerProfileWindow.player-profile-window{inset:0 64px 0 82px!important}
  #playerProfileWindow .player-profile-window-backdrop{inset:0 64px 0 82px!important}
  #playerProfileWindow .faceit-exact-shell{grid-template-columns:220px minmax(0,1fr)!important}
- #playerProfileWindow .faceit-exact-avatar-frame{height:260px!important}
+ #playerProfileWindow .faceit-exact-avatar-frame{height:280px!important}
  body.match-room-open .match-room-page,#matchRoomPage.match-room-page{inset:0 64px 0 82px!important}
 }
 @media(max-width:700px){
@@ -7088,7 +7088,7 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
  #playerProfileWindow .player-profile-window-backdrop{inset:0!important}
  #playerProfileWindow .faceit-exact-shell{grid-template-columns:86px minmax(0,1fr)!important}
  #playerProfileWindow .faceit-exact-player-column{padding:10px 6px!important}
- #playerProfileWindow .faceit-exact-avatar-frame{height:190px!important}
+ #playerProfileWindow .faceit-exact-avatar-frame{height:210px!important}
  #playerProfileWindow .faceit-exact-player-card>h1,#playerProfileWindow .faceit-exact-player-meta,
  #playerProfileWindow .faceit-exact-country,#playerProfileWindow .faceit-exact-game-history,
  #playerProfileWindow .faceit-exact-badges{display:none!important}
