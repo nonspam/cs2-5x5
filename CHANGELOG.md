@@ -5250,3 +5250,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T23:27:06+03:00 — chore: refresh workspace modal and wallpaper cache keys
+
+- Commit: 59793e4b67246582712fde1bcd6363a1e103ec58
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
