@@ -436,6 +436,7 @@ test('FACEIT level rings keep the numeric label visible above the masked arc',()
 
 
 test('Match Room desktop layout expands beyond the former fixed 1080px roster width',()=>{
+  assert.match(css,/#matchRoomPage \.match-room-hero\{[^}]*width:100%!important;max-width:none!important/);
   assert.match(css,/#matchRoomPage \.match-room-columns\{[^}]*max-width:none!important[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(320px,1\.08fr\) minmax\(0,1fr\)!important/);
   assert.match(css,/#matchRoomPage \.match-room-team,[\s\S]*max-width:none!important/);
 });

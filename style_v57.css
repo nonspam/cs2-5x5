@@ -6324,3 +6324,7 @@ body.match-room-open .match-room-page{
   #matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr)!important;max-width:440px!important}
   #matchRoomPage .match-room-center-column{grid-column:auto!important;grid-row:auto!important}
 }
+
+#matchRoomPage .match-room-hero{
+  width:100%!important;max-width:none!important;margin:0!important;
+}
