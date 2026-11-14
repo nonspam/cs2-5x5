@@ -723,13 +723,13 @@ test('right rail uses the current account avatar as a large portrait tile above 
  const rail=app.slice(app.indexOf('function renderUtilityRail'),app.indexOf('function render(){',app.indexOf('function renderUtilityRail')));
  assert.match(rail,/state\.myPlayerId\|\|state\.myProfile\?\.player_id/);
  assert.match(rail,/faceit-utility-avatar-image/);
- assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:38px!important;height:38px!important/);
+ assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:46px!important;height:62px!important/);
 });
 
 
 test("profile overlay isolates the underlying route while retaining account wallpaper",()=>{
- assert.match(css,/#playerProfileWindow \.player-profile-window-backdrop\{[\s\S]*background:rgba\(0,0,0,\.97\)!important/);
- assert.match(css,/#playerProfileWindow \.player-profile-window-panel\{[\s\S]*var\(--account-wallpaper,none\)/);
+ assert.match(css,/#playerProfileWindow \.player-profile-window-backdrop\{[\s\S]*background:rgba\(0,0,0,\.995\)!important/);
+ assert.match(css,/#playerProfileWindow \.player-profile-window-panel\{[\s\S]*linear-gradient\(rgba\(8,8,8,\.86\),rgba\(8,8,8,\.91\)\),var\(--account-wallpaper,none\)/);
  assert.match(css,/#playerProfileWindow\.player-profile-window\{[\s\S]*inset:0 64px 0 170px!important/);
 });
 test("Match Room no longer overrides the global body wallpaper pseudo-element",()=>{
@@ -738,6 +738,6 @@ test("Match Room no longer overrides the global body wallpaper pseudo-element",(
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)/);
 });
 test("right utility avatar is compact and circular",()=>{
- assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:38px!important;height:38px!important[\s\S]*border-radius:50%!important/);
- assert.match(css,/\.faceit-utility-avatar-image\{[\s\S]*border-radius:50%!important/);
+ assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:46px!important;height:62px!important[\s\S]*border-radius:7px!important/);
+ assert.match(css,/\.faceit-utility-avatar-image\{[\s\S]*border-radius:7px!important/);
 });
