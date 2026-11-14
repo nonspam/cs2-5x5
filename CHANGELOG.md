@@ -4634,3 +4634,17 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T21:15:11+03:00 — fix: amber rank divider and enlarge FACEIT level numeral
+
+- Commit: 532b204d4ab8194922107960539579676cfef572
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
