@@ -7012,6 +7012,6 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
 }
 
 /* Keep the center workspace clear of the new persistent right utility rail. */
-.faceit-route-shell,.faceit-profile-shell{width:calc(100% - 48px)!important;max-width:none!important}
+#view > .faceit-route-shell,#view > .faceit-profile-shell{width:calc(100% - 48px)!important;max-width:none!important}
 .topbar{padding-right:62px!important}
 .account-menu-root{display:none!important}
