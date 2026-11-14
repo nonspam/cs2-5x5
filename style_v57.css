@@ -7229,3 +7229,46 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  border-color:rgba(200,255,61,.34)!important;
  box-shadow:inset 3px 0 var(--acid)!important;
 }
+
+
+/* 2026-11-15 — hard override for the two surfaces that retained legacy blue fills */
+#view .base-page>.panel.card,
+#view .base-page .data-table tbody tr{
+ background:#0d1012!important;
+ background-image:none!important;
+ border-color:#2a3035!important;
+}
+#view .base-page .data-table tbody tr:nth-child(even){background:#121617!important}
+#view .stats-page>.panel.card,
+#view .stats-page .players-table,
+#view .stats-page .players-table tbody,
+#view .stats-page .players-table tbody tr{
+ background:#0d1012!important;
+ background-image:none!important;
+ border-color:#2a3035!important;
+}
+#view .stats-page .players-table tbody tr:nth-child(odd){background:#0d1012!important}
+#view .stats-page .players-table tbody tr:nth-child(even){background:#121617!important}
+#matchRoomPage.match-room-page .match-room-team .match-player-card,
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref,
+#matchRoomPage.match-room-page .match-stat-team .table-wrap,
+#matchRoomPage.match-room-page .match-scoreboard tbody tr,
+#matchRoomPage.match-room-page .match-stat-top-row,
+#matchRoomPage.match-room-page .match-stat-mvp-card{
+ background:#121617!important;
+ background-image:none!important;
+ border-color:#2a3035!important;
+ box-shadow:none!important;
+}
+#matchRoomPage.match-room-page .match-room-content,
+#matchRoomPage.match-room-page .match-statistics-view{
+ background:transparent!important;
+ background-image:none!important;
+}
+#matchRoomPage.match-room-page .match-room-center,
+#matchRoomPage.match-room-page .match-room-info>div{
+ background:#0d1012!important;
+ border-color:#2a3035!important;
+}
+.match-room-back-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.match-room-back-profile{border-color:#c8ff3d!important;color:#c8ff3d!important}
