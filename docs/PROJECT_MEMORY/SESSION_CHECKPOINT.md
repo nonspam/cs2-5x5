@@ -1,65 +1,73 @@
 # SESSION CHECKPOINT — read this first
 
-> The single latest recovery point for a new chat or an interrupted session. Read this before older summaries.
+> Latest recovery point. This supersedes the previous profile-vertical-navigation / profile-cover presentation checkpoint.
 
 ## Snapshot
 
 - Updated: 2026-11-14
-- Repository: `nonspam/cs2-5x5`
-- Working branch: `faceit-dev`
-- Branch HEAD checked before this checkpoint refresh: `057b66f53963ce79b04330e11fcca9cc7867d754`
-- Latest implementation package Quality Gate commit: `35c5381e6beee2ddae42640fe0509bf657967c4a`
-- Latest confirmed Quality Gate: [run 43633959427](https://github.com/nonspam/cs2-5x5/actions/runs/43633959427) — **241 passed / 0 failed / 0 skipped**, confirmed from the actual job log.
-- This is automated syntax + Node regression/static-contract evidence only. No browser QA, screenshot comparison or deployment is evidenced.
+- Repository: nonspam/cs2-5x5
+- Working branch: faceit-dev
+- Current HEAD at checkpoint preparation: 5558161c1870aa1487cd2f28e1f4fee0c38968fd
+- Application/test implementation commit: ff3a4e4b038c31b6c89be15e71ddc559f9e4aede
+- Quality Gate: [run 43635690684](https://github.com/nonspam/cs2-5x5/actions/runs/43635690684), **244 passed / 0 failed / 0 skipped**, verified from actual validate job log.
+- Automated syntax and Node regression/static contracts only. Browser QA, screenshot comparison and deployment are NOT verified.
 
-## Current task — IN PROGRESS: FACEIT-style central workspace shell
+## Current owner-approved correction — IN PROGRESS
 
-### Owner's latest direction (from four screenshots and the latest clarification)
+The owner reviewed the previous implementation screenshots and rejected the profile vertical nav / profile-cover presentation. The latest uploaded references and clarification take precedence over the previous checkpoint.
 
-1. Preserve the visible left global navigation when opening Match Room and other sections; the content should live in the central workspace, not cover the whole site.
-2. The Match Room should meet the side-rail boundaries. Remove the awkward empty gap and the heavy dim overlay that makes the whole site look muddy.
-3. Move Profile out of the left navigation. Add a compact persistent right-side rail with the user's avatar/profile and a VS action that opens recent personal matches. Other actions may be added after design/approval.
-4. Reuse the profile cover image as the background layer behind the current workspace/window, including Match Room and relevant route sections, with readable dark overlays.
-5. The long-term direction includes Match Room, Profile, Track, Seasons and other sections in one consistent central workspace. Do not claim all routes have been converted unless verified in source.
+### Required behavior
 
-### Implemented in the current source package
+1. Restore the original profile composition: avatar/player card on the left; profile content and Overview / Match History / Track tabs at the top of the content area. Do not put these tabs under the avatar.
+2. Profile itself has an avatar, not a profile cover. Remove the cover edit control from the profile.
+3. Reinterpret the existing account cover media as the user's site wallpaper. Apply it across the current user's own site views, including Match Room and the right utility rail; other users' UI must not automatically adopt it.
+4. Keep the central workspace and persistent left/right rails.
+5. Right rail contains only the avatar/profile action and VS. Settings stays at the bottom of the left rail.
+6. Navigation and utility controls are transparent at rest; hover/focus uses a subtle lime glow. Avoid oval/pill backgrounds for navigation.
+7. VS recent-match score is green for wins and red for losses. Keep the existing match data and result calculation.
 
-- Match Room desktop frame now aligns flush between a 170px left rail and a 48px right utility rail; below 900px the left offset is 82px; below 700px the content is full-screen.
-- Match Room dim layer is constrained to the central workspace and reduced from 0.56 opacity to 0.14.
-- The existing current-user `cover_path` URL is reused for route workspace and Match Room backgrounds. Profile keeps its existing cover renderer; no duplicate media storage was introduced.
-- Added persistent right utility rail:
-  - Avatar opens the signed-in user's profile; signed-out state opens account auth.
-  - VS opens up to six recent matches from the existing `profileMatchesForPlayer` result; selecting a match opens the existing Match Room.
-  - Settings navigates to the settings route.
-- Removed Profile from the left global rail and hid the duplicate topbar account avatar.
-- Existing match/player data, statistics, match tabs and calculations were not intentionally changed.
+### Implemented in source
 
-### Files changed
+- Removed the vertical profile navigation from the player column. Restored the existing horizontal faceit-exact-game-tabs at the top of profile content.
+- Removed the profile cover button and profile cover file input.
+- Moved wallpaper selection/removal into the existing Settings page. It reuses the existing cover_path media field and handleProfileImage('cover', ...); no schema, SQL, migration or new storage bucket was introduced.
+- Added account-scoped wallpaper application via the current user's own profileRecord(state.myPlayerId) / state.myProfile, applied to the document background and CSS variable used by contained windows. The public profile renderer no longer paints another player's cover as their profile hero.
+- Right utility rail now contains only avatar and VS. Removed its Settings button; Settings remains on the left rail bottom.
+- Transparent / lime-hover styling added for global navigation, utility buttons, profile top tabs and profile avatar action.
+- VS recent-match cards use semantic result classes; score is green for WIN and red for LOSS.
+- Profile panel/backdrop opacity was corrected so the underlying page no longer bleeds through as strongly while the account wallpaper can remain visible behind the central workspace.
+- No match/player statistics or calculations were intentionally changed.
 
-- `app_v57.js`
-- `style_v57.css`
-- `index.html` (cache keys)
-- `tests/faceit-v2-shell.test.cjs`
+### Files changed in this correction
 
-### Verification
+- app_v57.js
+- style_v57.css
+- index.html (cache keys)
+- tests/account-profile.test.cjs
+- tests/faceit-v2-shell.test.cjs
 
-- Quality Gate run [43633959427](https://github.com/nonspam/cs2-5x5/actions/runs/43633959427), tested commit `35c5381e6beee2ddae42640fe0509bf657967c4a`: 241 passed / 0 failed / 0 skipped.
-- Intermediate CI attempts failed due to a JS string-escaping syntax issue and stale/new rail test expectations; these were corrected before the final passing run.
+### Verification and limitations
+
+- Quality Gate run [43635690684](https://github.com/nonspam/cs2-5x5/actions/runs/43635690684), tested implementation commit ff3a4e4b038c31b6c89be15e71ddc559f9e4aede: **244 passed / 0 failed / 0 skipped**.
+- Several intermediate CI runs failed because tests still asserted the old profile cover input and vertical nav, and one temporary test regex over-escaped quotes. The contracts were updated; the final run above passed.
 - Browser visual/interaction QA: NOT performed.
-- Screenshot comparison: NOT performed.
-- DEV deployment: NOT verified.
-- Production deployment: NOT performed.
-- Notifications, friends/social actions and additional right-rail items: NOT implemented.
+- DEV deployment / deployed SHA: NOT verified.
+- Production: NOT touched.
+- DB/SQL/migrations/RLS/grants: NOT touched.
+
+### Wallpaper scope caveat
+
+The wallpaper is applied only in the current user's own frontend using their linked profile row. The implementation reuses the existing cover_path and existing media storage behavior; it does not establish new private-storage guarantees. Actual file access/privacy remains governed by the existing storage bucket policy. No DB/storage policy changes were authorized.
 
 ## Next step
 
-The code package is committed and CI-green. Before calling it visually accepted:
-1. Obtain explicit owner authorization for browser QA (project rule: do not perform browser QA without separate permission).
-2. Verify at desktop and mobile sizes: left/right rail adjacency, Match Room edges, lightness of the central overlay, cover image crop/readability, avatar-to-profile action, VS panel content and dismissal, selecting a recent match, settings navigation.
-3. Ask the owner for a screenshot from DEV if browser QA cannot be performed directly.
-4. Fix only evidenced visual/interaction issues, then update this checkpoint and project logs.
-5. Do not deploy without separate explicit permission.
+1. Wait for the owner to view the updated DEV build and send a fresh screenshot; do not deploy or perform browser QA without explicit authorization.
+2. Verify profile layout against the supplied second screenshot: left avatar card, top tabs, no vertical nav below the avatar, no underlying page bleed.
+3. Verify avatar appears in the right rail, VS opens recent matches, win/loss scores use green/red, and Settings remains at the left bottom.
+4. Verify wallpaper follows the signed-in account across routes, Match Room and right rail; check that a different player's profile does not render their own wallpaper as the viewer's background.
+5. Tune only issues evidenced by browser screenshots.
+6. Do not touch production or DB security/storage policy without separate explicit permission.
 
-## Confidence and limits
+## Confidence
 
-The implementation is present in `faceit-dev` and the final recorded Quality Gate is green. This does not prove that the live DEV site has the new build or that the design matches the reference in a browser. Treat visual acceptance as pending.
+Source changes and automated CI are confirmed. Visual acceptance and live deployment remain unverified. Treat this task as IN PROGRESS.
