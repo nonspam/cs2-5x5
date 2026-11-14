@@ -361,3 +361,13 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Removed filled lime styling from secondary Maps pills and Teams/Records toolbar primary controls; the selected map's existing restrained outline remains.
 - Bumped stylesheet cache key to `lime-main-headers-only-20261113-v4`; added regression contract.
 - Only `faceit-dev`; no DB/data writes, SQL, migrations, schema/RLS/grants, `main`, production, browser QA, or deployment.
+
+
+## 2026-11-14 — Match Room Statistics and TOP owner refinements
+- Updated `app_v57.js`: profile-avatar fallback now accepts display names, so guest/no-linked-avatar players receive the correct first-letter avatar; Statistics leader cards use this fallback; TOP rows apply explicit >1 / =1 / <1 result classes to both K/D/A and K/D.
+- Updated `style_v57.css`: text-only top tabs with orange active underline; tighter Statistics highlight spacing; larger MVP avatar; no enclosing team-table card; first/second roster heading accents blue/yellow; compact TOP list and wrapping names.
+- Updated `tests/faceit-v2-shell.test.cjs` with targeted contracts.
+- Updated `index.html` cache keys for app and stylesheet.
+- UI/test commit: `fc402e571e117eb4f74d462bddfb274b145f653d`; cache key commit: `0a82131ad0788618cad16a9a15c96b13a93b1a4b`.
+- CI: run `43621076848` and `43621142715`, both 227 passed / 0 failed / 0 skipped.
+- Browser QA and deployment not performed; owner visual acceptance pending. No database or production changes.

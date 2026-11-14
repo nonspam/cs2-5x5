@@ -69,3 +69,11 @@ Applied on `faceit-dev`:
 - The Profile route already has a separate «История матчей» tab with all matches and the existing per-match details; this behavior is covered by a regression test.
 
 This pass is source-level and covered by [quality gate run 43128656306](https://github.com/nonspam/cs2-5x5/actions/runs/43128656306) (141 passed / 0 failed). It has not been visually browser-tested or deployed to Cloudflare. Continue with the supplied FACEIT references section by section and capture browser comparisons before accepting visual fidelity.
+
+
+## Owner refinement — Match Room text navigation and restrained geometry (2026-11-14)
+- Match Room top-level tabs are text-only. No oval/pill background, border, shadow or decorative halo; active state is an orange underline.
+- Do not add oval/pill decoration elsewhere unless the owner explicitly requests it.
+- Statistics team tables should not be enclosed in an additional tinted team card. Use restrained side identity (first roster blue, second roster yellow) in the team heading.
+- Prefer compact information density: leader cards and TOP rows should use space for actual identity/metrics rather than empty width. Long player names must remain readable, not be silently truncated.
+- TOP result colors: K/D > 1.00 green, K/D = 1.00 neutral white, K/D < 1.00 red; the K/D/A score string follows the same row result state.

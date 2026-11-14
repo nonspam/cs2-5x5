@@ -66,3 +66,11 @@ A failed or partial run must remain in history. A later successful run can super
 ## Current verification boundary
 
 The latest confirmed CI evidence recorded here is run `43616036526` on commit `1390c1ebbad62b857dcac4f20d2b038a88e3dbfe`. Check newer runs before relying on it. No browser QA or deployment is confirmed by these CI runs.
+
+
+## 2026-11-14 — Match Room Statistics and TOP refinement
+
+- UI/test commit: `fc402e571e117eb4f74d462bddfb274b145f653d`; cache-key commit: `0a82131ad0788618cad16a9a15c96b13a93b1a4b`.
+- Quality Gate run [43621076848](https://github.com/nonspam/cs2-5x5/actions/runs/43621076848), tested UI/test commit: **227 passed / 0 failed / 0 skipped**; actual `validate` job log inspected.
+- Quality Gate run [43621142715](https://github.com/nonspam/cs2-5x5/actions/runs/43621142715), tested cache-key commit: **227 passed / 0 failed / 0 skipped**; actual `validate` job log inspected.
+- Scope: syntax checks and Node regression/static contracts. No browser QA, visual comparison, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.

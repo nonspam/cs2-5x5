@@ -6,6 +6,29 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 
 ---
 
+## 2026-11-14 — Match Room Statistics and TOP visual refinement
+
+**Goal:** Apply the owner's next visual corrections to the Match Room Statistics and TOP views without changing Overview behavior or match data.
+
+**Implemented:**
+- Match Room tabs are forced to plain text controls with no pill/oval background, border or shadow; the active tab keeps its orange underline.
+- Player initials now use the supplied display name when no linked profile/avatar record exists. Statistics leaders and TOP rows therefore have a stable circular initial fallback instead of a dash/empty identity.
+- MVP avatar presentation is enlarged; the Statistics award cards use a tighter identity/value grid to reduce unused space.
+- Removed the enclosing card/background/border around each Statistics team table. Team headings distinguish the first roster in blue and the second in yellow; winning score remains green.
+- TOP rows are narrower, names can wrap instead of being cut off, and both K/D/A score and K/D use the same result color: above 1.00 green, exactly 1.00 neutral white, below 1.00 red.
+- Added focused regression assertions and refreshed app/CSS cache keys.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+
+**Commits:**
+- UI and regression tests: `fc402e571e117eb4f74d462bddfb274b145f653d`.
+- Cache-key refresh: `0a82131ad0788618cad16a9a15c96b13a93b1a4b`.
+
+**Verification:** Quality Gate run [43621076848](https://github.com/nonspam/cs2-5x5/actions/runs/43621076848) on `fc402e571e117eb4f74d462bddfb274b145f653d`: **227 passed / 0 failed / 0 skipped** from the actual `validate` job log. Cache-key commit Quality Gate run [43621142715](https://github.com/nonspam/cs2-5x5/actions/runs/43621142715): **227 passed / 0 failed / 0 skipped** from its actual job log.
+
+**Not performed:** browser QA, screenshot comparison in a live browser, deployment, database/SQL changes, or changes to `main`. CI confirms syntax and Node regression/static contracts only; visual acceptance remains pending.
+
+
 ## 2026-11-14 — Project Memory recovery hardening
 
 **Goal:** Make the single-link handoff more reliable and prevent a new chat from guessing when repository access or required documents are unavailable.
