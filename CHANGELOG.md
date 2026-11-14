@@ -4228,3 +4228,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T19:24:24+03:00 — docs: add unified project memory entrypoint
+
+- Commit: ad595c8d97b10d0d9665bcd7b02c86dbad1e1239
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/PROJECT_MEMORY/README.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
