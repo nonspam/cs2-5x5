@@ -6355,3 +6355,32 @@ body.match-room-open .match-room-page{
 #matchRoomPage .match-room-center-column .match-room-veto{margin-top:14px!important}
 @media(max-width:1120px){#matchRoomPage>.match-room-content{width:min(calc(100% - 32px),900px)!important}#matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;max-width:900px!important;gap:18px!important}#matchRoomPage .match-room-center-column{grid-column:1/-1!important;grid-row:1!important}#matchRoomPage .match-room-center-column .match-room-map-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}#matchRoomPage .match-room-team{max-width:none!important}}
 @media(max-width:700px){#matchRoomPage>.match-room-content{width:calc(100% - 20px)!important;padding:10px 0 28px!important}#matchRoomPage .match-room-hero{min-height:0!important;padding:12px!important}#matchRoomPage .match-room-result{grid-template-columns:minmax(0,1fr)!important;gap:10px!important}#matchRoomPage .match-room-score{grid-row:2!important;transform:none!important}#matchRoomPage .match-room-columns{grid-template-columns:minmax(0,1fr)!important;max-width:440px!important;gap:16px!important}#matchRoomPage .match-room-center-column{grid-column:auto!important;grid-row:auto!important}#matchRoomPage .match-room-center-column .match-room-map-list{grid-template-columns:1fr!important}}
+
+
+/* 2026-11-14 — Match Room: subtle horizontal breathing room and lower rosters */
+@media(min-width:1121px){
+  #matchRoomPage .match-room-columns>.match-room-team:first-child{
+    transform:translate(-8px,8px)!important;
+  }
+  #matchRoomPage .match-room-columns>.match-room-team:last-child{
+    transform:translate(8px,8px)!important;
+  }
+  #matchRoomPage .match-room-columns>.match-room-center-column{
+    width:calc(100% + 16px)!important;
+    max-width:none!important;
+    transform:translateX(8px)!important;
+  }
+}
+@media(max-width:1120px){
+  #matchRoomPage .match-room-columns>.match-room-team{
+    transform:translateY(8px)!important;
+  }
+  #matchRoomPage .match-room-columns>.match-room-center-column{
+    width:100%!important;transform:none!important;
+  }
+}
+@media(max-width:700px){
+  #matchRoomPage .match-room-columns>.match-room-team{
+    transform:none!important;
+  }
+}

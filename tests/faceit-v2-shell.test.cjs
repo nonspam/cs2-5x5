@@ -466,3 +466,10 @@ test('Match Room uses balanced medium-width rosters, taller cards and larger map
 test('Match Room VS has no oval container or background',()=>{
  assert.match(css,/#matchRoomPage \.match-room-score\{[\s\S]*border-radius:0!important[\s\S]*background:transparent!important[\s\S]*transform:translateY\(-6px\)!important/);
 });
+
+test('Match Room desktop gently spreads the side rosters, lowers them and shifts/widens map column',()=>{
+ assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*\.match-room-columns>\.match-room-team:first-child\{\s*transform:translate\(-8px,8px\)!important/);
+ assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*\.match-room-columns>\.match-room-team:last-child\{\s*transform:translate\(8px,8px\)!important/);
+ assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*\.match-room-center-column\{\s*width:calc\(100% \+ 16px\)!important;[\s\S]*transform:translateX\(8px\)!important/);
+ assert.match(css,/@media\(max-width:1120px\)\{[\s\S]*\.match-room-columns>\.match-room-team\{\s*transform:translateY\(8px\)!important/);
+});
