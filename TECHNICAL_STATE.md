@@ -1,3 +1,10 @@
+## 2026-11-14 — Player cards compactness and visible level rings
+
+- Corrected the ring layering: the progress arc is rendered on a masked `:before` pseudo-element; the numeric level remains visible above the arc and is not clipped by the mask.
+- Reduced desktop player cards to 84px total height (50px identity + 33px metrics), avatar to 38px, and roster gap to 10px. Mobile cards use 82px.
+- Replaced the malformed regex in the ring UI test with direct assertions for pseudo-element masking and monotonic arc progression.
+- No browser visual QA or DEV deployment performed.
+
 ## 2026-11-14 — Level ring rendering correction
 
 - Replaced the unreliable radial-overlay technique with a true conic-gradient ring clipped by a radial mask (`mask` and `-webkit-mask`). This leaves a transparent/black center and a visible colored arc around the circumference.
