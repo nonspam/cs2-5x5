@@ -828,3 +828,18 @@ test('legacy blue fills are explicitly overridden on Matches, Statistics and Mat
  assert.match(fix,/#view \.stats-page \.players-table tbody tr:nth-child\(even\)\{background:#121617!important\}/);
  assert.match(fix,/#matchRoomPage\.match-room-page \.match-room-team \.match-player-card,[\s\S]*background:#121617!important/);
 });
+
+
+test('profile game tabs remain sticky and profile level ring uses FACEIT tier color',()=>{
+ assert.match(css,/faceit-exact-game-tabs\{[\s\S]*position:sticky!important;top:0!important/);
+ assert.match(app,/profileLevelColor=profileLevel>=10\?'#ff3b30':profileLevel>=7\?'#ff8a00':profileLevel>=4\?'#ffd43b'/);
+ assert.match(app,/faceit-exact-level" style="--faceit-level-color:/);
+});
+test('Match Room has one minimal return action that restores profile match history',()=>{
+ assert.match(app,/match-room-back-profile[\s\S]*>‹　Вернуться</);
+ assert.doesNotMatch(app,/match-room-back-actions[^;]*К матчам/);
+ assert.match(app,/openPublicPlayerProfile\(id,\{section:'history'\}\)/);
+});
+test('Match Room statistics roster rows receive explicit graphite fills',()=>{
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr,[\s\S]*background:#121617!important/);
+});
