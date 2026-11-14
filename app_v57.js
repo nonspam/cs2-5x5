@@ -260,7 +260,7 @@ function restoreAppRouteFromHistory(){
 window.addEventListener('popstate',restoreAppRouteFromHistory);
 window.addEventListener('hashchange',restoreAppRouteFromHistory);
 function faceitAppRailMarkup(){
- const items=[['home','⌂','Главное'],['analytics','♙','Статистика'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды'],['profile','◉','Профиль']];
+ const items=[['home','⌂','Главное'],['analytics','♙','Статистика'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды']];
  return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
   '<div class="faceit-exact-game">◉ <b>CS2 ANALYTICS</b></div>'+
   '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" '+(state.tab===id?'aria-current="page" ':'')+'data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
