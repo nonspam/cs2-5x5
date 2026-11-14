@@ -381,7 +381,7 @@ function profilePage(v){
      '<div class="faceit-exact-player-meta"><b>Игрок платформы</b><span>@'+esc(id)+'</span><span>Матчей: '+all.length+'</span></div>'+
      '<div class="faceit-exact-country"><span>◉</span> Игрок CS2</div>'+
      '<div class="faceit-exact-game-history"><b>История игр</b><div><span class="faceit-exact-cs-icon">CS</span><span><b>CS2</b><small>'+all.length+' матчей</small></span><i>ⓘ</i></div></div>'+
-    '<nav class="faceit-profile-vertical-nav" aria-label="Разделы профиля"><button type="button" class="'+(state.profileSection==='overview'?'active':'')+'" onclick="state.profileSection=\'overview\';render()">Обзор</button><button type="button" class="'+(state.profileSection==='history'?'active':'')+'" onclick="state.profileSection=\'history\';render()">История матчей</button><button type="button" class="'+(state.profileSection==='track'?'active':'')+'" data-profile-section="track">Track</button><button type="button" class="faceit-profile-exit" onclick="closePlayerProfileWindow()">← Закрыть профиль</button></nav>'+
+    '<nav class="faceit-profile-vertical-nav" aria-label="Разделы профиля"><button type="button" class="'+(state.profileSection==='overview'?'active':'')+'" onclick="setPlayerProfileSection(\'overview\')">Обзор</button><button type="button" class="'+(state.profileSection==='history'?'active':'')+'" onclick="setPlayerProfileSection(\'history\')">История матчей</button><button type="button" class="'+(state.profileSection==='track'?'active':'')+'" data-profile-section="track">Track</button><button type="button" class="faceit-profile-exit" onclick="closePlayerProfileWindow()">← Закрыть профиль</button></nav>'+
    '</div>'+
    '<div class="faceit-exact-badges"><span>★</span><span>✦</span><span>◆</span></div></aside>'+
    '<div class="faceit-exact-content">'+
@@ -1097,6 +1097,12 @@ function openPlayerDrilldown(id,kind,arg){
 }
 function closePlayerDrilldown(){$('#playerDrilldown')?.remove()}
 
+function setPlayerProfileSection(section){
+ if(!['overview','history'].includes(section))return;
+ state.profileSection=section;
+ const mount=document.getElementById('playerProfileMount');
+ if(mount){profilePage(mount);enhanceSelects(mount)}
+}
 function openPublicPlayerProfile(id){
  const p=player(id);if(!p)return;
  if(window.__activeMatchRoomId)closeMatchRoom({preserveUrl:true});
