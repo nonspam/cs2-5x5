@@ -12,6 +12,14 @@ This file stores verifiable evidence, not optimistic status claims.
 - Scope: repository syntax checks and automated Node regression/static contract tests.
 - Not covered by this result: visual browser rendering, real user click flows in a browser, responsive screenshot comparison, live DEV data behavior, Cloudflare deployment.
 
+## 2026-11-14 — CI after Project Memory documentation update
+
+- Workflow: [CS2-5x5 quality gate](https://github.com/nonspam/cs2-5x5/actions/runs/43615475472)
+- Commit tested: `cb7fade324acde39b2bcb6f764b3ffde9d9a2786` (documentation and Project Master link update; no application runtime changes in this commit).
+- Command: `npm run check`.
+- Result from job log: **226 passed / 0 failed**.
+- Scope and limitations: same syntax and Node regression suite; this does not prove browser QA or deployment.
+
 ## Evidence rules
 
 Every new entry must include:
