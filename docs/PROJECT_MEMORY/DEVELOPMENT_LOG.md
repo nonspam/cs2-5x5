@@ -422,3 +422,10 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - **Files:** style_v57.css, index.html (cache key), tests/faceit-v2-shell.test.cjs.
 - **Commits:** 41e31ee097a7eb6f0beb6f6496a241ebccc4214f, fbaa22fc8b5921e3d92c29cd01295f5c299bb4ec, 4e141bbeece3315328fe08f01a30324ceefa8017.
 - **Verification:** static regression assertions added; CI/browser screenshot QA pending. No deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — Profile return action and Matches/Statistics palette correction
+- Added a return-to-originating-profile action in Match Room, preserving the originating public profile ID before closing the Profile window. The existing return-to-Matches action remains distinct.
+- Corrected the prior incomplete palette pass: traced remaining blue surfaces to higher-specificity and later CSS rules, then added explicit graphite overrides to Matches route and Match Room surfaces plus Statistics table/panel. Existing Home, Records, Maps and semantic stat colors were not changed in this corrective pass.
+- Commits: `8f2e6964eaac56e628ac9e2549dfe9ced5dcca2f`, `fd5bec0334540d2e0797d2642f90f0293e99b0c3`, `cd5039ec4da5b26150ec6c2d944e269d02c2730e`, `d88c824a458749e7f8e78b238fa937566fb35ba1`.
+- Static regression tests added. CI/browser QA pending. No deployment, production, main or DB changes.
