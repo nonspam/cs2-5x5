@@ -429,3 +429,10 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - Corrected the prior incomplete palette pass: traced remaining blue surfaces to higher-specificity and later CSS rules, then added explicit graphite overrides to Matches route and Match Room surfaces plus Statistics table/panel. Existing Home, Records, Maps and semantic stat colors were not changed in this corrective pass.
 - Commits: `8f2e6964eaac56e628ac9e2549dfe9ced5dcca2f`, `fd5bec0334540d2e0797d2642f90f0293e99b0c3`, `cd5039ec4da5b26150ec6c2d944e269d02c2730e`, `d88c824a458749e7f8e78b238fa937566fb35ba1`.
 - Static regression tests added. CI/browser QA pending. No deployment, production, main or DB changes.
+
+
+## 2026-11-15 — Profile navigation and Match Room table palette follow-up
+- Fixed profile scroll navigation styling, tier-specific level ring color, and the Match Room return path. Match Room now offers only a plain “Вернуться” link when opened from Profile and restores the profile on History; the separate “К матчам” button was removed.
+- Added narrowly scoped, high-specificity graphite fills to the actual Match Room statistics table selector (previous pass targeted the wrong view class), plus explicit route table overrides.
+- Commits: e5e8443d0fe4208a202c43639c8a3b18105c9fe5, 0f9a4ce148dcb228a480fad5b578f5dd65f9e2ed, 34c824b8efbbe8fbf48b716c4cbb6f5f8f03200b, e777ea141fb456ea9a1fabc023befe6d471afd04.
+- Source re-fetch confirmed anchors; CI and browser QA pending. No deployment/DB/production changes.
