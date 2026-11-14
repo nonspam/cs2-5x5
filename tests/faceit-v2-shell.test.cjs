@@ -453,7 +453,7 @@ test('Match Room score is unbadged and slightly raised within the hero',()=>{
 
 test('Match Room player career strip omits rating, uses rounded integer KDA and four compact metrics',()=>{
  assert.match(app,/Math\.round\(c\.avg\)\+' \/ '\+Math\.round\(c\.avgDeaths\)\+' \/ '\+Math\.round\(c\.avgAssists\)/);
- assert.match(app,/<small>KDA<\/small>/);
+ assert.match(app,/<small>KDA · K\/D<\/small>/);
  assert.doesNotMatch(app,/metric\(c\.rating==null\?'—':fmt\(c\.rating,0\),'РЕЙТИНГ'\)/);
  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(4,minmax\(0,1fr\)\)!important/);
 });
