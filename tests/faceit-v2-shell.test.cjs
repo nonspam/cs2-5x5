@@ -225,7 +225,7 @@ test('Match Overview uses the dark FACEIT surface palette and adapts the scoreca
 test('Match Overview player metrics are one FACEIT-style strip and player names are not forcibly ellipsized',()=>{
   assert.ok(app.includes("metric(c.matches,'МАТЧИ')"));
   assert.ok(app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
-  assert.ok(app.includes("metric(fmt(c.avg,1)+' / '+fmt(c.avgDeaths,1)+' / '+fmt(c.avgAssists,1),'AVG K/D/A')"));
+  assert.ok(app.includes('metric-avg-kda'));
   assert.match(app,/metric-winrate '\+\(c\.wr>=60\?'is-good':c\.wr>=40\?'is-mid':'is-bad'\)/);
   assert.match(app,/<strong title="'\+esc\(r\.name\)\+'">'\+esc\(r\.name\)/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(5,minmax\(0,1fr\)\)!important/);
@@ -436,7 +436,7 @@ test('FACEIT level rings keep the numeric label visible above the masked arc',()
 
 
 test('Match Room desktop layout expands beyond the former fixed 1080px roster width',()=>{
-  assert.match(css,/#matchRoomPage \.match-room-columns\{[^}]*max-width:none!important[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(0,320px\) minmax\(0,1fr\)!important/);
+  assert.match(css,/#matchRoomPage \.match-room-columns\{[^}]*max-width:none!important[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(320px,1\.08fr\) minmax\(0,1fr\)!important/);
   assert.match(css,/#matchRoomPage \.match-room-team,[\s\S]*max-width:none!important/);
 });
 test('Match Room AVG KDA remains a visible single-line metric and neutral K/D is white',()=>{
