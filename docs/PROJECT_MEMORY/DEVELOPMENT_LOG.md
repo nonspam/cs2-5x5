@@ -413,3 +413,12 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - Files: style_v57.css, index.html, tests/faceit-v2-shell.test.cjs.
 - Commits: 73bbb25a83fd611cc1ca1ebf73e481c2367f5734, 31cfe855268dd1b97bc09e7ff4615650560e48cc, c2980ad2beb2e0b46354ce00fc938104ce3ee644.
 - Browser verification pending; no deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — Apply Teams graphite palette across core pages
+- **Owner direction:** Use the exact dark palette from Teams across Matches, Statistics, Home and Records. Maps already matches and is intentionally left alone.
+- **Palette:** card #121617, deep panel #0d1012, border #2a3035, based on supplied Teams screenshot.
+- **Implementation:** Added scoped CSS variables/overrides for base Matches table, Match Room player and statistics cards, Statistics table rows, Home panels/metrics/recent games (preserve hero art), and Records panels/Top-10 rows. Kept positive/negative stat semantics and lime hover states.
+- **Files:** style_v57.css, index.html (cache key), tests/faceit-v2-shell.test.cjs.
+- **Commits:** 41e31ee097a7eb6f0beb6f6496a241ebccc4214f, fbaa22fc8b5921e3d92c29cd01295f5c299bb4ec, 4e141bbeece3315328fe08f01a30324ceefa8017.
+- **Verification:** static regression assertions added; CI/browser screenshot QA pending. No deployment or DB/storage-policy changes.
