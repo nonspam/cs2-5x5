@@ -8,10 +8,10 @@
 - Snapshot refreshed: 2026-11-14
 - Repository: `nonspam/cs2-5x5`
 - Required branch: `faceit-dev`
-- Live branch HEAD checked immediately before this snapshot update: `8c891171fc319a3fb800d6cb229756166f2d161e`
+- Live branch HEAD checked immediately before this snapshot update: `e25065ac65712bd6f89bb7195bd2bf8dd9c92d5d`
 - The last inspected application-code commit remains `bb8c161d9d2d4e66c48a6bf06f1d938286941e62` — linked profile avatars in Match Room. Commits after it in the inspected sequence are Project Memory/documentation updates, not new runtime feature work.
-- Latest verified quality gate for the Project Memory hardening package: [run 43615940711](https://github.com/nonspam/cs2-5x5/actions/runs/43615940711), tested commit `1644527855ec257b10c7d2999531f6a974e80b66`, **226 passed / 0 failed / 0 skipped** (verified from job log).
-- That CI run covers the recovery-hardening documentation package up to its tested commit. Later evidence/log synchronization commits are documentation-only; check their own latest CI runs before relying on them.
+- Latest verified quality gate for the finalized Project Memory snapshot: [run 43616036526](https://github.com/nonspam/cs2-5x5/actions/runs/43616036526), tested commit `1390c1ebbad62b857dcac4f20d2b038a88e3dbfe`, **226 passed / 0 failed / 0 skipped** (verified from job log).
+- The run covers the finalized memory snapshot before the subsequent quality-history-only update. Check newer runs before relying on it.
 - This is a repository-source and CI review. It is not browser QA or deployment confirmation.
 - Before acting, fetch the current branch HEAD again. This snapshot SHA is not a permanent pointer.
 
@@ -76,8 +76,8 @@ This is a compact status summary, not a substitute for route inventory and direc
 
 ## Latest verified quality evidence
 
-- GitHub Actions run [43615940711](https://github.com/nonspam/cs2-5x5/actions/runs/43615940711)
-- Tested commit: `1644527855ec257b10c7d2999531f6a974e80b66`
+- GitHub Actions run [43616036526](https://github.com/nonspam/cs2-5x5/actions/runs/43616036526)
+- Tested commit: `1390c1ebbad62b857dcac4f20d2b038a88e3dbfe`
 - Result: **226 passed / 0 failed / 0 skipped**, confirmed in the `validate` job log.
 - The job ran repository syntax and Node regression/static contract checks.
 - This does not mean 226 browser tests or a visual pixel comparison. It does not prove browser QA, live DEV data correctness or deployment.
