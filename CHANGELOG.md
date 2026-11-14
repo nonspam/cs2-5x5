@@ -4312,3 +4312,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/README.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T19:29:42+03:00 — docs: make new chat recovery protocol explicit
+
+- Commit: 0c285116b4fe40ab495412121d4ad9f374128962
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/NEW_CHAT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
