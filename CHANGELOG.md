@@ -3642,3 +3642,19 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-14T03:06:09+03:00 — ui: compact Match Room rosters and remove map tile overlay
+
+- Commit: 4142bb14bcb171960651107c3ae3a0c190e1baa1
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	TECHNICAL_STATE.md
+- M	app_v57.js
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
