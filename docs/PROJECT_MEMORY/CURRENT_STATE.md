@@ -121,3 +121,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Source cause: Profile shell .faceit-exact-shell is 94% opaque; Match Room page and content later set opaque #050505 backgrounds. Added direct wallpaper image backgrounds to both independent surfaces and made their inner shells transparent/translucent. CSS cache key bumped.
 - Commits: 73bbb25a83fd611cc1ca1ebf73e481c2367f5734, 31cfe855268dd1b97bc09e7ff4615650560e48cc, c2980ad2beb2e0b46354ce00fc938104ce3ee644.
 - Browser verification pending; no deployment or DB/storage-policy changes.
+
+
+## 2026-11-15 — Unify Matches, Statistics, Home and Records palette (IN PROGRESS)
+- Owner selected Teams' dark palette as the common reference: tile #121617, panel #0d1012, border #2a3035. Maps should remain unchanged.
+- Scoped CSS now applies the palette to Matches and Match Room cards/tables, Statistics player table, Home panels/metrics/recent games (hero art preserved), and Records panels/rows. Semantic positive/negative colors and lime states remain.
+- Commits: 41e31ee097a7eb6f0beb6f6496a241ebccc4214f, fbaa22fc8b5921e3d92c29cd01295f5c299bb4ec, 4e141bbeece3315328fe08f01a30324ceefa8017.
+- CI and browser visual QA pending; no deployment or DB/storage-policy changes.
