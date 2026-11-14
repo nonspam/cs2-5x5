@@ -9,7 +9,7 @@
 - Repository: `nonspam/cs2-5x5`
 - Required branch: `faceit-dev`
 - Live branch HEAD checked immediately before this snapshot update: `e25065ac65712bd6f89bb7195bd2bf8dd9c92d5d`
-- Latest inspected application-code commit: `83952fc1abd889420950c9fbae9efa3ca1ab6c1d` — compact centered Statistics table and FACEIT-style level badges.
+- Latest inspected application-code commit: `5a68847bec8e083960baa53019a6b2eb0566daca` — amber losing-team identity and compact SVG FACEIT rank badges.
 - Latest verified quality gate for the finalized Project Memory snapshot: [run 43616036526](https://github.com/nonspam/cs2-5x5/actions/runs/43616036526), tested commit `1390c1ebbad62b857dcac4f20d2b038a88e3dbfe`, **226 passed / 0 failed / 0 skipped** (verified from job log).
 - The run covers the finalized memory snapshot before the subsequent quality-history-only update. Check newer runs before relying on it.
 - This is a repository-source and CI review. It is not browser QA or deployment confirmation.

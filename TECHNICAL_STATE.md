@@ -387,3 +387,11 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - `tests/faceit-v2-shell.test.cjs`: regression coverage for compact centered table and rank badges. `index.html` cache key refreshed to `match-room-statistics-faceit-levels-20261114-v8`.
 - Final Quality Gate run `43623053804`: 229/229 passed at `83952fc1abd889420950c9fbae9efa3ca1ab6c1d`.
 - Intermediate syntax/test-contract failures were fixed before final passing run. No browser QA, visual acceptance, deployment, DB writes, SQL, migrations, schema/RLS/grants, or `main` changes.
+
+
+## 2026-11-14 — Match Room Statistics amber team and SVG FACEIT badge
+- `app_v57.js`: replaced span/CSS rank marker with compact inline SVG ring, smaller numeral, neutral track and level-scaled arc.
+- `style_v57.css`: changed losing Team B identity tint/header/score/accent from green to amber; rank cell remains neutral.
+- `tests/faceit-v2-shell.test.cjs`: updated badge and color contracts. `index.html` cache key refreshed to `match-room-rank-svg-amber-20261114-v9`.
+- Final Quality Gate run `43623604285`: 229/229 passed at `5a68847bec8e083960baa53019a6b2eb0566daca`.
+- No browser QA, screenshot comparison, deployment, DB/SQL writes, migrations, schema/RLS/grants, or `main` changes.

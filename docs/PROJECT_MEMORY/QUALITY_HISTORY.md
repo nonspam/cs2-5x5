@@ -88,3 +88,8 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Final Quality Gate run [43623053804](https://github.com/nonspam/cs2-5x5/actions/runs/43623053804), tested commit `83952fc1abd889420950c9fbae9efa3ca1ab6c1d`: **229 passed / 0 failed / 0 skipped**, confirmed from actual job log.
 - Two intermediate runs failed during implementation (JS quote-escaping syntax error; then a test assertion that matched legacy profile markup outside the Match Room). Both were corrected before final passing run.
 - CI scope: syntax and Node regression/static contracts only. No browser QA, visual comparison, or deployment.
+
+
+## 2026-11-14 — Statistics amber losing-team identity and FACEIT SVG badge
+- Quality Gate run [43623604285](https://github.com/nonspam/cs2-5x5/actions/runs/43623604285), tested commit `5a68847bec8e083960baa53019a6b2eb0566daca`: **229 passed / 0 failed / 0 skipped**, verified from actual job log.
+- Scope: syntax and Node regression/static contracts only. No browser QA or deployment.

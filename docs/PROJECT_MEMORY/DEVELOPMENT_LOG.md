@@ -141,3 +141,21 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Repository changes:** see the memory-system commit and its changed paths in the root CHANGELOG.md.
 
 **Verification:** documentation-only change. No application runtime, database, deployment or browser QA was performed as part of creating these documents.
+
+
+## 2026-11-14 — Statistics losing-team amber and FACEIT badge refinement
+
+**Owner feedback:** The green tint on the lower/losing team made it look like the winner. Change that team's identity treatment to amber/yellow. The rank badge should look closer to the supplied FACEIT reference; the previous numeral was too large and the CSS crescent looked artificial.
+
+**Implemented:**
+- Team B (the lower/losing side in the supplied match) now uses amber/yellow for its team label, score, player-cell tint and left row accent. The previous green identity tint is removed. The badge/rank column remains neutral and independent from team colors.
+- Replaced the CSS-conic rank badge with a compact inline SVG: dark circular center, neutral track, colored level arc, smaller centered numeral. Arc length scales with the actual FACEIT level; colors retain the supplied mapping (1 white, 2–3 green, 4–7 yellow, 8–9 orange, 10 red). Missing levels remain unknown, not inferred.
+- Refreshed the app cache key and updated regression assertions.
+
+**Files changed:** `app_v57.js`, `style_v57.css`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+
+**Implementation commit:** `bba653f52a7fcc047d95b018309aef9732e18a74`; test contract correction: `5a68847bec8e083960baa53019a6b2eb0566daca`.
+
+**Verification:** Quality Gate run [43623604285](https://github.com/nonspam/cs2-5x5/actions/runs/43623604285), tested commit `5a68847bec8e083960baa53019a6b2eb0566daca`: **229 passed / 0 failed / 0 skipped**, verified from the job log. An earlier run failed only because the static assertion still expected the old span-based badge markup; the assertion was updated for the SVG markup before the passing run.
+
+**Not performed:** browser QA, screenshot comparison, deployment, database/SQL changes, or `main` changes. CI is not visual acceptance.
