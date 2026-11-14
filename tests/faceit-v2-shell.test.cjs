@@ -793,3 +793,20 @@ test('account wallpaper is explicitly painted inside Match Room despite its opaq
  assert.match(wallpaperRules,/body\.has-account-wallpaper #matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)!important/);
  assert.match(wallpaperRules,/body\.has-account-wallpaper #matchRoomPage>\.match-room-content\{[\s\S]*background:transparent!important/);
 });
+
+
+test('Matches, Statistics, Home and Records reuse the approved Teams graphite palette',()=>{
+ const palette=css.slice(css.lastIndexOf('/* 2026-11-15 — unify card surfaces with the approved Teams palette */'));
+ assert.match(palette,/--team-surface:#0d1012/);
+ assert.match(palette,/--team-card:#121617/);
+ assert.match(palette,/--team-border:#2a3035/);
+ assert.match(palette,/\.base-page \.data-table tbody tr,[\s\S]*var\(--team-card\)!important/);
+ assert.match(palette,/\.stats-page \.players-table tbody tr\{[\s\S]*var\(--team-card\)!important/);
+ assert.match(palette,/\.home-rebuild \.home-panel,[\s\S]*var\(--team-surface\)!important/);
+ assert.match(palette,/\.records-page \.record-row\{[\s\S]*var\(--team-card\)!important/);
+ assert.match(palette,/\.match-room-page \.match-player-card-ref,[\s\S]*var\(--team-card\)!important/);
+});
+test('Teams palette pass leaves the approved Maps page untouched',()=>{
+ const palette=css.slice(css.lastIndexOf('/* 2026-11-15 — unify card surfaces with the approved Teams palette */'));
+ assert.doesNotMatch(palette,/\.maps-page/);
+});
