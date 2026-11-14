@@ -481,3 +481,13 @@ test('Match Room player cards are compact, with a narrower K/D cell and more spa
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{\s*grid-template-columns:40px minmax\(0,1\.2fr\) minmax\(0,\.45fr\) minmax\(0,\.8fr\) minmax\(0,\.85fr\)!important/);
   assert.match(css,/#matchRoomPage \.match-room-columns>\.match-room-team\{\s*transform:translateY\(16px\)!important/);
 });
+
+
+test('Match Room combines KDA and K/D in one readable cell, restores form width and reduces empty center space',()=>{
+  assert.match(app,/class="match-kda-values"/);
+  assert.match(app,/class="metric-kd '\+\(Math\.abs\(c\.kd-1\)/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{\s*grid-template-columns:48px 48px minmax\(0,1fr\) 62px!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-kda-values\{[\s\S]*display:flex!important/);
+  assert.match(css,/@media\(min-width:1121px\)\{[\s\S]*max-width:1220px!important[\s\S]*grid-template-columns:minmax\(0,380px\) minmax\(0,400px\) minmax\(0,380px\)!important[\s\S]*gap:30px!important[\s\S]*translateY\(24px\)!important/);
+  assert.match(css,/#matchRoomPage \.match-room-team \.match-team-roster\{gap:17px!important\}/);
+});
