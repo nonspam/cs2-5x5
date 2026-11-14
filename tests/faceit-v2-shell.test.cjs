@@ -226,7 +226,7 @@ test('Match Overview player metrics are one FACEIT-style strip and player names 
   assert.ok(app.includes("metric(c.matches,'МАТЧИ')"));
   assert.ok(app.includes("metric(c.rating==null?'—':fmt(c.rating,0),'РЕЙТИНГ')"));
   assert.ok(app.includes("metric(fmt(c.avg,1)+' / '+fmt(c.avgDeaths,1)+' / '+fmt(c.avgAssists,1),'AVG K/D/A')"));
-  assert.ok(app.includes("metric(c.matches?fmt(c.wr,0)+'%':'—','WIN RATE')"));
+  assert.match(app,/metric-winrate '\+\(c\.wr>=70\?'is-good':c\.wr>=45\?'is-mid':'is-bad'\)/);
   assert.match(app,/<strong title="'\+esc\(r\.name\)\+'">'\+esc\(r\.name\)/);
   assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref \.match-career-grid\{[\s\S]*grid-template-columns:56px repeat\(5,minmax\(0,1fr\)\)!important/);
   assert.match(css,/background:transparent!important/);
