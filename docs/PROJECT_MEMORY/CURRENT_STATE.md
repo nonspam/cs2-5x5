@@ -107,3 +107,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Wallpaper overlay reduced and route/profile shells made transparent; real upload remains unverified.
 - Latest regression test commit: `4522c4fc3b9685cf4f0775e5c37d0649e0ba0c7f`.
 - No CI/browser QA/deployment evidence yet.
+
+
+## 2026-11-15 — Wallpaper upload succeeds but image is not visible (IN PROGRESS)
+- Owner confirms upload success toast but no visible wallpaper.
+- CSS now paints `--account-wallpaper` directly on `.app` instead of relying on the behind-app body pseudo-element; shells remain transparent and cache-bust updated.
+- CSS/index/test commits: `9e5e7b66cc74f772c33ae2ccb5881e953d70da29`, `e4d7dd2ee2b8e09e5fece037a2971afa20497488`, `f6384f26873818a46ff7470685db7ed8136824b0`.
+- Browser verification not performed; no deployment or DB/storage-policy changes.
