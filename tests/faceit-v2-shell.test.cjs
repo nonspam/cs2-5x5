@@ -738,8 +738,8 @@ test("Match Room no longer overrides the global body wallpaper pseudo-element",(
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)/);
 });
 test("right utility avatar restores the taller portrait tile",()=>{
- assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:46px!important;height:62px!important[\s\S]*border-radius:7px!important/);
- assert.match(css,/\.faceit-utility-avatar-image\{[\s\S]*border-radius:7px!important/);
+ assert.match(css.slice(css.lastIndexOf('.faceit-utility-profile{')),/width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important/);
+ assert.match(css.slice(css.lastIndexOf('.faceit-utility-avatar-image,')),/border-radius:50%!important/);
 });
 
 
