@@ -7272,3 +7272,67 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 }
 .match-room-back-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .match-room-back-profile{border-color:#c8ff3d!important;color:#c8ff3d!important}
+
+
+/* 2026-11-15 — profile sticky tabs, level-tier colors and minimal Match Room return */
+#playerProfileWindow .faceit-exact-content{
+ position:relative!important;
+ overscroll-behavior:contain!important;
+}
+#playerProfileWindow .faceit-exact-game-tabs{
+ position:sticky!important;top:0!important;align-self:start!important;
+ z-index:30!important;min-height:54px!important;height:54px!important;
+ margin:0!important;padding:0 0!important;
+ background:rgba(8,8,8,.985)!important;
+ backdrop-filter:blur(10px)!important;
+ box-shadow:0 1px 0 rgba(255,255,255,.08)!important;
+}
+#playerProfileWindow .faceit-exact-level{
+ border-color:var(--faceit-level-color,#ffd43b)!important;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--faceit-level-color,#ffd43b) 22%,transparent)!important;
+}
+#playerProfileWindow .faceit-exact-level b{color:var(--faceit-level-color,#ffd43b)!important}
+#matchRoomPage .match-room-back,
+#matchRoomPage .match-room-back.match-room-back-profile{
+ display:inline-flex!important;align-items:center!important;
+ width:auto!important;min-width:0!important;height:auto!important;
+ margin:0 0 14px!important;padding:4px 0!important;
+ border:0!important;border-radius:0!important;outline:0!important;
+ background:transparent!important;box-shadow:none!important;
+ color:#d6d6d6!important;font-size:12px!important;font-weight:800!important;
+ text-decoration:none!important;cursor:pointer!important;
+}
+#matchRoomPage .match-room-back:hover{color:#c8ff3d!important}
+#matchRoomPage .match-room-back-actions{display:block!important;margin:0!important;padding:0!important}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .table-wrap,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody{
+ background:#0d1012!important;background-image:none!important;border-color:#2a3035!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr td{
+ background:#121617!important;background-image:none!important;border-color:#2a3035!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr:nth-child(even),
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr:nth-child(even) td{
+ background:#0d1012!important;
+}
+/* Matches and global Statistics route tables: defeat legacy blue row fills. */
+#view .base-page .panel.card,
+#view .base-page .data-table,
+#view .base-page .data-table tbody,
+#view .stats-page .panel.card,
+#view .stats-page .players-table,
+#view .stats-page .players-table tbody{
+ background:#0d1012!important;background-image:none!important;border-color:#2a3035!important;
+}
+#view .base-page .data-table tbody tr,
+#view .base-page .data-table tbody tr td,
+#view .stats-page .players-table tbody tr,
+#view .stats-page .players-table tbody tr td{
+ background:#121617!important;background-image:none!important;border-color:#2a3035!important;
+}
+#view .base-page .data-table tbody tr:nth-child(even),
+#view .base-page .data-table tbody tr:nth-child(even) td,
+#view .stats-page .players-table tbody tr:nth-child(even),
+#view .stats-page .players-table tbody tr:nth-child(even) td{background:#0d1012!important}
