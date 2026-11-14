@@ -660,7 +660,7 @@ test('global navigation keeps Profile in the right utility rail rather than dupl
  const rail=app.slice(app.indexOf('function faceitAppRailMarkup'),app.indexOf('function bindAppShell'));
  assert.doesNotMatch(rail,/\['profile'.*Профиль/);
  assert.match(app,/data-utility-action=\"profile\"/);
- assert.match(css,/\.faceit-route-shell,\.faceit-profile-shell\{width:calc\(100% - 48px\)!important/);
+ assert.match(css,/#view > \.faceit-route-shell,#view > \.faceit-profile-shell\{width:calc\(100% - 48px\)!important/);
 });
 test('profile shell cover image is not overwritten by a transparent background shorthand',()=>{
  assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{background-color:rgba\(8,8,8,\.28\)!important\}/);
