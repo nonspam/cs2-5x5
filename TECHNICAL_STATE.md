@@ -442,3 +442,12 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 ## 2026-11-14 — Team A rank divider follow-up
 - `style_v57.css`: Team A rank-column right separator changed from blue `#44467a` to neutral grey `#424242`; final explicit selector now applies the same neutral grey to Team A and Team B.
 - `tests/faceit-v2-shell.test.cjs`: added regression assertion for both teams.
+
+
+## 2026-11-14 — Profile layout restoration and account wallpaper
+- Profile window keeps the player/avatar column on the left and restores the horizontal profile tabs at the top of the content column. The experimental vertical nav under the avatar and profile cover edit control were removed.
+- Existing cover_path is now used as the current signed-in user's site wallpaper, set on the document and exposed through a CSS variable for contained Match Room/Profile windows. Settings owns wallpaper upload/removal.
+- Right utility rail is reduced to avatar/profile and VS; Settings remains in the left rail footer.
+- Navigation controls use transparent resting styles and lime hover/focus. VS result score is green on WIN and red on LOSS.
+- Quality Gate run 43635690684: 244/244 passed at implementation/test commit ff3a4e4b038c31b6c89be15e71ddc559f9e4aede.
+- No browser QA, screenshot comparison or deployment. No DB/schema/storage policy changes; existing media storage semantics remain.
