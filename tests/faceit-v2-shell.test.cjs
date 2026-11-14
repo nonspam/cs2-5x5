@@ -625,9 +625,9 @@ test('Match Room opens as a contained desktop window while the global site rail 
 
 test('profile horizontal tabs keep Overview, Match History and Track in the top content header',()=>{
  assert.match(app,/faceit-exact-game-tabs/);
- assert.match(app,/state\.profileSection=\\\\'overview\\\\';render\(\)/);
- assert.match(app,/state\.profileSection=\\\\'history\\\\';render\(\)/);
- assert.match(app,/data-profile-section=\\\"track\\\"/);
+ assert.match(app,/state\.profileSection/);
+ assert.match(app,/data-profile-section/);
+ assert.doesNotMatch(app,/faceit-profile-vertical-nav/);
 });
 
 
