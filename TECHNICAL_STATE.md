@@ -1,3 +1,10 @@
+## 2026-11-14 — Level ring rendering correction
+
+- Replaced the unreliable radial-overlay technique with a true conic-gradient ring clipped by a radial mask (`mask` and `-webkit-mask`). This leaves a transparent/black center and a visible colored arc around the circumference.
+- Progress is monotonic: 12°, 36°, 60°, 84°, 108°, 132°, 162°, 198°, 234°, 270° for levels 1–10. L10 completes the 270° FACEIT-style track.
+- Updated arc regression expectations and rewrote ELO boundary test to use the public `CS2EloV3.levelForRating` API.
+- Previous Quality Gate failed (213 pass, 1 fail); new run is required. No browser QA or DEV deployment.
+
 ## 2026-11-14 — FACEIT level progress arc correction
 
 - Corrected the level-ring progression: arc spans are 12°, 30°, 50°, 80°, 105°, 135°, 165°, 205°, 240°, and 270° for levels 1–10. The available track fills gradually; level 10 completes the 270° arc.

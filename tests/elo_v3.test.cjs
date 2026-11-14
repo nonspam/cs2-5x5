@@ -207,14 +207,6 @@ test('series aggregate K/D/A produces the same ELO event as the sum of map-level
 
 test('FACEIT-style ELO level thresholds match the supplied reference bands',()=>{
   const api=createApi({players:[],matches:[]});
-  assert.equal(api.levelForRating(100),1); assert.equal(api.levelForRating(500),1);
-  assert.equal(api.levelForRating(501),2); assert.equal(api.levelForRating(750),2);
-  assert.equal(api.levelForRating(751),3); assert.equal(api.levelForRating(900),3);
-  assert.equal(api.levelForRating(901),4); assert.equal(api.levelForRating(1050),4);
-  assert.equal(api.levelForRating(1051),5); assert.equal(api.levelForRating(1200),5);
-  assert.equal(api.levelForRating(1201),6); assert.equal(api.levelForRating(1300),6);
-  assert.equal(api.levelForRating(1301),7); assert.equal(api.levelForRating(1530),7);
-  assert.equal(api.levelForRating(1531),8); assert.equal(api.levelForRating(1750),8);
-  assert.equal(api.levelForRating(1751),9); assert.equal(api.levelForRating(2000),9);
-  assert.equal(api.levelForRating(2001),10);
+  const expected=[[100,1],[500,1],[501,2],[750,2],[751,3],[900,3],[901,4],[1050,4],[1051,5],[1200,5],[1201,6],[1300,6],[1301,7],[1530,7],[1531,8],[1750,8],[1751,9],[2000,9],[2001,10]];
+  for(const [rating,level] of expected) assert.equal(api.levelForRating(rating),level, 'rating '+rating);
 });
