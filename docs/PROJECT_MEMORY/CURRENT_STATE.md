@@ -27,11 +27,16 @@ CS2 Analytics is one integrated FACEIT-inspired application for the team's CS2 5
 
 ## Current focus
 
-See [SESSION_CHECKPOINT.md](SESSION_CHECKPOINT.md) for the exact active task and next action.
+The active owner-directed task is the FACEIT-style persistent workspace shell. See [SESSION_CHECKPOINT.md](SESSION_CHECKPOINT.md) for the precise IN PROGRESS handoff.
 
-As of the latest owner feedback recorded on 2026-11-14, the active refinement is the FACEIT-style Match Room window: the underlying site's left navigation should remain visible rather than the whole application becoming excessively dark when a match opens. The owner is providing newer messages/screenshots to clarify the exact visual target. Do not treat this as completed or visually verified.
+Implemented in the latest source package:
+- Match Room now uses flush central-workspace geometry between the persistent left navigation and the new 48px right utility rail.
+- The Match Room backdrop is limited to the central workspace and is much lighter than the previous full-page dim.
+- Existing profile cover media is reused as the background for route workspaces and Match Room.
+- The Profile entry was moved out of the left rail to the right avatar action.
+- The right utility rail currently provides Profile, VS/recent matches and Settings.
 
-A related recent visual note says the Match Overview MVP player position may need a small rightward adjustment; confirm against the owner's newest screenshots before changing it.
+**Not yet confirmed:** visual fit, cover crop/readability, interactions and responsive behavior in a real browser. The owner’s long-term direction is for other workspace sections (Track, seasons, etc.) to follow the same central-shell behavior; do not assume that all such sections are already converted.
 
 ## Confirmed implementation baseline
 
