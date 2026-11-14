@@ -82,3 +82,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Right utility avatar is a compact circular 38px tile.
 - Match Room previously reused body::before, overriding the global wallpaper pseudo-element. That conflict is removed; Match Room now uses the same account wallpaper variable on its own surface.
 - New source contracts passed Quality Gate run 43639401323 (253/253) at 6640706cf6ffae0377715a3e95da5b04723eb8c4. Browser QA, live DEV deployment SHA and screenshot comparison remain unverified.
+
+
+## 2026-11-15 — Profile media follow-up (IN PROGRESS)
+- Latest change moves upload notifications above the Profile overlay, changes the right utility avatar to a 42px circle, and increases wallpaper visibility across the app.
+- Cover upload now explicitly reapplies the wallpaper and checks that the public storage URL returns a loadable image; failure is surfaced in the toast.
+- Latest implementation/test commits: `eb9b4b465e0e6fbfa387da5ae90507096b187b0c`, `37301675bd4c56080b9b42121b37bce79c737811`, `757ae2f8ba96c8fadf0f5ff10d0ec53dc4c9a13f`, `718b26e5cb32d665ee9b91f4754c6c64c1c13896`.
+- CI and browser/upload verification pending; no deployment performed.
