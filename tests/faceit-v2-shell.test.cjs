@@ -717,7 +717,7 @@ test('account wallpaper is a full-viewport layer and is shared behind all worksp
  assert.match(css,/body\.has-account-wallpaper:before\{[\s\S]*position:fixed;inset:0;z-index:0/);
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*inset:0 64px 0 170px!important/);
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)/);
- assert.match(css,/#playerProfileWindow \.faceit-exact-avatar-frame\{[\s\S]*height:300px!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-avatar-frame\{[\s\S]*height:333px!important/);
 });
 test('right rail uses the current account avatar as a large portrait tile above VS',()=>{
  const rail=app.slice(app.indexOf('function renderUtilityRail'),app.indexOf('function render(){',app.indexOf('function renderUtilityRail')));
@@ -737,7 +737,7 @@ test("Match Room no longer overrides the global body wallpaper pseudo-element",(
  assert.match(css,/body\.has-account-wallpaper:before\{[\s\S]*var\(--account-wallpaper,none\)/);
  assert.match(css,/body\.match-room-open \.match-room-page,#matchRoomPage\.match-room-page\{[\s\S]*var\(--account-wallpaper,none\)/);
 });
-test("right utility avatar is compact and circular",()=>{
+test("right utility avatar restores the taller portrait tile",()=>{
  assert.match(css,/\.faceit-utility-profile\{[\s\S]*width:46px!important;height:62px!important[\s\S]*border-radius:7px!important/);
  assert.match(css,/\.faceit-utility-avatar-image\{[\s\S]*border-radius:7px!important/);
 });
