@@ -1,60 +1,96 @@
 # New Chat — CS2 Analytics
 
-## How to start
+## Старт: пользователь может прислать только одну ссылку
 
-The owner may provide this single link:
+Единая точка входа:
 
 `https://github.com/nonspam/cs2-5x5/blob/faceit-dev/docs/PROJECT_MEMORY/README.md`
 
-Treat it as the entry point, not as proof that the documents or branch are current. Read the memory index and its required files, then inspect GitHub live.
+Не проси пользователя вручную перечислять файлы, пути или пересказывать историю. Сначала самостоятельно пройди протокол ниже.
 
-## Required first actions
+## Обязательное восстановление контекста
 
-1. Confirm repository `nonspam/cs2-5x5`.
-2. Confirm current branch is `faceit-dev`; fetch its live HEAD SHA and recent commits.
-3. Read [CURRENT_STATE.md](CURRENT_STATE.md), [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md), [QUALITY_HISTORY.md](QUALITY_HISTORY.md), [PROJECT_MASTER.md](../../PROJECT_MASTER.md), [TECHNICAL_STATE.md](../../TECHNICAL_STATE.md), [ARCHITECTURE.md](../../ARCHITECTURE.md), [DESIGN_SYSTEM.md](../../DESIGN_SYSTEM.md), [DECISIONS.md](../../DECISIONS.md), [ROADMAP.md](../../ROADMAP.md), and relevant feature-specific docs.
-4. Compare the latest code commits with the memory snapshot. If there are commits newer than the snapshot, inspect their diffs and update your understanding before proposing code changes.
-5. Check current workflow runs and logs for the latest relevant code commit. Do not reuse a stale test count.
-6. State the current branch, HEAD, active work area, latest confirmed quality evidence, and what remains unverified.
-7. Do not edit code until this recovery pass is complete.
+1. Прочитай `docs/PROJECT_MEMORY/README.md` и все документы в указанном там порядке.
+2. Проверь живой HEAD ветки через:
+   `https://api.github.com/repos/nonspam/cs2-5x5/branches/faceit-dev`
+   SHA из snapshot, прошлого чата или старого handoff не является текущим HEAD.
+3. Получи последние коммиты именно ветки `faceit-dev`, а не default branch. Сверь их с CURRENT_STATE и DEVELOPMENT_LOG.
+4. Для коммитов новее snapshot изучи diff и изменённые файлы. Не делай вывод о реализации только по commit message.
+5. Проверь последние GitHub Actions runs для актуального code commit; если важен результат тестов — открой job logs и возьми passed/failed из лога.
+6. Прочитай релевантные feature docs и исходники перед продолжением конкретной задачи.
+7. Кратко сообщи пользователю: branch, актуальный HEAD, активная область работы, последнее подтверждённое качество, что ещё не проверено.
+8. Только после этого предлагай и выполняй изменения.
 
-## Non-negotiable project constraints
+### Если GitHub или часть документов недоступны
 
-- Work only on `faceit-dev`.
-- Recheck HEAD immediately before each set of changes.
-- Do not touch `main` or production.
-- No database writes, SQL, migrations, RLS, grants, schema or Edge Function changes without separate explicit approval.
-- No deployment without separate explicit approval.
-- No browser QA without separate explicit approval.
-- Do not invent game data, metrics, player identities, ELO, test results, visual verification or deployment status.
-- Preserve existing working behavior and add regression coverage for code changes.
-- Do not start another product area based on an outdated handoff if newer branch history shows the work has moved on.
+- Не утверждай, что прочитал недоступный файл.
+- Не угадывай HEAD, код, данные, тесты или состояние приложения.
+- Не меняй репозиторий, если не можешь подтвердить актуальную ветку и HEAD.
+- Назови точный URL/файл, который не открылся, и попроси включить GitHub-доступ или предоставить недостающий документ.
+- Не проси пользователя повторять всю историю проекта: используй уже доступную память и спрашивай только о недостающем.
 
-## Work style
+## Обязательные документы
 
-- Speak Russian, simply and directly.
-- Be proactive: inspect source, find the implementation path and do the work rather than asking the owner to repeat known project facts.
-- Ask only for essential missing references or a product decision.
-- For visual work, use the actual supplied reference and current screenshot. Do not guess a detailed design from memory.
-- Batch work into meaningful units; do not interrupt the owner for every trivial substep.
-- Be explicit about files changed, tests run, evidence and remaining unknowns.
+Из `docs/PROJECT_MEMORY/`:
+- CURRENT_STATE.md
+- DEVELOPMENT_LOG.md
+- QUALITY_HISTORY.md
 
-## Definition of Done — every logical task
+Из корня:
+- PROJECT_MASTER.md
+- TECHNICAL_STATE.md
+- ARCHITECTURE.md
+- DESIGN_SYSTEM.md
+- FACEIT_REFERENCE.md
+- DECISIONS.md
+- ROADMAP.md
 
-Before calling a task complete:
-- [ ] Code/docs changes are on `faceit-dev` only.
-- [ ] Current HEAD and final commit SHA are known.
-- [ ] Relevant automated tests have actually run; failures are disclosed.
-- [ ] No unapproved browser QA, deployment or DB operations occurred.
-- [ ] DEVELOPMENT_LOG.md contains a semantic task entry.
-- [ ] CURRENT_STATE.md reflects the new actual state.
-- [ ] QUALITY_HISTORY.md records real test/CI/QA/deployment evidence.
-- [ ] DECISIONS.md and relevant technical/design/roadmap docs are updated if needed.
-- [ ] Root CHANGELOG.md automatic metadata has had time to record the commits; verify rather than assume.
-- [ ] Final user report lists exact changed files, test result, commit SHA and what was not checked.
+Плюс документы конкретной функции, над которой идёт работа.
 
-A task can be marked **IN PROGRESS** when interrupted. Never mark incomplete work as done.
+## Непереговорные ограничения проекта
 
-## Important truth about automation
+- Рабочая ветка только `faceit-dev`.
+- Перед каждым набором изменений заново проверить HEAD.
+- Не трогать `main` и production.
+- Никаких DB writes, SQL, migrations, RLS, grants, schema или Edge Function изменений без отдельного явного разрешения.
+- Никакого deployment без отдельного явного разрешения.
+- Никакого browser QA без отдельного явного разрешения.
+- Не выдумывать игровые данные, метрики, личности игроков, ELO, результаты тестов, визуальную проверку или статус deployment.
+- Сохранять существующее рабочее поведение; для кодовых изменений добавлять/обновлять regression coverage.
+- Не продолжать старый handoff вслепую, если свежая история ветки показывает, что фокус изменился.
 
-GitHub Actions can record Git metadata and run checks. It cannot see the private ChatGPT conversation unless a separate, explicitly authorized integration is built. Do not claim that semantic conversation memory is automatically captured. The assistant must write the meaning of the work into the repository as part of task completion.
+## Стиль работы
+
+- Общаться по-русски, просто и прямо.
+- Быть проактивным: изучать код и документы, находить путь реализации и выполнять работу, не заставляя владельца повторять известный контекст.
+- Задавать только действительно необходимые вопросы.
+- Для визуальных задач использовать актуальный референс и screenshot. Не угадывать точный дизайн по памяти.
+- Объединять изменения в логические пакеты, не прерывать владельца из-за мелких технических шагов.
+- Ясно перечислять изменённые файлы, проверки, evidence и неизвестные моменты.
+
+## Definition of Done — каждая логическая задача
+
+- [ ] Изменения только в `faceit-dev`.
+- [ ] Актуальный HEAD проверен до работы и итоговый commit SHA известен.
+- [ ] Релевантные автоматические тесты реально запущены; ошибки раскрыты.
+- [ ] Не было неразрешённых browser QA, deployment или DB операций.
+- [ ] DEVELOPMENT_LOG.md содержит смысловую запись: цель, до/после, реализация, файлы, commit SHA.
+- [ ] CURRENT_STATE.md отражает новое подтверждённое состояние.
+- [ ] QUALITY_HISTORY.md содержит реальные результаты тестов/CI/QA/deployment.
+- [ ] DECISIONS.md и профильные технические/дизайн/roadmap документы обновлены, если нужно.
+- [ ] Root CHANGELOG.md проверен после запуска workflow; автоматическую запись нельзя предполагать.
+- [ ] Итоговый отчёт содержит точные файлы, тесты, SHA и непроверенные области.
+
+Прерванная задача помечается **IN PROGRESS**. Нельзя объявлять её завершённой.
+
+## Правда об автоматизации
+
+GitHub Actions может записывать Git metadata и запускать проверки. Он не видит частный разговор ChatGPT, если не создана отдельная интеграция с явным разрешением. Семантический смысл задачи, решения и ограничения помощник обязан записать в репозиторий вручную в рамках завершения задачи.
+
+## Источники истины при конфликте
+
+1. Живой HEAD нужной ветки и актуальный исходный код.
+2. Проверенные текущие данные/схема соответствующей среды (только безопасное чтение, если разрешено).
+3. Актуальные тесты и runtime contracts.
+4. Текущие инженерные документы.
+5. Старые handoff и разговоры — только история, не текущая истина.
