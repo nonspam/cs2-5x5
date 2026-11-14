@@ -7018,11 +7018,11 @@ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
 
 
 /* 2026-11-14 owner correction: restore the original profile composition and clean controls */
-#playerProfileWindow .player-profile-window-backdrop{background:rgba(0,0,0,.78)!important}
-#playerProfileWindow .player-profile-window-panel{background:#080808!important}
-#playerProfileWindow .faceit-exact-shell{background:#080808!important;background-image:none!important}
-#playerProfileWindow .faceit-exact-player-column{background:#0b0b0b!important}
-#playerProfileWindow .faceit-exact-content{background:#080808!important}
+#playerProfileWindow .player-profile-window-backdrop{background:rgba(0,0,0,.92)!important}
+#playerProfileWindow .player-profile-window-panel{background:rgba(8,8,8,.10)!important}
+#playerProfileWindow .faceit-exact-shell{background:transparent!important;background-image:none!important}
+#playerProfileWindow .faceit-exact-player-column{background:rgba(8,8,8,.84)!important}
+#playerProfileWindow .faceit-exact-content{background:rgba(8,8,8,.78)!important}
 #playerProfileWindow .faceit-exact-game-tabs{display:flex!important;position:sticky;top:0;z-index:4;background:#080808!important;border-bottom:1px solid #292929;padding:12px 0!important}
 #playerProfileWindow .faceit-profile-vertical-nav{display:none!important}
 #playerProfileWindow .faceit-exact-player-actions button{background:transparent!important;border:0!important;border-radius:0!important;color:#aaa!important}
@@ -7068,3 +7068,8 @@ body.has-account-wallpaper .faceit-route-shell{background-color:transparent!impo
 .wallpaper-settings p{margin:0;font-size:11px;max-width:520px}
 .wallpaper-upload{display:inline-flex;align-items:center}
 @media(max-width:700px){.wallpaper-settings{align-items:flex-start;flex-direction:column}}
+
+/* The personal wallpaper stays behind every workspace; content panels remain readable. */
+#view,.app,.faceit-app-shell{background-color:transparent!important}
+body.match-room-open .match-room-page,#matchRoomPage.match-room-page{background-color:rgba(8,8,8,.78)!important}
+body.has-account-wallpaper .faceit-utility-rail{background:rgba(8,8,8,.22)!important}
