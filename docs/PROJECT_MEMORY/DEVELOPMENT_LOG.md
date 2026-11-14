@@ -260,3 +260,19 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - Follow-up screenshot revealed the Team A rank-column right divider still had a blue override while Team B was neutral grey.
 - Changed Team A right rank divider to the same neutral grey `#424242` and added an explicit final rule covering both teams.
 - Files: `style_v57.css`, `tests/faceit-v2-shell.test.cjs`. No runtime logic, DB, deployment or browser QA changes.
+
+
+## 2026-11-14 — Single latest-session recovery checkpoint
+
+**Owner request:** Make every latest project update recoverable when a ChatGPT conversation ends, is interrupted, or moves to a new chat. A new chat should immediately know the exact last completed/in-progress step instead of reviving stale tasks.
+
+**Implemented (documentation/process only):**
+- Added `docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md` as the single latest-session handoff, with task status, latest owner feedback, implementation baseline, verification limits and next actions.
+- Changed `docs/PROJECT_MEMORY/README.md` so every new chat reads SESSION_CHECKPOINT first and treats it as the latest handoff.
+- Rewrote `docs/PROJECT_MEMORY/NEW_CHAT.md` with a checkpoint-first recovery protocol, source-of-truth priority and mandatory save steps after every logical stage and before ending a chat.
+- Refreshed `docs/PROJECT_MEMORY/CURRENT_STATE.md` to remove stale conflicting task summaries and point to the current Match Room handoff.
+- Kept the existing GitHub Actions workflow: it records commit metadata/changed paths, but cannot infer private chat meaning. Semantic checkpoint updates remain an explicit assistant responsibility.
+
+**Current handoff:** FACEIT-style Match Room opening should not darken the whole site; the global left navigation should remain visible. The owner is about to provide the newest screenshots/messages, which supersede provisional visual notes.
+
+**Verification:** Documentation-only. No application code, automated tests, browser QA, screenshot comparison, deployment, database or production changes were performed. The live branch HEAD must be checked again by the next chat.
