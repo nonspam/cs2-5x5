@@ -203,8 +203,8 @@ function profileAvatarMarkup(id,size='sm'){
 
 function matchRoomInitialAvatar(id,size='md',displayName=''){
  const name=String(displayName|| (id?playerName(id):'') || 'Игрок').trim();
- const initial=esc(Array.from(name)[0]||'?');
- return '<span class="player-avatar '+esc(size)+' match-room-initial-avatar" aria-label="'+esc(name)+'"><span>'+initial+'</span></span>';
+ const avatar=profileAvatarMarkup(id,size);
+ return avatar.replace('<span class="player-avatar ','<span aria-label="'+esc(name)+'" class="player-avatar ');
 }
 
 function profileMatchesForPlayer(id){
