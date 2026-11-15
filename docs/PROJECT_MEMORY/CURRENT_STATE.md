@@ -154,3 +154,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Latest owner UI package: Quality Gate run 43731859881 passed on tests commit ba201a31edf605a575181a781a2ddd21f7e42ab0 (273/273). Browser QA, owner visual acceptance and deployment remain pending.
 
 - Final follow-up CSS/test package (Profile history rows and Match Room roster/map cards): Quality Gate run 43731959484 passed, 274/274. Visual browser QA and deployment remain unverified.
+
+
+## 2026-11-15 — Latest owner screenshot corrections
+- Profile navigation has only Overview / Match History / Track; latest pass removes the CS2 icon/label, reinforces sticky translucent tabs, removes the square from the level arc, renders W/L as text and fixes history-row hover target.
+- Match Room latest pass: translucent MVP, overview player cards, map/veto and statistics tables; approved three mini highlights untouched; team color on avatar/icon only; Team A score green, Team B white; KD >1 green, =1 white/bold, <1 red.
+- Quality Gate 43733541030 passed: 278/278.
+- Browser visual QA and deployed DEV verification are still pending. See SESSION_CHECKPOINT.md.
