@@ -454,7 +454,7 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 
 **Commits:** app b24922a34541d633153d4eda65d8e5c40f66c429; CSS 1d51f6c2f578cfccb18d0229a84b33fa6a979387, ca849c9dbdb141fa9b374fae3166e57d8a1f6289; tests 63a77713537d7033140c5ec4a7265e8c729e4f66, 25afe5ddc75765cf1950e4fc99692b2431ec6df5; cache key commit 0b115feb64720a2ec2c0903944158cd1cd6c2aad.
 
-**Verification:** Initial Quality Gate run 43731610757 failed (263 passed / 7 failed / 0 skipped). The failures exposed stale assertions that did not match current implementation, plus the Profile shell was still too opaque; shell transparency was corrected and tests were updated. Latest Quality Gate for 25afe5ddc75765cf1950e4fc99692b2431ec6df5 is pending.
+**Verification:** Initial Quality Gate run 43731610757 failed (263 passed / 7 failed / 0 skipped). The failures exposed stale assertions that did not match current implementation, plus the Profile shell was still too opaque; shell transparency was corrected and tests were updated. Final Quality Gate run [43731859881](https://github.com/nonspam/cs2-5x5/actions/runs/43731859881), tested commit ba201a31edf605a575181a781a2ddd21f7e42ab0: 273 passed / 0 failed / 0 skipped, confirmed from the validate job log. Two remaining failures were stale test expectations for toast z-index and a dynamically generated handler string; assertions were corrected without changing runtime behavior.
 
 **Not performed:** browser visual QA, screenshot comparison, live BO3 navigation test, DEV deployment verification, production or DB changes.
 
