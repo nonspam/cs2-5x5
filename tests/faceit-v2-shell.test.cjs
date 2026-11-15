@@ -943,6 +943,9 @@ test('Season 0 leaderboard uses current ALL TIME K/D standings and Season 1 wait
 
 test('Leaderboard rows use Match Room Statistics glass styling and translucent podium tints',()=>{
  assert.match(css,/\.ranking-panel\{background:transparent!important;border:0!important;box-shadow:none!important/);
- assert.match(css,/\.ranking-table tbody td,[\s\S]*rgba\(8,12,14,\.14\)!important[\s\S]*backdrop-filter:blur\(9px\)!important/);
+ const glassFix=css.slice(css.lastIndexOf('/* 2026-11-16 — Fix leaderboard glass seams'));
+ assert.match(glassFix,/\.ranking-table tbody td[\s\S]*backdrop-filter:none!important/);
+ assert.match(glassFix,/background:rgba\(8,12,14,\.42\)!important/);
+ assert.doesNotMatch(glassFix,/backdrop-filter:blur/);
  assert.match(css,/\.ranking-table tbody tr\.ranking-gold td\{background:rgba\(255,211,0,\.045\)!important/);
 });
