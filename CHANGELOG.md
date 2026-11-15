@@ -6388,3 +6388,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-15T15:22:04-05:00 — Document matchmaking leaderboard prototype status
+
+- Commit: 551fa151887dd69af725d22259c18194b0c2cb3c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
