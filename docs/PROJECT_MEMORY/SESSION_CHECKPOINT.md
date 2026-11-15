@@ -143,3 +143,5 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Not performed: live browser screenshot comparison or visual acceptance. No deployment, production, database or main-branch changes.
 - Status: SOURCE + TESTS PASS; browser verification pending.
 - Next: owner refreshes DEV (hard reload) and checks Profile scroll/tabs, W/L text, level arc, full-row hover, Match Room overview transparency, Statistics transparency, avatar-only team colors, team scores and KD colors. Adjust only mismatches reported from the refreshed build.
+
+- Follow-up after owner explicitly said TOP still looked dark: CSS 38b09380a8dce42b850508cf4109541ebd4a4177 makes `.match-stat-top-row` translucent too; test commit 7a9b4724750db837bd67f7b6313d349cef196e89. Quality Gate run 43733694196 completed successfully; validate log confirms 279 tests / 279 passed / 0 failed / 0 skipped. Three approved mini highlight cards remain unchanged.
