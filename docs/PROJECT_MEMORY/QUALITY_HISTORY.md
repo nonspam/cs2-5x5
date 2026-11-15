@@ -161,3 +161,8 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 
 ## 2026-11-15 — Latest profile navigation and table palette correction
 - Regression assertions added for sticky profile tabs, level-tier ring color, Match Room profile-history return, and exact Match Room statistics table selector. No CI result available at checkpoint time; browser QA and deployment not performed.
+
+
+## 2026-11-15 — Matchmaking leaderboard route and season prototype
+- Quality Gate run [43757606058](https://github.com/nonspam/cs2-5x5/actions/runs/43757606058), tested final code/test commit `fe3e437ac3b384f232300a588cf61265afc32630`: **285 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- Scope: automated Node regression/static checks only. No browser QA, screenshot comparison, or DEV deployment verification.
