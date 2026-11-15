@@ -923,18 +923,26 @@ test('Match Room Statistics glass cells override the more-specific legacy opaque
  assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr:nth-child\(even\) td/);
 });
 
-test('Ranking is a dedicated route between Statistics and Matches with a two-season Elo prototype',()=>{
+test('Season 0 leaderboard uses current ALL TIME K/D standings and Season 1 waits for launch',()=>{
  assert.match(app,/const APP_ROUTE_IDS=\['home','analytics','ranking','base'/);
- const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
- assert.ok(rail.indexOf("['analytics'")<rail.indexOf("['ranking'"));
- assert.ok(rail.indexOf("['ranking'")<rail.indexOf("['base'"));
  const start=app.indexOf('function ranking(v){'),end=app.indexOf('function analytics(v){',start),source=app.slice(start,end);
  assert.ok(start>=0&&end>start);
- for(const label of ['РЕЙТИНГ','МАТЧМЕЙКИНГ','Ранг','Игрок','Уровень скилла','Elo','Сезон 0 (Тестовый)','Сезон 1'])assert.ok(source.includes(label),'ranking includes '+label);
- assert.match(source,/elo:1000/);
+ for(const label of ['РЕЙТИНГ','МАТЧМЕЙКИНГ','Ранг','Игрок','Уровень скилла','K/D','Сезон 0 (Текущий)','Сезон 1','Текущие места по K/D'])assert.ok(source.includes(label),'ranking includes '+label);
+ assert.ok(source.includes("playerSeasonAggregate(p.player_id,'all')"));
+ assert.ok(source.includes('b.x.kd-a.x.kd'));
+ assert.ok(source.includes('kdMarkup(q.x.k,q.x.d)'));
+ assert.ok(source.includes('Сезон 1 ещё не начался'));
  assert.ok(source.includes("rank===1?'gold'"));
  assert.ok(source.includes("rank===2?'silver'"));
  assert.ok(source.includes("rank===3?'bronze'"));
  assert.ok(source.includes("'red'"));
  assert.doesNotMatch(source,/венок|laurel|country|страна|регион/i);
+});
+
+
+
+test('Leaderboard rows use Match Room Statistics glass styling and translucent podium tints',()=>{
+ assert.match(css,/\.ranking-panel\{background:transparent!important;border:0!important;box-shadow:none!important/);
+ assert.match(css,/\.ranking-table tbody td,[\s\S]*rgba\(8,12,14,\.14\)!important[\s\S]*backdrop-filter:blur\(9px\)!important/);
+ assert.match(css,/\.ranking-table tbody tr\.ranking-gold td\{background:rgba\(255,211,0,\.045\)!important/);
 });
