@@ -461,3 +461,21 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Next:** inspect latest Quality Gate; if green, ask owner to verify all requested interactions in DEV before further design work.
 
 **Follow-up:** Added translucent backgrounds to Profile history rows and Match Room roster/map cards so the account wallpaper is visible in those subviews too. CSS commit b67e298b3644936beeba1209bcc934463cdb523a; regression tests commit 7453b1d4a65b77f8282a75ec42b9161da3dd7272. Final Quality Gate run [43731959484](https://github.com/nonspam/cs2-5x5/actions/runs/43731959484): **274 passed / 0 failed / 0 skipped**, confirmed from the validate job log.
+
+
+## 2026-11-15 — Owner screenshot correction pass (278 tests passed)
+
+The owner supplied refreshed screenshots and clarified that the three mini highlight cards in Match Room Statistics are the approved transparency reference and must not be changed.
+
+- Removed the redundant CS2 icon/label from Profile's horizontal navigation.
+- Reinforced the Profile's sticky translucent tab bar and scroll container.
+- Removed the square border/background/shadow from the FACEIT level arc.
+- Made W/L markers text-only in both Recent Results and Recent Matches.
+- Corrected Profile match-history rows to have a full-width rectangular hover target.
+- Made the large MVP card, Overview player cards, map/veto surfaces and Statistics player tables translucent; retained the three approved mini highlight cards unchanged.
+- Moved Team A blue / Team B green treatment from the entire name cell to the player avatar/icon only.
+- Team A score green, Team B score white. K/D-dependent player stat text has unified typography: KD > 1 green, KD = 1 white and bold, KD < 1 red.
+- Files: app_v57.js, style_v57.css, tests/faceit-v2-shell.test.cjs, index.html.
+- Commits: app 5cc88c0419b4970153a181d24c1b3c139ff2a5d7; CSS 6f7e2a89d8c6eedd387878f6a98702ab49f59b23; tests d38124db99f4b5cd1179cc5148e0ca879853f4cb; index 06ebc3d66e6e27ae2333cb1887149e994498c52a.
+- Quality Gate [43733541030](https://github.com/nonspam/cs2-5x5/actions/runs/43733541030): **278 passed / 0 failed / 0 skipped**.
+- Visual browser QA and DEV deployment verification remain pending. Do not claim visual acceptance until owner tests refreshed DEV.
