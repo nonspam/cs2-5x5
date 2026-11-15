@@ -142,3 +142,11 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Explicit dark graphite overrides added to Match Room statistics roster table and Matches/Statistics route tables after owner screenshot still showed blue fills.
 - Commits: app e5e8443d0fe4208a202c43639c8a3b18105c9fe5; CSS 0f9a4ce148dcb228a480fad5b578f5dd65f9e2ed; cache 34c824b8efbbe8fbf48b716c4cbb6f5f8f03200b; tests e777ea141fb456ea9a1fabc023befe6d471afd04.
 - CI/browser QA pending; no deployment or DB changes.
+
+
+## 2026-11-15 — Current owner task: Profile and Match Room transparency
+- Working branch remains faceit-dev.
+- Latest owner-requested implementation is in progress: sticky translucent Profile tabs, text-only W/L, translucent Profile and Match Room surfaces, team identity-cell coloring, Profile FACEIT arc, and map-statistics return to parent series.
+- Latest Quality Gate is pending for commit 25afe5ddc75765cf1950e4fc99692b2431ec6df5; an earlier run failed and was corrected.
+- Browser QA, screenshot comparison, live navigation verification and deployment SHA remain unverified.
+- See SESSION_CHECKPOINT.md for the exact implementation and next action.
