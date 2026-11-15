@@ -6172,3 +6172,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-15T12:08:06-05:00 — Refresh stylesheet cache for final Statistics cascade fix
+
+- Commit: 8fd1ba861b1bca229ef30b0b50920cff58858456
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
