@@ -145,3 +145,14 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Next: owner refreshes DEV (hard reload) and checks Profile scroll/tabs, W/L text, level arc, full-row hover, Match Room overview transparency, Statistics transparency, avatar-only team colors, team scores and KD colors. Adjust only mismatches reported from the refreshed build.
 
 - Follow-up after owner explicitly said TOP still looked dark: CSS 38b09380a8dce42b850508cf4109541ebd4a4177 makes `.match-stat-top-row` translucent too; test commit 7a9b4724750db837bd67f7b6313d349cef196e89. Quality Gate run 43733694196 completed successfully; validate log confirms 279 tests / 279 passed / 0 failed / 0 skipped. Three approved mini highlight cards remain unchanged.
+
+
+## 2026-11-15 — Match Room glass rows, circular avatars and Track tooltip layering
+- Owner screenshot review confirmed: MVP and three mini highlights are already correct and must remain untouched; remaining defects were opaque Overview player identity/metric sublayers, opaque Statistics player cells, avatar initial printed over real photo / square avatar, and Track point tooltip appearing beneath wallpaper/profile.
+- app_v57.js: Track tooltip now explicitly uses `position:fixed` and `z-index:13050`; pinned tooltip is repositioned on window scroll and resize using the existing abort controller.
+- style_v57.css: Overview roster cards, identity headers and career metric cells now use translucent frosted surfaces; Overview avatar is circular; every Statistics player-row cell (name/rank/K/D/A/KD) now uses the same translucent blurred treatment instead of dark opaque cell backgrounds. Existing MVP and three mini-highlight cards were not modified. Real avatar images hide their fallback initial; if image is removed/failed the fallback span can show again.
+- tests/faceit-v2-shell.test.cjs: three regression tests added.
+- index.html cache keys refreshed.
+- Commits: app 929a54d99671ae216362a24e2ee8d99676b9eb16; CSS 4131bf15fb09b5081b9dc8cbeb38472674d642a3; tests 8ecc95c13de75801f11af63589a949b86de43473; index 928b1940167748d923f39b2f98aa51a7e2fca7f6.
+- Quality Gate [43735324791](https://github.com/nonspam/cs2-5x5/actions/runs/43735324791): **282 passed / 0 failed / 0 skipped**.
+- Browser visual QA and live deployed DEV verification are not performed; owner needs hard refresh and check real profile data / click behavior.
