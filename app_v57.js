@@ -1090,6 +1090,7 @@ function closeMatchRoom(options={}){
 function setMatchRoomView(target){
  const root=document.getElementById('matchRoomPage');
  if(!root||!['overview','statistics','top'].includes(target))return false;
+ root.classList.toggle('match-room-statistics-active',target==='statistics');
  const buttons=root.querySelectorAll('[data-match-view-tab]');
  const views=root.querySelectorAll('[data-match-view]');
  if(!buttons.length||!views.length)return false;
