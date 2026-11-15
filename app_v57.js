@@ -1126,8 +1126,8 @@ function base(v){
 
 function ranking(v){
  const seasonKey=state.rankingSeasonKey==='s1'?'s1':'s0';
- const roster=activePlayers().map(p=>({p,elo:1000}))
-  .sort((a,b)=>a.p.display_name.localeCompare(b.p.display_name,'ru')||a.p.player_id.localeCompare(b.p.player_id));
+ const roster=seasonKey==='s0'?activePlayers().map(p=>({p,x:playerSeasonAggregate(p.player_id,'all'),elo:window.CS2EloV3?.player(p.player_id)?.rating??1000}))
+  .sort((a,b)=>b.x.kd-a.x.kd||b.x.kdDiff-a.x.kdDiff||b.x.k-a.x.k||b.elo-a.elo||a.p.display_name.localeCompare(b.p.display_name,'ru')):[];
  const rows=roster.map((q,i)=>{
   const rank=i+1,medal=rank===1?'gold':rank===2?'silver':rank===3?'bronze':'standard';
   const skill=rank===1?'gold':rank===2?'silver':rank===3?'bronze':'red';
@@ -1135,14 +1135,15 @@ function ranking(v){
    '<td class="ranking-rank">'+rank+'</td>'+
    '<td class="ranking-player"><span class="ranking-avatar">'+profileAvatarMarkup(q.p.player_id,'sm',q.p.display_name)+'</span><span class="ranking-name">'+esc(q.p.display_name)+'</span></td>'+
    '<td class="ranking-skill"><span class="ranking-skill-badge '+skill+'">#'+rank+' <span aria-hidden="true">◉</span></span></td>'+
-   '<td class="ranking-elo">'+fmt(q.elo,0)+'</td></tr>';
+   '<td class="ranking-kd">'+kdMarkup(q.x.k,q.x.d)+'</td></tr>';
  }).join('');
- v.innerHTML='<section class="section ranking-page"><div class="ranking-page-head"><div><h2>РЕЙТИНГ</h2><div class="ranking-game-tab"><span>МАТЧМЕЙКИНГ</span></div></div>'+
+ const empty=seasonKey==='s1'?'<tr><td colspan="4"><div class="empty">Сезон 1 ещё не начался. Рейтинг появится после старта сезона.</div></td></tr>':(rows||'<tr><td colspan="4"><div class="empty">Пока нет игроков в рейтинге.</div></td></tr>');
+ v.innerHTML='<section class="section ranking-page"><div class="ranking-page-head"><div><h2>РЕЙТИНГ</h2><div class="ranking-game-tab"><span>МАТЧМЕЙКИНГ</span></div><div class="ranking-page-note">'+(seasonKey==='s0'?'Текущие места по K/D · данные ALL TIME':'Ожидание начала сезона')+'</div></div>'+
   '<label class="ranking-season-select"><span class="sr-only">Выбрать сезон</span><select class="control" aria-label="Выбрать сезон" onchange="state.rankingSeasonKey=this.value;render()">'+
-  '<option value="s0" '+(seasonKey==='s0'?'selected':'')+'>Сезон 0 (Тестовый)</option>'+
+  '<option value="s0" '+(seasonKey==='s0'?'selected':'')+'>Сезон 0 (Текущий)</option>'+
   '<option value="s1" '+(seasonKey==='s1'?'selected':'')+'>Сезон 1</option></select></label></div>'+
-  '<div class="panel card ranking-panel"><div class="table-wrap"><table class="data-table ranking-table"><thead><tr><th>Ранг</th><th>Игрок</th><th>Уровень скилла</th><th>Elo</th></tr></thead><tbody>'+
-  (rows||'<tr><td colspan="4"><div class="empty">Пока нет игроков в рейтинге.</div></td></tr>')+
+  '<div class="panel card ranking-panel"><div class="table-wrap"><table class="data-table ranking-table"><thead><tr><th>Ранг</th><th>Игрок</th><th>Уровень скилла</th><th>K/D</th></tr></thead><tbody>'+
+  empty+
   '</tbody></table></div></div></section>';
 }
 function analytics(v){players(v)}
