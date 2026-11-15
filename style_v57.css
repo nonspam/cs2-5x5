@@ -7802,3 +7802,42 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-stat-team .match-scoreboard tbody tr td:first-child{border-left:1px solid rgba(255,255,255,.16)!important}
 #matchRoomPage .match-stat-team .match-scoreboard tbody tr td:last-child{border-right:1px solid rgba(255,255,255,.16)!important}
 #matchRoomPage .match-stat-team .match-scoreboard tbody tr:hover td{background-color:rgba(35,65,58,.22)!important}
+
+
+/* 2026-11-15 — FINAL override: match statistics glass rows.
+   Keep this last: earlier legacy team/rank rules paint opaque fills with !important.
+   The deliberately high-specificity selectors win over those older declarations. */
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .table-wrap,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr:nth-child(even){
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr > td,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr:nth-child(even) > td,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr > td.name,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr > td.match-stat-rank{
+  background:rgba(8,12,14,.14)!important;
+  background-color:rgba(8,12,14,.14)!important;
+  background-image:none!important;
+  -webkit-backdrop-filter:blur(9px)!important;
+  backdrop-filter:blur(9px)!important;
+  border-top:1px solid rgba(255,255,255,.17)!important;
+  border-bottom:1px solid rgba(255,255,255,.17)!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr > td:first-child{
+  border-left:1px solid rgba(255,255,255,.15)!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr > td:last-child{
+  border-right:1px solid rgba(255,255,255,.15)!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr:hover > td{
+  background:rgba(35,65,58,.24)!important;
+  background-color:rgba(35,65,58,.24)!important;
+}
