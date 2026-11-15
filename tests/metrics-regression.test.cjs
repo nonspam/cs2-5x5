@@ -161,12 +161,12 @@ test('profile history header and match values share a wide aligned grid; K/D is 
 
 
 test('Track remains renderable as a Profile tab, not a permanent rail destination', () => {
-  assert.ok(app.includes("APP_ROUTE_IDS=['home','analytics','base','maps','teams','records','seasons','track','settings','profile','compare']"));
+  assert.ok(app.includes("APP_ROUTE_IDS=['home','analytics','ranking','base','maps','teams','records','seasons','track','settings','profile','compare']"));
   assert.ok(app.includes('function track(v,embedded=false)'));
   assert.ok(app.includes('data-profile-section="track"'));
   assert.ok(app.includes('state.trackPeriod'));
   assert.ok(app.includes('profileMatchesForPlayer(targetId)'));
-  assert.ok(app.includes('const pages={home,base,analytics,players,compare,maps,teams,records,seasons,track,settings}'));
+  assert.ok(app.includes('const pages={home,base,analytics,ranking,players,compare,maps,teams,records,seasons,track,settings}'));
   const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
   assert.equal(rail.includes("['track'"),false);
   const css=fs.readFileSync(path.join(__dirname,'..','style_v57.css'),'utf8');
