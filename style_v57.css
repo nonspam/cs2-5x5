@@ -7608,3 +7608,11 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage.match-room-page .match-scoreboard tbody td:not(.stat-positive):not(.stat-negative):not(.stat-neutral){
  font-size:12px!important;font-weight:750!important;line-height:1.25!important
 }
+
+/* TOP tab player cards follow the same translucent treatment as Overview and Statistics. */
+#matchRoomPage.match-room-page .match-stat-top-list{background:transparent!important}
+#matchRoomPage.match-room-page .match-stat-top-row{
+ background:rgba(10,13,15,.34)!important;background-image:none!important;
+ border-color:rgba(255,255,255,.14)!important;
+ -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)
+}
