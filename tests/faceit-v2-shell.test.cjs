@@ -843,3 +843,21 @@ test('Match Room has one minimal return action that restores profile match histo
 test('Match Room statistics roster rows receive explicit graphite fills',()=>{
  assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr,[\s\S]*background:#121617!important/);
 });
+
+
+test('profile navigation remains pinned and translucent; recent W/L are text-only and level is an arc',()=>{
+ assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{[\s\S]*position:sticky!important[\s\S]*background:rgba\(9,12,14,\.34\)!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-form \.faceit-form-dot\{[\s\S]*background:transparent!important/);
+ assert.match(app,/faceit-exact-level-ring/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-level-ring \.progress/);
+});
+test('Match Room map statistics can return to the parent series before returning to profile history',()=>{
+ assert.match(app,/function openMapDetail\(mapId\)[\s\S]*__matchRoomSeriesReturn[\s\S]*returnToSeries:returningToSeries/);
+ assert.match(app,/function matchRoomReturnToSeries\(\)[\s\S]*openMatchDetail\(context\.matchId/);
+ assert.match(app,/match-room-back-series[\s\S]*matchRoomReturnToSeries\(\)/);
+});
+test('Match Room statistics use translucent surfaces and color only team identity cells',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-team\.team-a \.match-scoreboard tbody td\.name\{[\s\S]*rgba\(44,111,206,\.30\)/);
+ assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td\.name\{[\s\S]*rgba\(35,148,103,\.28\)/);
+ assert.match(css,/#matchRoomPage \.match-stat-mvp-card,[\s\S]*backdrop-filter:blur\(8px\)/);
+});
