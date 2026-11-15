@@ -161,3 +161,5 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Match Room latest pass: translucent MVP, overview player cards, map/veto and statistics tables; approved three mini highlights untouched; team color on avatar/icon only; Team A score green, Team B white; KD >1 green, =1 white/bold, <1 red.
 - Quality Gate 43733541030 passed: 278/278.
 - Browser visual QA and deployed DEV verification are still pending. See SESSION_CHECKPOINT.md.
+
+- TOP-tab player rows now use translucent cards (three approved mini highlight cards unchanged); latest Quality Gate 43733694196: 279/279 passed. Browser visual QA remains pending.
