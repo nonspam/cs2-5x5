@@ -513,3 +513,13 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Cache-bust commit `8fd1ba861b1bca229ef30b0b50920cff58858456`: `style_v57.css?v=matchroom-statistics-cascade-glass-20261115-v12`.
 - Test commit `821c7b111e91ab0e2017db66b7eee7a977ddc2a2`; Quality Gate run [43739375950](https://github.com/nonspam/cs2-5x5/actions/runs/43739375950): **284 passed / 0 failed**.
 - Browser visual acceptance still requires owner refresh after deployment. Do not claim visual success until confirmed.
+
+
+## 2026-11-15 — Matchmaking leaderboard route and season prototype
+- Added a dedicated `Рейтинг` page to the global left rail, positioned between `Статистика` and `Матчи`.
+- Implemented the Matchmaking-only leaderboard with exactly four columns: Rank, Player, Skill Level, Elo. No country or region controls and no wreath/laurel graphics. Rank numbers stay white; skill pills carry podium rank colors and red for other ranks.
+- Kept gold/silver/bronze row outlines for ranks 1–3 as a temporary owner-approved experiment.
+- Added clickable Season 0 (Test) and Season 1 options. Both currently use a deterministic active-player list and placeholder Elo 1000 for every player. This is explicitly a visual/interaction prototype, not saved historical season data or a rating engine.
+- Updated route, navigation, UI and metrics regression contracts.
+- Quality Gate [43757606058](https://github.com/nonspam/cs2-5x5/actions/runs/43757606058): **285 passed / 0 failed / 0 skipped**.
+- Browser QA, screenshot comparison and DEV deployment verification remain pending.
