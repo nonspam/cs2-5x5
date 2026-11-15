@@ -482,3 +482,16 @@ The owner supplied refreshed screenshots and clarified that the three mini highl
 
 
 **TOP follow-up:** Owner noted the TOP player cards were still opaque; appended a targeted translucent `.match-stat-top-row` override while leaving the three approved mini highlights untouched. CSS commit 38b09380a8dce42b850508cf4109541ebd4a4177; test commit 7a9b4724750db837bd67f7b6313d349cef196e89. Latest Quality Gate [43733694196](https://github.com/nonspam/cs2-5x5/actions/runs/43733694196): **279 passed / 0 failed / 0 skipped**.
+
+
+## 2026-11-15 — Match Room Overview/Statistics transparency and Track tooltip fix
+
+Owner's latest screenshots showed the outer cards were translucent but inner layers still opaque. The Track point tooltip was also appearing behind the profile wallpaper/modal.
+
+- Match Room Overview: made the player card, identity header and career metric strip translucent/frosted; forced player avatar to a circle.
+- Avatar markup retains its fallback initial but CSS hides it while a real image is present, preventing the initial from covering the photo.
+- Match Room Statistics: applied the same translucent blurred treatment to every player-row cell, including name and rank, rather than only the table wrapper. MVP and three approved mini highlights intentionally left unchanged.
+- Track: fixed tooltip positioning to viewport coordinates (`position:fixed`), raised z-index above Profile (`13050`) and repositioned a pinned tooltip on scroll/resize.
+- Quality Gate [43735324791](https://github.com/nonspam/cs2-5x5/actions/runs/43735324791): **282 passed / 0 failed / 0 skipped**.
+- Files changed: app_v57.js, style_v57.css, tests/faceit-v2-shell.test.cjs, index.html.
+- Visual acceptance still pending owner hard-refresh and browser verification; no production deployment was made.
