@@ -589,6 +589,7 @@ function bindTrackChart(root,points,metric,metricLabel,playerId){
  const tooltip=document.createElement('div');
  tooltip.className='track-chart-tooltip';tooltip.hidden=true;tooltip.dataset.pinned='false';
  tooltip.setAttribute('role','dialog');tooltip.setAttribute('aria-live','polite');tooltip.setAttribute('aria-label','Информация о матче');
+ tooltip.style.position='fixed';tooltip.style.zIndex='13050';tooltip.style.pointerEvents='none';
  document.body.appendChild(tooltip);
  const cleanup=()=>{controller.abort();tooltip.remove();if(window.__cs2TrackTooltipCleanup===cleanup)window.__cs2TrackTooltipCleanup=null};
  window.__cs2TrackTooltipCleanup=cleanup;
@@ -661,7 +662,10 @@ function bindTrackChart(root,points,metric,metricLabel,playerId){
   dot.addEventListener('click',event=>{event.stopPropagation();if(pinnedIndex===index)hide();else show(index,dot,true)});
   dot.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();if(pinnedIndex===index)hide();else show(index,dot,true)}if(event.key==='Escape')hide()});
  });
+ const reposition=()=>{if(activeIndex===null||tooltip.hidden)return;const dot=dots[activeIndex];if(dot)place(dot)};
  wrap.addEventListener('pointerleave',()=>{if(pinnedIndex===null)hide()});
+ window.addEventListener('scroll',reposition,{capture:true,signal:controller.signal});
+ window.addEventListener('resize',reposition,{signal:controller.signal});
  document.addEventListener('pointerdown',event=>{if(pinnedIndex!==null&&!tooltip.contains(event.target)&&!event.target.closest?.('.track-point-wrap'))hide()},{signal:controller.signal});
  document.addEventListener('keydown',event=>{if(event.key==='Escape')hide()},{signal:controller.signal});
 }
