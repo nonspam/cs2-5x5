@@ -50,7 +50,7 @@ test('shared shell has responsive layout and mobile navigation rules', () => {
 });
 
 test('application routes support direct hash entry and browser back/forward navigation', () => {
-  assert.match(app, /const APP_ROUTE_IDS=\['home','analytics','base','maps','teams','records','seasons','track','settings','profile','compare'\]/);
+  assert.match(app, /const APP_ROUTE_IDS=\\['home','analytics','ranking','base','maps','teams','records','seasons','track','settings','profile','compare'\\]/);
   assert.match(app, /function appRouteFromLocation\(\)/);
   assert.match(app, /window\.location\.hash/);
   assert.match(app, /window\.history\[method\]/);
@@ -921,4 +921,20 @@ test('Match Room Statistics removes opaque table wrapper and table backgrounds',
 test('Match Room Statistics glass cells override the more-specific legacy opaque row selectors',()=>{
  assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr td\{[\s\S]*rgba\(8,12,14,\.20\)!important[\s\S]*backdrop-filter:blur\(10px\)!important/);
  assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr:nth-child\(even\) td/);
+});
+
+\ntest('Ranking is a dedicated route between Statistics and Matches with a two-season Elo prototype',()=>{
+ assert.match(app,/const APP_ROUTE_IDS=\['home','analytics','ranking','base'/);
+ const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
+ assert.ok(rail.indexOf("['analytics'")<rail.indexOf("['ranking'"));
+ assert.ok(rail.indexOf("['ranking'")<rail.indexOf("['base'"));
+ const start=app.indexOf('function ranking(v){'),end=app.indexOf('function analytics(v){',start),source=app.slice(start,end);
+ assert.ok(start>=0&&end>start);
+ for(const label of ['РЕЙТИНГ','МАТЧМЕЙКИНГ','Ранг','Игрок','Уровень скилла','Elo','Сезон 0 (Тестовый)','Сезон 1'])assert.ok(source.includes(label),'ranking includes '+label);
+ assert.match(source,/elo:1000/);
+ assert.match(source,/ranking-gold/);
+ assert.match(source,/ranking-silver/);
+ assert.match(source,/ranking-bronze/);
+ assert.match(source,/ranking-red/);
+ assert.doesNotMatch(source,/венок|laurel|country|страна|регион/i);
 });
