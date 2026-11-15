@@ -7768,3 +7768,37 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr td:first-child{border-left:1px solid rgba(255,255,255,.14)!important}
 #matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr td:last-child{border-right:1px solid rgba(255,255,255,.14)!important}
 #matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr:hover td{background:rgba(35,65,58,.22)!important}
+
+
+/* 2026-11-15 — Statistics glass fix v2.
+   The opaque fill came from #matchRoomPage .match-stat-team .match-scoreboard tbody td
+   and later team/rank overrides. This intentionally does NOT depend on a JS tab class. */
+#matchRoomPage .match-stat-teams,
+#matchRoomPage .match-stat-team,
+#matchRoomPage .match-stat-teams .table-wrap,
+#matchRoomPage .match-stat-team .match-scoreboard,
+#matchRoomPage .match-stat-team .match-scoreboard tbody,
+#matchRoomPage .match-stat-team .match-scoreboard tbody tr,
+#matchRoomPage .match-stat-team .match-scoreboard tbody tr:nth-child(even){
+ background:transparent!important;background-color:transparent!important;background-image:none!important;box-shadow:none!important;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody td{
+ background:rgba(8,12,14,.16)!important;background-color:rgba(8,12,14,.16)!important;background-image:none!important;
+ -webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important;
+ border-top:1px solid rgba(255,255,255,.18)!important;border-bottom:1px solid rgba(255,255,255,.18)!important;
+}
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td.name{
+ background:rgba(65,105,165,.16)!important;
+}
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td.name{
+ background:rgba(168,132,35,.16)!important;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody td.match-stat-rank,
+#matchRoomPage .match-stat-team.team-a .match-scoreboard tbody td.match-stat-rank,
+#matchRoomPage .match-stat-team.team-b .match-scoreboard tbody td.match-stat-rank{
+ background:rgba(8,12,14,.16)!important;background-color:rgba(8,12,14,.16)!important;
+ -webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important;
+}
+#matchRoomPage .match-stat-team .match-scoreboard tbody tr td:first-child{border-left:1px solid rgba(255,255,255,.16)!important}
+#matchRoomPage .match-stat-team .match-scoreboard tbody tr td:last-child{border-right:1px solid rgba(255,255,255,.16)!important}
+#matchRoomPage .match-stat-team .match-scoreboard tbody tr:hover td{background-color:rgba(35,65,58,.22)!important}
