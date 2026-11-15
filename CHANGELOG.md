@@ -5872,3 +5872,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-15T10:45:10-05:00 — Refresh frontend asset cache keys
+
+- Commit: 0b115feb64720a2ec2c0903944158cd1cd6c2aad
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
