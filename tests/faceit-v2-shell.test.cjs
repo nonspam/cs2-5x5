@@ -861,3 +861,9 @@ test('Match Room statistics use translucent surfaces and color only team identit
  assert.match(css,/#matchRoomPage \.match-stat-team\.team-b \.match-scoreboard tbody td\.name\{[\s\S]*rgba\(35,148,103,\.28\)/);
  assert.match(css,/#matchRoomPage \.match-stat-mvp-card,[\s\S]*backdrop-filter:blur\(8px\)/);
 });
+
+test('Profile history rows and Match Room roster/map cards reveal the account wallpaper',()=>{
+ assert.match(css,/#playerProfileWindow \.faceit-match-row\{[\s\S]*background:rgba\(9,13,15,\.26\)!important/);
+ assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref\{[\s\S]*background:rgba\(9,13,15,\.46\)!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{[\s\S]*background-color:rgba\(9,13,15,\.42\)!important/);
+});
