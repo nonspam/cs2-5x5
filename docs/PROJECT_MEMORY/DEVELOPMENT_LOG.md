@@ -523,3 +523,10 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Updated route, navigation, UI and metrics regression contracts.
 - Quality Gate [43757606058](https://github.com/nonspam/cs2-5x5/actions/runs/43757606058): **285 passed / 0 failed / 0 skipped**.
 - Browser QA, screenshot comparison and DEV deployment verification remain pending.
+
+## 2026-11-15 — Leaderboard glass styling and current K/D standings
+- Updated Rating page to use the same translucent glass rows as Match Room Statistics: 14% dark glass fill, 9px backdrop blur, subtle white borders. Panel wrapper is transparent; podium row borders retained with reduced tint.
+- Season 0 is now marked current and shows the existing active roster ranked by current K/D, using the same aggregate and tie-break ordering as Statistics. K/D is shown in the final column with the existing positive/neutral/negative colors.
+- The displayed basis is explicitly labelled ALL TIME because the repo has no separate persisted Season 0 snapshot. Season 1 remains clickable and shows a not-started state instead of fabricated values.
+- Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947): **286/286 passed**.
+- Browser visual QA and deployment remain unverified.
