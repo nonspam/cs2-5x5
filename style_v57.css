@@ -7679,3 +7679,36 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  max-height:calc(100vh - 24px)!important;overflow-y:auto!important;
  pointer-events:auto;
 }
+
+
+/* 2026-11-15 — Statistics table: remove the legacy opaque wrapper behind translucent cells. */
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team,
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .table-wrap,
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard,
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard tbody{
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+ box-shadow:none!important;
+}
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .table-wrap{
+ border:0!important;border-radius:0!important;
+}
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard tbody tr,
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard tbody tr:nth-child(even){
+ background:transparent!important;background-color:transparent!important;
+}
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard tbody td{
+ background:rgba(8,12,14,.16)!important;
+ background-color:rgba(8,12,14,.16)!important;
+ background-image:none!important;
+ -webkit-backdrop-filter:blur(11px)!important;backdrop-filter:blur(11px)!important;
+ border-top:1px solid rgba(255,255,255,.15)!important;
+ border-bottom:1px solid rgba(255,255,255,.15)!important;
+}
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard tbody td:first-child{
+ border-left:1px solid rgba(255,255,255,.13)!important;
+}
+#matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard tbody td:last-child{
+ border-right:1px solid rgba(255,255,255,.13)!important;
+}
