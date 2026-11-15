@@ -128,3 +128,18 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Final source/test status after test correction: app b24922a34541d633153d4eda65d8e5c40f66c429; CSS ca849c9dbdb141fa9b374fae3166e57d8a1f6289; tests ba201a31edf605a575181a781a2ddd21f7e42ab0; cache keys 0b115feb64720a2ec2c0903944158cd1cd6c2aad.
 
 - Final follow-up for history/Match Room translucency: CSS b67e298b3644936beeba1209bcc934463cdb523a; regression tests 7453b1d4a65b77f8282a75ec42b9161da3dd7272. Quality Gate run 43731959484 passed on tests commit 7453b1d4a65b77f8282a75ec42b9161da3dd7272: 274 passed / 0 failed / 0 skipped, verified from validate job log.
+
+
+## 2026-11-15 — Owner correction pass after screenshot review (IN PROGRESS)
+- Owner reported that only the 3 mini highlight cards looked correct; the large MVP card, player panels, statistics rows, Profile tabs, W/L markers, level badge and history-row hover still did not match the request.
+- Changes in this pass:
+  - app_v57.js: removed redundant CS2 icon/label from the Profile game navigation; tabs now contain only Overview, Match History and Track.
+  - style_v57.css: tightened Profile scroll container and sticky translucent tab bar; removed square border/background/shadow from FACEIT level arc; W/L letters in both Recent Results and Recent Matches have no tile backgrounds; match history rows use a single full-width rectangular hover target.
+  - Match Room: MVP card, Overview player cards, map/veto panel and Statistics player table surfaces now use translucent fills; approved three mini highlight cards intentionally left untouched. Team A/B colors are applied to player avatar/icon only, not the entire name cell. Team A score is green, Team B score white. K/D typography is unified: >1 green, exactly 1 white/bold, <1 red.
+  - tests/faceit-v2-shell.test.cjs: four new regression tests.
+  - index.html: cache keys refreshed.
+- Commits: app 5cc88c0419b4970153a181d24c1b3c139ff2a5d7; CSS 6f7e2a89d8c6eedd387878f6a98702ab49f59b23; tests d38124db99f4b5cd1179cc5148e0ca879853f4cb; index 06ebc3d66e6e27ae2333cb1887149e994498c52a.
+- Quality Gate run 43733541030 passed on tests commit d38124db99f4b5cd1179cc5148e0ca879853f4cb: 278 passed / 0 failed / 0 skipped. CSS-only commit run 43733538233 also passed.
+- Not performed: live browser screenshot comparison or visual acceptance. No deployment, production, database or main-branch changes.
+- Status: SOURCE + TESTS PASS; browser verification pending.
+- Next: owner refreshes DEV (hard reload) and checks Profile scroll/tabs, W/L text, level arc, full-row hover, Match Room overview transparency, Statistics transparency, avatar-only team colors, team scores and KD colors. Adjust only mismatches reported from the refreshed build.
