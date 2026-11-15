@@ -916,3 +916,9 @@ test('Match Room Statistics removes opaque table wrapper and table backgrounds',
  assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-teams \.match-stat-team \.match-scoreboard tbody tr:nth-child\(even\)[\s\S]*background:transparent!important/);
  assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-teams \.match-stat-team \.match-scoreboard tbody td\{[\s\S]*rgba\(8,12,14,\.16\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
 });
+
+
+test('Match Room Statistics glass cells override the more-specific legacy opaque row selectors',()=>{
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr td\{[\s\S]*rgba\(8,12,14,\.20\)!important[\s\S]*backdrop-filter:blur\(10px\)!important/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr:nth-child\(even\) td/);
+});
