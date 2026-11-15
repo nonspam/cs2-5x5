@@ -436,3 +436,26 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 - Added narrowly scoped, high-specificity graphite fills to the actual Match Room statistics table selector (previous pass targeted the wrong view class), plus explicit route table overrides.
 - Commits: e5e8443d0fe4208a202c43639c8a3b18105c9fe5, 0f9a4ce148dcb228a480fad5b578f5dd65f9e2ed, 34c824b8efbbe8fbf48b716c4cbb6f5f8f03200b, e777ea141fb456ea9a1fabc023befe6d471afd04.
 - Source re-fetch confirmed anchors; CI and browser QA pending. No deployment/DB/production changes.
+
+
+## 2026-11-15 — Profile transparency, FACEIT level arc and map-to-series return (IN PROGRESS)
+
+**Owner direction:** Keep Profile game tabs pinned with a subtle translucent background; replace W/L tiles with colored letters; make Profile and Match Room surfaces reveal account wallpaper; color only team identity cells in Match Room Statistics; show team labels in white and Team A/Team B scores in blue/white; render Profile FACEIT level as a progressive arc; return from map-specific statistics to the parent BO3 series.
+
+**Implemented in source:**
+- Profile level badge is now an SVG arc with level-tier color and progress proportional to level.
+- Match Room map selection captures the parent series context and opens map-specific Statistics; “Вернуться к серии” restores the same series Overview, preserving the previous Profile return target.
+- Profile horizontal tabs remain sticky and now use a translucent blurred surface. W/L indicators are text-only green/red letters.
+- Profile shell/content/cards and Match Room Overview/Statistics/TOP surfaces use translucent dark surfaces so account wallpaper can show through.
+- Match Room Statistics colors only player identity cells: Team A blue, Team B green. Team labels are white; Team A score is blue and Team B score white.
+- Added/updated source regression tests and refreshed asset cache keys.
+
+**Files:** app_v57.js, style_v57.css, tests/faceit-v2-shell.test.cjs, index.html.
+
+**Commits:** app b24922a34541d633153d4eda65d8e5c40f66c429; CSS 1d51f6c2f578cfccb18d0229a84b33fa6a979387, ca849c9dbdb141fa9b374fae3166e57d8a1f6289; tests 63a77713537d7033140c5ec4a7265e8c729e4f66, 25afe5ddc75765cf1950e4fc99692b2431ec6df5; cache key commit 0b115feb64720a2ec2c0903944158cd1cd6c2aad.
+
+**Verification:** Initial Quality Gate run 43731610757 failed (263 passed / 7 failed / 0 skipped). The failures exposed stale assertions that did not match current implementation, plus the Profile shell was still too opaque; shell transparency was corrected and tests were updated. Latest Quality Gate for 25afe5ddc75765cf1950e4fc99692b2431ec6df5 is pending.
+
+**Not performed:** browser visual QA, screenshot comparison, live BO3 navigation test, DEV deployment verification, production or DB changes.
+
+**Next:** inspect latest Quality Gate; if green, ask owner to verify all requested interactions in DEV before further design work.
