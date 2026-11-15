@@ -504,3 +504,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Test commit `86d7567a47eddbd98abd9c0d319c8fa7f7e78c73`; cache-bust commit `08896c45f0637fca9e875f589eaf3e4179a40eff` (`style_v57.css?v=matchroom-statistics-wrapper-glass-20261115-v11`).
 - Quality Gate run [43739021958](https://github.com/nonspam/cs2-5x5/actions/runs/43739021958): **283 passed / 0 failed / 0 skipped**.
 - Browser visual acceptance is still pending owner refresh; Overview was confirmed good by owner, Statistics awaits re-check.
+
+
+## 2026-11-15 — Statistics transparency: specificity-cascade root cause and final override
+- Owner supplied a fresh screenshot showing Statistics table rows still opaque after the earlier wrapper fix.
+- Re-inspection of the full stylesheet found the actual overriding rules at approximately lines 7312–7318: `.match-room-statistics-view ... .data-table tbody tr td` and even-row selectors forced solid `#121617` / `#0d1012` backgrounds with `!important`. The previous glass rules did not match this selector's specificity.
+- CSS commit `9ceb8aa86dc13ba755529856e025af4843761d1a` adds a later, equally/more-specific override for the exact Statistics view and all body cells, including even rows and hover; uses translucent `rgba(8,12,14,.20)` with blur. Header remains dark for legibility.
+- Cache-bust commit `8fd1ba861b1bca229ef30b0b50920cff58858456`: `style_v57.css?v=matchroom-statistics-cascade-glass-20261115-v12`.
+- Test commit `821c7b111e91ab0e2017db66b7eee7a977ddc2a2`; Quality Gate run [43739375950](https://github.com/nonspam/cs2-5x5/actions/runs/43739375950): **284 passed / 0 failed**.
+- Browser visual acceptance still requires owner refresh after deployment. Do not claim visual success until confirmed.
