@@ -909,3 +909,10 @@ test('Track chart tooltip is fixed above Profile and follows the viewport while 
  assert.match(app,/window\.addEventListener\('scroll',reposition,\{capture:true,signal:controller\.signal\}\)/);
  assert.match(css,/\.track-chart-tooltip\{[\s\S]*position:fixed!important;z-index:13050!important/);
 });
+
+
+test('Match Room Statistics removes opaque table wrapper and table backgrounds',()=>{
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-teams \.match-stat-team \.table-wrap,[\s\S]*background:transparent!important/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-teams \.match-stat-team \.match-scoreboard tbody tr:nth-child\(even\)[\s\S]*background:transparent!important/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-teams \.match-stat-team \.match-scoreboard tbody td\{[\s\S]*rgba\(8,12,14,\.16\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
+});
