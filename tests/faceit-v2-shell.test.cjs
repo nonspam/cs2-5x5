@@ -867,3 +867,25 @@ test('Profile history rows and Match Room roster/map cards reveal the account wa
  assert.match(css,/#matchRoomPage \.match-room-team \.match-player-card-ref\{[\s\S]*background:rgba\(9,13,15,\.46\)!important/);
  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{[\s\S]*background-color:rgba\(9,13,15,\.42\)!important/);
 });
+
+
+test('Profile navigation has no duplicate CS2 label and uses a translucent sticky bar',()=>{
+ const profile=app.slice(app.indexOf('function profilePage(v){'),app.indexOf('function openPublicPlayerProfile'));
+ assert.match(profile,/faceit-exact-game-tabs"><button/);
+ assert.doesNotMatch(profile,/faceit-exact-game-tabs"><span class="faceit-exact-cs-icon">CS2/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-game-tabs\{[\s\S]*position:sticky!important[\s\S]*rgba\(8,10,12,\.38\)/);
+});
+test('Profile W/L are letters only and FACEIT level arc has no square frame',()=>{
+ assert.match(css,/#playerProfileWindow \.faceit-form-large \.faceit-form-dot\{[\s\S]*background:transparent!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-level\{[\s\S]*border:0!important[\s\S]*background:transparent!important/);
+});
+test('Match Room surfaces are translucent, team colors stay on avatars, and KD typography is consistent',()=>{
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-mvp-card\{[\s\S]*rgba\(10,13,15,\.40\)/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-team\.team-a \.match-scoreboard tbody td\.name \.player-avatar\{[\s\S]*outline:2px solid rgba\(65,145,255,\.82\)/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-team\.team-b \.match-scoreboard tbody td\.name \.player-avatar\{[\s\S]*outline:2px solid rgba\(53,210,145,\.78\)/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-scoreboard tbody td\.stat-neutral\{[\s\S]*font-weight:900!important/);
+});
+test('Profile match history keeps one continuous hover target and W/L labels have no tiles',()=>{
+ assert.match(css,/#playerProfileWindow \.faceit-match-row:hover,[\s\S]*border-color:rgba\(198,255,69,\.52\)!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-form-large \.faceit-form-dot\.win\{color:#35d99a!important\}/);
+});
