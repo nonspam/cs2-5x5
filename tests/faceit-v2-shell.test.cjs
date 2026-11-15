@@ -893,3 +893,19 @@ test('Profile match history keeps one continuous hover target and W/L labels hav
 test('Match Room TOP player rows use translucent wallpaper-revealing cards',()=>{
  assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-top-row\{[\s\S]*rgba\(10,13,15,\.34\)!important/);
 });
+
+
+test('Match Room Overview player cards expose wallpaper through identity and metric layers and use circular avatars',()=>{
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-room-team \.match-player-card-ref\{[\s\S]*rgba\(8,12,14,\.16\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-room-team \.match-player-card-ref \.match-player-identity,[\s\S]*background:rgba\(8,12,14,\.12\)!important/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-room-team \.match-player-card-ref \.match-player-avatar-wrap,[\s\S]*border-radius:50%!important/);
+ assert.match(css,/\.player-avatar img \+ span\{display:none!important\}/);
+});
+test('Match Room Statistics player row cells are translucent across all columns',()=>{
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-team \.match-scoreboard tbody td,[\s\S]*background:rgba\(8,12,14,\.18\)!important[\s\S]*backdrop-filter:blur\(10px\)!important/);
+});
+test('Track chart tooltip is fixed above Profile and follows the viewport while scrolling',()=>{
+ assert.match(app,/tooltip\.style\.position='fixed';tooltip\.style\.zIndex='13050'/);
+ assert.match(app,/window\.addEventListener\('scroll',reposition,\{capture:true,signal:controller\.signal\}\)/);
+ assert.match(css,/\.track-chart-tooltip\{[\s\S]*position:fixed!important;z-index:13050!important/);
+});
