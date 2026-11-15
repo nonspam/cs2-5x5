@@ -178,3 +178,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Matchmaking-only table has Rank / Player / Skill Level / Elo; temporary top-three row outlines remain, rank numerals are plain white, skill badges carry rank colors.
 - Latest Quality Gate [43757606058](https://github.com/nonspam/cs2-5x5/actions/runs/43757606058): 285/285 passed.
 - Browser visual QA and DEV deployment verification are not evidenced. Continue with DEV visual review; do not modify database or deploy without separate approval.
+
+## 2026-11-15 — Latest leaderboard changes
+- Rating now has translucent glass table rows matching Match Room Statistics (rgba(8,12,14,.14), 9px blur, subtle borders); the surrounding panel is transparent.
+- Season 0 uses active players' ALL TIME aggregates, sorted by the same K/D and tie-break rules as Statistics. Shows K/D, not placeholder Elo.
+- Season 1 selector remains clickable and shows an upcoming-season empty state.
+- Latest Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947): 286/286 passed.
+- No browser visual QA or deployment verification yet.
