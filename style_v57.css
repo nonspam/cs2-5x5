@@ -7616,3 +7616,66 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  border-color:rgba(255,255,255,.14)!important;
  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)
 }
+
+
+/* 2026-11-15 — screenshot follow-up: glass player rows, circular real avatars, Track tooltip above profile. */
+/* Match Room Overview: the opaque identity header and metric strip were masking the wallpaper. */
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref{
+ background:rgba(8,12,14,.16)!important;background-color:rgba(8,12,14,.16)!important;
+ background-image:none!important;border:1px solid rgba(255,255,255,.16)!important;
+ -webkit-backdrop-filter:blur(11px)!important;backdrop-filter:blur(11px)!important;
+}
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-player-identity,
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-career-grid,
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-career-metric,
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-player-form,
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-career-empty{
+ background:rgba(8,12,14,.12)!important;background-color:rgba(8,12,14,.12)!important;
+ background-image:none!important;
+}
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-career-metric{
+ border-left-color:rgba(255,255,255,.13)!important;
+}
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-player-avatar-wrap,
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-player-avatar-wrap .player-avatar{
+ width:40px!important;height:40px!important;min-width:40px!important;flex:0 0 40px!important;
+ border-radius:50%!important;overflow:hidden!important;
+}
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref .match-player-avatar-wrap .player-avatar img{
+ width:100%!important;height:100%!important;inset:0!important;object-fit:cover!important;border-radius:50%!important;
+}
+/* Match Room Statistics: make every cell in each player row frosted, not only the table wrapper. */
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard,
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody{
+ background:transparent!important;background-color:transparent!important;
+}
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody tr{
+ background:transparent!important;background-color:transparent!important;
+}
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody td,
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody td.name,
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody td.match-stat-rank{
+ background:rgba(8,12,14,.18)!important;background-color:rgba(8,12,14,.18)!important;
+ background-image:none!important;
+ -webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important;
+ border-top:1px solid rgba(255,255,255,.14)!important;
+ border-bottom:1px solid rgba(255,255,255,.14)!important;
+}
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody td.name{
+ border-left:1px solid rgba(255,255,255,.12)!important;
+}
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody td:last-child{
+ border-right:1px solid rgba(255,255,255,.12)!important;
+}
+#matchRoomPage.match-room-page .match-stat-team .match-scoreboard tbody tr:hover td{
+ background:rgba(20,35,34,.28)!important;
+}
+/* A real avatar image must cover the fallback initial; the initial reappears if the image fails. */
+.player-avatar img + span{display:none!important}
+/* Track chart points: tooltip coordinates are viewport coordinates, so the tooltip must be fixed and above the Profile modal. */
+.track-chart-tooltip{
+ position:fixed!important;z-index:13050!important;
+ width:min(350px,calc(100vw - 24px))!important;
+ max-height:calc(100vh - 24px)!important;overflow-y:auto!important;
+ pointer-events:auto;
+}
