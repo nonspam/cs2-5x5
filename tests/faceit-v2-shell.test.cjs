@@ -50,7 +50,7 @@ test('shared shell has responsive layout and mobile navigation rules', () => {
 });
 
 test('application routes support direct hash entry and browser back/forward navigation', () => {
-  assert.match(app, /const APP_ROUTE_IDS=\\['home','analytics','ranking','base','maps','teams','records','seasons','track','settings','profile','compare'\\]/);
+  assert.match(app, /const APP_ROUTE_IDS=\['home','analytics','ranking','base','maps','teams','records','seasons','track','settings','profile','compare'\]/);
   assert.match(app, /function appRouteFromLocation\(\)/);
   assert.match(app, /window\.location\.hash/);
   assert.match(app, /window\.history\[method\]/);
@@ -923,7 +923,7 @@ test('Match Room Statistics glass cells override the more-specific legacy opaque
  assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-teams \.match-stat-team \.data-table tbody tr:nth-child\(even\) td/);
 });
 
-\ntest('Ranking is a dedicated route between Statistics and Matches with a two-season Elo prototype',()=>{
+test('Ranking is a dedicated route between Statistics and Matches with a two-season Elo prototype',()=>{
  assert.match(app,/const APP_ROUTE_IDS=\['home','analytics','ranking','base'/);
  const rail=app.slice(app.indexOf('function faceitAppRailMarkup()'),app.indexOf('function bindAppShell'));
  assert.ok(rail.indexOf("['analytics'")<rail.indexOf("['ranking'"));
