@@ -163,3 +163,10 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Browser visual QA and deployed DEV verification are still pending. See SESSION_CHECKPOINT.md.
 
 - TOP-tab player rows now use translucent cards (three approved mini highlight cards unchanged); latest Quality Gate 43733694196: 279/279 passed. Browser visual QA remains pending.
+
+
+## 2026-11-15 — Latest screenshot corrections
+- Match Room Overview roster cards now have translucent identity/metrics layers and circular real avatars; fallback initials are hidden when an image exists.
+- Match Room Statistics player cells all use translucent blurred backgrounds; MVP and three mini highlights remain unchanged.
+- Track point tooltip now uses fixed viewport positioning above the Profile overlay and follows scroll/resize.
+- Quality Gate 43735324791: 282/282 passed. Live browser verification remains pending.
