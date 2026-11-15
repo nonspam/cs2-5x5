@@ -459,3 +459,5 @@ Each entry records intent, actual behavior, source files, evidence and remaining
 **Not performed:** browser visual QA, screenshot comparison, live BO3 navigation test, DEV deployment verification, production or DB changes.
 
 **Next:** inspect latest Quality Gate; if green, ask owner to verify all requested interactions in DEV before further design work.
+
+**Follow-up:** Added translucent backgrounds to Profile history rows and Match Room roster/map cards so the account wallpaper is visible in those subviews too. CSS commit b67e298b3644936beeba1209bcc934463cdb523a; regression tests commit 7453b1d4a65b77f8282a75ec42b9161da3dd7272. Final Quality Gate run [43731959484](https://github.com/nonspam/cs2-5x5/actions/runs/43731959484): **274 passed / 0 failed / 0 skipped**, confirmed from the validate job log.
