@@ -126,3 +126,5 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Next step: inspect latest Quality Gate job log; fix any genuine regressions, then ask owner to test the profile scroll, W/L marks, Match Room wallpaper transparency, team coloring and map return-to-series flow.
 
 - Final source/test status after test correction: app b24922a34541d633153d4eda65d8e5c40f66c429; CSS ca849c9dbdb141fa9b374fae3166e57d8a1f6289; tests ba201a31edf605a575181a781a2ddd21f7e42ab0; cache keys 0b115feb64720a2ec2c0903944158cd1cd6c2aad.
+
+- Final follow-up for history/Match Room translucency: CSS b67e298b3644936beeba1209bcc934463cdb523a; regression tests 7453b1d4a65b77f8282a75ec42b9161da3dd7272. Quality Gate run 43731959484 passed on tests commit 7453b1d4a65b77f8282a75ec42b9161da3dd7272: 274 passed / 0 failed / 0 skipped, verified from validate job log.
