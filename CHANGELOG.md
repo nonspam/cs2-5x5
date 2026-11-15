@@ -6256,3 +6256,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-15T12:29:10-05:00 — Fix Statistics glass rows without JS state dependency
+
+- Commit: 139dd7ede157d770e1dc4992ac96dbfe0f0c8e82
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
