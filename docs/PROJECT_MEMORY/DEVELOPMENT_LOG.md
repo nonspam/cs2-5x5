@@ -495,3 +495,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Quality Gate [43735324791](https://github.com/nonspam/cs2-5x5/actions/runs/43735324791): **282 passed / 0 failed / 0 skipped**.
 - Files changed: app_v57.js, style_v57.css, tests/faceit-v2-shell.test.cjs, index.html.
 - Visual acceptance still pending owner hard-refresh and browser verification; no production deployment was made.
+
+
+## 2026-11-15 — Match Room Statistics glass-wrapper correction
+- Owner confirmed Overview now looks correct, but Statistics player rows still appeared opaque.
+- Root cause identified from stylesheet cascade: legacy `.match-stat-teams .table-wrap` and table backgrounds remained solid `#0b0b0b`, behind the individually translucent cells.
+- CSS commit `8299eea2dc4740f6ffd1aba258dca852da4b2e17`: explicitly clears background/background-image/shadow from the Statistics team wrapper, `.table-wrap`, `.match-scoreboard`, `tbody`, and odd/even rows; keeps a lightly frosted translucent fill on every player cell.
+- Test commit `86d7567a47eddbd98abd9c0d319c8fa7f7e78c73`; cache-bust commit `08896c45f0637fca9e875f589eaf3e4179a40eff` (`style_v57.css?v=matchroom-statistics-wrapper-glass-20261115-v11`).
+- Quality Gate run [43739021958](https://github.com/nonspam/cs2-5x5/actions/runs/43739021958): **283 passed / 0 failed / 0 skipped**.
+- Browser visual acceptance is still pending owner refresh; Overview was confirmed good by owner, Statistics awaits re-check.
