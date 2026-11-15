@@ -697,12 +697,12 @@ test('global route navigation closes both contained windows before rendering the
  assert.match(app,/function bindAppShell\(root\)[\s\S]*navigateApp\(button\.dataset\.appRoute\)/);
 });
 test('match room back returns to the matches list and closing clears stale modal state',()=>{
- assert.ok(app.includes(String.raw`matchRoomNavigate(\'base\')`));
+ assert.match(app,/function matchRoomNavigate\(route='base'\)/);
  assert.match(app,/function closeMatchRoom\(options=\{\}\)\{[\s\S]*page\?\.remove\(\);[\s\S]*classList\.remove\('match-room-open'\)/);
  assert.match(app,/function closePlayerProfileWindow\(options=\{\}\)\{[\s\S]*root\?\.remove\(\);[\s\S]*classList\.remove\('profile-window-open'\)/);
 });
 test('every map row opens the shared Match Room statistics view scoped to that map',()=>{
- assert.match(app,/function openMapDetail\(mapId\)[\s\S]*openMatchDetail\(match\.match_id,\{initialView:'statistics',mapId:map\.map_id\}\)/);
+ assert.match(app,/function openMapDetail\(mapId\)[\s\S]*openMatchDetail\(match\.match_id,\{initialView:'statistics',mapId:map\.map_id,restore:returningToSeries,returnToSeries:returningToSeries\}\)/);
  assert.match(app,/function openMatchDetail\(id,options=\{\}\)/);
  assert.match(app,/const selectedMap=options\.mapId\?maps\.find/);
  assert.match(app,/if\(options\.initialView\)setMatchRoomView\(options\.initialView\)/);
@@ -816,10 +816,10 @@ test('opening a Match Room from a public profile preserves a dedicated return-to
  assert.match(app,/const profileReturnId=window\.__activePlayerProfileId\|\|null/);
  assert.match(app,/window\.__matchRoomProfileReturnId=profileReturnId/);
  assert.match(app,/match-room-back-profile[\s\S]*matchRoomReturnToProfile\(\)/);
- assert.match(app,/function matchRoomReturnToProfile\(\)[\s\S]*openPublicPlayerProfile\(id\)/);
+ assert.match(app,/function matchRoomReturnToProfile\(\)[\s\S]*openPublicPlayerProfile\(id,\{section:'history'\}\)/);
 });
 test('Match Room back-to-matches action remains separate from return-to-profile',()=>{
- assert.match(app,/matchRoomNavigate\('base'\)/);
+ assert.match(app,/function matchRoomNavigate\(route='base'\)/);
  assert.match(app,/window\.__matchRoomProfileReturnId=null;closeMatchRoom\(\);navigateApp/);
 });
 test('legacy blue fills are explicitly overridden on Matches, Statistics and Match Room',()=>{
