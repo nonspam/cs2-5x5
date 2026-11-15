@@ -479,3 +479,6 @@ The owner supplied refreshed screenshots and clarified that the three mini highl
 - Commits: app 5cc88c0419b4970153a181d24c1b3c139ff2a5d7; CSS 6f7e2a89d8c6eedd387878f6a98702ab49f59b23; tests d38124db99f4b5cd1179cc5148e0ca879853f4cb; index 06ebc3d66e6e27ae2333cb1887149e994498c52a.
 - Quality Gate [43733541030](https://github.com/nonspam/cs2-5x5/actions/runs/43733541030): **278 passed / 0 failed / 0 skipped**.
 - Visual browser QA and DEV deployment verification remain pending. Do not claim visual acceptance until owner tests refreshed DEV.
+
+
+**TOP follow-up:** Owner noted the TOP player cards were still opaque; appended a targeted translucent `.match-stat-top-row` override while leaving the three approved mini highlights untouched. CSS commit 38b09380a8dce42b850508cf4109541ebd4a4177; test commit 7a9b4724750db837bd67f7b6313d349cef196e89. Latest Quality Gate [43733694196](https://github.com/nonspam/cs2-5x5/actions/runs/43733694196): **279 passed / 0 failed / 0 skipped**.
