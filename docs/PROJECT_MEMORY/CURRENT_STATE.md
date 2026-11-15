@@ -150,3 +150,5 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Latest Quality Gate is pending for commit 25afe5ddc75765cf1950e4fc99692b2431ec6df5; an earlier run failed and was corrected.
 - Browser QA, screenshot comparison, live navigation verification and deployment SHA remain unverified.
 - See SESSION_CHECKPOINT.md for the exact implementation and next action.
+
+- Latest owner UI package: Quality Gate run 43731859881 passed on tests commit ba201a31edf605a575181a781a2ddd21f7e42ab0 (273/273). Browser QA, owner visual acceptance and deployment remain pending.
