@@ -170,3 +170,11 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Match Room Statistics player cells all use translucent blurred backgrounds; MVP and three mini highlights remain unchanged.
 - Track point tooltip now uses fixed viewport positioning above the Profile overlay and follows scroll/resize.
 - Quality Gate 43735324791: 282/282 passed. Live browser verification remains pending.
+
+
+## 2026-11-15 — Current focus: matchmaking leaderboard prototype
+- New route `ranking` is implemented in source and placed between Statistics and Matches in the left rail.
+- Season 0 (Test) and Season 1 selectors are clickable. Both currently show active players with Elo 1000 as placeholder data; season snapshots are not persisted and no real season rating calculation exists yet.
+- Matchmaking-only table has Rank / Player / Skill Level / Elo; temporary top-three row outlines remain, rank numerals are plain white, skill badges carry rank colors.
+- Latest Quality Gate [43757606058](https://github.com/nonspam/cs2-5x5/actions/runs/43757606058): 285/285 passed.
+- Browser visual QA and DEV deployment verification are not evidenced. Continue with DEV visual review; do not modify database or deploy without separate approval.
