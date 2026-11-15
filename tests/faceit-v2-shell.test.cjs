@@ -744,7 +744,7 @@ test("right utility avatar restores the taller portrait tile",()=>{
 
 
 test('profile media feedback stays above the profile window and reports unreadable uploaded images',()=>{
- assert.match(css.slice(css.lastIndexOf('.toast{')),/z-index:12110!important/);
+ assert.match(css.slice(css.lastIndexOf('.toast{')),/z-index:2147483000!important/);
  assert.match(app,/Файл сохранён, но изображение не открывается из хранилища/);
  assert.match(app,/applyAccountWallpaper\(\);render\(\);renderUtilityRail\(\)/);
 });
@@ -767,7 +767,7 @@ test('VS recent matches panel uses compact rows with explicit grid layout',()=>{
 test('profile 5 10 20 selector updates profile content without full page rerender',()=>{
  assert.match(app,/function setProfileWindowSize\(size\)[\s\S]*profilePage\(mount\);enhanceSelects\(mount\)/);
  assert.match(app,/const scrollTop=content\?\.scrollTop\|\|0;[\s\S]*refreshed\.scrollTop=scrollTop/);
- assert.match(app,/onclick="setProfileWindowSize\('+n+'\)"/);
+ assert.match(app,/onclick="setProfileWindowSize\('\+n\+'\)"/);
 });
 test('account wallpaper has a visible layer behind transparent route shells',()=>{
  assert.match(css,/body\.has-account-wallpaper \.faceit-route-shell,body\.has-account-wallpaper \.faceit-profile-shell\{background:transparent!important/);
