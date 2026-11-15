@@ -7454,3 +7454,21 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
  border-bottom-color:rgba(255,255,255,.14)!important;
 }
+
+/* Owner follow-up — reveal the wallpaper through roster cards and map history rows. */
+#playerProfileWindow .faceit-match-row{
+ background:rgba(9,13,15,.26)!important;
+ border-top-color:rgba(255,255,255,.12)!important;
+}
+#playerProfileWindow .faceit-match-row:hover{background:rgba(18,24,26,.46)!important}
+#matchRoomPage .match-room-team .match-player-card-ref{
+ background:rgba(9,13,15,.46)!important;
+ border-color:rgba(255,255,255,.15)!important;
+ -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+}
+#matchRoomPage .match-room-center-column .match-map-row-cover{
+ background-color:rgba(9,13,15,.42)!important;
+ border-color:rgba(255,255,255,.18)!important;
+ -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+}
+#matchRoomPage .match-room-veto{background:rgba(9,13,15,.40)!important}
