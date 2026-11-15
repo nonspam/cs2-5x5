@@ -7740,3 +7740,31 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr:hover td{
  background:rgba(35,65,58,.28)!important;background-color:rgba(35,65,58,.28)!important;
 }
+
+
+/* 2026-11-15 — Match Room Statistics: lighten wallpaper overlay only on Statistics tab.
+   The full-page .58/.68 gradient darkened the wallpaper before translucent rows could reveal it. */
+#matchRoomPage.match-room-page.match-room-statistics-active{
+ background-color:rgba(8,8,8,.12)!important;
+ background-image:linear-gradient(rgba(8,8,8,.18),rgba(8,8,8,.24)),var(--account-wallpaper,none)!important;
+ background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;
+}
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-teams,
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team,
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .table-wrap,
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard,
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody{
+ background:transparent!important;background-color:transparent!important;background-image:none!important;box-shadow:none!important;
+}
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr,
+#matchRoomPage.match-room-page.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr:nth-child(even){
+ background:transparent!important;background-color:transparent!important;
+}
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr td{
+ background:rgba(8,12,14,.12)!important;background-color:rgba(8,12,14,.12)!important;background-image:none!important;
+ -webkit-backdrop-filter:blur(11px)!important;backdrop-filter:blur(11px)!important;
+ border-top:1px solid rgba(255,255,255,.16)!important;border-bottom:1px solid rgba(255,255,255,.16)!important;
+}
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr td:first-child{border-left:1px solid rgba(255,255,255,.14)!important}
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr td:last-child{border-right:1px solid rgba(255,255,255,.14)!important}
+#matchRoomPage.match-room-page.match-room-statistics-active .match-stat-team .match-scoreboard tbody tr:hover td{background:rgba(35,65,58,.22)!important}
