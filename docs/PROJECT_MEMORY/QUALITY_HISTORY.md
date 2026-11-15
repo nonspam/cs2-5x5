@@ -166,3 +166,7 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 ## 2026-11-15 — Matchmaking leaderboard route and season prototype
 - Quality Gate run [43757606058](https://github.com/nonspam/cs2-5x5/actions/runs/43757606058), tested final code/test commit `fe3e437ac3b384f232300a588cf61265afc32630`: **285 passed / 0 failed / 0 skipped**, confirmed from validate job log.
 - Scope: automated Node regression/static checks only. No browser QA, screenshot comparison, or DEV deployment verification.
+
+## 2026-11-15 — Leaderboard glass + K/D update
+- Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947), final validation for commit `fee87fc4085b0a07b7ef0736b305efdab8bd4389`: **286 passed / 0 failed / 0 skipped**.
+- Scope: automated Node regression/static checks. Browser screenshot comparison and DEV deployment are not included.
