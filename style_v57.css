@@ -7897,3 +7897,36 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  .ranking-table .ranking-player .player-avatar{width:31px!important;height:31px!important;flex-basis:31px!important}
  .ranking-elo{font-size:13px!important}
 }
+
+
+/* 2026-11-15 — Matchmaking leaderboard glass treatment aligned with Match Room Statistics. */
+.ranking-page-note{margin-top:5px;color:#9ca4a8;font-size:12px;font-weight:600;letter-spacing:.01em}
+.ranking-season-select select{background:rgba(8,12,14,.34)!important;-webkit-backdrop-filter:blur(9px)!important;backdrop-filter:blur(9px)!important;border-color:rgba(255,255,255,.16)!important}
+.ranking-panel{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
+.ranking-panel .table-wrap{overflow-x:auto;border:0!important;border-radius:0!important;background:transparent!important}
+.ranking-table{background:transparent!important;border-collapse:separate!important;border-spacing:0 5px!important}
+.ranking-table thead th{background:transparent!important}
+.ranking-table tbody tr,.ranking-table tbody tr:nth-child(even){background:transparent!important;background-color:transparent!important;box-shadow:none!important}
+.ranking-table tbody td,.ranking-table tbody tr:nth-child(even) td{
+ background:rgba(8,12,14,.14)!important;
+ background-color:rgba(8,12,14,.14)!important;
+ background-image:none!important;
+ -webkit-backdrop-filter:blur(9px)!important;
+ backdrop-filter:blur(9px)!important;
+ border-top:1px solid rgba(255,255,255,.17)!important;
+ border-bottom:1px solid rgba(255,255,255,.17)!important;
+}
+.ranking-table tbody td:first-child{border-left:1px solid rgba(255,255,255,.15)!important}
+.ranking-table tbody td:last-child{border-right:1px solid rgba(255,255,255,.15)!important}
+.ranking-table tbody tr.ranking-gold td{background:rgba(255,211,0,.045)!important;border-top-color:rgba(255,211,0,.86)!important;border-bottom-color:rgba(255,211,0,.86)!important}
+.ranking-table tbody tr.ranking-silver td{background:rgba(214,227,233,.04)!important;border-top-color:rgba(214,227,233,.68)!important;border-bottom-color:rgba(214,227,233,.68)!important}
+.ranking-table tbody tr.ranking-bronze td{background:rgba(255,119,13,.04)!important;border-top-color:rgba(255,119,13,.78)!important;border-bottom-color:rgba(255,119,13,.78)!important}
+.ranking-table tbody tr.ranking-gold td:first-child{border-left-color:rgba(255,211,0,.86)!important}
+.ranking-table tbody tr.ranking-silver td:first-child{border-left-color:rgba(214,227,233,.68)!important}
+.ranking-table tbody tr.ranking-bronze td:first-child{border-left-color:rgba(255,119,13,.78)!important}
+.ranking-table tbody tr.ranking-gold td:last-child{border-right-color:rgba(255,211,0,.86)!important}
+.ranking-table tbody tr.ranking-silver td:last-child{border-right-color:rgba(214,227,233,.68)!important}
+.ranking-table tbody tr.ranking-bronze td:last-child{border-right-color:rgba(255,119,13,.78)!important}
+.ranking-table tbody tr:not(.ranking-gold):not(.ranking-silver):not(.ranking-bronze):hover td{background:rgba(35,65,58,.24)!important}
+.ranking-kd{text-align:center!important;font-weight:900!important;font-size:15px!important;font-variant-numeric:tabular-nums}
+.ranking-kd .kd-value{font-weight:900!important}
