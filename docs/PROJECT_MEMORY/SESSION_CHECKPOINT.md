@@ -110,3 +110,17 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Added exact CSS overrides for the Match Room statistics roster table rows and route Matches/Statistics table surfaces, using the approved graphite palette.
 - Commits: app e5e8443d0fe4208a202c43639c8a3b18105c9fe5; CSS 0f9a4ce148dcb228a480fad5b578f5dd65f9e2ed; cache 34c824b8efbbe8fbf48b716c4cbb6f5f8f03200b; tests e777ea141fb456ea9a1fabc023befe6d471afd04.
 - Source anchors re-fetched and confirmed. CI and browser visual QA pending; no deployment, DB, production or main changes.
+
+
+## Owner feedback — transparent profile/Match Room and map-to-series return (2026-11-15)
+- Owner supplied seven screenshots/references and requested: pinned transparent Profile game tabs; text-only green W/red L results; more translucent profile/history surfaces; Match Room Overview/Statistics/TOP surfaces that reveal account wallpaper; blue Team A and green Team B identity-cell backgrounds (not colored player text); white team labels, blue Team A score and white Team B score; FACEIT level arc in Profile; and map-statistics back navigation to the parent BO3 series rather than profile match history.
+- Source changes on faceit-dev:
+  - app_v57.js: Profile level indicator changed from a full circular border to an SVG arc using the level-tier color and 27 degrees per level. Opening a map while already inside its parent Match Room stores the parent series context; the map-specific statistics view exposes 'Вернуться к серии', which restores the unfiltered series Overview and retains the profile-return context.
+  - style_v57.css: Profile tabs stay sticky but use a translucent blurred surface; W/L marks render as colored letters without tiles; Profile shell/content/cards and Match Room surfaces are translucent; Match Room Statistics colors only the player identity cell (blue Team A, green Team B), with white team labels and blue/white team scores.
+  - tests/faceit-v2-shell.test.cjs: added regression checks for the new behaviors and aligned stale navigation assertions with the actual current implementation.
+  - index.html: refreshed CSS/JS cache keys.
+- Commits: app b24922a34541d633153d4eda65d8e5c40f66c429; CSS 1d51f6c2f578cfccb18d0229a84b33fa6a979387, follow-up translucency ca849c9dbdb141fa9b374fae3166e57d8a1f6289; tests 63a77713537d7033140c5ec4a7265e8c729e4f66, follow-up 25afe5ddc75765cf1950e4fc99692b2431ec6df5; cache keys 0b115feb64720a2ec2c0903944158cd1cd6c2aad.
+- Verification: initial Quality Gate run 43731610757 failed (263 passed / 7 failed / 0 skipped). Failures included stale source assertions for shell opacity/navigation/media z-index and one updated map-open contract; the Profile shell opacity issue was also a real visual defect and was corrected to rgba(8,8,8,.42). Regression assertions were updated. Latest Quality Gate run for 25afe5ddc75765cf1950e4fc99692b2431ec6df5 is running; final result pending.
+- Not performed: browser visual QA, screenshot comparison in a running DEV browser, live click-through of map → series → profile, deployment verification. No production, database, SQL, migrations, RLS, grants, storage policy or main changes.
+- Status: IN PROGRESS — wait for Quality Gate, then owner must verify visual appearance and the BO3 return flow in DEV.
+- Next step: inspect latest Quality Gate job log; fix any genuine regressions, then ask owner to test the profile scroll, W/L marks, Match Room wallpaper transparency, team coloring and map return-to-series flow.
