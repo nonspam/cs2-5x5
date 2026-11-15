@@ -7472,3 +7472,139 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
 }
 #matchRoomPage .match-room-veto{background:rgba(9,13,15,.40)!important}
+
+
+/* 2026-11-15 — owner correction pass: transparent surfaces, stable Profile tabs, no W/L tiles. */
+#playerProfileWindow .player-profile-window-panel{overflow:hidden!important}
+#playerProfileWindow #playerProfileMount,#playerProfileWindow .faceit-profile-shell{
+ min-height:0!important;height:100%!important;overflow:hidden!important
+}
+#playerProfileWindow .faceit-exact-content{
+ min-height:0!important;height:100%!important;overflow-y:auto!important;overflow-x:hidden!important;
+ background:rgba(8,10,12,.14)!important;overscroll-behavior:contain!important
+}
+#playerProfileWindow .faceit-exact-game-tabs{
+ position:sticky!important;top:0!important;z-index:120!important;align-self:start!important;
+ display:flex!important;align-items:center!important;min-height:54px!important;height:54px!important;
+ margin:0!important;padding:0 12px!important;background:rgba(8,10,12,.38)!important;
+ -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+ border-bottom:1px solid rgba(255,255,255,.12)!important;box-shadow:none!important
+}
+#playerProfileWindow .faceit-exact-game-tabs>span,
+#playerProfileWindow .faceit-exact-game-tabs>b{display:none!important}
+#playerProfileWindow .faceit-exact-game-tabs button{
+ position:relative!important;flex:0 0 auto!important;height:54px!important;padding:0 12px!important;
+ border:0!important;border-radius:0!important;background:transparent!important;
+ color:rgba(240,244,244,.78)!important;box-shadow:none!important
+}
+#playerProfileWindow .faceit-exact-game-tabs button.active{color:#c6ff45!important;background:transparent!important}
+#playerProfileWindow .faceit-exact-game-tabs button.active:after{
+ content:"";position:absolute;left:12px;right:12px;bottom:0;height:2px;background:#c6ff45;border-radius:2px
+}
+/* FACEIT level: only the yellow arc, no square border or tile. */
+#playerProfileWindow .faceit-exact-level{
+ width:46px!important;height:46px!important;min-width:46px!important;
+ border:0!important;border-color:transparent!important;border-radius:50%!important;
+ outline:0!important;background:transparent!important;box-shadow:none!important
+}
+#playerProfileWindow .faceit-exact-level:before,
+#playerProfileWindow .faceit-exact-level:after{display:none!important;content:none!important}
+#playerProfileWindow .faceit-exact-level-ring{
+ display:block!important;width:46px!important;height:46px!important;border:0!important;
+ background:transparent!important;box-shadow:none!important
+}
+#playerProfileWindow .faceit-exact-level-ring .track{stroke:rgba(255,255,255,.16)!important}
+#playerProfileWindow .faceit-exact-level-ring .progress{stroke:var(--faceit-level-color)!important}
+/* W/L: plain letters, including the overview's Recent Matches strip. */
+#playerProfileWindow .faceit-exact-form .faceit-form-dot,
+#playerProfileWindow .faceit-form-large .faceit-form-dot{
+ display:inline!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;
+ padding:0!important;margin:0 5px 0 0!important;border:0!important;border-radius:0!important;
+ outline:0!important;background:transparent!important;box-shadow:none!important;
+ font-size:12px!important;font-weight:900!important;line-height:1.2!important
+}
+#playerProfileWindow .faceit-exact-form .faceit-form-dot.win,
+#playerProfileWindow .faceit-form-large .faceit-form-dot.win{color:#35d99a!important}
+#playerProfileWindow .faceit-exact-form .faceit-form-dot.loss,
+#playerProfileWindow .faceit-form-large .faceit-form-dot.loss{color:#ff5968!important}
+#playerProfileWindow .faceit-exact-form .faceit-form-dot.draw,
+#playerProfileWindow .faceit-form-large .faceit-form-dot.draw{color:#aab2b8!important}
+#playerProfileWindow .faceit-exact-form,#playerProfileWindow .faceit-form-large{
+ display:flex!important;align-items:center!important;gap:5px!important;background:transparent!important
+}
+/* Full-width match row hover target; keep the row rectangular, not capsule-shaped. */
+#playerProfileWindow .faceit-match-list{width:100%!important;overflow:visible!important}
+#playerProfileWindow .faceit-match-row{
+ display:grid!important;width:100%!important;min-width:0!important;box-sizing:border-box!important;
+ border-radius:6px!important;border:1px solid rgba(255,255,255,.10)!important;
+ background:rgba(9,13,15,.24)!important;overflow:hidden!important;
+ transition:background .14s ease,border-color .14s ease!important
+}
+#playerProfileWindow .faceit-match-row>span{background:transparent!important}
+#playerProfileWindow .faceit-match-row:hover,#playerProfileWindow .faceit-match-row:focus-visible{
+ background:rgba(90,145,115,.20)!important;border-color:rgba(198,255,69,.52)!important;
+ outline:0!important;box-shadow:inset 0 0 0 1px rgba(198,255,69,.16)!important
+}
+/* Match Room: preserve the three already-approved mini highlight cards. */
+#matchRoomPage.match-room-page .match-room-overview-view,
+#matchRoomPage.match-room-page .match-room-top-view,
+#matchRoomPage.match-room-page .match-room-columns{background:transparent!important}
+#matchRoomPage.match-room-page .match-stat-mvp-card{
+ background:rgba(10,13,15,.40)!important;background-image:none!important;
+ border-color:rgba(255,255,255,.14)!important;
+ -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)
+}
+#matchRoomPage.match-room-page .match-stat-team,
+#matchRoomPage.match-room-page .match-stat-team .table-wrap,
+#matchRoomPage.match-room-page .match-stat-team .data-table,
+#matchRoomPage.match-room-page .match-stat-team .data-table tbody{
+ background:rgba(10,13,15,.24)!important;background-image:none!important
+}
+#matchRoomPage.match-room-page .match-stat-team .data-table tbody tr,
+#matchRoomPage.match-room-page .match-stat-team .data-table tbody tr td,
+#matchRoomPage.match-room-page .match-stat-team .data-table tbody tr:nth-child(even),
+#matchRoomPage.match-room-page .match-stat-team .data-table tbody tr:nth-child(even) td{
+ background:rgba(10,13,15,.30)!important;background-image:none!important
+}
+#matchRoomPage.match-room-page .match-stat-team .data-table tbody tr:hover,
+#matchRoomPage.match-room-page .match-stat-team .data-table tbody tr:hover td{background:rgba(35,65,58,.46)!important}
+#matchRoomPage.match-room-page .match-room-team .match-player-card,
+#matchRoomPage.match-room-page .match-room-team .match-player-card-ref{
+ background:rgba(10,13,15,.34)!important;background-image:none!important;
+ border-color:rgba(255,255,255,.16)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)
+}
+#matchRoomPage.match-room-page .match-room-center-column,
+#matchRoomPage.match-room-page .match-room-center-column .match-room-center-heading,
+#matchRoomPage.match-room-page .match-room-center-column .match-room-map-list,
+#matchRoomPage.match-room-page .match-room-center-column .match-room-veto{
+ background:rgba(10,13,15,.22)!important;background-image:none!important
+}
+/* Team color is on the player avatar/icon only, not the full name cell. */
+#matchRoomPage.match-room-page .match-stat-team.team-a .match-scoreboard tbody td.name,
+#matchRoomPage.match-room-page .match-stat-team.team-b .match-scoreboard tbody td.name{
+ background:rgba(10,13,15,.30)!important;border-left:0!important;color:#f1f4f4!important
+}
+#matchRoomPage.match-room-page .match-stat-team.team-a .match-scoreboard tbody td.name .player-avatar{
+ background:rgba(48,132,238,.30)!important;outline:2px solid rgba(65,145,255,.82)!important;outline-offset:1px!important
+}
+#matchRoomPage.match-room-page .match-stat-team.team-b .match-scoreboard tbody td.name .player-avatar{
+ background:rgba(42,190,126,.28)!important;outline:2px solid rgba(53,210,145,.78)!important;outline-offset:1px!important
+}
+/* Team A green score; Team B white score. */
+#matchRoomPage.match-room-page .match-stat-team.team-a .match-stat-team-score,
+#matchRoomPage.match-room-page .match-stat-team.team-a .match-stat-team-score.is-winning{color:#35d99a!important}
+#matchRoomPage.match-room-page .match-stat-team.team-b .match-stat-team-score,
+#matchRoomPage.match-room-page .match-stat-team.team-b .match-stat-team-score.is-winning{color:#f2f4f4!important}
+#matchRoomPage.match-room-page .match-stat-team-head>div>span{color:#f3f5f5!important}
+/* Identical typography for every player row: KD > 1 green, = 1 white/bold, < 1 red. */
+#matchRoomPage.match-room-page .match-scoreboard tbody td.stat-positive,
+#matchRoomPage.match-room-page .match-scoreboard tbody td.stat-negative,
+#matchRoomPage.match-room-page .match-scoreboard tbody td.stat-neutral{
+ font-size:12px!important;font-weight:800!important;line-height:1.25!important;font-variant-numeric:tabular-nums!important
+}
+#matchRoomPage.match-room-page .match-scoreboard tbody td.stat-positive{color:#35d99a!important}
+#matchRoomPage.match-room-page .match-scoreboard tbody td.stat-neutral{color:#f2f4f4!important;font-weight:900!important}
+#matchRoomPage.match-room-page .match-scoreboard tbody td.stat-negative{color:#ff5968!important}
+#matchRoomPage.match-room-page .match-scoreboard tbody td:not(.stat-positive):not(.stat-negative):not(.stat-neutral){
+ font-size:12px!important;font-weight:750!important;line-height:1.25!important
+}
