@@ -6220,3 +6220,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-15T12:16:49-05:00 — Make Match Room statistics rows reveal wallpaper
+
+- Commit: a7db47b4b1331d45cc3052c3c631bc3a343ce44a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
