@@ -174,3 +174,14 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Cache-bust commit `8fd1ba861b1bca229ef30b0b50920cff58858456`: `style_v57.css?v=matchroom-statistics-cascade-glass-20261115-v12`.
 - Test commit `821c7b111e91ab0e2017db66b7eee7a977ddc2a2`; Quality Gate run [43739375950](https://github.com/nonspam/cs2-5x5/actions/runs/43739375950): **284 passed / 0 failed**.
 - Browser visual acceptance still requires owner refresh after deployment. Do not claim visual success until confirmed.
+
+
+## 2026-11-15 — Matchmaking leaderboard prototype (IN PROGRESS)
+- Owner approved implementation directly in `faceit-dev`: add a dedicated left-rail Rating route between Statistics and Matches; retain only Matchmaking; four columns (Rank, Player, Skill Level, Elo); remove countries/regions and wreath decorations; rank numbers remain plain white; keep temporary gold/silver/bronze outlines on places 1–3; skill pills retain #1/#2/#3 and red for the rest.
+- Added a prototype season selector with clickable `Season 0 (Test)` and `Season 1`. Both currently render the active player roster with a fixed Elo of 1000 for every player; the roster is sorted deterministically by display name. This is placeholder presentation data, not a persisted season snapshot, not a real rating calculation, and not yet a historical standings system.
+- Files changed: `app_v57.js` (new `ranking` route and renderer; route registry/rail updated), `style_v57.css` (leaderboard styling and podium outlines), `index.html` (stylesheet cache key), `tests/faceit-v2-shell.test.cjs`, `tests/faceit-v2-shell-dev-contract.test.cjs`, `tests/metrics-regression.test.cjs` (route and UI regression expectations).
+- Source commits: app `9655c90accde8e7ff2d7b620f6fe4e6ee845f8e4`; CSS `57689953361d3913844855123f9712034b4ee881`; index `cff8b4e00100194048a49b2704b6bf4042849544`. Regression tests updated through `fe3e437ac3b384f232300a588cf61265afc32630`.
+- Quality Gate [43757606058](https://github.com/nonspam/cs2-5x5/actions/runs/43757606058): **285 passed / 0 failed / 0 skipped**, verified from the validate job log.
+- Not performed: browser visual QA, screenshot comparison, DEV deployment verification. No production, main, database, SQL, migrations, RLS, grants or Edge Function changes.
+- Status: SOURCE + TESTS PASS; visual verification/deployment pending. Do not claim it is visible on the deployed site until the DEV environment is separately updated and checked.
+- Next: inspect the rendered Rating route in DEV after the owner refreshes/opens the latest build; adjust only visual mismatches. Then design real season snapshots and historical Elo separately before treating season results as permanent.
