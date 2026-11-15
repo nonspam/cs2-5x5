@@ -889,3 +889,7 @@ test('Profile match history keeps one continuous hover target and W/L labels hav
  assert.match(css,/#playerProfileWindow \.faceit-match-row:hover,[\s\S]*border-color:rgba\(198,255,69,\.52\)!important/);
  assert.match(css,/#playerProfileWindow \.faceit-form-large \.faceit-form-dot\.win\{color:#35d99a!important\}/);
 });
+
+test('Match Room TOP player rows use translucent wallpaper-revealing cards',()=>{
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-stat-top-row\{[\s\S]*rgba\(10,13,15,\.34\)!important/);
+});
