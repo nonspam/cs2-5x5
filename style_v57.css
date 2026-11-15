@@ -7339,6 +7339,9 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 
 
 /* Owner visual pass — transparent FACEIT surfaces, W/L text marks, team identity cells and profile level arc. */
+#playerProfileWindow .faceit-exact-shell{
+ background:rgba(8,8,8,.42)!important;
+}
 #playerProfileWindow .faceit-exact-content{
  background:rgba(8,10,12,.24)!important;
 }
