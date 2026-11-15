@@ -185,3 +185,14 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Not performed: browser visual QA, screenshot comparison, DEV deployment verification. No production, main, database, SQL, migrations, RLS, grants or Edge Function changes.
 - Status: SOURCE + TESTS PASS; visual verification/deployment pending. Do not claim it is visible on the deployed site until the DEV environment is separately updated and checked.
 - Next: inspect the rendered Rating route in DEV after the owner refreshes/opens the latest build; adjust only visual mismatches. Then design real season snapshots and historical Elo separately before treating season results as permanent.
+
+## 2026-11-15 — Leaderboard glass + Season 0 current K/D standings
+- Owner asked to make the Rating page transparent like Match Room and populate Season 0 with current standings ordered by K/D.
+- Updated `ranking(v)`: Season 0 uses `playerSeasonAggregate(player_id,'all')` and the exact same sort priority as the existing Statistics player table (K/D, K-D, kills, Elo, nickname). Displays K/D with existing `kdMarkup` coloring. Current note explicitly says ALL TIME, because Season 0 has no separately persisted match history yet.
+- Season 0 label is now `Сезон 0 (Текущий)`. Season 1 remains clickable but correctly shows a not-started empty state rather than fabricated standings.
+- Replaced the Elo placeholder column with K/D; no longer displays fake 1000 ratings in the ranking table.
+- Rating panel/wrappers are transparent; leaderboard rows use the same glass fill `rgba(8,12,14,.14)`, 9px backdrop blur and light borders as Match Room Statistics. Podium outlines remain, with much subtler translucent tints.
+- Files changed: `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+- Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947): **286 passed / 0 failed / 0 skipped**, verified from validate job log.
+- Browser visual QA and DEV deployment verification remain pending. No production/database changes.
+- Latest implementation commit at this checkpoint: `fee87fc4085b0a07b7ef0736b305efdab8bd4389`.
