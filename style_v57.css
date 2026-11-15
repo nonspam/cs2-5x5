@@ -7712,3 +7712,31 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage.match-room-page .match-stat-teams .match-stat-team .match-scoreboard tbody td:last-child{
  border-right:1px solid rgba(255,255,255,.13)!important;
 }
+
+
+/* 2026-11-15 — Final cascade fix: override the more-specific legacy Statistics row fills. */
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr td,
+#matchRoomPage.match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr:nth-child(even),
+#matchRoomPage.match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr:nth-child(even) td{
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr td{
+ background:rgba(8,12,14,.20)!important;
+ background-color:rgba(8,12,14,.20)!important;
+ background-image:none!important;
+ -webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important;
+ border-top:1px solid rgba(255,255,255,.15)!important;
+ border-bottom:1px solid rgba(255,255,255,.15)!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr td:first-child{
+ border-left:1px solid rgba(255,255,255,.13)!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr td:last-child{
+ border-right:1px solid rgba(255,255,255,.13)!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .data-table tbody tr:hover td{
+ background:rgba(35,65,58,.28)!important;background-color:rgba(35,65,58,.28)!important;
+}
