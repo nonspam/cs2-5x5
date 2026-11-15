@@ -7930,3 +7930,15 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 .ranking-table tbody tr:not(.ranking-gold):not(.ranking-silver):not(.ranking-bronze):hover td{background:rgba(35,65,58,.24)!important}
 .ranking-kd{text-align:center!important;font-weight:900!important;font-size:15px!important;font-variant-numeric:tabular-nums}
 .ranking-kd .kd-value{font-weight:900!important}
+
+
+/* 2026-11-16 — Fix leaderboard glass seams: never backdrop-filter individual table cells. */
+.ranking-table tbody td,.ranking-table tbody tr:nth-child(even) td{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  background:rgba(8,12,14,.42)!important;
+  background-color:rgba(8,12,14,.42)!important;
+}
+.ranking-table tbody tr.ranking-gold td{background:rgba(255,211,0,.045)!important}
+.ranking-table tbody tr.ranking-silver td{background:rgba(214,227,233,.04)!important}
+.ranking-table tbody tr.ranking-bronze td{background:rgba(255,119,13,.04)!important}
