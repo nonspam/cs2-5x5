@@ -932,9 +932,9 @@ test('Ranking is a dedicated route between Statistics and Matches with a two-sea
  assert.ok(start>=0&&end>start);
  for(const label of ['РЕЙТИНГ','МАТЧМЕЙКИНГ','Ранг','Игрок','Уровень скилла','Elo','Сезон 0 (Тестовый)','Сезон 1'])assert.ok(source.includes(label),'ranking includes '+label);
  assert.match(source,/elo:1000/);
- assert.match(source,/ranking-gold/);
- assert.match(source,/ranking-silver/);
- assert.match(source,/ranking-bronze/);
- assert.match(source,/ranking-red/);
+ assert.match(source,/rank===1\\?'gold'/);
+ assert.match(source,/rank===2\\?'silver'/);
+ assert.match(source,/rank===3\\?'bronze'/);
+ assert.match(source,/:\\'red\\'/);
  assert.doesNotMatch(source,/венок|laurel|country|страна|регион/i);
 });
