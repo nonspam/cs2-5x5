@@ -4,7 +4,7 @@
 
 ## Snapshot
 
-- Date: 2026-11-14
+- Date: 2026-11-16
 - Repository: `nonspam/cs2-5x5`
 - Working branch: `faceit-dev`
 - Last branch HEAD checked before the memory-system update: `e13320fc8069fb78d650c0ff2ea01d3a1168acc0`
@@ -38,19 +38,7 @@ CS2 Analytics is one integrated FACEIT-inspired application for the team's CS2 5
 
 ## Current focus
 
-The active owner-directed task is stabilizing the contained Profile window and making the signed-in user's wallpaper visible consistently across all routes and Match Room. The latest CSS/test correction isolates the underlying route, aligns the Profile edge to the global rail, makes the utility avatar circular, and removes a conflicting Match Room body pseudo-element. Quality Gate and visual confirmation are pending.
-
-Implemented in source:
-- Global route navigation closes both contained windows; stale body modal classes are removed.
-- Match Room back action returns to Matches (base).
-- “Все игры” map rows open the shared Match Room Statistics tab scoped to the selected map.
-- Profile includes direct “ОБОИ САЙТА” upload action; Settings retains upload/removal.
-- Right utility rail uses the current account avatar as a larger portrait tile above VS; profile avatar frame is taller.
-- Wallpaper is a fixed full-viewport layer behind the route shell, Profile, Match Room and side rails.
-
-Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
-
-**Not yet confirmed:** browser appearance, actual upload/persistence, wallpaper visibility across all routes, avatar loading, route interaction while overlays are open, and responsive layout. No DEV deployment or browser QA is evidenced.
+The latest owner-directed correction is Match Room Statistics: restore the MVP card and four leader highlights, and remove pill/outlined category controls. Source and regression tests are updated on faceit-dev. Quality Gate run 43890650551 passed (292/292). Browser visual QA and DEV deployment verification remain pending.
 
 ## Confirmed implementation baseline
 
