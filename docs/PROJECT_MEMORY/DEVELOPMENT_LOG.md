@@ -627,3 +627,5 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Added `tests/match-room-statistics-layout.test.cjs` and updated the existing shell test to assert the removed fields and team identity metadata.
 - Quality Gate run [43937919845](https://github.com/nonspam/cs2-5x5/actions/runs/43937919845): **298 passed / 0 failed / 0 skipped**.
 - Browser visual QA has not been performed; viewport fit and actual appearance still require user confirmation.
+
+- Follow-up QA correction: the avatar markup emits `.player-avatar.lg/md/xs`; CSS now targets those actual classes (not nonexistent `match-player-avatar-*` selectors). Final asset cache marker is `matchroom-statistics-layout-20261116-v2`. Quality Gate run [43938228641](https://github.com/nonspam/cs2-5x5/actions/runs/43938228641): **298 passed / 0 failed / 0 skipped**.
