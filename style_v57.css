@@ -8338,3 +8338,135 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-awards .match-stat-mvp-metrics strong{font-size:16px!important;}
  #matchRoomPage .match-stat-awards .match-stat-highlight-value{min-width:100px!important;}
 }
+
+
+/* 2026-11-16 — owner refinement: MVP takes focus; FACEIT-sized Top 4 */
+#matchRoomPage .match-stat-awards{
+ width:100%!important;max-width:1360px!important;margin:14px auto 20px!important;
+ display:grid!important;
+ grid-template-columns:minmax(0,1.55fr) minmax(300px,.78fr)!important;
+ align-items:center!important;gap:18px!important;min-width:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-card{
+ position:relative!important;box-sizing:border-box!important;
+ width:100%!important;min-width:0!important;min-height:258px!important;height:258px!important;
+ display:grid!important;grid-template-columns:minmax(150px,.52fr) minmax(0,1.48fr)!important;
+ align-items:center!important;gap:22px!important;padding:30px 28px!important;
+ border:1px solid rgba(255,255,255,.18)!important;border-radius:10px!important;
+ background:rgba(8,12,14,.34)!important;box-shadow:none!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-profile{
+ min-width:0!important;display:flex!important;flex-direction:column!important;
+ align-items:center!important;justify-content:center!important;gap:10px!important;
+ text-align:center!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-profile h2{
+ margin:0!important;font-size:18px!important;line-height:1.2!important;
+ max-width:100%!important;overflow-wrap:anywhere!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-profile>.player-avatar.lg,
+#matchRoomPage .match-stat-awards .match-stat-mvp-avatar{
+ width:96px!important;height:96px!important;flex:0 0 96px!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-tag{
+ position:absolute!important;top:15px!important;right:20px!important;
+ z-index:2!important;color:#ffbd22!important;font-size:13px!important;
+ line-height:1!important;font-weight:950!important;letter-spacing:.03em!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-main{
+ position:static!important;min-width:0!important;width:100%!important;
+ display:flex!important;align-items:stretch!important;justify-content:center!important;
+ padding:20px 0 0!important;margin:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics{
+ width:100%!important;min-width:0!important;
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ grid-template-rows:repeat(2,minmax(0,auto))!important;
+ align-content:center!important;align-items:start!important;
+ column-gap:clamp(14px,2vw,34px)!important;row-gap:23px!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics>div{
+ display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+ justify-content:flex-start!important;gap:5px!important;min-width:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics small{
+ font-size:10px!important;line-height:1.1!important;
+ color:rgba(255,255,255,.64)!important;font-weight:800!important;
+ letter-spacing:.02em!important;white-space:nowrap!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics strong{
+ font-size:clamp(18px,1.45vw,22px)!important;line-height:1.12!important;
+ font-weight:950!important;font-variant-numeric:tabular-nums!important;
+ white-space:nowrap!important;
+}
+#matchRoomPage .match-stat-highlight-grid{
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ grid-template-rows:repeat(4,44px)!important;
+ align-content:center!important;justify-content:stretch!important;
+ gap:6px!important;height:auto!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight{
+ box-sizing:border-box!important;width:100%!important;min-width:0!important;
+ min-height:44px!important;height:44px!important;
+ display:grid!important;grid-template-columns:36px minmax(0,1fr) minmax(100px,auto)!important;
+ align-items:center!important;gap:8px!important;padding:4px 10px!important;
+ border:1px solid rgba(255,255,255,.15)!important;
+ border-left:3px solid #7774ff!important;border-radius:7px!important;
+ background:rgba(8,12,14,.31)!important;box-shadow:none!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight .player-avatar.md{
+ width:32px!important;height:32px!important;flex:0 0 32px!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-avatar{
+ width:30px!important;height:30px!important;display:grid!important;
+ place-items:center!important;border-radius:50%!important;
+ background:rgba(255,255,255,.13)!important;color:rgba(255,255,255,.55)!important;
+ font-size:12px!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-player{
+ min-width:0!important;overflow:hidden!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-player strong{
+ display:block!important;min-width:0!important;overflow:hidden!important;
+ text-overflow:ellipsis!important;white-space:nowrap!important;
+ font-size:11px!important;line-height:1.1!important;font-weight:850!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value{
+ min-width:100px!important;max-width:none!important;display:flex!important;
+ flex-direction:column!important;align-items:flex-end!important;
+ justify-content:center!important;gap:1px!important;text-align:right!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value>b{
+ font-size:17px!important;line-height:1!important;font-weight:950!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value small{
+ font-size:8px!important;line-height:1.1!important;letter-spacing:.015em!important;
+ white-space:nowrap!important;max-width:none!important;
+}
+@media(max-width:1050px){
+ #matchRoomPage .match-stat-awards{
+  grid-template-columns:minmax(0,1fr)!important;gap:12px!important;
+ }
+ #matchRoomPage .match-stat-awards .match-stat-mvp-card{
+  height:auto!important;min-height:240px!important;
+ }
+ #matchRoomPage .match-stat-highlight-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:repeat(2,44px)!important;
+ }
+}
+@media(max-width:640px){
+ #matchRoomPage .match-stat-awards .match-stat-mvp-card{
+  grid-template-columns:90px minmax(0,1fr)!important;
+  min-height:230px!important;height:auto!important;padding:42px 14px 18px!important;gap:12px!important;
+ }
+ #matchRoomPage .match-stat-awards .match-stat-mvp-profile>.player-avatar.lg,
+ #matchRoomPage .match-stat-awards .match-stat-mvp-avatar{
+  width:70px!important;height:70px!important;flex-basis:70px!important;
+ }
+ #matchRoomPage .match-stat-awards .match-stat-mvp-metrics{row-gap:16px!important;column-gap:10px!important;}
+ #matchRoomPage .match-stat-awards .match-stat-mvp-metrics strong{font-size:16px!important;}
+ #matchRoomPage .match-stat-awards .match-stat-mvp-metrics small{font-size:8px!important;}
+ #matchRoomPage .match-stat-highlight-grid{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:repeat(4,44px)!important;}
+}
