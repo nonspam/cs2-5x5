@@ -1198,6 +1198,18 @@ function sortMatchRoomStats(key){
   button.classList.toggle('is-sorted',active);if(indicator)indicator.textContent=active?(direction===-1?' ↓':' ↑'):'';
  });
 }
+function setMatchRoomStatSubview(target){
+ const root=document.getElementById('matchRoomPage');
+ if(!root||!['results','duels','equipment'].includes(target))return false;
+ root.querySelectorAll('[data-stat-subview]').forEach(view=>view.hidden=view.dataset.statSubview!==target);
+ root.querySelectorAll('[data-stat-subview-button]').forEach(button=>{
+  const active=button.dataset.statSubviewButton===target;
+  button.classList.toggle('active',active);
+  button.setAttribute('aria-selected',active?'true':'false');
+ });
+ window.__matchRoomStatSubview=target;
+ return true;
+}
 function setMatchRoomView(target){
  const root=document.getElementById('matchRoomPage');
  if(!root||!['overview','statistics','top'].includes(target))return false;
