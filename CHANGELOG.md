@@ -8053,3 +8053,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T17:54:40-05:00 — test: cover match report tabs and shared hero alignment
+
+- Commit: 982b34be965b8305eba9f0e8677a0aec38ea6b08
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
