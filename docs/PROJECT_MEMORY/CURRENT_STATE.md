@@ -226,3 +226,14 @@ The latest owner-directed correction is Match Room Statistics: restore the MVP c
 - Browser click-through and DEV deployment were not directly verified from this session. Await user refresh and visual confirmation.
 - No production/main/DB/SQL/migration/RLS/storage-policy changes.
 - Status: SOURCE + TESTS PASS; visual/browser acceptance pending.
+
+
+## 2026-11-16 — Match Room rendering runtime error fix
+- Follow-up user report: clicking a match switched the app to the Matches route but did not display the selected match room.
+- Root cause confirmed in `openMatchDetail`: `statCategories` was read in the `statDataAvailable` and `statSideAvailable` loops before its `const` declaration later in the same function. This hit the JavaScript temporal dead zone and aborted Match Room construction after the route switch.
+- Moved the complete `statCategories` declaration above its first use, before `statPlayers` and the availability loops. The Match Room can now finish rendering after route normalization.
+- Added a regression assertion that the declaration precedes the first read. Updated the `index.html` asset cache marker to `matchroom-navigation-runtime-fix-20261116-v3`.
+- Files changed: `app_v57.js`, `tests/faceit-v2-shell.test.cjs`, `index.html`.
+- Quality Gate run [43895298970](https://github.com/nonspam/cs2-5x5/actions/runs/43895298970): **296 passed / 0 failed / 0 skipped**.
+- Browser click-through / DEV deployment still not directly verified from this session; user refresh and visual confirmation pending.
+- Status: SOURCE + TESTS PASS; visual/browser acceptance pending.
