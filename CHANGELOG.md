@@ -7084,3 +7084,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T10:04:07-05:00 — Add regression coverage for real KDA mapping and compact highlight layout
+
+- Commit: 8f6de4aaae9ebdd33d1ed7c6f520c9e09f7b0e38
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
