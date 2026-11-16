@@ -7060,3 +7060,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T10:03:53-05:00 — Correct unavailable split-stat detection and sort sentinel values
+
+- Commit: 5208b8cff383e2be8dfcd2b7c39e1d4ff6130e07
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
