@@ -8089,3 +8089,17 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	TECHNICAL_STATE.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T18:05:39-05:00 — style: stretch Match Room statistics to hero width
+
+- Commit: 9e678403dfad772879ad7c38ea5406bcddcabbc6
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+- M	style_v57.css
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
