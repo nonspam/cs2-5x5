@@ -114,3 +114,24 @@ test('FACEIT Statistics sections stretch to the full Match Room hero width', () 
   assert.ok(ownerWidthFix.includes('#matchRoomPage .match-stat-teams .table-wrap{'));
   assert.ok(ownerWidthFix.includes('width:100%!important;max-width:none!important;min-width:0!important;'));
 });
+
+
+test('Match Room follows FACEIT hierarchy: view tabs, map, clean roster, then statistics sub-tabs', () => {
+  const roomPage = app.slice(app.indexOf('const roomPage='));
+  assert.ok(roomPage.indexOf('data-match-view-tab="overview"') < roomPage.indexOf('roomHero+roomPlayerStrip'));
+  assert.ok(roomPage.indexOf('roomHero+roomPlayerStrip') < roomPage.indexOf('data-match-view="overview"'));
+  assert.match(app, /const roomPlayerStrip='<nav class="match-room-player-strip"/);
+  assert.match(app, /match-room-player-chip" data-team-side="a"/);
+  assert.match(app, /match-room-player-chip" data-team-side="b"/);
+  assert.doesNotMatch(app.slice(app.indexOf("const roomPlayerStrip="), app.indexOf("const statCategories=")), /thumb|like|нравит/i);
+  assert.match(app, /class="match-stat-subtabs"[sS]*data-stat-subview-button="results"/);
+});
+
+test('Match Room player strip is compact, responsive, and has no rating controls', () => {
+  const rosterCss = css.slice(css.lastIndexOf('/* 2026-11-17 — FACEIT room hierarchy: navigation above map'));
+  assert.match(rosterCss, /\.match-room-view-tabs\s*\{[\s\S]*margin:0 0 16px!important/);
+  assert.match(rosterCss, /\.match-room-player-strip\s*\{[\s\S]*grid-template-columns:repeat\(10,minmax\(0,1fr\)\)/);
+  assert.match(rosterCss, /@media\(max-width:1050px\)[\s\S]*grid-template-columns:repeat\(5,minmax\(0,1fr\)\)/);
+  assert.match(rosterCss, /@media\(max-width:640px\)[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.doesNotMatch(rosterCss, /thumb|like|нравит/i);
+});
