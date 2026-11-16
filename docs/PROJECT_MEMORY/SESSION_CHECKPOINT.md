@@ -5,7 +5,8 @@
 - CSS now reserves a usable name column and disables ellipsis for the short leader name; the exact team scoreboard header receives a higher-specificity translucent blurred background override.
 - Files: style_v57.css, tests/faceit-v2-shell.test.cjs, index.html.
 - Cache marker: matchroom-statistics-layout-20261116-v6.
-- Status: source + regression assertions updated; CI and browser/DEV verification pending. MVP layout, values, and match calculations unchanged.
+- Status: SOURCE + TESTS PASS; browser/DEV visual verification pending. MVP layout, values, and match calculations unchanged.
+- Quality Gate [43948380693](https://github.com/nonspam/cs2-5x5/actions/runs/43948380693) on commit `2af3b8ec3484d30ba37a270582a1a7d14f744a70`: **305 passed / 0 failed / 0 skipped**, confirmed from the validate job log. Browser visual QA and DEV deployment are still not verified.
 
 
 

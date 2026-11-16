@@ -1,6 +1,6 @@
 ## 2026-11-16 — Latest Statistics follow-up (IN PROGRESS)
 - Fixed highlight name clipping and targeted the actual team scoreboard header with a higher-specificity translucent style.
-- Cache marker matchroom-statistics-layout-20261116-v6; CI/browser/DEV verification pending.
+- Cache marker matchroom-statistics-layout-20261116-v6; Quality Gate [43948380693](https://github.com/nonspam/cs2-5x5/actions/runs/43948380693) on commit `2af3b8ec3484d30ba37a270582a1a7d14f744a70`: **305 passed / 0 failed / 0 skipped**, confirmed from the validate job log. Browser visual QA and DEV deployment are still not verified.
 
 
 

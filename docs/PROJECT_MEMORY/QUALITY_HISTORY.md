@@ -1,6 +1,6 @@
 ## 2026-11-16 — Statistics leader name and scoreboard header follow-up
 - Added regression coverage for visible highlight names and the actual .match-stat-teams .match-scoreboard header transparency override.
-- Quality Gate: pending; no result recorded yet.
+- Quality Gate [43948380693](https://github.com/nonspam/cs2-5x5/actions/runs/43948380693) on commit `2af3b8ec3484d30ba37a270582a1a7d14f744a70`: **305 passed / 0 failed / 0 skipped**, confirmed from the validate job log. Browser visual QA and DEV deployment are still not verified.
 - Browser rendering and DEV deployment: not verified.
 
 ## 2026-11-16 — Statistics awards alignment and translucent table header
