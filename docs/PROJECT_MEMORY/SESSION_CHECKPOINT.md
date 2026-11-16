@@ -284,3 +284,11 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 
 - Avatar sizing selectors were aligned with the real `profileAvatarMarkup` output (`.player-avatar.lg/md/xs`); final `index.html` cache marker is `matchroom-statistics-layout-20261116-v2`.
 - Latest Quality Gate [43938228641](https://github.com/nonspam/cs2-5x5/actions/runs/43938228641): **298 passed / 0 failed / 0 skipped**. Browser visual QA is still pending.
+
+
+## 2026-11-16 — Match Room MVP and leader cards refinement
+- `app_v57.js`: removed FACEIT Rating/ELO and result impact from MVP; MVP label moved to upper-right; MVP panel displays U/S/A and K/D. Right column now has compact text-only rows for kills, best K/D, ADR 0, and headshot kills 0%.
+- `style_v57.css`: increased MVP panel size and avatar; shortened right-side cards and reduced gaps; team colors remain on player and rank cells; table row padding tightened.
+- Team names in statistics headings now use the `Тим <name>` prefix unless already present.
+- Cache marker: `matchroom-statistics-layout-20261116-v3`. Regression tests updated.
+- Quality Gate [43942434063](https://github.com/nonspam/cs2-5x5/actions/runs/43942434063): **300 passed / 0 failed / 0 skipped**. Browser visual QA is not yet confirmed.
