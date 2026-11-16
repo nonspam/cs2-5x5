@@ -1922,7 +1922,7 @@ function bindSitePlayerSearch(root=document){
     const score=x=>x===q?0:x.startsWith(q)?1:x.split(/\\s+/).some(part=>part.startsWith(q))?2:3;
     return score(an)-score(bn)||an.localeCompare(bn,'ru');
    }).slice(0,8);
-  results.innerHTML=found.map(({p,name})=>'<button type="button" role="option" data-player-id="'+esc(p.player_id)+'">'+matchRoomInitialAvatar(p.player_id,'xs',name)+'<span>'+esc(name)+'</span></button>').join('')||(q?'<div class="site-player-search-empty">Игрок не найден</div>':'');
+  results.innerHTML=found.map(({p,name})=>'<button type="button" role="option" data-player-id="'+esc(p.player_id)+'">'+matchRoomInitialAvatar(p.player_id,'xs',p.display_name)+'<span>'+esc(name)+'</span></button>').join('')||(q?'<div class="site-player-search-empty">Игрок не найден</div>':'');
   results.hidden=false;
   results.querySelectorAll('[data-player-id]').forEach(button=>button.addEventListener('click',()=>{
    const pid=button.dataset.playerId;results.hidden=true;input.value='';closeMatchRoom();openPublicPlayerProfile(pid);
