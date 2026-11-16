@@ -1,3 +1,9 @@
+## 2026-11-16 — Statistics awards alignment and translucent table header
+- Tested commit: `08b603d824c8625a4a0ac4c52a9277dcce2573c5`.
+- Quality Gate run [43947209379](https://github.com/nonspam/cs2-5x5/actions/runs/43947209379): **303 passed / 0 failed / 0 skipped**, confirmed from the actual `validate` job log.
+- Coverage includes syntax checks and regression assertions for full-height highlight stack, right-aligned highlight values/labels, and translucent statistics table header.
+- This does not prove browser rendering, screenshot match, DEV deployment or owner visual acceptance.
+
 
 
 ## 2026-11-16 — Statistics data mapping, unavailable values, MVP/top-four layout
