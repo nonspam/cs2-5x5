@@ -26,7 +26,7 @@ test('Match Room statistics CSS keeps the MVP plus four right-side cards inside 
   assert.match(css, /max-width:1360px/);
   assert.match(css, /data-team-side="a"/);
   assert.match(css, /data-team-side="b"/);
-  assert.match(css, /match-stat-mvp-profile>\\.player-avatar\\.lg/);
-  assert.match(css, /match-player-profile-link \\.player-avatar\\.xs/);
+  assert.match(css, /match-stat-mvp-profile>\.player-avatar\.lg/);
+  assert.match(css, /match-player-profile-link \.player-avatar\.xs/);
   assert.match(css, /match-sort-button:hover/);
 });
