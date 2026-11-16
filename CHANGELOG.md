@@ -6844,3 +6844,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T09:33:51-05:00 — Document Match Room statistics mode correction
+
+- Commit: e9779910664745b78ee3f6772f1f53c4c4823952
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
