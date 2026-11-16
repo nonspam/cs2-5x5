@@ -205,3 +205,11 @@ The latest owner-directed correction is Match Room Statistics: restore the MVP c
 - Team header shows average ELO. First/second-half score is displayed as unavailable (—) because the current map data schema does not provide half scores.
 - Visual styles are compact and transparent, with no decorative oval header frames.
 - Validation: JavaScript syntax checks passed for app_v57.js and tests/faceit-v2-shell.test.cjs. Full automated test suite and browser visual QA have not yet been run.
+
+
+## 2026-11-16 — Latest Match Room Statistics fix
+- K/D/A mapping now uses the actual roster fields (`k/d/a`), correcting the zeroed General table.
+- Unavailable advanced values display `—`, not fabricated zeros; real zeros remain visible when other source rows establish that metric is present.
+- T/CT side K/D is calculated from split kills/deaths when available.
+- MVP left + four leader cards right in 2×2 layout; controls reduced in size and spacing.
+- CI run 43892597145: 295/295 tests passed. Visual acceptance/deployment still pending.
