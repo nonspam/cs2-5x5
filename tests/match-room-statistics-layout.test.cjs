@@ -116,14 +116,17 @@ test('FACEIT Statistics sections stretch to the full Match Room hero width', () 
 });
 
 
-test('Match Room follows FACEIT hierarchy: view tabs, map, clean roster, then statistics sub-tabs', () => {
+test('Match Room follows FACEIT hierarchy: view tabs, map, then statistics sub-tabs without a player roster', () => {
   const roomPage = app.slice(app.indexOf('const roomPage='));
-  assert.ok(roomPage.indexOf('data-match-view-tab="overview"') < roomPage.indexOf('roomHero+roomPlayerStrip'));
-  assert.ok(roomPage.indexOf('roomHero+roomPlayerStrip') < roomPage.indexOf('data-match-view="overview"'));
-  assert.match(app, /const roomPlayerStrip='<nav class="match-room-player-strip"/);
-  assert.match(app, /match-room-player-chip" data-team-side="a"/);
-  assert.match(app, /match-room-player-chip" data-team-side="b"/);
-  assert.doesNotMatch(app.slice(app.indexOf("const roomPlayerStrip="), app.indexOf("const statCategories=")), /thumb|like|нравит/i);
+  assert.ok(roomPage.indexOf('data-match-view-tab="overview"') < roomPage.indexOf("'+roomHero+'"));
+  assert.ok(roomPage.indexOf("'+roomHero+'") < roomPage.indexOf('data-match-view="overview"'));
+  assert.doesNotMatch(app, /match-room-player-strip|match-room-player-chip|roomPlayerStrip/);
+});
+
+test('Match Room has no standalone roster strip or like/dislike controls beneath the hero', () => {
+  const ownerFix = css.slice(css.lastIndexOf('/* 2026-11-17 — owner correction: no standalone player roster'));
+  assert.match(ownerFix, /\.match-room-player-strip\{display:none!important/);
+  assert.doesNotMatch(ownerFix, /thumb|like|нравит/i);
 });
 
 test('Match Room player strip is compact, responsive, and has no rating controls', () => {
