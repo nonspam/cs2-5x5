@@ -6832,3 +6832,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - No file list available.
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T09:33:16-05:00 — Fix T/CT and all-side sort values
+
+- Commit: 85051f4ba67e0d2c1dc1a32e41416de0fe1f87c9
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
