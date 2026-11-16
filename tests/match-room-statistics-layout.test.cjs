@@ -61,7 +61,7 @@ test('Most-kills value is pinned to the far edge of its own card without transfo
   assert.match(app, /statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp,statMvp\?\.kills,'is-kills-leader'\)/);
   assert.match(app, /match-stat-highlight\x27\+\(extraClass\?\x27 \x27\+extraClass:\x27\x27\)/);
   const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — precise statistics fixes'));
-  assert.match(fix, /\.match-stat-highlight\.is-kills-leader\s*\{[\s\S]*grid-template-columns:36px minmax\(0,1fr\) minmax\(100px,1fr\)!important/);
+  assert.match(fix, /\.match-stat-highlight\.is-kills-leader\s*\{[\s\S]*display:grid!important[\s\S]*grid-template-columns:36px minmax\(0,1fr\) minmax\(100px,1fr\)!important/);
   assert.match(fix, /\.is-kills-leader \.match-stat-highlight-value\s*\{[\s\S]*justify-self:stretch!important[\s\S]*text-align:right!important/);
   assert.doesNotMatch(fix, /translateX/);
 });
