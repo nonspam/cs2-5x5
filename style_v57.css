@@ -7942,3 +7942,33 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 .ranking-table tbody tr.ranking-gold td{background:rgba(255,211,0,.045)!important}
 .ranking-table tbody tr.ranking-silver td{background:rgba(214,227,233,.04)!important}
 .ranking-table tbody tr.ranking-bronze td{background:rgba(255,119,13,.04)!important}
+
+
+/* 2026-11-16 — Match Room full-player comparison, sortable columns and true glass menus */
+#matchRoomPage .match-stat-comparison,
+#matchRoomPage .match-stat-team-comparison,
+#matchRoomPage .match-stat-team-comparison .table-wrap,
+#matchRoomPage .match-comparison-table,
+#matchRoomPage .match-comparison-table thead,
+#matchRoomPage .match-comparison-table tbody,
+#matchRoomPage .match-comparison-table tbody tr,
+#matchRoomPage .match-comparison-table tbody tr:nth-child(even){background:transparent!important;}
+#matchRoomPage .match-stat-team-comparison{padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;}
+#matchRoomPage .match-stat-team-comparison .table-wrap{overflow-x:auto!important;border:0!important;border-radius:0!important;}
+#matchRoomPage .match-comparison-table{width:100%;min-width:1480px;border-collapse:separate!important;border-spacing:0 5px!important;}
+#matchRoomPage .match-comparison-table thead th{position:sticky;top:0;z-index:2;padding:10px 9px!important;background:rgba(8,12,14,.38)!important;backdrop-filter:blur(12px)!important;color:#aeb8bc!important;white-space:nowrap!important;border-bottom:1px solid rgba(255,255,255,.12)!important;}
+#matchRoomPage .match-comparison-table .match-sort-button{display:inline-flex;align-items:center;gap:5px;padding:0;border:0;background:transparent!important;color:inherit;font:inherit;font-weight:900;letter-spacing:.04em;cursor:pointer;white-space:nowrap;}
+#matchRoomPage .match-comparison-table .match-sort-button:hover,#matchRoomPage .match-comparison-table .match-sort-button.is-sorted{color:#fff!important;}
+#matchRoomPage .match-comparison-table .match-sort-button [data-sort-indicator]{color:#c9ff45;font-size:12px;}
+#matchRoomPage .match-comparison-table tbody tr td{padding:10px 9px!important;background:rgba(8,12,14,.18)!important;backdrop-filter:blur(11px)!important;border-top:1px solid rgba(255,255,255,.10)!important;border-bottom:1px solid rgba(255,255,255,.10)!important;color:#e9eeee!important;white-space:nowrap;}
+#matchRoomPage .match-comparison-table tbody tr:hover td{background:rgba(35,65,58,.24)!important;}
+#matchRoomPage .match-comparison-table tbody tr td:first-child{border-left:1px solid rgba(255,255,255,.12)!important;border-radius:7px 0 0 7px;}
+#matchRoomPage .match-comparison-table tbody tr td:last-child{border-right:1px solid rgba(255,255,255,.12)!important;border-radius:0 7px 7px 0;}
+#matchRoomPage .match-comparison-table .match-comparison-rank{color:#fff!important;font-weight:900;text-align:center;}
+#matchRoomPage .match-comparison-table .match-side-a{color:#75adff!important;font-weight:900;}
+#matchRoomPage .match-comparison-table .match-side-b{color:#f0cb69!important;font-weight:900;}
+#matchRoomPage .match-room-search-results,
+#matchRoomPage .match-room-account-menu{background:rgba(9,13,15,.48)!important;background-color:rgba(9,13,15,.48)!important;backdrop-filter:blur(18px) saturate(125%)!important;-webkit-backdrop-filter:blur(18px) saturate(125%)!important;border:1px solid rgba(255,255,255,.16)!important;box-shadow:0 14px 35px rgba(0,0,0,.22)!important;}
+#matchRoomPage .match-room-account-menu button:hover{background:rgba(255,255,255,.10)!important;}
+#matchRoomPage .match-room-statistics-view .match-statistics-controls,
+#matchRoomPage .match-room-statistics-view .match-statistics-summary{background:transparent!important;}
