@@ -1023,3 +1023,9 @@ test('Match Room top four highlights sit beside the MVP and controls are compact
  assert.match(css,/#matchRoomPage \.match-stat-categories button,[\s\S]*font-size:10\.5px!important/);
  assert.match(css,/#matchRoomPage \.match-stat-mode button\{font-size:10px!important\}/);
 });
+
+
+test('T/CT K/D is calculated from side kills and deaths, not missing precomputed fields',()=>{
+ assert.match(app,/key==='kd'\|\|key==='diff'\?\['t_kills','ct_kills','t_deaths','ct_deaths'\]/);
+ assert.match(app,/const missing=value==='—'/);
+});
