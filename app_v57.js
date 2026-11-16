@@ -1050,7 +1050,7 @@ function openMatchDetail(id,options={}){
   const statDataAvailable=new Set(['kills','deaths','assists','kd','diff']);
   for(const category of statCategories)for(const [key] of category.columns)if(rows.some(source=>Number.isFinite(Number(source[key]))&&Number(source[key])!==0))statDataAvailable.add(key);
   const statSideAvailable=new Set();
-  for(const category of statCategories)for(const [key] of category.columns)if(rows.some(source=>(Number.isFinite(Number(source['t_'+key]))&&Number(source['t_'+key])!==0)||(Number.isFinite(Number(source['ct_'+key]))&&Number(source['ct_'+key])!==0)))statSideAvailable.add(key);
+  for(const category of statCategories)for(const [key] of category.columns){const splitFields=key==='kd'||key==='diff'?['t_kills','ct_kills','t_deaths','ct_deaths']:['t_'+key,'ct_'+key];if(rows.some(source=>splitFields.some(field=>Number.isFinite(Number(source[field]))&&Number(source[field])!==0)))statSideAvailable.add(key)}
   const leaderBy=(field)=>statPlayers.slice().sort((x,y)=>(Number(y[field])||0)-(Number(x[field])||0)||Number(y.kills)-Number(x.kills))[0]||null;
   const statMvp=leaderBy('kills'),statKdLeader=leaderBy('kd'),statAssistLeader=leaderBy('assists'),statAdrLeader=statDataAvailable.has('adr')?leaderBy('adr'):null;
   const statLeaderCard=(label,r,value)=>'<article class="match-stat-highlight">'+(r?matchRoomInitialAvatar(r.player_id||null,'md',r.name):'<span class="match-stat-highlight-avatar">—</span>')+'<div class="match-stat-highlight-player"><strong>'+(r?esc(r.name):'Нет данных')+'</strong></div><div class="match-stat-highlight-value"><b>'+(r?value:'—')+'</b><small>'+label+'</small></div></article>';
@@ -1153,7 +1153,7 @@ function setMatchRoomStatsSide(side){
   const value=cell.dataset[side]??'—',sort=cell.dataset[side==='all'?'sortAll':side==='t'?'sortT':'sortCt']??'-999999';
   cell.textContent=value;cell.dataset.sortValue=sort;
   const key=cell.dataset.statCell;
-  if(key==='kd'){cell.classList.toggle('stat-positive',Number(sort)>1);cell.classList.toggle('stat-negative',Number(sort)<1);cell.classList.toggle('stat-neutral',Number(sort)===1)}
+  if(key==='kd'){const missing=value==='—';cell.classList.toggle('stat-positive',!missing&&Number(sort)>1);cell.classList.toggle('stat-negative',!missing&&Number(sort)<1);cell.classList.toggle('stat-neutral',!missing&&Number(sort)===1)}
  });
  window.__matchRoomStatsSide=side;window.__matchRoomSortState=null;
 }
