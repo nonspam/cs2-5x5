@@ -7348,3 +7348,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - A	tests/match-room-statistics-layout.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T14:17:20-05:00 — Bump Match Room statistics asset cache version
+
+- Commit: 01dc569dd926b8b253c406d5b00486be73d1358a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
