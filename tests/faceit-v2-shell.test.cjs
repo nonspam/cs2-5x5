@@ -1082,7 +1082,7 @@ test('Match Room statistics team scoreboard header overrides the opaque gray bas
 
 test('Match Room statistics information header is fully transparent and most-kills value is pushed right',()=>{
  assert.match(css,/#matchRoomPage \.match-stat-category-panel \.match-mode-table thead th,[\s\S]*background:transparent!important[\s\S]*backdrop-filter:none!important/);
- assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight\.is-kills-leader \.match-stat-highlight-value\{[\s\S]*justify-self:stretch!important[\s\S]*text-align:right!important/);
+ assert.match(css,/#matchRoomPage\.match-room-page \.match-room-statistics-view \.match-stat-awards \.match-stat-highlight\.is-kills-leader \.match-stat-highlight-value\{[\s\S]*position:absolute!important;right:12px!important[\s\S]*text-align:right!important/);
 });
 
 test('Match Room team information strip is transparent and most-kills block is shifted right',()=>{
