@@ -1,3 +1,15 @@
+
+
+## 2026-11-16 — Quality Gate: Match Room Statistics owner correction
+- Owner screenshot showed the Statistics layout had lost the MVP player card and four top-player highlights, and category labels were incorrectly presented as outlined/pill controls.
+- Source root cause: `statMvpCard` and `statLeaderCard` were still generated but were not inserted into the new `statsView` markup. Restored the MVP card plus four leader cards (most kills, best K/D, most assists, best ADR) above the category/table controls.
+- Category, team/player mode and T/CT controls are now plain text; active state is indicated by an orange underline only. No oval/outlined button treatment.
+- Existing category switching, team/player mode, T/CT filters and sortable table handlers remain in place.
+- Files: `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+- App correction commit: `34d3cfa12e400ef3b7f6cef9cad990856135d5fe`; CSS commits: `d2e486c29da82782a57716038aef96ebe39c32d8`, `a9b03f12649e9081b7b5793d2eb92f12002304b3`; asset cache commit: `4a31e8b2232124095afda72943bc22ce60176976`; test correction commit: `d4defd01113461b689d33a5101cec098a9ca3029`.
+- Quality Gate run [43890650551](https://github.com/nonspam/cs2-5x5/actions/runs/43890650551): **292 passed / 0 failed / 0 skipped**, verified from validate job log.
+- Not performed: browser screenshot QA, DEV deployment or visual acceptance. The screenshot's DEV URL has not been changed by this work. No production, main, DB, SQL, migration, RLS or storage-policy changes.
+- Status: SOURCE + TESTS PASS; pending owner visual verification in DEV.
 ## 2026-11-14 — Profile and Match Room contained-window prototype
 - Code under test: `71dca4dcee8b0dca0092b3565735c54cb0011634`.
 - Quality Gate run [43631637819](https://github.com/nonspam/cs2-5x5/actions/runs/43631637819): **236 passed / 0 failed / 0 skipped**, confirmed from actual `validate` job log.
