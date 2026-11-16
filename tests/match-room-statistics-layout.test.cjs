@@ -20,31 +20,38 @@ test('Match Room statistics keeps player/rank identity, removes rating and Swing
   assert.match(app, /statRowsMarkup\(rs,mode,category,side\)/);
 });
 
-test('Match Room statistics CSS keeps the MVP plus four right-side cards inside bounded layout', () => {
-  assert.match(css, /grid-template-columns:minmax\(330px,\.82fr\) minmax\(0,1\.18fr\)/);
-  assert.match(css, /grid-template-rows:repeat\(4,minmax\(62px,1fr\)\)/);
-  assert.match(css, /max-width:1360px/);
-  assert.match(css, /data-team-side="a"/);
-  assert.match(css, /data-team-side="b"/);
-  assert.match(css, /match-stat-mvp-profile>\.player-avatar\.lg/);
-  assert.match(css, /match-player-profile-link \.player-avatar\.xs/);
-  assert.match(css, /match-sort-button:hover/);
+test('Match Room statistics gives MVP the main width and compresses the four right-side cards', () => {
+  const finalMvpCss = css.slice(css.lastIndexOf('/* 2026-11-16 — owner refinement: MVP takes focus'));
+  assert.match(finalMvpCss, /grid-template-columns:minmax\(0,1\.55fr\) minmax\(300px,\.78fr\)/);
+  assert.match(finalMvpCss, /height:258px!important/);
+  assert.match(finalMvpCss, /grid-template-rows:repeat\(4,44px\)/);
+  assert.match(finalMvpCss, /min-height:44px!important;height:44px!important/);
+  assert.match(finalMvpCss, /position:absolute!important;top:15px!important;right:20px!important/);
 });
 
-test('MVP card uses U/S/A and K/D without FACEIT rating or result impact, with explicit 0 ADR and headshots', () => {
+test('Match Room Top 4 follows FACEIT leader fields instead of duplicating MVP metrics', () => {
+  assert.match(app, /statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp/);
+  assert.match(app, /statLeaderCard\('НАИБОЛЬШИЙ УРОН',statDamageLeader/);
+  assert.match(app, /statLeaderCard\('KAST',statKastLeader/);
+  assert.match(app, /statLeaderCard\('ЭНТРИ-УБИЙСТВА',statEntryLeader/);
+  assert.match(app, /matchRoomInitialAvatar\(r\.player_id\|\|null,'md',r\.name\)/);
+});
+
+
+test('MVP card puts U/S/A and K/D in the left metric column, ADR and headshots in the right', () => {
   assert.match(app, /match-stat-mvp-tag">★ MVP/);
-  assert.match(app, /У\/С\/А/);
-  assert.match(app, /<small>КД<\/small>/);
-  assert.match(app, /statLeaderCard\('ADR',statMvp,'0'\)/);
-  assert.match(app, /statLeaderCard\('УБИЙСТВА В ГОЛОВУ',statMvp,'0%'\)/);
+  assert.match(app, /У\/С\/А[\s\S]*ADR[\s\S]*КД[\s\S]*УБИЙСТВА В ГОЛОВУ/);
+  assert.match(app, /<small>ADR<\/small><strong>0<\/strong>/);
+  assert.match(app, /<small>УБИЙСТВА В ГОЛОВУ<\/small><strong>0%<\/strong>/);
   assert.doesNotMatch(app, /match-stat-mvp-elo|Влияние на рез\.|FACEIT Рейтинг/);
 });
 
-test('Match Room leader cards are compact and team labels are explicit', () => {
+
+test('Match Room team names remain explicit and MVP/Top 4 ratio favors the MVP', () => {
+  const finalMvpCss = css.slice(css.lastIndexOf('/* 2026-11-16 — owner refinement: MVP takes focus'));
   assert.match(app, /displayName=\/\^\(тим\|team\)\\s\/i\.test\(rawName\)\?rawName:'Тим '\+rawName/);
-  assert.match(css, /grid-template-columns:minmax\(0,1\.04fr\) minmax\(0,\.96fr\)/);
-  assert.match(css, /grid-template-rows:repeat\(4,minmax\(0,1fr\)\)/);
-  assert.match(css, /grid-template-columns:minmax\(0,1fr\) auto/);
-  assert.match(css, /min-height:0!important;height:auto!important/);
+  assert.match(finalMvpCss, /grid-template-columns:minmax\(0,1\.55fr\) minmax\(300px,\.78fr\)/);
+  assert.match(finalMvpCss, /grid-template-rows:repeat\(4,44px\)/);
   assert.match(css, /data-team-side="a"[\s\S]*data-team-side="b"/);
 });
+
