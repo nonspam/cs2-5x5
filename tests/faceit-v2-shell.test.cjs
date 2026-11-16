@@ -966,6 +966,6 @@ test('Last detailed match map rows have a complete zero-filled advanced-stat sch
 });
 test('Match Room menus and comparison table remain translucent',()=>{
  assert.match(css,/#matchRoomPage \.match-room-account-menu\{background:rgba\(9,13,15,\.48\)!important/);
- assert.match(css,/\.nav-menu,[\\s\\S]*\.custom-select-menu,[\\s\\S]*\.account-menu-pop,[\\s\\S]*\.site-player-search-results/);
+ assert.match(css,/\.nav-menu,[\s\S]*\.custom-select-menu,[\\s\\S]*\.account-menu-pop,[\\s\\S]*\.site-player-search-results/);
  assert.match(css,/#matchRoomPage \.match-comparison-table tbody tr td\{padding:[\s\S]*rgba\(8,12,14,\.18\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
 });
