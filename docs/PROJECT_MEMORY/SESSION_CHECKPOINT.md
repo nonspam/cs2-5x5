@@ -281,3 +281,6 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Updated asset cache marker in `index.html` to `matchroom-statistics-layout-20261116-v1`.
 - Quality Gate [43937919845](https://github.com/nonspam/cs2-5x5/actions/runs/43937919845): **298 passed / 0 failed / 0 skipped**.
 - Browser visual QA/deployed rendering remains unverified; do not treat test success as screenshot acceptance.
+
+- Avatar sizing selectors were aligned with the real `profileAvatarMarkup` output (`.player-avatar.lg/md/xs`); final `index.html` cache marker is `matchroom-statistics-layout-20261116-v2`.
+- Latest Quality Gate [43938228641](https://github.com/nonspam/cs2-5x5/actions/runs/43938228641): **298 passed / 0 failed / 0 skipped**. Browser visual QA is still pending.
