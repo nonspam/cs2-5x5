@@ -6496,3 +6496,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - A	docs/PROJECT_MEMORY/DEMO_ANALYTICS_PLAN.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T08:00:48-05:00 — docs: record demo analytics direction and roadmap
+
+- Commit: e5bb27169feb7b7322894dd7b0b75b102477564e
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
