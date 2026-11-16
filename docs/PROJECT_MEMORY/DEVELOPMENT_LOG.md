@@ -616,3 +616,14 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Team header shows average ELO. First/second-half score is displayed as unavailable (—) because the current map data schema does not provide half scores.
 - Visual styles are compact and transparent, with no decorative oval header frames.
 - Validation: JavaScript syntax checks passed for app_v57.js and tests/faceit-v2-shell.test.cjs. Full automated test suite and browser visual QA have not yet been run.
+
+
+## 2026-11-16 — Match Room Statistics layout follow-up
+- Removed the Rating and Swing columns from the Match Room statistics table; general metrics now start with Kills / Deaths / Assists.
+- Expanded the player identity column and retained rank as the adjacent identity column.
+- Added team-side metadata to every stat row so player + rank cells keep the correct team tint in both team and player sort modes.
+- Rebuilt the awards area as a larger MVP panel with four leader cards stacked in a right-hand column on desktop.
+- Reworked the stat toolbar, category tabs, and table wrapper to stay inside a shared max-width container; metric headings are plain clickable text without oval borders.
+- Added `tests/match-room-statistics-layout.test.cjs` and updated the existing shell test to assert the removed fields and team identity metadata.
+- Quality Gate run [43937919845](https://github.com/nonspam/cs2-5x5/actions/runs/43937919845): **298 passed / 0 failed / 0 skipped**.
+- Browser visual QA has not been performed; viewport fit and actual appearance still require user confirmation.
