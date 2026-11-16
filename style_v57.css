@@ -7996,3 +7996,38 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 .match-room-account-menu button:hover{
  background:rgba(255,255,255,.10)!important;
 }
+
+
+/* 2026-11-16 — FACEIT-style Match Room statistics controls and compact tables */
+#matchRoomPage .match-stat-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:18px 0 14px;padding:0;background:transparent!important;border:0!important;box-shadow:none!important}
+#matchRoomPage .match-stat-categories{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#matchRoomPage .match-stat-categories button,
+#matchRoomPage .match-stat-mode button,
+#matchRoomPage .match-stat-side button{min-height:31px;padding:6px 13px;border:1px solid transparent;border-radius:5px;background:transparent;color:rgba(255,255,255,.68);font-size:12px;font-weight:800;cursor:pointer}
+#matchRoomPage .match-stat-categories button.active{color:#fff;border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.08)}
+#matchRoomPage .match-stat-controls{display:flex;align-items:center;justify-content:flex-end;gap:18px;flex-wrap:wrap}
+#matchRoomPage .match-stat-mode,#matchRoomPage .match-stat-side{display:flex;align-items:center;gap:4px}
+#matchRoomPage .match-stat-mode button.active,#matchRoomPage .match-stat-side button.active{color:#ff5a1f;background:rgba(255,85,25,.18);border-color:rgba(255,85,25,.12)}
+#matchRoomPage .match-stat-team-mode{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+#matchRoomPage .match-stat-player-mode{display:block}
+#matchRoomPage .match-stat-team-summary{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:12px 0 7px;color:rgba(255,255,255,.62);font-size:12px}
+#matchRoomPage .match-stat-team-summary>strong{min-width:160px;color:#f1f3f5;font-size:14px;font-weight:850}
+#matchRoomPage .match-stat-team-summary b{margin-left:5px;color:#fff;font-variant-numeric:tabular-nums}
+#matchRoomPage .match-mode-table{width:100%;min-width:0;table-layout:auto;border-collapse:collapse}
+#matchRoomPage .match-mode-table thead th{height:34px;padding:7px 10px!important;white-space:nowrap;background:rgba(16,18,21,.74)!important;color:rgba(255,255,255,.72)!important;font-size:11px!important;font-weight:850!important;border-bottom:1px solid rgba(255,255,255,.12)!important}
+#matchRoomPage .match-mode-table tbody tr{height:43px;background:rgba(8,12,14,.22)!important}
+#matchRoomPage .match-mode-table tbody td{height:43px;padding:7px 10px!important;white-space:nowrap;font-size:12px!important;border-bottom:1px solid rgba(255,255,255,.055)!important;background:rgba(8,12,14,.16)!important}
+#matchRoomPage .match-mode-table tbody td:first-child{min-width:155px;text-align:left}
+#matchRoomPage .match-mode-table tbody td:nth-child(2){min-width:54px;text-align:center}
+#matchRoomPage .match-mode-table tbody td:nth-child(3){min-width:62px;text-align:center;font-variant-numeric:tabular-nums}
+#matchRoomPage .match-mode-table .match-player-profile-link{display:flex;align-items:center;gap:9px;white-space:nowrap}
+#matchRoomPage .match-mode-table .match-sort-button{display:inline-flex;align-items:center;gap:4px;padding:0;border:0;background:transparent;color:inherit;font:inherit;white-space:nowrap;cursor:pointer}
+#matchRoomPage .match-mode-table .match-sort-button.is-sorted{color:#ff6a32}
+#matchRoomPage .match-mode-table .match-stat-rank{min-width:48px}
+#matchRoomPage .match-mode-table .match-stat-rating{font-weight:800;font-variant-numeric:tabular-nums}
+#matchRoomPage .match-stat-category-panel[hidden],
+#matchRoomPage [data-stat-mode][hidden]{display:none!important}
+#matchRoomPage .match-stat-category-panel .table-wrap{overflow-x:auto;border-radius:5px}
+#matchRoomPage .match-stat-category-panel .match-stat-team{min-width:0}
+#matchRoomPage .match-stat-category-panel .match-detail-footnote{margin-top:10px}
+@media(max-width:900px){#matchRoomPage .match-stat-toolbar{align-items:flex-start}#matchRoomPage .match-stat-controls{justify-content:flex-start;gap:8px}#matchRoomPage .match-stat-mode button{padding:6px 8px;font-size:10px}#matchRoomPage .match-stat-team-summary{gap:10px}}
