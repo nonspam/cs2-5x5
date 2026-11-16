@@ -1,3 +1,12 @@
+## 2026-11-17 — Remove unwanted player-name strip under Match Room hero (SOURCE + TESTS PASS)
+- Owner corrected the prior implementation: the ten-player roster strip beneath the map hero was explicitly unwanted. Removed the generated roster markup from app_v57.js and the associated layout styling from style_v57.css. The room now flows from top-level Overview / Statistics / Top tabs directly to the map hero, then the existing Statistics sub-tabs (Results / Duels / Equipment) and statistics content. No standalone list of player names or avatars is rendered under the map.
+- Kept existing match hero, player data, MVP/leader cards, stats values and tab behavior unchanged. No like/dislike controls were added.
+- Updated tests to assert absence of the roster markup and preserve the requested hierarchy. Updated asset cache keys in index.html: app v15, CSS v19.
+- Validate workflow [43978200095](https://github.com/nonspam/cs2-5x5/actions/runs/43978200095): **316 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- Final source commit before this checkpoint update: c06a167675411a7ef6a8ecb88f0de61e3f6adbb4.
+- Not verified: browser rendering, DEV deployment, owner visual acceptance. No database, SQL, migration, production or main changes.
+- Next: owner refreshes DEV and confirms the player strip is gone and spacing between map and statistics tabs is clean.
+
 ## 2026-11-17 — FACEIT Match Room hierarchy and clean player strip (SOURCE + TESTS PASS)
 - Owner compared FACEIT and current Match Room screenshots. Requested top-level tabs (Overview / Statistics / Top) above the map hero; clear spacing between top navigation, map, roster, and Results / Duels / Equipment sub-tabs; explicitly does not want player likes/thumbs or like/dislike ranking controls.
 - Moved the existing top-level navigation before the map hero. Kept the existing Results / Duels / Equipment tabs inside the Statistics view, below the hero.
