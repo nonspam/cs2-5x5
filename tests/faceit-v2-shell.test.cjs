@@ -1041,7 +1041,7 @@ test('opening any match establishes the Match Room route and history restoration
  assert.match(open,/roomUrl\.hash='#\/base'/);
  assert.match(open,/cs2Route:'base',cs2MatchRoom:matchId/);
  assert.match(open,/state\.tab!=='base'[\s\S]*state\.tab='base'[\s\S]*render\(\)/);
- assert.match(restore,/new URLSearchParams\(window\.location\.search\)\.get\('match'\)/);
+ assert.match(restore,/window\.location\.search\|\|''\)\.match\(\/\[\?&\]match=\(\[\^&\]\+\)\//);
  assert.match(restore,/if\(routeMatch\)[\s\S]*state\.tab='base'[\s\S]*openMatchDetail\(routeMatch,\{restore:true\}\)/);
  assert.match(restore,/if\(window\.__activeMatchRoomId\)closeMatchRoom\(\{fromPop:true\}\)/);
 });
