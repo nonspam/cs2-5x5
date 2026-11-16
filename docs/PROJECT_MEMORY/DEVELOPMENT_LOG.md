@@ -629,3 +629,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Browser visual QA has not been performed; viewport fit and actual appearance still require user confirmation.
 
 - Follow-up QA correction: the avatar markup emits `.player-avatar.lg/md/xs`; CSS now targets those actual classes (not nonexistent `match-player-avatar-*` selectors). Final asset cache marker is `matchroom-statistics-layout-20261116-v2`. Quality Gate run [43938228641](https://github.com/nonspam/cs2-5x5/actions/runs/43938228641): **298 passed / 0 failed / 0 skipped**.
+
+
+## 2026-11-16 — Match Room MVP and leader cards refinement
+- Rebuilt the MVP award panel: removed FACEIT rating/ELO and result impact; MVP tag sits at the upper-right; the panel now shows U/S/A and K/D.
+- Replaced the four right-side awards with compact text-only rows: most kills, best K/D, ADR (0), and headshot kills (0%). The headshot metric is explicitly shown below ADR; no locked highlight or oversized avatar placeholders.
+- Increased the MVP panel share and avatar size, reduced right-side row height/gaps, and tightened table player/rank cells while preserving team-side tint in both sort modes.
+- Team section headings now receive a `Тим ` prefix unless the source already labels them as Team/Тим.
+- Added regression tests; asset marker is `matchroom-statistics-layout-20261116-v3`.
+- Quality Gate [43942434063](https://github.com/nonspam/cs2-5x5/actions/runs/43942434063): **300 passed / 0 failed / 0 skipped**. Browser visual QA remains pending.
