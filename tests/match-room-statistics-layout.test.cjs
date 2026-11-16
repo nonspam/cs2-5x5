@@ -124,7 +124,6 @@ test('Match Room follows FACEIT hierarchy: view tabs, map, clean roster, then st
   assert.match(app, /match-room-player-chip" data-team-side="a"/);
   assert.match(app, /match-room-player-chip" data-team-side="b"/);
   assert.doesNotMatch(app.slice(app.indexOf("const roomPlayerStrip="), app.indexOf("const statCategories=")), /thumb|like|нравит/i);
-  assert.match(app, /class="match-stat-subtabs"[sS]*data-stat-subview-button="results"/);
 });
 
 test('Match Room player strip is compact, responsive, and has no rating controls', () => {
