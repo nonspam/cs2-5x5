@@ -8570,3 +8570,89 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  -webkit-backdrop-filter:none!important;
  backdrop-filter:none!important;
 }
+
+/* 2026-11-17 — FACEIT match report: aligned hero and functional summary/duel/equipment tabs */
+#matchRoomPage>.match-room-content{
+ width:min(calc(100% - 56px),1600px)!important;
+ max-width:1600px!important;
+ margin:0 auto!important;
+ padding-left:0!important;
+ padding-right:0!important;
+}
+#matchRoomPage .match-room-hero{
+ width:100%!important;
+ max-width:none!important;
+ margin-left:0!important;
+ margin-right:0!important;
+}
+#matchRoomPage .match-room-view-tabs{
+ width:100%!important;
+ margin:14px 0 20px!important;
+ justify-content:center!important;
+ border-bottom:1px solid rgba(255,255,255,.14)!important;
+}
+#matchRoomPage .match-room-statistics-view{
+ width:100%!important;
+ max-width:none!important;
+ min-width:0!important;
+}
+#matchRoomPage .match-stat-subtabs{
+ display:flex!important;
+ align-items:center!important;
+ justify-content:flex-start!important;
+ gap:26px!important;
+ min-height:42px!important;
+ margin:0 0 18px!important;
+ padding:0 12px!important;
+ border-bottom:1px solid rgba(255,255,255,.14)!important;
+}
+#matchRoomPage .match-stat-subtabs button{
+ position:relative!important;
+ min-height:42px!important;
+ padding:0 5px!important;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ color:rgba(255,255,255,.62)!important;
+ font-size:12px!important;
+ font-weight:900!important;
+ cursor:pointer!important;
+}
+#matchRoomPage .match-stat-subtabs button.active{color:#ff5a1f!important}
+#matchRoomPage .match-stat-subtabs button.active:after{
+ content:""!important;
+ position:absolute!important;
+ left:0!important;right:0!important;bottom:-1px!important;
+ height:2px!important;background:#ff5a1f!important;
+}
+#matchRoomPage [data-stat-subview][hidden]{display:none!important}
+#matchRoomPage .match-stat-subview-heading{
+ display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+ margin:4px 0 14px;padding:0 12px;
+}
+#matchRoomPage .match-stat-subview-heading>span{font-size:13px;font-weight:900;color:#f1f3f5}
+#matchRoomPage .match-stat-subview-heading>small{font-size:11px;color:rgba(255,255,255,.55)}
+#matchRoomPage .match-stat-subview-table-wrap{
+ width:100%;overflow-x:auto;border:1px solid rgba(255,255,255,.14);border-radius:8px;
+}
+#matchRoomPage .match-stat-subview-table{width:100%;border-collapse:collapse;min-width:520px}
+#matchRoomPage .match-stat-subview-table th,
+#matchRoomPage .match-stat-subview-table td{
+ height:42px;padding:8px 12px;text-align:center;border-bottom:1px solid rgba(255,255,255,.09);
+ font-size:12px;white-space:nowrap;
+}
+#matchRoomPage .match-stat-subview-table th{background:rgba(16,18,21,.74);color:rgba(255,255,255,.7);font-size:10px;font-weight:900}
+#matchRoomPage .match-stat-subview-table th:first-child,
+#matchRoomPage .match-stat-subview-table td:first-child{text-align:left;min-width:220px}
+#matchRoomPage .match-stat-subview-table td:first-child .player-avatar{width:26px;height:26px;vertical-align:middle;margin-right:8px}
+#matchRoomPage .match-stat-empty{
+ min-height:120px;display:flex;align-items:center;justify-content:center;
+ padding:24px;border:1px solid rgba(255,255,255,.13);border-radius:8px;
+ background:rgba(8,12,14,.18);color:rgba(255,255,255,.62);
+ font-size:12px;text-align:center;line-height:1.6;
+}
+@media(max-width:700px){
+ #matchRoomPage>.match-room-content{width:calc(100% - 24px)!important}
+ #matchRoomPage .match-stat-subtabs{gap:18px!important;padding:0 4px!important}
+ #matchRoomPage .match-stat-subview-heading{align-items:flex-start;flex-direction:column}
+}
