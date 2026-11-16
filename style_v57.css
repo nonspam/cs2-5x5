@@ -7955,7 +7955,7 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-comparison-table tbody tr:nth-child(even){background:transparent!important;}
 #matchRoomPage .match-stat-team-comparison{padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;}
 #matchRoomPage .match-stat-team-comparison .table-wrap{overflow-x:auto!important;border:0!important;border-radius:0!important;}
-#matchRoomPage .match-comparison-table{width:100%;min-width:1480px;border-collapse:separate!important;border-spacing:0 5px!important;}
+#matchRoomPage .match-comparison-table{width:100%;min-width:2700px;border-collapse:separate!important;border-spacing:0 5px!important;}
 #matchRoomPage .match-comparison-table thead th{position:sticky;top:0;z-index:2;padding:10px 9px!important;background:rgba(8,12,14,.38)!important;backdrop-filter:blur(12px)!important;color:#aeb8bc!important;white-space:nowrap!important;border-bottom:1px solid rgba(255,255,255,.12)!important;}
 #matchRoomPage .match-comparison-table .match-sort-button{display:inline-flex;align-items:center;gap:5px;padding:0;border:0;background:transparent!important;color:inherit;font:inherit;font-weight:900;letter-spacing:.04em;cursor:pointer;white-space:nowrap;}
 #matchRoomPage .match-comparison-table .match-sort-button:hover,#matchRoomPage .match-comparison-table .match-sort-button.is-sorted{color:#fff!important;}
