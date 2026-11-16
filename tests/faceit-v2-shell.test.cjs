@@ -951,12 +951,25 @@ test('Leaderboard rows use Match Room Statistics glass styling and translucent p
 });
 
 
-test('Match Room compares all ten players in one sortable table and defaults missing advanced metrics to zero',()=>{
- assert.match(app,/function sortMatchRoomStats\(key\)/);
- assert.match(app,/СРАВНЕНИЕ 10 ИГРОКОВ/);
- assert.ok(app.includes('["kd","K/D"]'));
- for(const key of ["impact_rating","kills_per_round","adr","hs_kills","hs_percent","kast","accuracy","shots_fired","shots_hit","damage","mvp","rounds_played","survival_rate","entry_kills","entry_deaths","opening_kills","opening_deaths","trade_kills","traded_deaths","flash_assists","utility_damage","utility_enemies","clutches","clutch_1v1","clutch_1v2","clutch_1v3","clutch_1v4","clutch_1v5","duels_won","duels_lost","duel_win_percent","two_kills","three_kills","four_kills","five_kills","ct_kills","ct_deaths","t_kills","t_deaths"])assert.ok(app.includes(key),'sortable metric '+key);
- assert.match(app,/return\{id,p,name,k:st\?\.kills\?\?0,d:st\?\.deaths\?\?0,a:st\?\.assists\?\?0/);
+test('Match Room statistics defaults to two teams and supports category, player and T/CT filters',()=>{
+ assert.match(app,/data-stat-mode="team"/);
+ assert.match(app,/data-stat-mode="players" hidden/);
+ assert.match(app,/data-stat-category="general"/);
+ assert.match(app,/data-stat-category="advanced"/);
+ assert.match(app,/data-stat-category="entry"/);
+ assert.match(app,/data-stat-category="trades"/);
+ assert.match(app,/data-stat-category="clutches"/);
+ assert.match(app,/function setMatchRoomStatsMode\(mode\)/);
+ assert.match(app,/function setMatchRoomStatCategory\(category\)/);
+ assert.match(app,/function setMatchRoomStatsSide\(side\)/);
+ assert.match(app,/Сортировать по команде/);
+ assert.match(app,/Сортировать по игрокам/);
+ assert.match(app,/data-stat-side-button="all"/);
+ assert.match(app,/data-stat-side-button="t"/);
+ assert.match(app,/data-stat-side-button="ct"/);
+ assert.match(app,/\['swing','Swing'\]/);
+ assert.doesNotMatch(app,/СРАВНЕНИЕ 10 ИГРОКОВ/);
+ assert.doesNotMatch(app,/match-comparison-table/);
 });
 test('Last detailed match map rows have a complete zero-filled advanced-stat schema',()=>{
  const data=JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname,'../data/maps.json'),'utf8'));
@@ -968,4 +981,10 @@ test('Match Room menus and comparison table remain translucent',()=>{
  assert.match(css,/#matchRoomPage \.match-room-account-menu\{background:rgba\(9,13,15,\.48\)!important/);
  assert.match(css,/\.nav-menu,[\s\S]*\.custom-select-menu,[\\s\\S]*\.account-menu-pop,[\\s\\S]*\.site-player-search-results/);
  assert.match(css,/#matchRoomPage \.match-comparison-table tbody tr td\{padding:[\s\S]*rgba\(8,12,14,\.18\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
+});
+
+test('Match Room statistics tables are compact and category-driven',()=>{
+ assert.match(css,/#matchRoomPage \.match-mode-table\{width:100%;min-width:0/);
+ assert.match(css,/#matchRoomPage \.match-stat-toolbar/);
+ assert.match(css,/#matchRoomPage \.match-stat-mode button\.active/);
 });
