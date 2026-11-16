@@ -8680,3 +8680,63 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  width:100%!important;max-width:none!important;min-width:0!important;
  box-sizing:border-box!important;
 }
+
+
+/* 2026-11-17 — FACEIT room hierarchy: navigation above map, clean player strip below */
+#matchRoomPage .match-room-view-tabs{
+ width:100%!important;
+ margin:0 0 16px!important;
+ padding:0 12px!important;
+ min-height:42px!important;
+ box-sizing:border-box!important;
+}
+#matchRoomPage .match-room-hero{
+ margin:0!important;
+}
+#matchRoomPage .match-room-player-strip{
+ width:100%!important;
+ min-width:0!important;
+ display:grid!important;
+ grid-template-columns:repeat(10,minmax(0,1fr))!important;
+ gap:8px!important;
+ margin:14px 0 22px!important;
+ padding:0!important;
+ box-sizing:border-box!important;
+}
+#matchRoomPage .match-room-player-chip{
+ min-width:0!important;
+ min-height:46px!important;
+ display:flex!important;
+ align-items:center!important;
+ gap:8px!important;
+ padding:7px 9px!important;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+ border:1px solid rgba(255,255,255,.10)!important;
+ border-left:3px solid #7774ff!important;
+ border-radius:7px!important;
+ background:rgba(8,12,14,.34)!important;
+ -webkit-backdrop-filter:blur(8px)!important;
+ backdrop-filter:blur(8px)!important;
+}
+#matchRoomPage .match-room-player-chip[data-team-side="b"]{
+ border-left-color:#35d69a!important;
+}
+#matchRoomPage .match-room-player-chip .player-avatar,
+#matchRoomPage .match-room-player-chip .player-avatar.xs{
+ width:28px!important;height:28px!important;flex:0 0 28px!important;
+ margin:0!important;
+}
+#matchRoomPage .match-room-player-chip strong{
+ display:block!important;min-width:0!important;overflow:hidden!important;
+ text-overflow:ellipsis!important;white-space:nowrap!important;
+ color:#f1f3f5!important;font-size:11px!important;font-weight:850!important;
+}
+@media(max-width:1050px){
+ #matchRoomPage .match-room-player-strip{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+}
+@media(max-width:640px){
+ #matchRoomPage .match-room-view-tabs{margin-bottom:12px!important;padding:0 4px!important}
+ #matchRoomPage .match-room-player-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;margin:12px 0 18px!important}
+ #matchRoomPage .match-room-player-chip{min-height:42px!important;padding:6px 7px!important}
+}
