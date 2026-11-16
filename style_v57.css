@@ -8255,3 +8255,86 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-awards .match-stat-mvp-profile>.player-avatar.lg,
  #matchRoomPage .match-stat-awards .match-stat-mvp-avatar{width:68px!important;height:68px!important;flex:0 0 68px!important;}
 }
+
+/* 2026-11-16 — tighter FACEIT-style MVP and leader cards */
+#matchRoomPage .match-stat-awards{
+ width:100%!important;max-width:1360px!important;margin:14px auto 20px!important;
+ display:grid!important;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr)!important;
+ align-items:stretch!important;gap:16px!important;min-width:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-card{
+ min-width:0!important;min-height:286px!important;height:100%!important;
+ display:grid!important;grid-template-columns:minmax(132px,.62fr) minmax(0,1.38fr)!important;
+ align-items:center!important;gap:20px!important;padding:24px!important;
+ border:1px solid rgba(255,255,255,.17)!important;border-radius:10px!important;
+ background:rgba(8,12,14,.36)!important;box-shadow:none!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-profile{
+ display:flex!important;flex-direction:column!important;align-items:center!important;
+ justify-content:center!important;gap:9px!important;text-align:center!important;min-width:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-profile>.player-avatar.lg,
+#matchRoomPage .match-stat-awards .match-stat-mvp-avatar{
+ width:112px!important;height:112px!important;flex:0 0 112px!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-profile h2{font-size:18px!important;line-height:1.2!important;margin:0!important;}
+#matchRoomPage .match-stat-awards .match-stat-mvp-main{
+ position:relative!important;display:flex!important;flex-direction:column!important;
+ align-items:stretch!important;justify-content:center!important;gap:24px!important;
+ min-width:0!important;padding-top:30px!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-tag{
+ position:absolute!important;top:0!important;right:0!important;
+ color:#ffbd22!important;font-size:13px!important;font-weight:950!important;letter-spacing:.04em!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:20px 26px!important;min-width:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics>div{display:flex!important;flex-direction:column!important;gap:5px!important;min-width:0!important;}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics small{font-size:11px!important;color:rgba(255,255,255,.62)!important;font-weight:750!important;}
+#matchRoomPage .match-stat-awards .match-stat-mvp-metrics strong{font-size:20px!important;font-weight:900!important;line-height:1.15!important;white-space:nowrap!important;}
+#matchRoomPage .match-stat-highlight-grid{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:7px!important;
+ min-width:0!important;align-content:stretch!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight{
+ display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
+ align-items:center!important;gap:12px!important;min-height:0!important;height:auto!important;
+ padding:7px 16px!important;border:1px solid rgba(255,255,255,.15)!important;
+ border-left:3px solid #7774ff!important;border-radius:8px!important;
+ background:rgba(8,12,14,.30)!important;min-width:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-player{min-width:0!important;}
+#matchRoomPage .match-stat-awards .match-stat-highlight-player strong{font-size:13px!important;font-weight:800!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value{display:flex!important;flex-direction:column!important;align-items:flex-end!important;justify-content:center!important;gap:1px!important;min-width:120px!important;max-width:none!important;text-align:right!important;}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value>b{font-size:19px!important;line-height:1.1!important;}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value small{font-size:10px!important;line-height:1.15!important;white-space:nowrap!important;max-width:none!important;}
+#matchRoomPage .match-stat-team-summary>strong{font-size:14px!important;font-weight:900!important;}
+#matchRoomPage .match-mode-table tbody td:first-child{width:22%!important;min-width:185px!important;padding:7px 10px!important;}
+#matchRoomPage .match-mode-table tbody td:nth-child(2){width:7%!important;min-width:62px!important;padding:7px 8px!important;}
+#matchRoomPage .match-mode-table tbody tr[data-team-side="a"] td.name,
+#matchRoomPage .match-mode-table tbody tr[data-team-side="a"] td.match-stat-rank{
+ background:rgba(79,105,205,.34)!important;border-top:1px solid rgba(139,153,255,.22)!important;
+ border-bottom:1px solid rgba(139,153,255,.22)!important;
+}
+#matchRoomPage .match-mode-table tbody tr[data-team-side="b"] td.name,
+#matchRoomPage .match-mode-table tbody tr[data-team-side="b"] td.match-stat-rank{
+ background:rgba(30,130,102,.34)!important;border-top:1px solid rgba(77,218,177,.20)!important;
+ border-bottom:1px solid rgba(77,218,177,.20)!important;
+}
+#matchRoomPage .match-mode-table tbody tr[data-team-side="a"] td.name{border-left:3px solid #7774ff!important;}
+#matchRoomPage .match-mode-table tbody tr[data-team-side="b"] td.name{border-left:3px solid #37d7ae!important;}
+@media(max-width:1050px){
+ #matchRoomPage .match-stat-awards{grid-template-columns:minmax(0,1fr)!important;}
+ #matchRoomPage .match-stat-awards .match-stat-mvp-card{min-height:250px!important;}
+}
+@media(max-width:640px){
+ #matchRoomPage .match-stat-awards .match-stat-mvp-card{grid-template-columns:90px minmax(0,1fr)!important;min-height:220px!important;padding:14px!important;gap:12px!important;}
+ #matchRoomPage .match-stat-awards .match-stat-mvp-profile>.player-avatar.lg,
+ #matchRoomPage .match-stat-awards .match-stat-mvp-avatar{width:72px!important;height:72px!important;flex-basis:72px!important;}
+ #matchRoomPage .match-stat-awards .match-stat-mvp-metrics{gap:14px!important;}
+ #matchRoomPage .match-stat-awards .match-stat-mvp-metrics strong{font-size:16px!important;}
+ #matchRoomPage .match-stat-awards .match-stat-highlight-value{min-width:100px!important;}
+}
