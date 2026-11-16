@@ -1,3 +1,10 @@
+## 2026-11-17 — Compact Match Room polish and home player search (SOURCE + TESTS PENDING)
+- Owner requested a slightly narrower/denser Match Room matching FACEIT, with softer vertical spacing between the map hero, Results/Duels/Equipment tabs, MVP/leader cards and team tables. Reduced Match Room content max width from 1600px to 1500px with 80px side allowance; compacted MVP/leader card height to 250px; added deliberate gaps around sub-tabs, awards and table toolbar. Existing data and tab behavior unchanged.
+- Widened desktop global navigation rail from 170px to 185px.
+- Added a player search field to the home hero. Suggestions are sourced from activePlayers() in the live project data, sorted exact/prefix/word-prefix first; clicking a result or pressing Enter opens the real player's public profile. Escape closes suggestions. No hard-coded player list.
+- Files: app_v57.js, style_v57.css, index.html (app cache v16, CSS cache v20), tests/match-room-statistics-layout.test.cjs.
+- Browser rendering / DEV deployment / visual acceptance not yet verified.
+
 ## 2026-11-17 — Remove unwanted player-name strip under Match Room hero (SOURCE + TESTS PASS)
 - Owner corrected the prior implementation: the ten-player roster strip beneath the map hero was explicitly unwanted. Removed the generated roster markup from app_v57.js and the associated layout styling from style_v57.css. The room now flows from top-level Overview / Statistics / Top tabs directly to the map hero, then the existing Statistics sub-tabs (Results / Duels / Equipment) and statistics content. No standalone list of player names or avatars is rendered under the map.
 - Kept existing match hero, player data, MVP/leader cards, stats values and tab behavior unchanged. No like/dislike controls were added.

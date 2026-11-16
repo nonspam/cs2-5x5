@@ -931,6 +931,10 @@ function home(v){
       <section class="panel home-hero home-rebuild-hero">
         <img class="hero-image" src="https://raw.githubusercontent.com/ghostcap-gaming/cs2-map-images/main/cs2/de_train.png" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" onerror="this.onerror=null;this.src='assets/maps/train.svg'">
         <div class="hero-copy"><h1>Добро пожаловать в<br><strong>CS2 ANALYTICS</strong></h1><p>Твоя статистика. Твой анализ. Твоя история игр.</p></div>
+        <div class="site-player-search home-player-search" id="sitePlayerSearch" role="search">
+          <input id="sitePlayerSearchInput" type="search" placeholder="Найти игрока..." autocomplete="off" aria-label="Поиск игрока" aria-controls="sitePlayerSearchResults">
+          <div id="sitePlayerSearchResults" class="site-player-search-results" role="listbox" hidden></div>
+        </div>
         <div class="hero-counters"><div><b>${activeMapCount()}</b><span>Карт</span></div><div><b>${activePlayers().length}</b><span>Игроков</span></div><div><b>${new Set(activeMaps.map(x=>mapKey(x.map))).size}</b><span>Типов карт</span></div></div>
       </section>
       <section class="home-metrics">
@@ -948,6 +952,7 @@ function home(v){
       <section class="panel home-info"><h3>Анализируй.<br>Улучшайся.</h3><p>Смотри не только на K/D — отслеживай форму, стабильность, импакт и историю по картам.</p></section>
     </aside>
   </section>`;
+  bindSitePlayerSearch(v);
   $('#homeMetric').value=state.metric;$('#homeMetric').onchange=e=>{const scrollY=window.scrollY,html=document.documentElement,prevBehavior=html.style.scrollBehavior,prevAnchor=html.style.overflowAnchor;html.style.scrollBehavior='auto';html.style.overflowAnchor='none';state.metric=e.target.value;state.focused=null;drawHomeChart();window.scrollTo({top:scrollY,left:0,behavior:'auto'});requestAnimationFrame(()=>{window.scrollTo({top:scrollY,left:0,behavior:'auto'});requestAnimationFrame(()=>{window.scrollTo({top:scrollY,left:0,behavior:'auto'});html.style.scrollBehavior=prevBehavior;html.style.overflowAnchor=prevAnchor})})};renderPlayerPicker();drawHomeChart()
 }
 function homeLastRows(match){
@@ -1905,9 +1910,31 @@ if(document.addEventListener)document.addEventListener('wheel',e=>{
 },{passive:false,capture:true});
 
 
-function bindSitePlayerSearch(){
- const input=document.getElementById('sitePlayerSearchInput'),results=document.getElementById('sitePlayerSearchResults');if(!input||input.dataset.bound)return;input.dataset.bound='1';
- const render=()=>{const q=String(input.value||'').trim().toLocaleLowerCase('ru');if(!q){results.hidden=true;results.innerHTML='';return}const found=activePlayers().filter(p=>String(p.display_name||p.player_id).toLocaleLowerCase('ru').includes(q)).slice(0,8);results.innerHTML=found.map(p=>'<button type="button" data-player-id="'+esc(p.player_id)+'">'+matchRoomInitialAvatar(p.player_id,'xs',p.display_name)+'<span>'+esc(p.display_name||p.player_id)+'</span></button>').join('')||(q?'<div class="site-player-search-empty">Игрок не найден</div>':'');results.hidden=false;results.querySelectorAll('[data-player-id]').forEach(button=>button.addEventListener('click',()=>{const pid=button.dataset.playerId;results.hidden=true;input.value='';closeMatchRoom();openPublicPlayerProfile(pid)}))};
- input.addEventListener('input',render);input.addEventListener('keydown',event=>{if(event.key==='Enter')results.querySelector('[data-player-id]')?.click();if(event.key==='Escape'){results.hidden=true;input.blur()}});document.addEventListener('click',event=>{if(!event.target.closest('#sitePlayerSearch'))results.hidden=true});
+function bindSitePlayerSearch(root=document){
+ const input=root.querySelector?.('#sitePlayerSearchInput'),results=root.querySelector?.('#sitePlayerSearchResults');if(!input||!results||input.dataset.bound)return;input.dataset.bound='1';
+ const render=()=>{
+  const q=String(input.value||'').trim().toLocaleLowerCase('ru');
+  if(!q){results.hidden=true;results.innerHTML='';return}
+  const found=activePlayers().map(p=>({p,name:String(p.display_name||p.player_id),id:String(p.player_id||'')}))
+   .filter(x=>(x.name+' '+x.id).toLocaleLowerCase('ru').includes(q))
+   .sort((a,b)=>{
+    const an=a.name.toLocaleLowerCase('ru'),bn=b.name.toLocaleLowerCase('ru');
+    const score=x=>x===q?0:x.startsWith(q)?1:x.split(/\\s+/).some(part=>part.startsWith(q))?2:3;
+    return score(an)-score(bn)||an.localeCompare(bn,'ru');
+   }).slice(0,8);
+  results.innerHTML=found.map(({p,name})=>'<button type="button" role="option" data-player-id="'+esc(p.player_id)+'">'+matchRoomInitialAvatar(p.player_id,'xs',name)+'<span>'+esc(name)+'</span></button>').join('')||(q?'<div class="site-player-search-empty">Игрок не найден</div>':'');
+  results.hidden=false;
+  results.querySelectorAll('[data-player-id]').forEach(button=>button.addEventListener('click',()=>{
+   const pid=button.dataset.playerId;results.hidden=true;input.value='';closeMatchRoom();openPublicPlayerProfile(pid);
+  }));
+ };
+ input.addEventListener('input',render);
+ input.addEventListener('keydown',event=>{
+  if(event.key==='Enter'){event.preventDefault();results.querySelector('[data-player-id]')?.click()}
+  if(event.key==='Escape'){results.hidden=true;input.blur()}
+ });
+ document.addEventListener('click',event=>{if(!event.target.closest('#sitePlayerSearch'))results.hidden=true});
 }
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindSitePlayerSearch,{once:true});else bindSitePlayerSearch();
+
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindSitePlayerSearch,{once:true});else bindSitePlayerSearch();

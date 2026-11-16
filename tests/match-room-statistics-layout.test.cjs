@@ -130,3 +130,24 @@ test('Match Room has no standalone roster strip or like/dislike controls beneath
 });
 
 
+
+
+test('Home page exposes real-player search with suggestions and Enter-to-open profile', () => {
+  const homeMarkup = app.slice(app.indexOf('function home(v)'), app.indexOf('function homeLastRows'));
+  assert.match(homeMarkup, /id="sitePlayerSearch"/);
+  assert.match(homeMarkup, /id="sitePlayerSearchInput"/);
+  assert.match(homeMarkup, /id="sitePlayerSearchResults"/);
+  assert.match(homeMarkup, /bindSitePlayerSearch\(v\)/);
+  const binder = app.slice(app.indexOf('function bindSitePlayerSearch'), app.indexOf('if(document.readyState', app.indexOf('function bindSitePlayerSearch')));
+  assert.match(binder, /activePlayers\(\)/);
+  assert.match(binder, /event\.key==='Enter'/);
+  assert.match(binder, /openPublicPlayerProfile\(pid\)/);
+});
+
+test('Match Room compact polish keeps content slightly narrower and adds breathing room', () => {
+  const polish = css.slice(css.lastIndexOf('/* 2026-11-17 — final compact Match Room proportions'));
+  assert.match(polish, /calc\(100% - 80px\),1500px/);
+  assert.match(polish, /\.match-stat-subtabs\s*\{[\s\S]*margin-top:12px!important/);
+  assert.match(polish, /\.match-stat-awards\s*\{[\s\S]*margin-top:18px!important/);
+  assert.match(polish, /\.faceit-route-shell\s*\{grid-template-columns:185px/);
+});
