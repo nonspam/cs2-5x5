@@ -988,3 +988,19 @@ test('Match Room statistics tables are compact and category-driven',()=>{
  assert.match(css,/#matchRoomPage \.match-stat-toolbar/);
  assert.match(css,/#matchRoomPage \.match-stat-mode button\.active/);
 });
+
+
+test('Match Room Statistics restores the MVP card and four leader highlights above category tables',()=>{
+ assert.match(app,/const statMvpCard='<section class="match-stat-mvp-card"/);
+ assert.match(app,/const statHighlights='<section class="match-stat-awards">'+statMvpCard/);
+ assert.match(app,/statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp/);
+ assert.match(app,/statLeaderCard\('ЛУЧШИЙ K\/D',statKdLeader/);
+ assert.match(app,/statLeaderCard\('БОЛЬШЕ ВСЕГО АССИСТОВ',statAssistLeader/);
+ assert.match(app,/statLeaderCard\('ЛУЧШИЙ ADR',statAdrLeader/);
+ assert.match(app,/data-match-view="statistics" hidden>'\+statHighlights\+'<div class="match-stat-toolbar"/);
+});
+
+test('Match Room statistic categories are plain text controls with underline-only active state',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-categories button,[\s\S]*border:0!important[\s\S]*border-radius:0!important[\s\S]*background:transparent!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-categories button\.active[\s\S]*border-bottom-color:#ff5a1f!important/);
+});
