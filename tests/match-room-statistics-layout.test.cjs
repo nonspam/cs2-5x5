@@ -49,7 +49,7 @@ test('MVP card puts U/S/A and K/D in the left metric column, ADR and headshots i
 
 test('Match Room team names remain explicit and MVP/Top 4 ratio favors the MVP', () => {
   const finalMvpCss = css.slice(css.lastIndexOf('/* 2026-11-16 — owner refinement: MVP takes focus'));
-  assert.match(app, /displayName=\/\^\(тим\|team\)\\s\/i\.test\(rawName\)\?rawName:'Тим '\+rawName/);
+  assert.match(app, /const teamLabel=rawName\.replace\(\/\^\(\?:тим\|team\)\\s\+\/i,''\)\.trim\(\);const displayName=teamLabel\?'Team '\+teamLabel:'Team'/);
   assert.match(finalMvpCss, /grid-template-columns:minmax\(0,1\.55fr\) minmax\(300px,\.78fr\)/);
   assert.match(finalMvpCss, /grid-template-rows:repeat\(4,44px\)/);
   assert.match(css, /data-team-side="a"[\s\S]*data-team-side="b"/);
@@ -66,9 +66,9 @@ test('Most-kills value is pinned to the far right edge of its own card', () => {
   assert.doesNotMatch(fix, /translateX/);
 });
 
-test('Team information strip and its wrapper are transparent while table keeps its own surface', () => {
-  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — final FACEIT statistics overrides'));
-  assert.match(fix, /\.match-stat-team-mode > \.match-stat-team,[\s\S]*\.match-stat-team-summary\s*\{[\s\S]*background:transparent!important/);
+test('Team information strip and wrapper are transparent while scoreboard remains independent', () => {
+  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — transparent team info strip: remove only the strip surface */'));
+  assert.match(fix, /\.match-stat-teams\.match-stat-team-mode > \.match-stat-team,[\s\S]*\.match-stat-team-summary\s*\{[\s\S]*background:transparent!important[\s\S]*backdrop-filter:none!important/);
 });
 
 
@@ -77,4 +77,10 @@ test('FACEIT team colors tint only the player-name cells by team side and outran
   assert.match(faceitTint, /#matchRoomPage\.match-room-page[\s\S]*tr\[data-team-side="a"\] > td\.name,[\s\S]*background:#24213f!important/);
   assert.match(faceitTint, /#matchRoomPage\.match-room-page[\s\S]*tr\[data-team-side="b"\] > td\.name,[\s\S]*background:#234239!important/);
   assert.doesNotMatch(faceitTint, /td\.match-stat-rank|td:not\(\.name\)|nth-child/);
+});
+
+
+test('Team info labels always use English Team prefix without duplicating existing prefixes', () => {
+  assert.match(app, /const teamLabel=rawName\.replace\(\/\^\(\?:тим\|team\)\\s\+\/i,''\)\.trim\(\)/);
+  assert.match(app, /const displayName=teamLabel\?'Team '\+teamLabel:'Team'/);
 });
