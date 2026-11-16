@@ -7972,3 +7972,27 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-room-account-menu button:hover{background:rgba(255,255,255,.10)!important;}
 #matchRoomPage .match-room-statistics-view .match-statistics-controls,
 #matchRoomPage .match-room-statistics-view .match-statistics-summary{background:transparent!important;}
+
+
+/* 2026-11-16 — Transparent glass treatment for every site menu surface */
+.nav-menu,
+.custom-select-menu,
+.account-menu-pop,
+.site-player-search-results,
+.match-room-search-results,
+.match-room-account-menu{
+ background:rgba(8,12,14,.48)!important;
+ background-color:rgba(8,12,14,.48)!important;
+ backdrop-filter:blur(18px) saturate(125%)!important;
+ -webkit-backdrop-filter:blur(18px) saturate(125%)!important;
+ border:1px solid rgba(255,255,255,.16)!important;
+ box-shadow:0 14px 35px rgba(0,0,0,.24)!important;
+}
+.nav-menu button:hover,
+.custom-select-menu button:hover,
+.account-menu-pop>button:hover,
+.site-player-search-results button:hover,
+.match-room-search-results button:hover,
+.match-room-account-menu button:hover{
+ background:rgba(255,255,255,.10)!important;
+}
