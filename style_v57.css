@@ -8031,3 +8031,52 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-stat-category-panel .match-stat-team{min-width:0}
 #matchRoomPage .match-stat-category-panel .match-detail-footnote{margin-top:10px}
 @media(max-width:900px){#matchRoomPage .match-stat-toolbar{align-items:flex-start}#matchRoomPage .match-stat-controls{justify-content:flex-start;gap:8px}#matchRoomPage .match-stat-mode button{padding:6px 8px;font-size:10px}#matchRoomPage .match-stat-team-summary{gap:10px}}
+
+
+/* 2026-11-16 — owner correction: plain-text stat categories + restore MVP/TOP-4 */
+#matchRoomPage .match-stat-awards{
+ width:min(100%,1080px);margin:0 auto 20px;display:grid;gap:12px;
+ background:transparent!important;
+}
+#matchRoomPage .match-stat-highlight-grid{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
+}
+#matchRoomPage .match-stat-awards .match-stat-mvp-card,
+#matchRoomPage .match-stat-awards .match-stat-highlight{
+ min-width:0;margin:0;background:rgba(10,13,15,.34)!important;
+ border:0!important;border-radius:2px!important;box-shadow:none!important;
+ -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight{
+ padding:10px 12px!important;display:flex;align-items:center;gap:10px;
+}
+#matchRoomPage .match-stat-categories{gap:22px!important}
+#matchRoomPage .match-stat-categories button,
+#matchRoomPage .match-stat-mode button,
+#matchRoomPage .match-stat-side button{
+ min-height:32px!important;padding:5px 0!important;
+ border:0!important;border-bottom:2px solid transparent!important;
+ border-radius:0!important;background:transparent!important;
+ box-shadow:none!important;outline:0!important;
+ color:rgba(255,255,255,.66)!important;font-size:13px!important;
+ font-weight:800!important;text-transform:uppercase;letter-spacing:.01em;
+}
+#matchRoomPage .match-stat-categories button.active{
+ color:#fff!important;border-bottom-color:#ff5a1f!important;
+ background:transparent!important;
+}
+#matchRoomPage .match-stat-mode button.active,
+#matchRoomPage .match-stat-side button.active{
+ color:#ff7138!important;border-bottom-color:#ff5a1f!important;
+ background:transparent!important;
+}
+#matchRoomPage .match-stat-controls{gap:20px!important}
+#matchRoomPage .match-stat-mode,#matchRoomPage .match-stat-side{gap:16px!important}
+@media(max-width:900px){
+ #matchRoomPage .match-stat-highlight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #matchRoomPage .match-stat-awards .match-stat-mvp-card{min-height:0}
+}
+@media(max-width:560px){
+ #matchRoomPage .match-stat-highlight-grid{grid-template-columns:minmax(0,1fr)}
+ #matchRoomPage .match-stat-categories{gap:14px!important}
+}
