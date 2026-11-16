@@ -213,3 +213,16 @@ The latest owner-directed correction is Match Room Statistics: restore the MVP c
 - T/CT side K/D is calculated from split kills/deaths when available.
 - MVP left + four leader cards right in 2×2 layout; controls reduced in size and spacing.
 - CI run 43892597145: 295/295 tests passed. Visual acceptance/deployment still pending.
+
+
+## 2026-11-16 — Match Room navigation regression fix
+- User reported that opening some matches returned to the home page.
+- Root issue in route handling: Match Room previously pushed only the `?match=<id>` query parameter and left the previous hash route (often `#/home`) unchanged. History restoration then resolved the stale hash route independently of the match query and could render the wrong page.
+- `openMatchDetail` now normalizes the match ID, verifies it against the loaded match list, writes both `?match=<id>` and canonical `#/base`, sets the base route before rendering, and uses replaceState for restore flows to avoid duplicate history entries.
+- `restoreAppRouteFromHistory` now gives a valid match query priority, keeps the base route active while the Match Room is open, and closes the room only when navigating to a history entry without a match query.
+- Added regression coverage for opening matches, query-priority restoration, and browser back/forward behavior. Asset cache marker refreshed in `index.html`.
+- Files changed: `app_v57.js`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+- Quality Gate run [43894272728](https://github.com/nonspam/cs2-5x5/actions/runs/43894272728): **296 passed / 0 failed / 0 skipped**.
+- Browser click-through and DEV deployment were not directly verified from this session. Await user refresh and visual confirmation.
+- No production/main/DB/SQL/migration/RLS/storage-policy changes.
+- Status: SOURCE + TESTS PASS; visual/browser acceptance pending.
