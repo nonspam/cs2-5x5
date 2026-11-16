@@ -7873,3 +7873,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T17:16:01-05:00 — test: require grid layout for right-aligned kills leader
+
+- Commit: f3652aa1197088fa78ee61d8ba935bb4bd47790c
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
