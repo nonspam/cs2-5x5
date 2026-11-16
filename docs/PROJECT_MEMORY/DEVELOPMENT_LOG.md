@@ -1,5 +1,17 @@
 
 
+## 2026-11-16 — Statistics data mapping, unavailable values, MVP/top-four layout
+- Owner feedback from DEV screenshot: General stats were incorrectly showing zero because table columns requested `kills/deaths/assists` while roster rows expose those values as `k/d/a`. Fixed the mapping so K/D/A columns display actual source values.
+- Missing advanced fields no longer default visually to zero. Fields with no non-zero evidence in the match source render as `—`; fields with real values preserve actual per-player zeroes. ADR leader is omitted as unavailable when ADR is not present in source data.
+- T/CT filters now read actual split fields where supplied and calculate side K/D from side kills/deaths; unsupported split metrics render `—`. Missing values sort below actual numeric values.
+- MVP card is now left; four leader cards are arranged to its right in a 2×2 grid. Category, team/player sorting and T/CT controls have smaller typography, tighter gaps and shorter height. Plain-text/no-pill styling retained.
+- Files changed: `app_v57.js`, `style_v57.css`, `index.html`, `tests/faceit-v2-shell.test.cjs`.
+- Key commits: app mapping `e0bff15cf584578198d15d979d981ef99b828016`; layout `bb480d5fe1926abdff0406649b466532458a5fe6`; split/sort handling `5208b8cff383e2be8dfcd2b7c39e1d4ff6130e07` and `4a9d8f1dfdecf4cb8a848e880391aa54405aed6a`; asset cache `989b210029ea7de4a5a3e74a7fcf59d1a2a550c1`; regression tests `8dae52bfea8f6a8a52b8cacb665b8e72f03a7e8e`.
+- Quality Gate run [43892597145](https://github.com/nonspam/cs2-5x5/actions/runs/43892597145): **295 passed / 0 failed / 0 skipped**.
+- Browser screenshot QA and DEV deployment were not performed/verified. Await owner refresh and visual review. No production/main/DB/SQL/migration/RLS/storage-policy changes.
+- Status: SOURCE + TESTS PASS; visual acceptance pending.
+
+
 ## 2026-11-16 — Owner correction: Match Room Statistics MVP/TOP and text-only categories
 - Owner screenshot showed the Statistics layout had lost the MVP player card and four top-player highlights, and category labels were incorrectly presented as outlined/pill controls.
 - Source root cause: `statMvpCard` and `statLeaderCard` were still generated but were not inserted into the new `statsView` markup. Restored the MVP card plus four leader cards (most kills, best K/D, most assists, best ADR) above the category/table controls.
