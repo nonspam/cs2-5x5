@@ -530,3 +530,20 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - The displayed basis is explicitly labelled ALL TIME because the repo has no separate persisted Season 0 snapshot. Season 1 remains clickable and shows a not-started state instead of fabricated values.
 - Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947): **286/286 passed**.
 - Browser visual QA and deployment remain unverified.
+
+
+## 2026-11-16 — Demo analytics product plan (documentation only)
+
+**Owner decision:** Finish and stabilize the existing product and its systems first. Add automatic demo processing afterwards. Current work should be designed with future match-data contracts in mind, but parser integration is deliberately deferred.
+
+**Planned workflow:** Upload a CS2 `.dem` to a draft match; process it in a separate background service; normalize raw events; calculate versioned metrics; let an administrator review/correct the draft; publish one canonical match dataset.
+
+**Planned output:** Match overview (Impact Rating, K/D/A, ADR, KD, kills/round, headshots/HS%, 2K–5K, MVP rounds), MVP card, four highlights (most kills, highest damage, best KAST, most entry kills), detailed General/Advanced, Entry, Trades, Clutches, Duels and Equipment/Utility sections, with CT/T splits where supported. The same published data feeds Match Room, profiles and Track.
+
+**Important boundaries:** Impact Rating is our own model, not FACEIT's proprietary formula. Elo/level and crosshair are external/profile data. Ambiguous metrics/formulas such as RWS and abbreviated RP/RS are not guessed. Preserve raw events and calculation versions; validate, review and publish; retries must not double-count Track.
+
+**Plan:** [DEMO_ANALYTICS_PLAN.md](DEMO_ANALYTICS_PLAN.md) contains the metric groups, data principles, phases and acceptance criteria.
+
+**Files:** `docs/PROJECT_MEMORY/DEMO_ANALYTICS_PLAN.md`, `CURRENT_STATE.md`, `SESSION_CHECKPOINT.md`, `DEVELOPMENT_LOG.md`.
+
+**Scope:** Documentation only. No parser, upload flow, runtime code, database/schema, SQL/migrations, deployment, production or `main` changes.
