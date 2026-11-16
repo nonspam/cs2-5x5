@@ -473,3 +473,14 @@ Quality Gate: commit `2855accc3f83fb9a4110293a4d63e6f2a9cca7e1`, run https://git
 - Implementation commit: pending CI.
 
 - Quality Gate run 43639401323 passed **253/253** at source/test commit 6640706cf6ffae0377715a3e95da5b04723eb8c4; actual validate job log inspected. Browser QA and DEV deployment remain unverified.
+
+
+ 
+## 2026-11-17 — Match Room report subtabs and FACEIT-width hero
+- Match Room Statistics now has functional Итоги / Дуэли / Снаряжение subtabs placed before the MVP and leader cards. Итоги remains the default view.
+- Дуэли uses only source fields `duels_won`, `duels_lost`, and `duel_win_percent`; when absent, it shows an explicit unavailable state rather than fabricated zeros.
+- Снаряжение is present as a real tab but currently reports unavailable: the current match-stat normalization has no weapon/equipment fields. Do not invent equipment breakdowns.
+- Match Room hero and top navigation now share a wider centered content container (max 1600px, 28px desktop side inset) to better match the supplied FACEIT reference.
+- Asset cache keys: app v13, CSS v16.
+- Quality Gate run 43974624195 passed **313/313** at source/test commit 5805b0ba2d1e4ec0171d0df9822c3c58d7fa1bdc.
+- No browser QA, screenshot comparison or Cloudflare deployment verification performed. No DB/schema/storage changes; production `main` and production Supabase untouched.
