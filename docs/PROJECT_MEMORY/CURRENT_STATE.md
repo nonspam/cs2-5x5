@@ -196,3 +196,12 @@ Quality Gate run 43637929383: 250 passed / 0 failed / 0 skipped.
 - Season 1 selector remains clickable and shows an upcoming-season empty state.
 - Latest Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947): 286/286 passed.
 - No browser visual QA or deployment verification yet.
+
+
+## 2026-11-16 — Match Room full-player statistics test scaffold
+- Match Room Statistics now presents one combined 10-player comparison table instead of two isolated team tables. Numeric columns are clickable and sort descending on first selection; selecting the same column again reverses the order.
+- Columns: K, D, A, K/D, +/−, ADR, HS%, KAST, damage, MVP, entry kills/deaths, flash assists, utility damage, clutches and 3K/4K/5K. Team remains visible as a side label.
+- Latest detailed match `match_032` (`map_066`, `map_065`, `map_064`) now has a complete zero-filled advanced-stat schema for all 30 player-map rows. Existing K/D/A source values are preserved. Missing advanced values are explicitly `0` for UI/data-contract testing; they are NOT measured demo statistics.
+- Aggregation carries the advanced fields to the series comparison; missing fields in older matches also safely render as `0`.
+- All menu surfaces (navigation, custom selects, account menus, player search and Match Room menus) now use translucent glass backgrounds with blur. Inner menu surfaces and comparison rows remain transparent enough to reveal the map/background.
+- No demo parser, metric calculation, backend schema, Supabase migration, production deployment or `main` change was made. Visual browser QA and automated quality-gate result are still pending.
