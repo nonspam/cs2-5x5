@@ -84,3 +84,22 @@ test('Team info labels always use English Team prefix without duplicating existi
   assert.match(app, /const teamLabel=rawName\.replace\(\/\^\(\?:тим\|team\)\\s\+\/i,''\)\.trim\(\)/);
   assert.match(app, /const displayName=teamLabel\?'Team '\+teamLabel:'Team'/);
 });
+
+
+test('Match Room statistics has working Results, Duels and Equipment subviews before MVP', () => {
+  assert.match(app, /class="match-stat-subtabs"[\s\S]*data-stat-subview-button="results"[\s\S]*data-stat-subview-button="duels"[\s\S]*data-stat-subview-button="equipment"/);
+  assert.match(app, /function setMatchRoomStatSubview\(target\)/);
+  assert.match(app, /data-stat-subview="results"/);
+  assert.match(app, /data-stat-subview="duels"/);
+  assert.match(app, /data-stat-subview="equipment"/);
+  assert.match(app, /duels_won[\s\S]*duels_lost[\s\S]*duel_win_percent/);
+  assert.match(app, /В текущих данных матча нет статистики по оружию и экипировке/);
+});
+
+test('Match Room hero and statistics navigation share the same responsive horizontal container', () => {
+  const finalLayout = css.slice(css.lastIndexOf('/* 2026-11-17 — FACEIT match report: aligned hero'));
+  assert.match(finalLayout, /\.match-room-content\s*\{[\s\S]*width:min\(calc\(100% - 56px\),1600px\)!important/);
+  assert.match(finalLayout, /\.match-room-hero\s*\{[\s\S]*width:100%!important/);
+  assert.match(finalLayout, /\.match-room-view-tabs\s*\{[\s\S]*width:100%!important/);
+  assert.match(finalLayout, /\.match-stat-subtabs button\.active:after/);
+});
