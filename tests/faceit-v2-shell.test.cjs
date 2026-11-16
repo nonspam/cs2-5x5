@@ -1079,3 +1079,8 @@ test('Match Room highlight player names are not ellipsized and have a usable gri
 test('Match Room statistics team scoreboard header overrides the opaque gray base rule',()=>{
  assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard thead th\{[\s\S]*background:rgba\(12,16,18,\.22\)!important[\s\S]*backdrop-filter:blur\(10px\)!important/);
 });
+
+test('Match Room statistics information header is fully transparent and most-kills value is pushed right',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-category-panel \.match-mode-table thead th,[\s\S]*background:transparent!important[\s\S]*backdrop-filter:none!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight:first-child \.match-stat-highlight-value\{[\s\S]*margin-right:-12px!important[\s\S]*text-align:right!important/);
+});
