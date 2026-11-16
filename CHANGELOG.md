@@ -6484,3 +6484,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T08:00:33-05:00 — docs: add demo analytics product and processing plan
+
+- Commit: 355b6681d38ea9be819192e9098e96692bec8667
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- A	docs/PROJECT_MEMORY/DEMO_ANALYTICS_PLAN.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
