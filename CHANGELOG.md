@@ -7492,3 +7492,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T14:44:00-05:00 — Update Match Room MVP tests for revised metrics
+
+- Commit: 744b0948f5c627832f016d7604d19fa784dfe642
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
