@@ -1005,7 +1005,10 @@ test('Match Room Statistics restores the MVP card and four leader highlights abo
  assert.match(app,/<strong>0<\/strong>/);
  assert.match(app,/<strong>0%<\/strong>/);
  assert.doesNotMatch(app,/match-stat-mvp-elo|Влияние на рез\.|FACEIT Рейтинг/);
- assert.match(app,/data-match-view="statistics" hidden>'\+statHighlights\+'<div class="match-stat-toolbar"/);
+ assert.match(app,/data-match-view="statistics" hidden><nav class="match-stat-subtabs"/);
+ assert.match(app,/data-stat-subview="results">'\+statHighlights\+'/);
+ assert.match(app,/data-stat-subview="duels"/);
+ assert.match(app,/data-stat-subview="equipment"/);
 });
 
 test('Match Room statistic categories are plain text controls with underline-only active state',()=>{
