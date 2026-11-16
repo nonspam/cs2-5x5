@@ -1,3 +1,13 @@
+## 2026-11-17 — Compact Match Room polish and home player search (SOURCE + TESTS PASS)
+- Owner screenshot comparison requested slightly narrower/denser Match Room, reduced map/statistics width, compacted MVP/highlight cards and more breathing room between map hero, sub-tabs, awards and team table controls. Match Room content max width is now 1500px with 80px side allowance (was 1600px/56px); MVP/leader block height is 250px; sub-tabs, awards and toolbar have additional deliberate spacing. Existing stats/data behavior unchanged.
+- Desktop left navigation rail widened from 170px to 185px.
+- Added player search to the home hero. It searches the live activePlayers() data by display name or player ID, prioritizes exact/prefix/word-prefix matches, shows up to 8 suggestions, opens the selected public profile on click or Enter, and closes suggestions on Escape. No hard-coded player names.
+- Files: app_v57.js, style_v57.css, index.html (app cache v16, CSS cache v20), tests/match-room-statistics-layout.test.cjs.
+- Validate workflow [43978940515](https://github.com/nonspam/cs2-5x5/actions/runs/43978940515): **318 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- Source commit: 06e018a630223efb0e04f11a67332ea892b84249. Latest HEAD at checkpoint update: afac9923732c820ae10c56bbc613fecff21af786.
+- Not verified: browser rendering, DEV deployment, screenshot comparison, owner visual acceptance. No database, SQL, migration, production or main changes.
+- Next: owner refreshes DEV; verify narrower Match Room, spacing, wider desktop rail, search suggestions and profile opening with Enter/click.
+
 ## 2026-11-17 — Remove unwanted player-name strip under Match Room hero (SOURCE + TESTS PASS)
 - Owner corrected the prior implementation: the ten-player roster strip beneath the map hero was explicitly unwanted. Removed the generated roster markup from app_v57.js and the associated layout styling from style_v57.css. The room now flows from top-level Overview / Statistics / Top tabs directly to the map hero, then the existing Statistics sub-tabs (Results / Duels / Equipment) and statistics content. No standalone list of player names or avatars is rendered under the map.
 - Kept existing match hero, player data, MVP/leader cards, stats values and tab behavior unchanged. No like/dislike controls were added.
