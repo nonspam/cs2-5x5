@@ -6664,3 +6664,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T09:08:38-05:00 — Expand full CS2 match stat schema and sortable comparison
+
+- Commit: 1ec16f6de63e383dbc148531dec1b34cd21828bc
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
