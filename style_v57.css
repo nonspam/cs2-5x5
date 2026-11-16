@@ -8533,6 +8533,7 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
 }
 #matchRoomPage .match-stat-awards .match-stat-highlight.is-kills-leader{
+ display:grid!important;
  grid-template-columns:36px minmax(0,1fr) minmax(100px,1fr)!important;
 }
 #matchRoomPage .match-stat-awards .match-stat-highlight.is-kills-leader .match-stat-highlight-value{
