@@ -8245,3 +8245,13 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-team-summary>span{font-size:9px!important;}
  #matchRoomPage .match-mode-table{min-width:920px!important;}
 }
+
+/* Avatar classes emitted by profileAvatarMarkup are .player-avatar + size token. */
+#matchRoomPage .match-stat-awards .match-stat-mvp-profile>.player-avatar.lg,
+#matchRoomPage .match-stat-awards .match-stat-mvp-avatar{width:104px!important;height:104px!important;flex:0 0 104px!important;}
+#matchRoomPage .match-stat-awards .match-stat-highlight .player-avatar.md{width:38px!important;height:38px!important;flex:0 0 38px!important;}
+#matchRoomPage .match-mode-table .match-player-profile-link .player-avatar.xs{width:30px!important;height:30px!important;flex:0 0 30px!important;}
+@media(max-width:640px){
+ #matchRoomPage .match-stat-awards .match-stat-mvp-profile>.player-avatar.lg,
+ #matchRoomPage .match-stat-awards .match-stat-mvp-avatar{width:68px!important;height:68px!important;flex:0 0 68px!important;}
+}
