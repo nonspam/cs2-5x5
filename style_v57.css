@@ -8552,3 +8552,24 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-stat-awards .match-stat-highlight:first-child .match-stat-highlight-value{
  transform:translateX(10px)!important;
 }
+
+/* 2026-11-17 — Actual Statistics team strip and first Top-4 card selectors. */
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-team{
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+ box-shadow:none!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-team-summary{
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+ box-shadow:none!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-highlight-grid>.match-stat-highlight:first-child .match-stat-highlight-value{
+ transform:translateX(18px)!important;
+}
