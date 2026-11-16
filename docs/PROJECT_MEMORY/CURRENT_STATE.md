@@ -1,3 +1,9 @@
+
+
+## 2026-11-16 — Latest Statistics visual correction (IN PROGRESS)
+- Owner requested the four Statistics highlight cards to stretch to the MVP card's full desktop height, the kill leader value/label to align to the far right, and the table header to become translucent instead of solid gray.
+- Scoped CSS and regression assertions updated; cache marker v5.
+- Quality Gate and browser/DEV visual verification pending. MVP layout/content and match data calculations intentionally unchanged.
 # CS2 Analytics — Current State
 
 > Актуальная краткая сводка. Последняя точка продолжения находится в [SESSION_CHECKPOINT.md](SESSION_CHECKPOINT.md). При конфликте сначала проверь живой код, свежие сообщения владельца и checkpoint.
