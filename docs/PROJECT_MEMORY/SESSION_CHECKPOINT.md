@@ -292,3 +292,10 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Team names in statistics headings now use the `Тим <name>` prefix unless already present.
 - Cache marker: `matchroom-statistics-layout-20261116-v3`. Regression tests updated.
 - Quality Gate [43942434063](https://github.com/nonspam/cs2-5x5/actions/runs/43942434063): **300 passed / 0 failed / 0 skipped**. Browser visual QA is not yet confirmed.
+
+
+## 2026-11-16 — MVP focus and FACEIT-style Top 4 compacting
+- `app_v57.js`: the MVP panel now places U/S/A and ADR on the first row, K/D and headshot percentage beneath; ADR and headshot placeholders are the requested 0 and 0%. The MVP badge is a sibling at card level for true top-right placement. Right-side highlights now match FACEIT categories: kills, damage, KAST, and entry kills, with player avatar/name and right-aligned value.
+- `style_v57.css`: MVP area widened to 1.55fr against a .78fr Top 4 column; MVP card fixed at 258px high; Top 4 rows compressed to 44px, with a smaller gap and a compact avatar/name/value grid.
+- `index.html` cache marker is `matchroom-statistics-layout-20261116-v4`.
+- Quality Gate [43944687653](https://github.com/nonspam/cs2-5x5/actions/runs/43944687653): **301 passed / 0 failed / 0 skipped**. Browser rendering remains unverified.
