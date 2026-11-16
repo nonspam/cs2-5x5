@@ -949,3 +949,22 @@ test('Leaderboard rows use Match Room Statistics glass styling and translucent p
  assert.doesNotMatch(glassFix,/backdrop-filter:blur/);
  assert.match(css,/\.ranking-table tbody tr\.ranking-gold td\{background:rgba\(255,211,0,\.045\)!important/);
 });
+
+
+test('Match Room compares all ten players in one sortable table and defaults missing advanced metrics to zero',()=>{
+ assert.match(app,/function sortMatchRoomStats\(key\)/);
+ assert.match(app,/СРАВНЕНИЕ 10 ИГРОКОВ/);
+ assert.match(app,/data-sort-key=\"kd\"/);
+ for(const key of ["adr","hs_percent","kast","damage","mvp","entry_kills","entry_deaths","flash_assists","utility_damage","clutches","three_kills","four_kills","five_kills"])assert.ok(app.includes(key),'sortable metric '+key);
+ assert.match(app,/return\{id,p,name,k:st\?\.kills\?\?0,d:st\?\.deaths\?\?0,a:st\?\.assists\?\?0/);
+});
+test('Last detailed match map rows have a complete zero-filled advanced-stat schema',()=>{
+ const data=JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname,'../data/maps.json'),'utf8'));
+ const rows=data.maps.filter(m=>m.match_id==='match_032').flatMap(m=>m.player_stats||[]);
+ assert.equal(rows.length,30);
+ for(const row of rows)for(const key of ["adr","hs_percent","kast","damage","mvp","entry_kills","entry_deaths","flash_assists","utility_damage","clutches","three_kills","four_kills","five_kills"])assert.equal(row[key],0,'missing '+key+' for '+row.player_id);
+});
+test('Match Room menus and comparison table remain translucent',()=>{
+ assert.match(css,/#matchRoomPage \.match-room-account-menu\{background:rgba\(9,13,15,\.48\)!important/);
+ assert.match(css,/#matchRoomPage \.match-comparison-table tbody tr td\{padding:[\s\S]*rgba\(8,12,14,\.18\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
+});
