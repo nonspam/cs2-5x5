@@ -6520,3 +6520,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T09:03:40-05:00 — Sync latest match advanced-stat schema into embedded data
+
+- Commit: 22b856cb09b5bd5146d8c9cb317f9a269858cf25
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	data_embedded.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
