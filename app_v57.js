@@ -254,7 +254,14 @@ function navigateApp(tab,options={}){
  state.tab=tab;state.accountMenuOpen=false;render();
 }
 function restoreAppRouteFromHistory(){
- const routeMatch=(String(window.location.search||'').match(/[?&]match=([^&]+)/)||[])[1]||'';if(window.__activeMatchRoomId&&decodeURIComponent(routeMatch)!==window.__activeMatchRoomId)closeMatchRoom({fromPop:true});else if(routeMatch&&!window.__activeMatchRoomId)openMatchDetail(decodeURIComponent(routeMatch),{restore:true});
+ const routeMatch=new URLSearchParams(window.location.search).get('match')||'';
+ if(routeMatch){
+  if(window.__activeMatchRoomId&&routeMatch!==window.__activeMatchRoomId)closeMatchRoom({fromPop:true});
+  if(state.tab!=='base'){state.tab='base';state.accountMenuOpen=false;render()}
+  if(!window.__activeMatchRoomId)openMatchDetail(routeMatch,{restore:true});
+  return;
+ }
+ if(window.__activeMatchRoomId)closeMatchRoom({fromPop:true});
  const tab=appRouteFromLocation();
  if(state.tab===tab)return;
  state.tab=tab;state.accountMenuOpen=false;render();
@@ -993,7 +1000,18 @@ function drawHomeChart(){const box=$('#homeChart');if(!box)return;const metric=s
 function setMatchTab(tab){const modal=$('#modal');if(!modal)return;modal.querySelectorAll('[data-match-section]').forEach(el=>el.hidden=el.dataset.matchSection!==tab);modal.querySelectorAll('[data-match-tab]').forEach(el=>el.classList.toggle('active',el.dataset.matchTab===tab))}
 function openMatchDetail(id,options={}){
  window.__matchRoomSortState=null;
- const m=DB.matches.find(x=>x.match_id===id);if(!m)return;const drill=$('#playerDrilldown');if(drill)drill.style.display='none';
+ const matchId=String(id??'').trim();
+ const m=DB.matches.find(x=>String(x.match_id??'')===matchId);
+ if(!m){toast('Матч не найден в загруженной базе: '+(matchId||'не указан'));return false}
+ const roomUrl=new URL(window.location.href);
+ roomUrl.searchParams.set('match',matchId);
+ roomUrl.hash='#/base';
+ try{
+  const routeState={...(window.history.state||{}),cs2Route:'base',cs2MatchRoom:matchId};
+  window.history[options.restore?'replaceState':'pushState'](routeState,'',roomUrl);
+ }catch(error){console.warn('Match Room route:',error)}
+ if(state.tab!=='base'){state.tab='base';state.accountMenuOpen=false;render()}
+ const drill=$('#playerDrilldown');if(drill)drill.style.display='none';
  const profileReturnId=window.__activePlayerProfileId||null;
  if(profileReturnId)window.__matchRoomProfileReturnId=profileReturnId;
  closePlayerProfileWindow();
@@ -1102,8 +1120,7 @@ function openMatchDetail(id,options={}){
   const returnToProfile=window.__matchRoomProfileReturnId&&player(window.__matchRoomProfileReturnId)?'<button class="match-room-back match-room-back-profile" type="button" onclick="matchRoomReturnToProfile()">‹　Вернуться</button>':'';
   const returnButton=returnToSeries||returnToProfile;
  const roomPage='<div class="match-room-page" id="matchRoomPage" data-match-id="'+esc(id)+'"><main class="match-room-content">'+returnButton+roomHero+'<nav class="match-room-view-tabs" aria-label="Раздел матча"><button type="button" class="active" data-match-view-tab="overview" aria-selected="true" onclick="setMatchRoomView(&quot;overview&quot;)">ОБЗОР</button><button type="button" data-match-view-tab="statistics" aria-selected="false" onclick="setMatchRoomView(&quot;statistics&quot;)">СТАТИСТИКА</button><button type="button" data-match-view-tab="top" aria-selected="false" onclick="setMatchRoomView(&quot;top&quot;)">ТОП</button></nav><section class="match-room-overview-view" data-match-view="overview"><div class="match-room-columns">'+panel(A,'a')+'<section class="match-room-center-column"><div class="match-room-center-heading"><strong>КАРТА МАТЧА</strong><span>'+maps.length+' / '+esc(m.format||'')+'</span></div><div class="match-room-map-list">'+(mapsHtml||'<div class="match-room-empty">Карты не указаны.</div>')+'</div><section class="match-room-veto"><h3>VETO</h3>'+vetoMarkup+'</section></section>'+panel(B,'b')+'</div></section>'+statsView+topView+'</main></div>';
-  document.getElementById('matchRoomPage')?.remove();document.body.insertAdjacentHTML('beforeend',roomPage);document.body.classList.add('match-room-open');window.__activeMatchRoomId=id;
-  if(!options.restore){const roomUrl=new URL(window.location.href);roomUrl.searchParams.set('match',id);try{history.pushState({...history.state,cs2MatchRoom:id},'',roomUrl)}catch{}}
+  document.getElementById('matchRoomPage')?.remove();document.body.insertAdjacentHTML('beforeend',roomPage);document.body.classList.add('match-room-open');window.__activeMatchRoomId=matchId;
   bindMatchRoomHeader();
   if(options.initialView)setMatchRoomView(options.initialView);
 
