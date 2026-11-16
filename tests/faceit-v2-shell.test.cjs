@@ -955,14 +955,14 @@ test('Match Room compares all ten players in one sortable table and defaults mis
  assert.match(app,/function sortMatchRoomStats\(key\)/);
  assert.match(app,/СРАВНЕНИЕ 10 ИГРОКОВ/);
  assert.match(app,/\['kd','K\/D'\]/);
- for(const key of ["adr","hs_percent","kast","damage","mvp","entry_kills","entry_deaths","flash_assists","utility_damage","clutches","three_kills","four_kills","five_kills"])assert.ok(app.includes(key),'sortable metric '+key);
+ for(const key of ["impact_rating","kills_per_round","adr","hs_kills","hs_percent","kast","accuracy","shots_fired","shots_hit","damage","mvp","rounds_played","survival_rate","entry_kills","entry_deaths","opening_kills","opening_deaths","trade_kills","traded_deaths","flash_assists","utility_damage","utility_enemies","clutches","clutch_1v1","clutch_1v2","clutch_1v3","clutch_1v4","clutch_1v5","duels_won","duels_lost","duel_win_percent","two_kills","three_kills","four_kills","five_kills","ct_kills","ct_deaths","t_kills","t_deaths"])assert.ok(app.includes(key),'sortable metric '+key);
  assert.match(app,/return\{id,p,name,k:st\?\.kills\?\?0,d:st\?\.deaths\?\?0,a:st\?\.assists\?\?0/);
 });
 test('Last detailed match map rows have a complete zero-filled advanced-stat schema',()=>{
  const data=JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname,'../data/maps.json'),'utf8'));
  const rows=data.maps.filter(m=>m.match_id==='match_032').flatMap(m=>m.player_stats||[]);
  assert.equal(rows.length,30);
- for(const row of rows)for(const key of ["adr","hs_percent","kast","damage","mvp","entry_kills","entry_deaths","flash_assists","utility_damage","clutches","three_kills","four_kills","five_kills"])assert.equal(row[key],0,'missing '+key+' for '+row.player_id);
+ for(const row of rows)for(const key of ["impact_rating","kills_per_round","adr","hs_kills","hs_percent","kast","accuracy","shots_fired","shots_hit","damage","mvp","rounds_played","survival_rate","entry_kills","entry_deaths","opening_kills","opening_deaths","trade_kills","traded_deaths","flash_assists","utility_damage","utility_enemies","clutches","clutch_1v1","clutch_1v2","clutch_1v3","clutch_1v4","clutch_1v5","duels_won","duels_lost","duel_win_percent","two_kills","three_kills","four_kills","five_kills","ct_kills","ct_deaths","t_kills","t_deaths"])assert.equal(row[key],0,'missing '+key+' for '+row.player_id);
 });
 test('Match Room menus and comparison table remain translucent',()=>{
  assert.match(css,/#matchRoomPage \.match-room-account-menu\{background:rgba\(9,13,15,\.48\)!important/);
