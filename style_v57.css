@@ -8521,7 +8521,7 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  backdrop-filter:blur(10px)!important;
 }
 
-/* 2026-11-17 — precise statistics fixes: kill value alignment + transparent team strip */
+/* 2026-11-17 — final FACEIT statistics overrides: out-rank the legacy opaque cell rules */
 #matchRoomPage .match-stat-category-panel .match-mode-table thead th,
 #matchRoomPage .match-stat-teams .match-scoreboard thead th{
  background:transparent!important;background-color:transparent!important;background-image:none!important;
@@ -8532,23 +8532,29 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  background:transparent!important;background-color:transparent!important;background-image:none!important;
  border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
 }
-#matchRoomPage .match-stat-awards .match-stat-highlight.is-kills-leader{
- display:grid!important;
- grid-template-columns:36px minmax(0,1fr) minmax(100px,1fr)!important;
+
+/* Pin the kills value to the physical right edge; reserve room so it never overlaps the player name. */
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-awards .match-stat-highlight.is-kills-leader{
+ position:relative!important;display:flex!important;align-items:center!important;
 }
-#matchRoomPage .match-stat-awards .match-stat-highlight.is-kills-leader .match-stat-highlight-value{
- width:100%!important;min-width:0!important;justify-self:stretch!important;margin:0!important;padding:0!important;
- transform:none!important;align-items:flex-end!important;text-align:right!important;
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-awards .match-stat-highlight.is-kills-leader .match-stat-highlight-player{
+ min-width:0!important;flex:1 1 auto!important;padding-right:126px!important;
+}
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-awards .match-stat-highlight.is-kills-leader .match-stat-highlight-value{
+ position:absolute!important;right:12px!important;top:50%!important;transform:translateY(-50%)!important;
+ width:112px!important;min-width:112px!important;max-width:112px!important;margin:0!important;padding:0!important;
+ display:flex!important;flex-direction:column!important;align-items:flex-end!important;justify-content:center!important;
+ text-align:right!important;justify-self:auto!important;
 }
 
-/* 2026-11-17 — FACEIT team tint: color only the player-name column */
-#matchRoomPage .match-stat-category-panel .match-mode-table tbody tr[data-team-side="a"] > td.name{
- background:#232240!important;
- background-color:#232240!important;
- background-image:none!important;
+/* FACEIT team tint: target only the player-name cell, with higher specificity than the legacy table reset. */
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr[data-team-side="a"] > td.name,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-mode-table tbody tr[data-team-side="a"] > td.name,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr[data-team-side="a"]:hover > td.name{
+ background:#24213f!important;background-color:#24213f!important;background-image:none!important;
 }
-#matchRoomPage .match-stat-category-panel .match-mode-table tbody tr[data-team-side="b"] > td.name{
- background:#234038!important;
- background-color:#234038!important;
- background-image:none!important;
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr[data-team-side="b"] > td.name,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-mode-table tbody tr[data-team-side="b"] > td.name,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr[data-team-side="b"]:hover > td.name{
+ background:#234239!important;background-color:#234239!important;background-image:none!important;
 }
