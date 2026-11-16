@@ -8470,3 +8470,33 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-awards .match-stat-mvp-metrics small{font-size:8px!important;}
  #matchRoomPage .match-stat-highlight-grid{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:repeat(4,44px)!important;}
 }
+
+
+/* 2026-11-16 — Statistics awards alignment and translucent table header */
+#matchRoomPage .match-stat-awards{align-items:stretch!important}
+#matchRoomPage .match-stat-awards .match-stat-mvp-card{height:100%!important;min-height:270px!important;align-self:stretch!important}
+#matchRoomPage .match-stat-highlight-grid{
+ height:100%!important;min-height:270px!important;align-self:stretch!important;
+ grid-template-rows:repeat(4,minmax(0,1fr))!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight{
+ height:100%!important;min-height:0!important;box-sizing:border-box!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value{
+ width:100%!important;min-width:0!important;max-width:none!important;
+ justify-self:stretch!important;align-items:flex-end!important;text-align:right!important;
+ padding-right:0!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-value small{
+ width:100%!important;max-width:none!important;text-align:right!important;
+}
+#matchRoomPage .match-mode-table thead th{
+ background:rgba(12,16,18,.34)!important;background-color:rgba(12,16,18,.34)!important;
+ background-image:none!important;border-bottom:1px solid rgba(255,255,255,.14)!important;
+ -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+}
+#matchRoomPage .match-stat-category-panel .table-wrap{background:transparent!important}
+@media(max-width:1050px){
+ #matchRoomPage .match-stat-highlight-grid{height:auto!important;min-height:0!important;grid-template-rows:none!important}
+ #matchRoomPage .match-stat-awards .match-stat-highlight{height:auto!important;min-height:62px!important}
+}
