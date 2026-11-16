@@ -954,11 +954,11 @@ test('Leaderboard rows use Match Room Statistics glass styling and translucent p
 test('Match Room statistics defaults to two teams and supports category, player and T/CT filters',()=>{
  assert.match(app,/data-stat-mode="team"/);
  assert.match(app,/data-stat-mode="players" hidden/);
- assert.match(app,/data-stat-category="general"/);
- assert.match(app,/data-stat-category="advanced"/);
- assert.match(app,/data-stat-category="entry"/);
- assert.match(app,/data-stat-category="trades"/);
- assert.match(app,/data-stat-category="clutches"/);
+ assert.match(app,/id:'general',label:'Общее'/);
+ assert.match(app,/id:'advanced',label:'Расширенное'/);
+ assert.match(app,/id:'entry',label:'Энтри'/);
+ assert.match(app,/id:'trades',label:'Размены'/);
+ assert.match(app,/id:'clutches',label:'Клатчи'/);
  assert.match(app,/function setMatchRoomStatsMode\(mode\)/);
  assert.match(app,/function setMatchRoomStatCategory\(category\)/);
  assert.match(app,/function setMatchRoomStatsSide\(side\)/);
@@ -979,7 +979,7 @@ test('Last detailed match map rows have a complete zero-filled advanced-stat sch
 });
 test('Match Room menus and comparison table remain translucent',()=>{
  assert.match(css,/#matchRoomPage \.match-room-account-menu\{background:rgba\(9,13,15,\.48\)!important/);
- assert.match(css,/\.nav-menu,[\s\S]*\.custom-select-menu,[\\s\\S]*\.account-menu-pop,[\\s\\S]*\.site-player-search-results/);
+ assert.match(css,/\.nav-menu,[\s\S]*\.custom-select-menu,[\s\S]*\.account-menu-pop,[\s\S]*\.site-player-search-results/);
  assert.match(css,/#matchRoomPage \.match-comparison-table tbody tr td\{padding:[\s\S]*rgba\(8,12,14,\.18\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
 });
 
@@ -992,7 +992,7 @@ test('Match Room statistics tables are compact and category-driven',()=>{
 
 test('Match Room Statistics restores the MVP card and four leader highlights above category tables',()=>{
  assert.match(app,/const statMvpCard='<section class="match-stat-mvp-card"/);
- assert.match(app,/const statHighlights='<section class="match-stat-awards">'+statMvpCard/);
+ assert.match(app,/const statHighlights='<section class="match-stat-awards">'\+statMvpCard/);
  assert.match(app,/statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp/);
  assert.match(app,/statLeaderCard\('ЛУЧШИЙ K\/D',statKdLeader/);
  assert.match(app,/statLeaderCard\('БОЛЬШЕ ВСЕГО АССИСТОВ',statAssistLeader/);
