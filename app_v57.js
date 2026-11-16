@@ -1131,7 +1131,7 @@ function setMatchRoomStatsSide(side){
  const root=document.getElementById('matchRoomPage');if(!root||!['all','t','ct'].includes(side))return;
  root.querySelectorAll('[data-stat-side-button]').forEach(button=>button.classList.toggle('active',button.dataset.statSideButton===side));
  root.querySelectorAll('.match-mode-table [data-stat-cell]').forEach(cell=>{
-  const value=cell.dataset[side]??'0',sort=cell.dataset['sort'+side.toUpperCase()]??'0';
+  const value=cell.dataset[side]??'0',sort=cell.dataset[side==='all'?'sortAll':side==='t'?'sortT':'sortCt']??'0';
   cell.textContent=value;cell.dataset.sortValue=sort;
   const key=cell.dataset.statCell;
   if(key==='kd'){cell.classList.toggle('stat-positive',Number(sort)>1);cell.classList.toggle('stat-negative',Number(sort)<1);cell.classList.toggle('stat-neutral',Number(sort)===1)}
