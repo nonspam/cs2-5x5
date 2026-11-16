@@ -8521,55 +8521,21 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  backdrop-filter:blur(10px)!important;
 }
 
-/* 2026-11-17 — Match Room: clear statistics header and push kill leader value right. */
+/* 2026-11-17 — precise statistics fixes: kill value alignment + transparent team strip */
 #matchRoomPage .match-stat-category-panel .match-mode-table thead th,
 #matchRoomPage .match-stat-teams .match-scoreboard thead th{
- background:transparent!important;
- background-color:transparent!important;
- background-image:none!important;
- -webkit-backdrop-filter:none!important;
- backdrop-filter:none!important;
+ background:transparent!important;background-color:transparent!important;background-image:none!important;
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
 }
-#matchRoomPage .match-stat-awards .match-stat-highlight:first-child .match-stat-highlight-value{
- justify-self:stretch!important;
- width:100%!important;
- margin-right:-12px!important;
- padding-right:0!important;
- align-items:flex-end!important;
- text-align:right!important;
+#matchRoomPage .match-stat-team-mode > .match-stat-team,
+#matchRoomPage .match-stat-team-mode > .match-stat-team > .match-stat-team-summary{
+ background:transparent!important;background-color:transparent!important;background-image:none!important;
+ border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
 }
-
-/* 2026-11-17 — Correct target: transparent team information strip and right-shifted most-kills block. */
-#matchRoomPage .match-stat-team-summary{
- background:transparent!important;
- background-color:transparent!important;
- background-image:none!important;
- border:0!important;
- box-shadow:none!important;
- -webkit-backdrop-filter:none!important;
- backdrop-filter:none!important;
+#matchRoomPage .match-stat-awards .match-stat-highlight.is-kills-leader{
+ grid-template-columns:36px minmax(0,1fr) minmax(100px,1fr)!important;
 }
-#matchRoomPage .match-stat-awards .match-stat-highlight:first-child .match-stat-highlight-value{
- transform:translateX(10px)!important;
-}
-
-/* 2026-11-17 — Actual Statistics team strip and first Top-4 card selectors. */
-#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-team{
- background:transparent!important;
- background-color:transparent!important;
- background-image:none!important;
- -webkit-backdrop-filter:none!important;
- backdrop-filter:none!important;
- box-shadow:none!important;
-}
-#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-team-summary{
- background:transparent!important;
- background-color:transparent!important;
- background-image:none!important;
- -webkit-backdrop-filter:none!important;
- backdrop-filter:none!important;
- box-shadow:none!important;
-}
-#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-highlight-grid>.match-stat-highlight:first-child .match-stat-highlight-value{
- transform:translateX(18px)!important;
+#matchRoomPage .match-stat-awards .match-stat-highlight.is-kills-leader .match-stat-highlight-value{
+ width:100%!important;min-width:0!important;justify-self:stretch!important;margin:0!important;padding:0!important;
+ transform:none!important;align-items:flex-end!important;text-align:right!important;
 }
