@@ -558,3 +558,13 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - No demo parser, metric calculation, backend schema, Supabase migration, production deployment or `main` change was made. Visual browser QA and automated quality-gate result are still pending.
 
 - Expanded the zero-filled test contract across the full planned stat families: Impact Rating, K/R, ADR, HS kills/%, KAST, accuracy, shots/hits, damage, MVP, rounds, survival, entry/opening kills and deaths, trade kills/traded deaths, flash assists, utility damage/enemies, total and 1v1–1v5 clutches, duels won/lost/win%, 2K–5K, CT/T kills and deaths. Rate-like values are averaged across maps; count metrics are summed. All fields are present for every player-map row in the latest match, with zero placeholders until demo-derived values exist.
+
+
+## 2026-11-16 — Match Room statistics layout correction
+- Replaced the always-on 10-player mega-table with FACEIT-style statistic categories: Общee, Расширенное, Энтри, Размены, Клатчи.
+- Default view is two separate team tables (five players per team); the optional «Сортировать по игрокам» mode combines both rosters into one ten-player table.
+- Added Все / T / CT side controls. T and CT values use the source's t_kills/t_deaths and ct_kills/ct_deaths fields; side-specific fields not supplied by the source remain 0 rather than being fabricated.
+- Sorting applies to the visible category and current display mode. Removed the old comparison mega-table and its 40+ simultaneously visible columns.
+- Team header shows average ELO. First/second-half score is displayed as unavailable (—) because the current map data schema does not provide half scores.
+- Visual styles are compact and transparent, with no decorative oval header frames.
+- Validation: JavaScript syntax checks passed for app_v57.js and tests/faceit-v2-shell.test.cjs. Full automated test suite and browser visual QA have not yet been run.
