@@ -208,3 +208,9 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Preserve raw events, round/player-side context and calculation version; process in a background service; validate and review before publication; make retries idempotent; published matches alone update Track.
 - Full plan: [DEMO_ANALYTICS_PLAN.md](DEMO_ANALYTICS_PLAN.md).
 - No parser, upload, DB/schema/SQL/migration, deployment or production changes in this documentation decision.
+
+
+## 2026-11-16 — Match Room statistics test scaffold
+- One combined 10-player comparison table replaces the separate team tables in Match Room Statistics. K, D, A, K/D, +/−, ADR, HS%, KAST, damage, MVP, entry kills/deaths, flash assists, utility damage, clutches and 3K/4K/5K columns are sortable; the first click sorts descending and the next click reverses.
+- The latest detailed match `match_032` has zero-filled advanced fields on all 30 player-map rows; original K/D/A values remain unchanged. These zeros are UI/schema test placeholders, not measured demo stats. Older matches safely default missing advanced metrics to 0.
+- Navigation, select, account, player-search and Match Room menus now use translucent glass backgrounds. Browser visual QA and automated quality-gate result remain pending; no parser, backend schema, Supabase migration, deployment or `main` changes were made.
