@@ -8229,3 +8229,18 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/match-room-statistics-layout.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T18:13:27-05:00 — docs: record FACEIT Match Room hierarchy update
+
+- Commit: d612faf2c314f1ce5d6651db69986cc3ac584959
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+- M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
+- M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
