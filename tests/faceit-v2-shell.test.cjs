@@ -968,7 +968,9 @@ test('Match Room statistics defaults to two teams and supports category, player 
  assert.match(app,/data-stat-side-button="all"/);
  assert.match(app,/data-stat-side-button="t"/);
  assert.match(app,/data-stat-side-button="ct"/);
- assert.match(app,/\['swing','Swing'\]/);
+ assert.doesNotMatch(app,/\['swing','Swing'\]|<th>Рейтинг<\/th>|match-stat-rating/);
+ assert.match(app,/data-team-side=/);
+ assert.match(app,/statRowsMarkup\(rs,mode,category,side\)/);
  assert.doesNotMatch(app,/СРАВНЕНИЕ 10 ИГРОКОВ/);
  assert.doesNotMatch(app,/match-comparison-table/);
 });
