@@ -55,3 +55,18 @@ test('Match Room team names remain explicit and MVP/Top 4 ratio favors the MVP',
   assert.match(css, /data-team-side="a"[\s\S]*data-team-side="b"/);
 });
 
+
+
+test('Most-kills value is pinned to the far edge of its own card without transforms', () => {
+  assert.match(app, /statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp,statMvp\?\.kills,'is-kills-leader'\)/);
+  assert.match(app, /match-stat-highlight\x27\+\(extraClass\?\x27 \x27\+extraClass:\x27\x27\)/);
+  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — precise statistics fixes'));
+  assert.match(fix, /\.match-stat-highlight\.is-kills-leader\s*\{[\s\S]*grid-template-columns:36px minmax\(0,1fr\) minmax\(100px,1fr\)!important/);
+  assert.match(fix, /\.is-kills-leader \.match-stat-highlight-value\s*\{[\s\S]*justify-self:stretch!important[\s\S]*text-align:right!important/);
+  assert.doesNotMatch(fix, /translateX/);
+});
+
+test('Team information strip and its wrapper are transparent while table keeps its own surface', () => {
+  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — precise statistics fixes'));
+  assert.match(fix, /\.match-stat-team-mode > \.match-stat-team,[\s\S]*\.match-stat-team-summary\s*\{[\s\S]*background:transparent!important/);
+});
