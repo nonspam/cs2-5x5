@@ -1021,7 +1021,9 @@ test('Match Room statistics maps real K/D/A fields and shows unavailable metrics
  assert.match(app,/const statDataAvailable=new Set\(\['kills','deaths','assists','kd','diff'\]\)/);
  assert.match(app,/if\(!statDataAvailable\.has\(key\)\)return null/);
  assert.match(app,/if\(value==null\|\|!Number\.isFinite\(value\)&&value!==Infinity\)return '—'/);
- assert.match(app,/statAdrLeader=statDataAvailable\.has\('adr'\)\?leaderBy\('adr'\):null/);
+ assert.match(app,/statDamageLeader=statDataAvailable\.has\('damage'\)\?leaderBy\('damage'\):null/);
+ assert.match(app,/statKastLeader=statDataAvailable\.has\('kast'\)\?leaderBy\('kast'\):null/);
+ assert.match(app,/statEntryLeader=statDataAvailable\.has\('entry_kills'\)\?leaderBy\('entry_kills'\):null/);
  assert.match(app,/const value=cell\.dataset\[side\]\?\?'—'/);
 });
 
