@@ -997,11 +997,13 @@ test('Match Room Statistics restores the MVP card and four leader highlights abo
  assert.match(app,/const statMvpCard='<section class="match-stat-mvp-card"/);
  assert.match(app,/const statHighlights='<section class="match-stat-awards">'\+statMvpCard/);
  assert.match(app,/statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp/);
- assert.match(app,/statLeaderCard\('ЛУЧШИЙ K\/D',statKdLeader/);
- assert.match(app,/statLeaderCard\('ADR',statMvp,'0'\)/);
- assert.match(app,/statLeaderCard\('УБИЙСТВА В ГОЛОВУ',statMvp,'0%'\)/);
+ assert.match(app,/statLeaderCard\('НАИБОЛЬШИЙ УРОН',statDamageLeader/);
+ assert.match(app,/statLeaderCard\('KAST',statKastLeader/);
+ assert.match(app,/statLeaderCard\('ЭНТРИ-УБИЙСТВА',statEntryLeader/);
  assert.match(app,/match-stat-mvp-tag">★ MVP/);
- assert.match(app,/match-stat-mvp-metrics[\s\S]*У\/С\/А[\s\S]*КД/);
+ assert.match(app,/match-stat-mvp-metrics[\s\S]*У\/С\/А[\s\S]*ADR[\s\S]*КД[\s\S]*УБИЙСТВА В ГОЛОВУ/);
+ assert.match(app,/<strong>0<\/strong>/);
+ assert.match(app,/<strong>0%<\/strong>/);
  assert.doesNotMatch(app,/match-stat-mvp-elo|Влияние на рез\.|FACEIT Рейтинг/);
  assert.match(app,/data-match-view="statistics" hidden>'\+statHighlights\+'<div class="match-stat-toolbar"/);
 });
