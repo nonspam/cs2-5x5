@@ -8298,3 +8298,16 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/match-room-statistics-layout.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T18:23:55-05:00 — fix: preserve player avatar name lookup and refresh asset cache
+
+- Commit: 06e018a630223efb0e04f11a67332ea892b84249
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
