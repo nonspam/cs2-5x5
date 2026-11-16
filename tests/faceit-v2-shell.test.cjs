@@ -341,7 +341,8 @@ test('Lime gradient remains only on main page headers, not nested module headers
 
 test('match room opens as a standalone full-page route, not a modal overlay',()=>{
   assert.match(app,/id="matchRoomPage"/);
-  assert.match(app,/history\.pushState\(\{\.\.\.history\.state,cs2MatchRoom:id\}/);
+  assert.match(app,/cs2Route:'base',cs2MatchRoom:matchId/);
+  assert.match(app,/window\.history\[options\.restore\?'replaceState':'pushState'\]/);
   assert.match(app,/function closeMatchRoom\(options=\{\}\)/);
   assert.doesNotMatch(app,/modal-back match-detail-backdrop/);
 });
