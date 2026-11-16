@@ -196,3 +196,15 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947): **286 passed / 0 failed / 0 skipped**, verified from validate job log.
 - Browser visual QA and DEV deployment verification remain pending. No production/database changes.
 - Latest implementation commit at this checkpoint: `fee87fc4085b0a07b7ef0736b305efdab8bd4389`.
+
+
+## 2026-11-16 — Demo analytics direction (PLANNED, documentation only)
+- Owner decision: complete/stabilize the current site and its systems first; only then implement automatic CS2 demo upload and processing. Continue designing current match/stat features around future canonical data contracts, but do not start parser integration yet.
+- Intended flow: upload `.dem` to a draft match → background parser → normalized raw events → versioned metric calculations → admin review/correction → publish.
+- One canonical match dataset will power Match Room Overview/MVP/highlights, General, Entry, Trades, Clutches, Duels, Equipment/Utility, CT/T splits, player profiles and Track. No duplicated manual data entry.
+- Overview fields: Impact Rating, K/D/A, ADR, KD, kills/round, headshot kills and %, 2K–5K, MVP rounds. MVP card: K/D/A, ADR, HS%. Four highlights: most kills, highest damage, best KAST, most entry kills.
+- Detailed sections: General/advanced (KAST, accuracy, shots/hits, multi-kills, participation/survival), Entry, Trades, Clutches (1v1–1v5), Duels (player-vs-player), Equipment/Utility (general, damage, support).
+- Impact Rating must be our own documented model; do not claim FACEIT formula parity. Elo/level and crosshair are not demo-derived. Ambiguous labels/formulas (e.g. RWS, RP/RS) remain unresolved until confirmed.
+- Preserve raw events, round/player-side context and calculation version; process in a background service; validate and review before publication; make retries idempotent; published matches alone update Track.
+- Full plan: [DEMO_ANALYTICS_PLAN.md](DEMO_ANALYTICS_PLAN.md).
+- No parser, upload, DB/schema/SQL/migration, deployment or production changes in this documentation decision.
