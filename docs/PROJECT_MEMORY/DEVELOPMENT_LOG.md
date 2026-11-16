@@ -1,7 +1,7 @@
 ## 2026-11-17 — Statistics width aligned to Match Room hero (IN PROGRESS)
 - Owner compared current Statistics screenshot with FACEIT and requested the full Statistics content to stretch horizontally to the same left/right boundaries as the Match Room map hero, without values or columns overflowing.
 - Expanded the awards/MVP + leader cards, category toolbar, category table panels, team tables and their wrappers to 100% of the Match Room content width; removed legacy 1080/1360/1480px child caps and centered margins where they constrained these sections. Kept table layout and metric data semantics unchanged.
-- Files: style_v57.css, tests/match-room-statistics-layout.test.cjs, index.html (app cache marker v14).
+- Files: style_v57.css, tests/match-room-statistics-layout.test.cjs, index.html (stylesheet cache marker style_v57.css v17 (cache-key commit 89de41137b3e9ad3d2eca71025d38e296cd3651a; application JavaScript unchanged)).
 - Source commit: 9e678403dfad772879ad7c38ea5406bcddcabbc6; regression assertion correction: 06381d5cda074131c1f2a2e1fd94e59a33c9ace0.
 - Quality Gate [43976277524](https://github.com/nonspam/cs2-5x5/actions/runs/43976277524): **314 passed / 0 failed / 0 skipped**, confirmed from validate job log.
 - Not verified: browser rendering, screenshot comparison, DEV deployment, owner visual acceptance. No DB, SQL, migration, production or main changes.
