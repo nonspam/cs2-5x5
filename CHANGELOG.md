@@ -8205,3 +8205,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T18:12:38-05:00 — test: fix FACEIT hierarchy assertion
+
+- Commit: 8e8faaf1ecc353592d20307b0321d5abbc53a865
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- No file list available.
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
