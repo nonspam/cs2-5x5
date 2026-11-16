@@ -1050,7 +1050,7 @@ function openMatchDetail(id,options={}){
   const statDataAvailable=new Set(['kills','deaths','assists','kd','diff']);
   for(const category of statCategories)for(const [key] of category.columns)if(rows.some(source=>Number.isFinite(Number(source[key]))&&Number(source[key])!==0))statDataAvailable.add(key);
   const statSideAvailable=new Set();
-  for(const category of statCategories)for(const [key] of category.columns)if(rows.some(source=>Number(source['t_'+key])!==0||Number(source['ct_'+key])!==0))statSideAvailable.add(key);
+  for(const category of statCategories)for(const [key] of category.columns)if(rows.some(source=>(Number.isFinite(Number(source['t_'+key]))&&Number(source['t_'+key])!==0)||(Number.isFinite(Number(source['ct_'+key]))&&Number(source['ct_'+key])!==0)))statSideAvailable.add(key);
   const leaderBy=(field)=>statPlayers.slice().sort((x,y)=>(Number(y[field])||0)-(Number(x[field])||0)||Number(y.kills)-Number(x.kills))[0]||null;
   const statMvp=leaderBy('kills'),statKdLeader=leaderBy('kd'),statAssistLeader=leaderBy('assists'),statAdrLeader=statDataAvailable.has('adr')?leaderBy('adr'):null;
   const statLeaderCard=(label,r,value)=>'<article class="match-stat-highlight">'+(r?matchRoomInitialAvatar(r.player_id||null,'md',r.name):'<span class="match-stat-highlight-avatar">—</span>')+'<div class="match-stat-highlight-player"><strong>'+(r?esc(r.name):'Нет данных')+'</strong></div><div class="match-stat-highlight-value"><b>'+(r?value:'—')+'</b><small>'+label+'</small></div></article>';
@@ -1085,7 +1085,7 @@ function openMatchDetail(id,options={}){
   const cells=category.columns.map(([key,label])=>{
    const all=statSideValue(r,key,'all'),t=statSideValue(r,key,'t'),ct=statSideValue(r,key,'ct');
    const tone=key==='kd'&&all!=null?(all>1?'stat-positive':all<1?'stat-negative':'stat-neutral'):'';
-   return '<td class="'+tone+'" data-stat-cell="'+key+'" data-all="'+esc(statFormat(key,all))+'" data-t="'+esc(statFormat(key,t))+'" data-ct="'+esc(statFormat(key,ct))+'" data-sort-value="'+(Number.isFinite(all)?all:999999)+'" data-sort-all="'+(Number.isFinite(all)?all:999999)+'" data-sort-t="'+(Number.isFinite(t)?t:t===Infinity?999999:0)+'" data-sort-ct="'+(Number.isFinite(ct)?ct:ct===Infinity?999999:0)+'">'+esc(statFormat(key,all))+'</td>';
+   return '<td class="'+tone+'" data-stat-cell="'+key+'" data-all="'+esc(statFormat(key,all))+'" data-t="'+esc(statFormat(key,t))+'" data-ct="'+esc(statFormat(key,ct))+'" data-sort-value="'+(Number.isFinite(all)?all:all===Infinity?999999:-999999)+'" data-sort-all="'+(Number.isFinite(all)?all:all===Infinity?999999:-999999)+'" data-sort-t="'+(Number.isFinite(t)?t:t===Infinity?999999:-999999)+'" data-sort-ct="'+(Number.isFinite(ct)?ct:ct===Infinity?999999:-999999)+'">'+esc(statFormat(key,all))+'</td>';
   }).join('');
   return '<tr data-stat-row data-player-id="'+esc(r.id)+'"><td class="name"><span class="match-player-profile-link" '+profileAction+'>'+matchRoomInitialAvatar(r.id,'xs',r.name)+esc(r.name)+'</span></td><td class="match-stat-rank">'+statRank(r)+'</td><td class="match-stat-rating">'+statRating(r)+'</td>'+cells+'</tr>';
  }).join('');
