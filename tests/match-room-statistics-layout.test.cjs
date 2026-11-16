@@ -70,3 +70,11 @@ test('Team information strip and its wrapper are transparent while table keeps i
   const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — precise statistics fixes'));
   assert.match(fix, /\.match-stat-team-mode > \.match-stat-team,[\s\S]*\.match-stat-team-summary\s*\{[\s\S]*background:transparent!important/);
 });
+
+
+test('FACEIT team colors tint only the player-name cells by team side', () => {
+  const faceitTint = css.slice(css.lastIndexOf('/* 2026-11-17 — FACEIT team tint: color only the player-name column */'));
+  assert.match(faceitTint, /tr\[data-team-side="a"\]\s*>\s*td\.name\s*\{[^}]*background:#232240!important/);
+  assert.match(faceitTint, /tr\[data-team-side="b"\]\s*>\s*td\.name\s*\{[^}]*background:#234038!important/);
+  assert.doesNotMatch(faceitTint, /td\.match-stat-rank|td:not\(\.name\)|nth-child/);
+});
