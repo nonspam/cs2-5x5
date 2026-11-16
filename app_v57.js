@@ -1067,7 +1067,7 @@ function openMatchDetail(id,options={}){
   const cells=category.columns.map(([key,label])=>{
    const all=statSideValue(r,key,'all'),t=statSideValue(r,key,'t'),ct=statSideValue(r,key,'ct');
    const tone=key==='kd'?(all>1?'stat-positive':all<1?'stat-negative':'stat-neutral'):'';
-   return '<td class="'+tone+'" data-stat-cell="'+key+'" data-all="'+esc(statFormat(key,all))+'" data-t="'+esc(statFormat(key,t))+'" data-ct="'+esc(statFormat(key,ct))+'" data-sort-value="'+(Number.isFinite(all)?all:999999)+'">'+esc(statFormat(key,all))+'</td>';
+   return '<td class="'+tone+'" data-stat-cell="'+key+'" data-all="'+esc(statFormat(key,all))+'" data-t="'+esc(statFormat(key,t))+'" data-ct="'+esc(statFormat(key,ct))+'" data-sort-value="'+(Number.isFinite(all)?all:999999)+'" data-sort-all="'+(Number.isFinite(all)?all:999999)+'" data-sort-t="'+(Number.isFinite(t)?t:t===Infinity?999999:0)+'" data-sort-ct="'+(Number.isFinite(ct)?ct:ct===Infinity?999999:0)+'">'+esc(statFormat(key,all))+'</td>';
   }).join('');
   return '<tr data-stat-row data-player-id="'+esc(r.id)+'"><td class="name"><span class="match-player-profile-link" '+profileAction+'>'+matchRoomInitialAvatar(r.id,'xs',r.name)+esc(r.name)+'</span></td><td class="match-stat-rank">'+statRank(r)+'</td><td class="match-stat-rating">'+statRating(r)+'</td>'+cells+'</tr>';
  }).join('');
@@ -1115,7 +1115,50 @@ function closeMatchRoom(options={}){
 }
 
 
-function sortMatchRoomStats(key){const root=document.getElementById('matchRoomPage'),body=root?.querySelector('.match-comparison-table tbody');if(!body)return;const allowed=["kills","deaths","assists","kd","diff","impact_rating","kills_per_round","adr","hs_kills","hs_percent","kast","accuracy","shots_fired","shots_hit","damage","mvp","rounds_played","survival_rate","entry_kills","entry_deaths","opening_kills","opening_deaths","trade_kills","traded_deaths","flash_assists","utility_damage","utility_enemies","clutches","clutch_1v1","clutch_1v2","clutch_1v3","clutch_1v4","clutch_1v5","duels_won","duels_lost","duel_win_percent","two_kills","three_kills","four_kills","five_kills","ct_kills","ct_deaths","t_kills","t_deaths"];if(!allowed.includes(key))return;const state=window.__matchRoomSortState||{key:'',direction:1};const direction=state.key===key?-state.direction:-1;window.__matchRoomSortState={key,direction};const rows=[...body.querySelectorAll('tr')];rows.sort((a,b)=>{const av=Number(a.querySelector('[data-sort-value="'+key+'"]')?.dataset.sortValue)||0,bv=Number(b.querySelector('[data-sort-value="'+key+'"]')?.dataset.sortValue)||0;return (av-bv)*direction||a.cells[1].textContent.localeCompare(b.cells[1].textContent,'ru')});rows.forEach((row,i)=>{row.cells[0].textContent=String(i+1);body.appendChild(row)});root.querySelectorAll('.match-sort-button').forEach(button=>{const active=button.dataset.sortKey===key,indicator=button.querySelector('[data-sort-indicator]');button.classList.toggle('is-sorted',active);if(indicator)indicator.textContent=active?(direction===-1?' ↓':' ↑'):''})}
+function setMatchRoomStatsMode(mode){
+ const root=document.getElementById('matchRoomPage');if(!root||!['team','players'].includes(mode))return;
+ root.querySelectorAll('[data-stat-mode]').forEach(node=>{node.hidden=node.dataset.statMode!==mode});
+ root.querySelectorAll('[data-stat-mode-button]').forEach(button=>button.classList.toggle('active',button.dataset.statModeButton===mode));
+ window.__matchRoomStatsMode=mode;window.__matchRoomSortState=null;
+}
+function setMatchRoomStatCategory(category){
+ const root=document.getElementById('matchRoomPage');if(!root)return;
+ root.querySelectorAll('[data-stat-category]').forEach(node=>node.hidden=node.dataset.statCategory!==category);
+ root.querySelectorAll('[data-stat-category-button]').forEach(button=>button.classList.toggle('active',button.dataset.statCategoryButton===category));
+ window.__matchRoomStatCategory=category;window.__matchRoomSortState=null;
+}
+function setMatchRoomStatsSide(side){
+ const root=document.getElementById('matchRoomPage');if(!root||!['all','t','ct'].includes(side))return;
+ root.querySelectorAll('[data-stat-side-button]').forEach(button=>button.classList.toggle('active',button.dataset.statSideButton===side));
+ root.querySelectorAll('.match-mode-table [data-stat-cell]').forEach(cell=>{
+  const value=cell.dataset[side]??'0',sort=cell.dataset['sort'+side.toUpperCase()]??'0';
+  cell.textContent=value;cell.dataset.sortValue=sort;
+  const key=cell.dataset.statCell;
+  if(key==='kd'){cell.classList.toggle('stat-positive',Number(sort)>1);cell.classList.toggle('stat-negative',Number(sort)<1);cell.classList.toggle('stat-neutral',Number(sort)===1)}
+ });
+ window.__matchRoomStatsSide=side;window.__matchRoomSortState=null;
+}
+function sortMatchRoomStats(key){
+ const root=document.getElementById('matchRoomPage');if(!root)return;
+ const panel=root.querySelector('.match-stat-category-panel:not([hidden])');if(!panel)return;
+ const tables=[...panel.querySelectorAll('.match-mode-table')].filter(table=>!table.closest('[hidden]'));
+ const state=window.__matchRoomSortState||{key:'',direction:1};
+ const direction=state.key===key?-state.direction:-1;window.__matchRoomSortState={key,direction};
+ tables.forEach(table=>{
+  const body=table.querySelector('tbody');if(!body)return;
+  const rows=[...body.querySelectorAll('tr')];
+  rows.sort((a,b)=>{
+   const av=Number(a.querySelector('[data-stat-cell="'+key+'"]')?.dataset.sortValue)||0;
+   const bv=Number(b.querySelector('[data-stat-cell="'+key+'"]')?.dataset.sortValue)||0;
+   return (av-bv)*direction||a.dataset.playerId.localeCompare(b.dataset.playerId,'ru');
+  });
+  rows.forEach(row=>body.appendChild(row));
+ });
+ panel.querySelectorAll('.match-sort-button').forEach(button=>{
+  const active=button.dataset.sortKey===key,indicator=button.querySelector('[data-sort-indicator]');
+  button.classList.toggle('is-sorted',active);if(indicator)indicator.textContent=active?(direction===-1?' ↓':' ↑'):'';
+ });
+}
 function setMatchRoomView(target){
  const root=document.getElementById('matchRoomPage');
  if(!root||!['overview','statistics','top'].includes(target))return false;
