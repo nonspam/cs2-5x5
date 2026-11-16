@@ -954,7 +954,7 @@ test('Leaderboard rows use Match Room Statistics glass styling and translucent p
 test('Match Room compares all ten players in one sortable table and defaults missing advanced metrics to zero',()=>{
  assert.match(app,/function sortMatchRoomStats\(key\)/);
  assert.match(app,/СРАВНЕНИЕ 10 ИГРОКОВ/);
- assert.match(app,/data-sort-key=\"kd\"/);
+ assert.match(app,/\['kd','K\/D'\]/);
  for(const key of ["adr","hs_percent","kast","damage","mvp","entry_kills","entry_deaths","flash_assists","utility_damage","clutches","three_kills","four_kills","five_kills"])assert.ok(app.includes(key),'sortable metric '+key);
  assert.match(app,/return\{id,p,name,k:st\?\.kills\?\?0,d:st\?\.deaths\?\?0,a:st\?\.assists\?\?0/);
 });
