@@ -1004,3 +1004,22 @@ test('Match Room statistic categories are plain text controls with underline-onl
  assert.match(css,/#matchRoomPage \.match-stat-categories button,[\s\S]*border:0!important[\s\S]*border-radius:0!important[\s\S]*background:transparent!important/);
  assert.match(css,/#matchRoomPage \.match-stat-categories button\.active[\s\S]*border-bottom-color:#ff5a1f!important/);
 });
+
+
+test('Match Room statistics maps real K/D/A fields and shows unavailable metrics as dashes',()=>{
+ assert.match(app,/if\(key==='kills'\)return Number\(r\.k\)\|\|0/);
+ assert.match(app,/if\(key==='deaths'\)return Number\(r\.d\)\|\|0/);
+ assert.match(app,/if\(key==='assists'\)return Number\(r\.a\)\|\|0/);
+ assert.match(app,/const statDataAvailable=new Set\(\['kills','deaths','assists','kd','diff'\]\)/);
+ assert.match(app,/if\(!statDataAvailable\.has\(key\)\)return null/);
+ assert.match(app,/if\(value==null\|\|!Number\.isFinite\(value\)&&value!==Infinity\)return '—'/);
+ assert.match(app,/const statAdrLeader=statDataAvailable\.has\('adr'\)\?leaderBy\('adr'\):null/);
+ assert.match(app,/const value=cell\.dataset\[side\]\?\?'—'/);
+});
+
+test('Match Room top four highlights sit beside the MVP and controls are compact',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-awards\{[\s\S]*grid-template-columns:minmax\(250px,\.88fr\) minmax\(0,1\.12fr\)/);
+ assert.match(css,/#matchRoomPage \.match-stat-highlight-grid\{[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+ assert.match(css,/#matchRoomPage \.match-stat-categories button,[\s\S]*font-size:10\.5px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-mode button\{font-size:10px!important\}/);
+});
