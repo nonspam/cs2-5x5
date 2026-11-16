@@ -1,5 +1,15 @@
 # SESSION CHECKPOINT — read this first
 
+## Latest owner task — Match Room Statistics correction (2026-11-16)
+- Status: SOURCE + TESTS PASS; owner browser verification pending.
+- Restored MVP player card and four leader highlights above the Statistics category controls: most kills, best K/D, most assists and best ADR.
+- Category labels and team/player plus T/CT controls are plain text with orange underline active state; no pills, outlines or oval backgrounds.
+- Category selection, table mode switching, side filters and sortable columns remain implemented.
+- Quality Gate run 43890650551: 292 passed / 0 failed / 0 skipped.
+- App: 34d3cfa12e400ef3b7f6cef9cad990856135d5fe; CSS: d2e486c29da82782a57716038aef96ebe39c32d8 and a9b03f12649e9081b7b5793d2eb92f12002304b3; cache: 4a31e8b2232124095afda72943bc22ce60176976; tests: d4defd01113461b689d33a5101cec098a9ca3029.
+- Next: owner hard-refreshes DEV and verifies Statistics layout and interactions. Do not claim deployed or visually accepted. No deployment/browser QA/DB/production changes.
+
+
  > Updated after the latest profile feedback: stop route bleed-through and restore the taller avatar in the right utility rail.
 
 ## Snapshot
