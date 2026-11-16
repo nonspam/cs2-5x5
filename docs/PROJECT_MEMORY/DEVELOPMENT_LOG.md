@@ -5,7 +5,8 @@
 - Source change: appended scoped CSS overrides in `style_v57.css`; desktop right stack now fills the MVP height with four equal rows, compact responsive behavior is retained below 1050px, highlight values/labels align right, and table header uses a translucent blurred surface.
 - Regression coverage added in `tests/faceit-v2-shell.test.cjs`.
 - Asset cache marker in `index.html`: `matchroom-statistics-layout-20261116-v5`.
-- Status: SOURCE + TESTS UPDATED; Quality Gate, browser visual QA, and DEV deployment verification pending.
+- Status: SOURCE + TESTS PASS; browser visual QA and DEV deployment verification pending.
+- Quality Gate [43947209379](https://github.com/nonspam/cs2-5x5/actions/runs/43947209379): **303 passed / 0 failed / 0 skipped**, confirmed from the actual `validate` job log. This validates syntax and Node regression contracts, not browser rendering or deployment.
 - No application data, calculations, database, production, or `main` changes.
 
 
