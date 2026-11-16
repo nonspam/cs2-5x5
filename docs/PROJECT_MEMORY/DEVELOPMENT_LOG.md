@@ -1,5 +1,14 @@
 
 
+## 2026-11-16 — Statistics awards alignment and translucent table header
+- Owner screenshot correction: keep the approved MVP card unchanged; stretch the four right-side highlight cards to the same desktop height as MVP, align highlight values/labels to the far right, and remove the solid gray fill from the statistics table header.
+- Source change: appended scoped CSS overrides in `style_v57.css`; desktop right stack now fills the MVP height with four equal rows, compact responsive behavior is retained below 1050px, highlight values/labels align right, and table header uses a translucent blurred surface.
+- Regression coverage added in `tests/faceit-v2-shell.test.cjs`.
+- Asset cache marker in `index.html`: `matchroom-statistics-layout-20261116-v5`.
+- Status: SOURCE + TESTS UPDATED; Quality Gate, browser visual QA, and DEV deployment verification pending.
+- No application data, calculations, database, production, or `main` changes.
+
+
 ## 2026-11-16 — Match Room rendering runtime error fix
 - Follow-up user report: clicking a match switched the app to the Matches route but did not display the selected match room.
 - Root cause confirmed in `openMatchDetail`: `statCategories` was read in the `statDataAvailable` and `statSideAvailable` loops before its `const` declaration later in the same function. This hit the JavaScript temporal dead zone and aborted Match Room construction after the route switch.
