@@ -112,5 +112,5 @@ test('FACEIT Statistics sections stretch to the full Match Room hero width', () 
   }
   assert.ok(ownerWidthFix.includes('#matchRoomPage .match-stat-category-panel .table-wrap,'));
   assert.ok(ownerWidthFix.includes('#matchRoomPage .match-stat-teams .table-wrap{'));
-  assert.match(ownerWidthFix, /\.match-stat-category-panel \.table-wrap[\\s\\S]*?width:100%!important;max-width:none!important/);
+  assert.ok(ownerWidthFix.includes('width:100%!important;max-width:none!important;min-width:0!important;'));
 });
