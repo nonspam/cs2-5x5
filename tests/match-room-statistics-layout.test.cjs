@@ -57,24 +57,24 @@ test('Match Room team names remain explicit and MVP/Top 4 ratio favors the MVP',
 
 
 
-test('Most-kills value is pinned to the far edge of its own card without transforms', () => {
+test('Most-kills value is pinned to the far right edge of its own card', () => {
   assert.match(app, /statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp,statMvp\?\.kills,'is-kills-leader'\)/);
   assert.match(app, /match-stat-highlight\x27\+\(extraClass\?\x27 \x27\+extraClass:\x27\x27\)/);
-  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — precise statistics fixes'));
-  assert.match(fix, /\.match-stat-highlight\.is-kills-leader\s*\{[\s\S]*display:grid!important[\s\S]*grid-template-columns:36px minmax\(0,1fr\) minmax\(100px,1fr\)!important/);
-  assert.match(fix, /\.is-kills-leader \.match-stat-highlight-value\s*\{[\s\S]*justify-self:stretch!important[\s\S]*text-align:right!important/);
+  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — final FACEIT statistics overrides'));
+  assert.match(fix, /\.match-stat-highlight\.is-kills-leader\s*\{[\s\S]*position:relative!important[\s\S]*display:flex!important/);
+  assert.match(fix, /\.is-kills-leader \.match-stat-highlight-value\s*\{[\s\S]*position:absolute!important;right:12px!important[\s\S]*text-align:right!important/);
   assert.doesNotMatch(fix, /translateX/);
 });
 
 test('Team information strip and its wrapper are transparent while table keeps its own surface', () => {
-  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — precise statistics fixes'));
+  const fix = css.slice(css.lastIndexOf('/* 2026-11-17 — final FACEIT statistics overrides'));
   assert.match(fix, /\.match-stat-team-mode > \.match-stat-team,[\s\S]*\.match-stat-team-summary\s*\{[\s\S]*background:transparent!important/);
 });
 
 
-test('FACEIT team colors tint only the player-name cells by team side', () => {
-  const faceitTint = css.slice(css.lastIndexOf('/* 2026-11-17 — FACEIT team tint: color only the player-name column */'));
-  assert.match(faceitTint, /tr\[data-team-side="a"\]\s*>\s*td\.name\s*\{[^}]*background:#232240!important/);
-  assert.match(faceitTint, /tr\[data-team-side="b"\]\s*>\s*td\.name\s*\{[^}]*background:#234038!important/);
+test('FACEIT team colors tint only the player-name cells by team side and outrank legacy resets', () => {
+  const faceitTint = css.slice(css.lastIndexOf('/* 2026-11-17 — final FACEIT statistics overrides'));
+  assert.match(faceitTint, /#matchRoomPage\.match-room-page[\s\S]*tr\[data-team-side="a"\] > td\.name,[\s\S]*background:#24213f!important/);
+  assert.match(faceitTint, /#matchRoomPage\.match-room-page[\s\S]*tr\[data-team-side="b"\] > td\.name,[\s\S]*background:#234239!important/);
   assert.doesNotMatch(faceitTint, /td\.match-stat-rank|td:not\(\.name\)|nth-child/);
 });
