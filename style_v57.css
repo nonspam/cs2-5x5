@@ -8520,3 +8520,21 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  -webkit-backdrop-filter:blur(10px)!important;
  backdrop-filter:blur(10px)!important;
 }
+
+/* 2026-11-17 — Match Room: clear statistics header and push kill leader value right. */
+#matchRoomPage .match-stat-category-panel .match-mode-table thead th,
+#matchRoomPage .match-stat-teams .match-scoreboard thead th{
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight:first-child .match-stat-highlight-value{
+ justify-self:stretch!important;
+ width:100%!important;
+ margin-right:-12px!important;
+ padding-right:0!important;
+ align-items:flex-end!important;
+ text-align:right!important;
+}
