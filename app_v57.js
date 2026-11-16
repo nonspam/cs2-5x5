@@ -254,7 +254,7 @@ function navigateApp(tab,options={}){
  state.tab=tab;state.accountMenuOpen=false;render();
 }
 function restoreAppRouteFromHistory(){
- const routeMatch=new URLSearchParams(window.location.search).get('match')||'';
+ const routeMatch=(String(window.location.search||'').match(/[?&]match=([^&]+)/)||[])[1]||'';
  if(routeMatch){
   if(window.__activeMatchRoomId&&routeMatch!==window.__activeMatchRoomId)closeMatchRoom({fromPop:true});
   if(state.tab!=='base'){state.tab='base';state.accountMenuOpen=false;render()}
