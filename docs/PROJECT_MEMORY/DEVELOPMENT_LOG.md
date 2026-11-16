@@ -638,3 +638,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Team section headings now receive a `Тим ` prefix unless the source already labels them as Team/Тим.
 - Added regression tests; asset marker is `matchroom-statistics-layout-20261116-v3`.
 - Quality Gate [43942434063](https://github.com/nonspam/cs2-5x5/actions/runs/43942434063): **300 passed / 0 failed / 0 skipped**. Browser visual QA remains pending.
+
+
+## 2026-11-16 — MVP focus and FACEIT-style Top 4 compacting
+- Rebalanced the Statistics awards area so the MVP panel gets the dominant width (1.55fr vs 0.78fr) and the Top 4 sits in a narrower right column.
+- MVP badge is positioned at the top-right of the whole MVP card. The card now uses a 2×2 metric layout: U/S/A, ADR 0, K/D below U/S/A, and headshot kills 0% below ADR.
+- Replaced the right-hand cards with FACEIT-style Top 4 fields: most kills, most damage, KAST, and entry kills. Restored player avatars/names and aligned values/labels on the right. Each row is 44px tall with tight gaps.
+- Only render source-backed leaders for damage/KAST/entry; unavailable values remain unavailable rather than being invented.
+- Cache marker advanced to `matchroom-statistics-layout-20261116-v4`.
+- Quality Gate [43944687653](https://github.com/nonspam/cs2-5x5/actions/runs/43944687653): **301 passed / 0 failed / 0 skipped**. Browser visual QA is not yet verified.
