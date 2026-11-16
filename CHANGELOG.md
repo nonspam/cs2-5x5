@@ -7240,3 +7240,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-16T10:15:45-05:00 — Record Match Room route regression fix
+
+- Commit: 2465940fc3718c1866a30fbdcad2a1bd1e1917f5
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
