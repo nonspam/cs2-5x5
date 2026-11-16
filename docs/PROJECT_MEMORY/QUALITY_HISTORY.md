@@ -1,3 +1,13 @@
+## 2026-11-17 — FACEIT Match Room hierarchy and clean player strip (SOURCE + TESTS PASS)
+- Owner compared FACEIT and current Match Room screenshots. Requested top-level tabs (Overview / Statistics / Top) above the map hero; clear spacing between top navigation, map, roster, and Results / Duels / Equipment sub-tabs; explicitly does not want player likes/thumbs or like/dislike ranking controls.
+- Moved the existing top-level navigation before the map hero. Kept the existing Results / Duels / Equipment tabs inside the Statistics view, below the hero.
+- Added a compact horizontal roster strip below the map, with avatars and player names for both teams. No likes, thumbs, or player-ranking controls. Responsive layout: 10 columns desktop, 5 columns medium, 2 columns mobile.
+- Added restrained spacing between navigation, hero, roster strip, and statistics sub-navigation. Existing tab actions and statistics data are unchanged.
+- Files: app_v57.js, style_v57.css, tests/match-room-statistics-layout.test.cjs, index.html (app cache v14, CSS cache v18).
+- Validate workflow [43977318494](https://github.com/nonspam/cs2-5x5/actions/runs/43977318494): **316 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- Not verified: browser rendering, screenshot comparison, DEV deployment, owner visual acceptance. No database, SQL, migration, production or main changes.
+- Next: owner refreshes DEV and checks that tabs sit above the map, roster strip contains names/avatars only, and Results / Duels / Equipment sit below the map/roster with visible spacing.
+
 ## 2026-11-17 — Statistics width aligned to Match Room hero (IN PROGRESS)
 - Owner compared current Statistics screenshot with FACEIT and requested the full Statistics content to stretch horizontally to the same left/right boundaries as the Match Room map hero, without values or columns overflowing.
 - Expanded the awards/MVP + leader cards, category toolbar, category table panels, team tables and their wrappers to 100% of the Match Room content width; removed legacy 1080/1360/1480px child caps and centered margins where they constrained these sections. Kept table layout and metric data semantics unchanged.
