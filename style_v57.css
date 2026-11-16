@@ -8045,7 +8045,7 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-stat-awards .match-stat-highlight{
  min-width:0;margin:0;background:rgba(10,13,15,.34)!important;
  border:0!important;border-radius:2px!important;box-shadow:none!important;
- -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+ 
 }
 #matchRoomPage .match-stat-awards .match-stat-highlight{
  padding:10px 12px!important;display:flex;align-items:center;gap:10px;
