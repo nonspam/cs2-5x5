@@ -8538,3 +8538,17 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  align-items:flex-end!important;
  text-align:right!important;
 }
+
+/* 2026-11-17 — Correct target: transparent team information strip and right-shifted most-kills block. */
+#matchRoomPage .match-stat-team-summary{
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ box-shadow:none!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight:first-child .match-stat-highlight-value{
+ transform:translateX(10px)!important;
+}
