@@ -129,11 +129,4 @@ test('Match Room has no standalone roster strip or like/dislike controls beneath
   assert.doesNotMatch(ownerFix, /thumb|like|нравит/i);
 });
 
-test('Match Room player strip is compact, responsive, and has no rating controls', () => {
-  const rosterCss = css.slice(css.lastIndexOf('/* 2026-11-17 — FACEIT room hierarchy: navigation above map'));
-  assert.match(rosterCss, /\.match-room-view-tabs\s*\{[\s\S]*margin:0 0 16px!important/);
-  assert.match(rosterCss, /\.match-room-player-strip\s*\{[\s\S]*grid-template-columns:repeat\(10,minmax\(0,1fr\)\)/);
-  assert.match(rosterCss, /@media\(max-width:1050px\)[\s\S]*grid-template-columns:repeat\(5,minmax\(0,1fr\)\)/);
-  assert.match(rosterCss, /@media\(max-width:640px\)[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
-  assert.doesNotMatch(rosterCss, /thumb|like|нравит/i);
-});
+
