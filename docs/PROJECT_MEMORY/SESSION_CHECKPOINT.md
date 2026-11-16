@@ -272,3 +272,12 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Quality Gate run [43895298970](https://github.com/nonspam/cs2-5x5/actions/runs/43895298970): **296 passed / 0 failed / 0 skipped**.
 - Browser click-through / DEV deployment still not directly verified from this session; user refresh and visual confirmation pending.
 - Status: SOURCE + TESTS PASS; visual/browser acceptance pending.
+
+
+## 2026-11-16 — Match Room Statistics layout follow-up
+- `app_v57.js`: removed Rating and Swing from the Match Room stat table; widened the player column; attached team identity to each row for persistent team colors in both sort modes.
+- `style_v57.css`: larger MVP card, four vertically stacked leader cards on the right, plain text sort headings, wider table and bounded shared content container.
+- Added regression tests for these layout contracts and updated the previous test that still expected Swing.
+- Updated asset cache marker in `index.html` to `matchroom-statistics-layout-20261116-v1`.
+- Quality Gate [43937919845](https://github.com/nonspam/cs2-5x5/actions/runs/43937919845): **298 passed / 0 failed / 0 skipped**.
+- Browser visual QA/deployed rendering remains unverified; do not treat test success as screenshot acceptance.
