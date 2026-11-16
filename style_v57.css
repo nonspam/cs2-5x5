@@ -8558,3 +8558,15 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams .match-stat-team .match-scoreboard tbody tr[data-team-side="b"]:hover > td.name{
  background:#234239!important;background-color:#234239!important;background-image:none!important;
 }
+
+/* 2026-11-17 — transparent team info strip: remove only the strip surface */
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams.match-stat-team-mode > .match-stat-team,
+#matchRoomPage.match-room-page .match-room-statistics-view .match-stat-teams.match-stat-team-mode > .match-stat-team > .match-stat-team-summary{
+ background:transparent!important;
+ background-color:transparent!important;
+ background-image:none!important;
+ border:0!important;
+ box-shadow:none!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+}
