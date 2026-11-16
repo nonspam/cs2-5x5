@@ -8540,3 +8540,15 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  width:100%!important;min-width:0!important;justify-self:stretch!important;margin:0!important;padding:0!important;
  transform:none!important;align-items:flex-end!important;text-align:right!important;
 }
+
+/* 2026-11-17 — FACEIT team tint: color only the player-name column */
+#matchRoomPage .match-stat-category-panel .match-mode-table tbody tr[data-team-side="a"] > td.name{
+ background:#232240!important;
+ background-color:#232240!important;
+ background-image:none!important;
+}
+#matchRoomPage .match-stat-category-panel .match-mode-table tbody tr[data-team-side="b"] > td.name{
+ background:#234038!important;
+ background-color:#234038!important;
+ background-image:none!important;
+}
