@@ -1057,3 +1057,15 @@ test('opening any match establishes the Match Room route and history restoration
  const firstCategoriesUse=open.indexOf('for(const category of statCategories)');
  assert.ok(categoriesDeclaration>=0&&categoriesDeclaration<firstCategoriesUse,'statCategories must be initialized before Match Room reads it');
 });
+
+
+test('Match Room award highlights stretch to the MVP height and values align to the right edge',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-highlight-grid\{[\s\S]*height:100%!important;min-height:270px!important;[\s\S]*grid-template-rows:repeat\(4,minmax\(0,1fr\)\)/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight\{[\s\S]*height:100%!important;min-height:0!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight-value\{[\s\S]*align-items:flex-end!important;text-align:right!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight-value small\{[\s\S]*text-align:right!important/);
+});
+
+test('Match Room statistics table header uses a translucent surface instead of a solid gray fill',()=>{
+ assert.match(css,/#matchRoomPage \.match-mode-table thead th\{[\s\S]*background:rgba\(12,16,18,\.34\)!important[\s\S]*backdrop-filter:blur\(8px\)/);
+});
