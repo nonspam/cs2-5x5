@@ -998,8 +998,11 @@ test('Match Room Statistics restores the MVP card and four leader highlights abo
  assert.match(app,/const statHighlights='<section class="match-stat-awards">'\+statMvpCard/);
  assert.match(app,/statLeaderCard\('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp/);
  assert.match(app,/statLeaderCard\('ЛУЧШИЙ K\/D',statKdLeader/);
- assert.match(app,/statLeaderCard\('БОЛЬШЕ ВСЕГО АССИСТОВ',statAssistLeader/);
- assert.match(app,/statLeaderCard\('ЛУЧШИЙ ADR',statAdrLeader/);
+ assert.match(app,/statLeaderCard\('ADR',statMvp,'0'\)/);
+ assert.match(app,/statLeaderCard\('УБИЙСТВА В ГОЛОВУ',statMvp,'0%'\)/);
+ assert.match(app,/match-stat-mvp-tag">★ MVP/);
+ assert.match(app,/match-stat-mvp-metrics[\s\S]*У\/С\/А[\s\S]*КД/);
+ assert.doesNotMatch(app,/match-stat-mvp-elo|Влияние на рез\.|FACEIT Рейтинг/);
  assert.match(app,/data-match-view="statistics" hidden>'\+statHighlights\+'<div class="match-stat-toolbar"/);
 });
 
