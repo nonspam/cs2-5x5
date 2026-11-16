@@ -8656,3 +8656,27 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-subtabs{gap:18px!important;padding:0 4px!important}
  #matchRoomPage .match-stat-subview-heading{align-items:flex-start;flex-direction:column}
 }
+
+
+/* 2026-11-17 — owner request: expand all Statistics content to Match Room hero edges */
+#matchRoomPage .match-room-statistics-view{
+ width:100%!important;max-width:none!important;min-width:0!important;
+}
+#matchRoomPage .match-stat-awards,
+#matchRoomPage .match-stat-toolbar,
+#matchRoomPage .match-stat-category-panel,
+#matchRoomPage .match-stat-teams{
+ width:100%!important;max-width:none!important;min-width:0!important;
+ margin-left:0!important;margin-right:0!important;
+ box-sizing:border-box!important;
+}
+#matchRoomPage .match-stat-toolbar{padding-left:0!important;padding-right:0!important;}
+#matchRoomPage .match-stat-category-panel .table-wrap,
+#matchRoomPage .match-stat-teams .table-wrap{
+ width:100%!important;max-width:none!important;min-width:0!important;
+ box-sizing:border-box!important;
+}
+#matchRoomPage .match-stat-teams .match-stat-team{
+ width:100%!important;max-width:none!important;min-width:0!important;
+ box-sizing:border-box!important;
+}

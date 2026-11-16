@@ -103,3 +103,12 @@ test('Match Room hero and statistics navigation share the same responsive horizo
   assert.match(finalLayout, /\.match-room-view-tabs\s*\{[\s\S]*width:100%!important/);
   assert.match(finalLayout, /\.match-stat-subtabs button\.active:after/);
 });
+
+
+test('FACEIT Statistics sections stretch to the full Match Room hero width', () => {
+  const ownerWidthFix = css.slice(css.lastIndexOf('/* 2026-11-17 — owner request: expand all Statistics content'));
+  for (const selector of ['.match-stat-awards', '.match-stat-toolbar', '.match-stat-category-panel', '.match-stat-teams']) {
+    assert.match(ownerWidthFix, new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[\\s\\S]*?width:100%!important;max-width:none!important'));
+  }
+  assert.match(ownerWidthFix, /\.match-stat-category-panel \.table-wrap,[\\s\\S]*?\.match-stat-teams \.table-wrap[\\s\\S]*?width:100%!important;max-width:none!important/);
+});
