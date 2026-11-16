@@ -1,3 +1,7 @@
+## 2026-11-16 — Latest Statistics follow-up (IN PROGRESS)
+- Fixed highlight name clipping and targeted the actual team scoreboard header with a higher-specificity translucent style.
+- Cache marker matchroom-statistics-layout-20261116-v6; CI/browser/DEV verification pending.
+
 
 
 ## 2026-11-16 — Latest Statistics visual correction (IN PROGRESS)

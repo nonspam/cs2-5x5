@@ -1069,3 +1069,13 @@ test('Match Room award highlights stretch to the MVP height and values align to 
 test('Match Room statistics table header uses a translucent surface instead of a solid gray fill',()=>{
  assert.match(css,/#matchRoomPage \.match-mode-table thead th\{[\s\S]*background:rgba\(12,16,18,\.34\)!important[\s\S]*backdrop-filter:blur\(8px\)/);
 });
+
+
+test('Match Room highlight player names are not ellipsized and have a usable grid column',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight\{[\s\S]*grid-template-columns:32px minmax\(90px,1fr\) minmax\(120px,1fr\)!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight-player strong\{[\s\S]*overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important/);
+});
+
+test('Match Room statistics team scoreboard header overrides the opaque gray base rule',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-teams \.match-scoreboard thead th\{[\s\S]*background:rgba\(12,16,18,\.22\)!important[\s\S]*backdrop-filter:blur\(10px\)!important/);
+});

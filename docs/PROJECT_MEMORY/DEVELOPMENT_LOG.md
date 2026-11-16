@@ -1,4 +1,13 @@
 
+## 2026-11-16 — Statistics leader name and scoreboard header follow-up
+- Owner screenshot showed the first highlight player's name clipped to "Рен..." and the actual player/rank/K/D/A scoreboard header remained opaque gray.
+- Root causes: the highlight player-name cell was constrained by a narrow grid track and text-overflow:ellipsis; the prior translucent rule targeted .match-mode-table, while the visible team scoreboard is .match-stat-teams .match-scoreboard and has a more specific opaque base rule.
+- CSS now reserves a usable name column and disables ellipsis for the short leader name; the exact team scoreboard header receives a higher-specificity translucent blurred background override.
+- Files: style_v57.css, tests/faceit-v2-shell.test.cjs, index.html.
+- Cache marker: matchroom-statistics-layout-20261116-v6.
+- Status: source + regression assertions updated; CI and browser/DEV verification pending. MVP layout, values, and match calculations unchanged.
+
+
 
 ## 2026-11-16 — Statistics awards alignment and translucent table header
 - Owner screenshot correction: keep the approved MVP card unchanged; stretch the four right-side highlight cards to the same desktop height as MVP, align highlight values/labels to the far right, and remove the solid gray fill from the statistics table header.

@@ -8500,3 +8500,23 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-highlight-grid{height:auto!important;min-height:0!important;grid-template-rows:none!important}
  #matchRoomPage .match-stat-awards .match-stat-highlight{height:auto!important;min-height:62px!important}
 }
+
+
+/* 2026-11-16 — Statistics leader name visibility and actual scoreboard header transparency */
+#matchRoomPage .match-stat-awards .match-stat-highlight{
+ grid-template-columns:32px minmax(90px,1fr) minmax(120px,1fr)!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-player{
+ min-width:90px!important;overflow:visible!important;
+}
+#matchRoomPage .match-stat-awards .match-stat-highlight-player strong{
+ overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;
+}
+#matchRoomPage .match-stat-teams .match-scoreboard thead th{
+ background:rgba(12,16,18,.22)!important;
+ background-color:rgba(12,16,18,.22)!important;
+ background-image:none!important;
+ border-bottom:1px solid rgba(255,255,255,.12)!important;
+ -webkit-backdrop-filter:blur(10px)!important;
+ backdrop-filter:blur(10px)!important;
+}
