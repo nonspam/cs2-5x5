@@ -1029,3 +1029,18 @@ test('T/CT K/D is calculated from side kills and deaths, not missing precomputed
  assert.match(app,/key==='kd'\|\|key==='diff'\?\['t_kills','ct_kills','t_deaths','ct_deaths'\]/);
  assert.match(app,/const missing=value==='—'/);
 });
+
+
+test('opening any match establishes the Match Room route and history restoration prioritizes the match query',()=>{
+ const open=app.slice(app.indexOf('function openMatchDetail'),app.indexOf('function teamNameForRoom',app.indexOf('function openMatchDetail')));
+ const restore=app.slice(app.indexOf('function restoreAppRouteFromHistory'),app.indexOf('function faceitAppRailMarkup',app.indexOf('function restoreAppRouteFromHistory')));
+ assert.match(open,/const matchId=String\(id\?\?''\)\.trim\(\)/);
+ assert.match(open,/String\(x\.match_id\?\?''\)===matchId/);
+ assert.match(open,/roomUrl\.searchParams\.set\('match',matchId\)/);
+ assert.match(open,/roomUrl\.hash='#\/base'/);
+ assert.match(open,/cs2Route:'base',cs2MatchRoom:matchId/);
+ assert.match(open,/state\.tab!=='base'[\s\S]*state\.tab='base'[\s\S]*render\(\)/);
+ assert.match(restore,/new URLSearchParams\(window\.location\.search\)\.get\('match'\)/);
+ assert.match(restore,/if\(routeMatch\)[\s\S]*state\.tab='base'[\s\S]*openMatchDetail\(routeMatch,\{restore:true\}\)/);
+ assert.match(restore,/if\(window\.__activeMatchRoomId\)closeMatchRoom\(\{fromPop:true\}\)/);
+});
