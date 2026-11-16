@@ -25,6 +25,17 @@ CS2 Analytics is one integrated FACEIT-inspired application for the team's CS2 5
 - Quality Gate: `npm run check` via GitHub Actions.
 - Make scoped changes; do not rewrite the monolith wholesale.
 
+## Demo analytics direction (owner decision — 2026-11-16)
+
+- Decision: finish and stabilize the current product/routes first; add automatic demo processing afterwards. Do not build the parser prematurely.
+- Future workflow: upload a CS2 `.dem` to a draft match → background parser → normalized events and versioned calculations → admin review → publish.
+- One canonical match dataset must feed Match Room Overview/MVP/highlights, detailed stats, Duels, Equipment/Utility, profiles and Track. No manual re-entry into separate sections.
+- Planned match overview: Impact Rating, K/D/A, ADR, KD, kills/round, headshots/HS%, 2K–5K, MVP rounds; MVP card; highlights for most kills, highest damage, best KAST and most entry kills.
+- Planned detailed sections: General, Entry, Trades, Clutches, Duels, Equipment/Utility; CT/T filters where supported.
+- Impact Rating is our own model, not a claimed FACEIT formula. Elo/level and crosshair are external/profile data, not derived from a demo.
+- Full architecture, metric groups, uncertainty boundaries, phases and acceptance criteria: [DEMO_ANALYTICS_PLAN.md](DEMO_ANALYTICS_PLAN.md).
+- Documentation only at this stage: no parser, upload flow, DB schema, SQL/migration, deployment or production changes.
+
 ## Current focus
 
 The active owner-directed task is stabilizing the contained Profile window and making the signed-in user's wallpaper visible consistently across all routes and Match Room. The latest CSS/test correction isolates the underlying route, aligns the Profile edge to the global rail, makes the utility avatar circular, and removes a conflicting Match Room body pseudo-element. Quality Gate and visual confirmation are pending.
