@@ -1044,4 +1044,7 @@ test('opening any match establishes the Match Room route and history restoration
  assert.match(restore,/window\.location\.search\|\|''\)\.match\(\/\[\?&\]match=\(\[\^&\]\+\)\//);
  assert.match(restore,/if\(routeMatch\)[\s\S]*state\.tab='base'[\s\S]*openMatchDetail\(routeMatch,\{restore:true\}\)/);
  assert.match(restore,/if\(window\.__activeMatchRoomId\)closeMatchRoom\(\{fromPop:true\}\)/);
+ const categoriesDeclaration=open.indexOf('const statCategories=[');
+ const firstCategoriesUse=open.indexOf('for(const category of statCategories)');
+ assert.ok(categoriesDeclaration>=0&&categoriesDeclaration<firstCategoriesUse,'statCategories must be initialized before Match Room reads it');
 });
