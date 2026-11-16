@@ -965,6 +965,6 @@ test('Last detailed match map rows have a complete zero-filled advanced-stat sch
  for(const row of rows)for(const key of ["adr","hs_percent","kast","damage","mvp","entry_kills","entry_deaths","flash_assists","utility_damage","clutches","three_kills","four_kills","five_kills"])assert.equal(row[key],0,'missing '+key+' for '+row.player_id);
 });
 test('Match Room menus and comparison table remain translucent',()=>{
- assert.match(css,/#matchRoomPage \.match-room-account-menu\{background:rgba\(9,13,15,\.48\)!important/);
+ assert.match(css,/#matchRoomPage \.match-room-account-menu\{background:rgba\(9,13,15,\.48\)!important/);\n assert.match(css,/\.nav-menu,[\\s\\S]*\.custom-select-menu,[\\s\\S]*\.account-menu-pop,[\\s\\S]*\.site-player-search-results/);
  assert.match(css,/#matchRoomPage \.match-comparison-table tbody tr td\{padding:[\s\S]*rgba\(8,12,14,\.18\)!important[\s\S]*backdrop-filter:blur\(11px\)!important/);
 });
