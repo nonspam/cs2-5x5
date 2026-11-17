@@ -9005,3 +9005,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T11:57:02-05:00 — docs(match-room): record compact top and expanded overview stats
+
+- Commit: 7c2b96dbaf144b76509b6aa0326ddca7776560f7
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
