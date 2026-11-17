@@ -9898,3 +9898,36 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     box-sizing:border-box!important;
   }
 }
+
+
+/* 2026-11-17 — Hard-lock identical outer geometry for MVP and TOP-4 direct children. */
+@media(min-width:1051px){
+  #matchRoomPage .match-stat-awards{
+    display:grid!important;
+    grid-template-columns:minmax(0,2fr) minmax(300px,1fr)!important;
+    grid-template-rows:225px!important;
+    align-items:stretch!important;
+  }
+  #matchRoomPage .match-stat-awards > .match-stat-mvp-card,
+  #matchRoomPage .match-stat-awards > .match-stat-highlight-grid{
+    height:225px!important;
+    min-height:225px!important;
+    max-height:225px!important;
+    margin:0!important;
+    align-self:stretch!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-awards > .match-stat-highlight-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:repeat(4,minmax(0,1fr))!important;
+    gap:6px!important;
+  }
+  #matchRoomPage .match-stat-awards > .match-stat-highlight-grid > .match-stat-highlight{
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+  }
+}
