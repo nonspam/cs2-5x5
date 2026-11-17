@@ -93,7 +93,7 @@ test('Match Room statistics has working Results, Duels and Equipment subviews be
   assert.match(app, /data-stat-subview="duels"/);
   assert.match(app, /data-stat-subview="equipment"/);
   assert.match(app, /duels_won[\s\S]*duels_lost[\s\S]*duel_win_percent/);
-  assert.match(app, /В текущих данных матча нет статистики по оружию и экипировке/);
+  assert.match(app, /Пока отображаются нулевые значения-заглушки. Это не фактическая статистика матча./);
 });
 
 test('Match Room hero and statistics navigation share the same responsive horizontal container', () => {
