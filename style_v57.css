@@ -9167,3 +9167,52 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  color:#fff!important;background:rgba(255,255,255,.07)!important;
 }
 .faceit-exact-rail-bottom .faceit-rail-profile span{margin-left:9px!important}
+
+
+/* 2026-11-17 — restore the right profile rail and correct the profile modal grid */
+@media(min-width:1051px){
+ #view>.faceit-route-shell,#view>.faceit-profile-shell{width:calc(100% - 64px)!important;max-width:none!important}
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell{
+  display:grid!important;grid-template-columns:216px minmax(0,1fr)!important;
+  width:calc(100% - 64px)!important;max-width:none!important;min-width:0!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell>.faceit-exact-global-rail{
+  width:216px!important;min-width:216px!important;max-width:216px!important;border-right:0!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell{
+  display:grid!important;grid-template-columns:216px 300px minmax(0,1fr)!important;
+  width:calc(100% - 64px)!important;max-width:none!important;min-width:0!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell>.faceit-exact-global-rail{
+  width:216px!important;min-width:216px!important;max-width:216px!important;border-right:0!important;
+ }
+ #playerProfileWindow.player-profile-window{left:216px!important;right:64px!important}
+ #playerProfileWindow .player-profile-window-backdrop{left:216px!important;right:64px!important}
+ #playerProfileWindow .player-profile-window-panel{
+  width:100%!important;max-width:none!important;margin:0 auto!important;
+  border-left:0!important;border-right:0!important;
+ }
+ /* Modal profile has two columns only: identity and profile content. */
+ #playerProfileWindow .faceit-exact-shell{
+  display:grid!important;grid-template-columns:252px minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;width:100%!important;min-width:0!important;
+ }
+ #playerProfileWindow .faceit-exact-global-rail{display:none!important}
+ #playerProfileWindow .faceit-exact-player-column{
+  grid-column:1!important;grid-row:1!important;width:auto!important;max-width:none!important;
+  border-right:1px solid #292929!important;
+ }
+ #playerProfileWindow .faceit-exact-content{
+  grid-column:2!important;grid-row:1!important;min-width:0!important;width:100%!important;max-width:none!important;
+ }
+ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{left:216px!important;right:64px!important;width:auto!important}
+ body .faceit-utility-rail{
+  display:flex!important;right:0!important;width:64px!important;
+  border-left:1px solid #292929!important;border-right:0!important;
+ }
+ body .faceit-utility-rail .faceit-utility-profile{display:flex!important}
+ body .faceit-utility-rail .faceit-utility-vs{display:none!important}
+ body .faceit-utility-rail .faceit-utility-panel{display:none!important}
+}
+@media(max-width:1050px){body .faceit-utility-rail{display:none!important}}
+.faceit-exact-global-rail{border-right:0!important}
