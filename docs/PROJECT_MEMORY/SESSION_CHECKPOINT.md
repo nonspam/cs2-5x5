@@ -462,3 +462,12 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Commits: CSS `c5573f1913feb3b4c3ccbdeb645d279461b0d602`; HTML `b7c26c35c7333d85456aa06ad806a69e4b0fa811`; tests `5dd8816a5c941ce3cc651d44cce06a8ec33255f6`.
 - Quality Gate run [44135592411](https://github.com/nonspam/cs2-5x5/actions/runs/44135592411): **335/335 passed**.
 - Browser visual review pending. No production changes.
+
+
+## 2026-11-17 — Revert oversized Overview map cards (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User feedback: last attempt made map artwork cards much too tall; the requested adjustment was to restore normal compact card dimensions, not stretch them vertically.
+- Desktop map covers restored to fixed 112px height; map list uses normal fixed 112px rows with 12px gap. Removed flex growth and equal-height row stretching from the center map stack; center column returns to natural content height and start alignment. Preserved the central column width proportions and 32px heading offset from v43. VETO follows map cards normally.
+- Cache key: `matchroom-overview-map-size-restored-20261117-v45`.
+- Commits: CSS `a5dea8d3a40f06064421f1dd45c644048841ffcb`; HTML `ebe9a3f90b8dee826092c62829b00c02a557f101`; tests `33f879d106774c286e4103fb5d646167ebe6aaa4`.
+- Quality Gate run [44136157648](https://github.com/nonspam/cs2-5x5/actions/runs/44136157648): **335/335 passed**.
+- Browser visual review pending; no production changes.
