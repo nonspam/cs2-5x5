@@ -1198,7 +1198,7 @@ test('Match Room Statistics centers MVP and category controls and keeps all four
 
 
 test('Match Room Statistics aligns all four leader cards with the slightly enlarged MVP card',()=>{
- assert.match(css,/@media\(min-width:1051px\)\{[\s\S]*#matchRoomPage \.match-stat-mvp-card\{\s*height:236px!important;min-height:236px!important/);
+ assert.match(css,/@media\(min-width:1051px\)\{[\s\S]* #matchRoomPage \.match-stat-awards \.match-stat-mvp-card\{\s*height:236px!important;min-height:236px!important/);
  assert.match(css,/#matchRoomPage \.match-stat-highlight-grid\{\s*height:236px!important;min-height:236px!important;\s*align-self:stretch!important;\s*grid-template-rows:repeat\(4,minmax\(0,1fr\)\)!important/);
  assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight\{\s*height:auto!important;min-height:0!important;\s*align-self:stretch!important/);
 });
