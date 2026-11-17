@@ -151,3 +151,20 @@ test('Match Room compact polish keeps content slightly narrower and adds breathi
   assert.match(polish, /\.match-stat-awards\s*\{[\s\S]*margin-top:18px!important/);
   assert.match(polish, /\.faceit-route-shell\s*\{grid-template-columns:185px/);
 });
+
+
+test('Home player search is visibly placed above the hero, not overlaid on its artwork', () => {
+  const homeMarkup = app.slice(app.indexOf('function home(v)'), app.indexOf('function homeLastRows'));
+  assert.match(homeMarkup, /home-player-search-row/);
+  assert.ok(homeMarkup.indexOf('home-player-search-row') < homeMarkup.indexOf('home-rebuild-hero'));
+  assert.match(homeMarkup, /placeholder="Введите ник игрока/);
+  assert.match(homeMarkup, /bindSitePlayerSearch\(v\)/);
+});
+
+test('Desktop navigation rail uses the actual top-level app grid and has FACEIT-like width', () => {
+  const polish = css.slice(css.lastIndexOf('/* 2026-11-17 — corrective FACEIT spacing'));
+  assert.match(polish, /#view>\.faceit-route-shell\.faceit-app-shell/);
+  assert.match(polish, /grid-template-columns:210px minmax\(0,1fr\)/);
+  assert.match(polish, /min-width:210px!important/);
+  assert.match(polish, /margin-top:22px!important;margin-bottom:28px!important/);
+});

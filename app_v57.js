@@ -928,13 +928,16 @@ function home(v){
       <section class="panel home-panel recent-games-panel home-recent-left"><div class="section-head"><div><h2>Последние игры</h2><div class="muted">Последние 6 · новые записи сверху</div></div><button class="text-link" onclick="navigateApp('base')">Все ›</button></div><div class="recent-games">${recent.map(m=>{const mm=matchMaps(m),sc=m.series_score||'—',meta=[m.format].filter(Boolean).join(' · ');return `<div class="recent-game click-row" onclick="openMatchDetail('${esc(m.match_id)}')">${mapThumb(mm[0]?.map||'—','small')}<div><b>${esc(mm.map(x=>x.map).join(' · '))}</b><span>${esc(meta)}</span></div><strong class="${scoreClass(sc)}">${esc(sc)}</strong></div>`}).join('')||'<div class="empty">Нет матчей.</div>'}</div></section>
     </aside>
     <section class="home-center">
+      <div class="home-player-search-row">
+        <div class="home-player-search-label">ПОИСК ИГРОКА</div>
+        <div class="site-player-search home-player-search" id="sitePlayerSearch" role="search">
+          <input id="sitePlayerSearchInput" type="search" placeholder="Введите ник игрока..." autocomplete="off" aria-label="Поиск игрока" aria-controls="sitePlayerSearchResults">
+          <div id="sitePlayerSearchResults" class="site-player-search-results" role="listbox" hidden></div>
+        </div>
+      </div>
       <section class="panel home-hero home-rebuild-hero">
         <img class="hero-image" src="https://raw.githubusercontent.com/ghostcap-gaming/cs2-map-images/main/cs2/de_train.png" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" onerror="this.onerror=null;this.src='assets/maps/train.svg'">
         <div class="hero-copy"><h1>Добро пожаловать в<br><strong>CS2 ANALYTICS</strong></h1><p>Твоя статистика. Твой анализ. Твоя история игр.</p></div>
-        <div class="site-player-search home-player-search" id="sitePlayerSearch" role="search">
-          <input id="sitePlayerSearchInput" type="search" placeholder="Найти игрока..." autocomplete="off" aria-label="Поиск игрока" aria-controls="sitePlayerSearchResults">
-          <div id="sitePlayerSearchResults" class="site-player-search-results" role="listbox" hidden></div>
-        </div>
         <div class="hero-counters"><div><b>${activeMapCount()}</b><span>Карт</span></div><div><b>${activePlayers().length}</b><span>Игроков</span></div><div><b>${new Set(activeMaps.map(x=>mapKey(x.map))).size}</b><span>Типов карт</span></div></div>
       </section>
       <section class="home-metrics">
