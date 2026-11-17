@@ -226,7 +226,7 @@ test('Duels follows FACEIT matrix layout with player matchup cells and a selecta
 });
 
 test('Equipment has FACEIT categories, team/player modes, grenade distribution and explicit unsupported T/CT state', () => {
-  for (const category of ['general','damage','support']) assert.ok(app.includes("data-equipment-category-button=\\""+category+"\\""));
+  for (const category of ['general','damage','support']) assert.ok(app.includes('data-equipment-category-button="'+category+'"'));
   assert.match(app, /function setMatchRoomEquipmentCategory/);
   assert.match(app, /function setMatchRoomEquipmentMode/);
   assert.match(app, /function setMatchRoomEquipmentSide/);
