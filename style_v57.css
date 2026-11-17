@@ -9527,3 +9527,45 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     box-sizing:border-box!important;
   }
 }
+
+
+/* 2026-11-17 — TOP tab: use more of the Match Room canvas and strengthen the K/D/A + K/D hierarchy. */
+@media(min-width:761px){
+  #matchRoomPage .match-stat-top-list{
+    width:100%!important;max-width:1320px!important;
+    margin:16px auto 0!important;gap:7px!important;
+  }
+  #matchRoomPage .match-stat-top-row{
+    width:100%!important;min-height:64px!important;
+    grid-template-columns:38px 44px minmax(180px,1fr) max-content 88px!important;
+    justify-content:initial!important;gap:20px!important;
+    padding:10px 20px!important;box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-top-row>.player-avatar{
+    width:42px!important;height:42px!important;
+  }
+  #matchRoomPage .match-stat-top-row>strong{
+    font-size:16px!important;line-height:1.2!important;
+  }
+  #matchRoomPage .match-stat-top-row>.match-stat-top-score{
+    font-size:15px!important;font-weight:850!important;
+    line-height:1.2!important;font-variant-numeric:tabular-nums!important;
+  }
+  #matchRoomPage .match-stat-top-row>.match-stat-top-score small{
+    font-size:9px!important;font-weight:600!important;
+  }
+  #matchRoomPage .match-stat-top-row>b:last-child{
+    font-size:21px!important;font-weight:950!important;
+    line-height:1!important;text-align:right!important;
+    font-variant-numeric:tabular-nums!important;
+  }
+}
+@media(min-width:761px) and (max-width:1050px){
+  #matchRoomPage .match-stat-top-row{
+    grid-template-columns:30px 40px minmax(120px,1fr) max-content 72px!important;
+    gap:12px!important;padding:9px 14px!important;
+  }
+  #matchRoomPage .match-stat-top-row>strong{font-size:15px!important}
+  #matchRoomPage .match-stat-top-row>.match-stat-top-score{font-size:13px!important}
+  #matchRoomPage .match-stat-top-row>b:last-child{font-size:19px!important}
+}
