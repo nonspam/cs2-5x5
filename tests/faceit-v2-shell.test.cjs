@@ -1140,7 +1140,7 @@ test('Match Room overview and statistics use a wider desktop canvas without scal
 test('Match Room TOP keeps the compact FACEIT-like row sizing',()=>{
  assert.match(css,/#matchRoomPage \.match-stat-top-list\{[\s\S]*width:min\(100%,1080px\)!important;max-width:1080px!important/);
  assert.match(css,/#matchRoomPage \.match-stat-top-row\{[\s\S]*min-height:52px!important/);
- assert.match(css,/#matchRoomPage \.match-stat-top-row>strong\{[\s\S]*text-align:center!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>strong\{[\s\S]*text-align:left!important/);
  assert.match(css,/#matchRoomPage \.match-stat-top-row>\.match-stat-top-score\{[\s\S]*font-size:11px!important/);
  assert.match(css,/#matchRoomPage \.match-stat-top-row>b:last-child\{[\s\S]*font-size:16px!important/);
  assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
