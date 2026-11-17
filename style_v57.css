@@ -9344,3 +9344,124 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
  }
 }
+
+
+/* 2026-11-17 — Profile/home layout normalization: one authoritative desktop geometry */
+@media(min-width:1051px){
+  /* The app shell owns the viewport width; the utility rail is reserved exactly once. */
+  body:has(.faceit-exact-shell) #view{
+    display:block!important;width:calc(100% - 64px)!important;max-width:calc(100% - 64px)!important;
+    margin:0 64px 0 0!important;padding:0!important;box-sizing:border-box!important;overflow-x:hidden!important;
+  }
+  #view>.faceit-route-shell{
+    display:grid!important;grid-template-columns:216px minmax(0,1fr)!important;
+    width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;box-sizing:border-box!important;
+  }
+  #view>.faceit-route-shell>.faceit-exact-global-rail{
+    grid-column:1!important;width:216px!important;min-width:216px!important;max-width:216px!important;
+    box-sizing:border-box!important;overflow-y:auto!important;overflow-x:hidden!important;
+  }
+  #view>.faceit-route-shell>.faceit-exact-content{
+    grid-column:2!important;width:100%!important;max-width:none!important;min-width:0!important;
+    box-sizing:border-box!important;overflow-x:hidden!important;
+  }
+  #view>.faceit-route-shell .faceit-route-content{
+    width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;
+    padding:18px clamp(16px,1.5vw,26px) 32px!important;box-sizing:border-box!important;
+  }
+
+  /* Home: side panels get stable readable widths; the center absorbs remaining space. */
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild{
+    display:grid!important;width:100%!important;max-width:none!important;min-width:0!important;
+    grid-template-columns:minmax(220px,260px) minmax(0,1fr) minmax(200px,240px)!important;
+    column-gap:clamp(12px,1.1vw,18px)!important;row-gap:14px!important;
+    align-items:start!important;box-sizing:border-box!important;
+  }
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild>.home-left,
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild>.home-center,
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild>.home-right{
+    display:flex!important;flex-direction:column!important;gap:14px!important;
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    transform:none!important;zoom:1!important;box-sizing:border-box!important;
+  }
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild .home-panel,
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild .panel,
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild .home-hero,
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild .home-chart-panel{
+    width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;
+  }
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild .home-chart-panel #homeChart,
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild .home-chart-panel svg{
+    width:100%!important;max-width:100%!important;min-width:0!important;
+  }
+
+  /* Profile modal is independent from the route shell: identity + content, with a real gutter. */
+  #playerProfileWindow.player-profile-window,
+  #playerProfileWindow .player-profile-window-backdrop{left:216px!important;right:64px!important}
+  #playerProfileWindow .player-profile-window-panel{
+    width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;
+    box-sizing:border-box!important;overflow:hidden!important;
+  }
+  #playerProfileWindow #playerProfileMount,
+  #playerProfileWindow .faceit-profile-shell,
+  #playerProfileWindow .faceit-exact-shell{
+    display:grid!important;grid-template-columns:minmax(0,252px) minmax(0,1fr)!important;
+    column-gap:18px!important;width:100%!important;max-width:none!important;min-width:0!important;
+    box-sizing:border-box!important;align-items:start!important;
+  }
+  #playerProfileWindow .faceit-exact-global-rail{display:none!important}
+  #playerProfileWindow .faceit-exact-player-column{
+    grid-column:1!important;grid-row:1!important;width:100%!important;min-width:0!important;max-width:252px!important;
+    overflow-x:hidden!important;box-sizing:border-box!important;align-self:start!important;
+  }
+  #playerProfileWindow .faceit-exact-content{
+    grid-column:2!important;grid-row:1!important;justify-self:stretch!important;
+    width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;
+    padding:22px 16px 30px!important;overflow-x:hidden!important;box-sizing:border-box!important;
+  }
+  #playerProfileWindow .faceit-exact-content>*,
+  #playerProfileWindow .faceit-exact-player-card,
+  #playerProfileWindow .faceit-exact-badges,
+  #playerProfileWindow .faceit-profile-top-widgets,
+  #playerProfileWindow .faceit-exact-stat-strip,
+  #playerProfileWindow .faceit-main-grid,
+  #playerProfileWindow .faceit-content-card{
+    min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+  }
+  #playerProfileWindow .faceit-profile-top-widgets{
+    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(160px,190px)!important;
+    width:100%!important;min-width:0!important;max-width:100%!important;gap:10px!important;
+  }
+  #playerProfileWindow .faceit-profile-top-widgets>*{min-width:0!important;max-width:100%!important}
+  #playerProfileWindow .faceit-main-grid{
+    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(210px,280px)!important;
+    gap:14px!important;width:100%!important;min-width:0!important;
+  }
+  #playerProfileWindow .faceit-main-grid>*{min-width:0!important;max-width:100%!important}
+  #playerProfileWindow .faceit-match-table-head,
+  #playerProfileWindow .faceit-match-row{min-width:0!important;max-width:100%!important}
+}
+@media(min-width:1051px) and (max-width:1350px){
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild{
+    grid-template-columns:minmax(190px,220px) minmax(0,1fr) minmax(180px,210px)!important;
+  }
+  #playerProfileWindow .faceit-main-grid{grid-template-columns:minmax(0,1fr) minmax(190px,230px)!important}
+}
+@media(max-width:1050px){
+  body:has(.faceit-exact-shell) #view{width:100%!important;max-width:100%!important;margin:0!important}
+  #view>.faceit-route-shell{grid-template-columns:64px minmax(0,1fr)!important}
+  #view>.faceit-route-shell>.faceit-exact-global-rail{width:64px!important;min-width:64px!important;max-width:64px!important}
+  body .faceit-route-shell:has(.home-rebuild) .home-rebuild{grid-template-columns:minmax(0,1fr)!important}
+  #playerProfileWindow.player-profile-window,
+  #playerProfileWindow .player-profile-window-backdrop{left:64px!important;right:0!important}
+  #playerProfileWindow .faceit-exact-shell,
+  #playerProfileWindow .faceit-profile-shell{grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+  #playerProfileWindow .faceit-exact-player-column{grid-column:1!important;grid-row:auto!important;max-width:none!important}
+  #playerProfileWindow .faceit-exact-content{grid-column:1!important;grid-row:auto!important}
+  #playerProfileWindow .faceit-main-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(max-width:700px){
+  #playerProfileWindow.player-profile-window,
+  #playerProfileWindow .player-profile-window-backdrop{left:0!important;right:0!important}
+  #playerProfileWindow .faceit-profile-top-widgets{grid-template-columns:minmax(0,1fr)!important}
+}
