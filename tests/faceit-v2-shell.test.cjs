@@ -1144,3 +1144,14 @@ test('Match Room TOP list fills the canvas, grows vertically, and emphasizes KDA
  assert.match(css,/#matchRoomPage \.match-stat-top-row>b:last-child\{[\s\S]*font-size:21px!important/);
  assert.match(html,/match-top-list-readable-sizing-20261117-v40/);
 });
+
+
+test('Match Room TOP stays compact while Overview and Statistics receive the wider canvas',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-top-list\{[\s\S]*max-width:1080px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row\{[\s\S]*min-height:52px!important[\s\S]*grid-template-columns:28px 38px minmax\(180px,1fr\) max-content 58px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>strong\{[\s\S]*text-align:center!important/);
+ assert.match(css,/#matchRoomPage \.match-room-columns\{[\s\S]*minmax\(340px,1\.12fr\)/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards\{[\s\S]*max-width:1400px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-teams\{[\s\S]*max-width:1400px!important/);
+ assert.match(html,/matchroom-overview-stats-expanded-top-restored-20261117-v41/);
+});
