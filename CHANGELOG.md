@@ -9317,3 +9317,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T12:38:15-05:00 — fix(stats): enlarge MVP and align four leader cards
+
+- Commit: 8dccbe36ddb2138549b06fd63b0bcd74a428842a
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
