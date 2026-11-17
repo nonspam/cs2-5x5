@@ -8969,3 +8969,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T11:56:01-05:00 — fix(match-room): restore compact top and expand overview stats
+
+- Commit: 502b50278a72cb7d32a7dcc4669ed0919ee68689
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
