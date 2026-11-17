@@ -9504,3 +9504,26 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     margin:0!important;padding-left:0!important;box-sizing:border-box!important;
   }
 }
+
+
+/* 2026-11-17 — Match Room overview/statistics: widen the desktop canvas, not the UI scale. */
+@media(min-width:1051px){
+  #matchRoomPage>.match-room-content{
+    width:min(calc(100% - 64px),1360px)!important;
+    max-width:1360px!important;
+    margin-left:auto!important;margin-right:auto!important;
+    padding-left:0!important;padding-right:0!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-awards{
+    width:min(100%,1240px)!important;
+    max-width:1240px!important;
+    margin-left:auto!important;margin-right:auto!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-room-overview-view,
+  #matchRoomPage .match-room-statistics-view{
+    width:100%!important;max-width:none!important;min-width:0!important;
+    box-sizing:border-box!important;
+  }
+}
