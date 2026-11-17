@@ -8975,3 +8975,83 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   display:inline!important;
  }
 }
+
+
+/* 2026-11-17 — align profile overlay and all route content with the widened app rail */
+@media(min-width:1051px){
+ /* The player-profile window sits beside the persistent app rail, not over it. */
+ #playerProfileWindow.player-profile-window{
+  left:236px!important;
+  right:64px!important;
+ }
+ #playerProfileWindow .player-profile-window-backdrop{
+  left:236px!important;
+  right:64px!important;
+ }
+ #playerProfileWindow .faceit-exact-shell{
+  width:100%!important;
+  min-width:0!important;
+  grid-template-columns:252px minmax(0,1fr)!important;
+ }
+ #playerProfileWindow .faceit-exact-content{
+  min-width:0!important;
+  width:100%!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+ }
+ /* Route content must use the full width remaining after the 236px rail. */
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell>.faceit-exact-content{
+  min-width:0!important;
+  width:100%!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-route-content{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+ }
+ /* Keep the home dashboard's left, center and right columns inside the real content width. */
+ body .faceit-route-shell:has(.home-rebuild) .faceit-route-content{
+  padding:18px 20px 28px!important;
+ }
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild{
+  display:grid!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  grid-template-columns:minmax(205px,260px) minmax(0,1fr) minmax(190px,260px)!important;
+  gap:14px!important;
+  align-items:start!important;
+ }
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild>.home-left,
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild>.home-center,
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild>.home-right{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+ }
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild .home-panel,
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild .panel{
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+ }
+}
+@media(min-width:1051px) and (max-width:1350px){
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild{
+  grid-template-columns:minmax(190px,230px) minmax(0,1fr) minmax(180px,220px)!important;
+  gap:12px!important;
+ }
+ body .faceit-route-shell:has(.home-rebuild) .faceit-route-content{
+  padding-left:14px!important;padding-right:14px!important;
+ }
+}
+@media(max-width:1050px){
+ #playerProfileWindow.player-profile-window,
+ #playerProfileWindow .player-profile-window-backdrop{
+  left:82px!important;
+ }
+}

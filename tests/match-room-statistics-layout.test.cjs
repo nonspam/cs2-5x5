@@ -198,3 +198,18 @@ test('desktop navigation rail width override is not dependent on #view direct-ch
   assert.match(pass, /grid-template-columns:236px minmax\(0,1fr\)!important/);
   assert.match(pass, /width:236px!important;min-width:236px!important;max-width:236px!important/);
 });
+
+
+test('profile overlay starts after the widened persistent rail and uses the shared content width', () => {
+  const pass = css.slice(css.lastIndexOf('align profile overlay and all route content'));
+  assert.match(pass, /#playerProfileWindow\.player-profile-window\s*\{[\s\S]*left:236px!important/);
+  assert.match(pass, /#playerProfileWindow \.player-profile-window-backdrop\s*\{[\s\S]*left:236px!important/);
+  assert.match(pass, /grid-template-columns:252px minmax\(0,1fr\)!important/);
+  assert.match(pass, /\.faceit-route-content\s*\{[\s\S]*max-width:none!important/);
+});
+
+test('home dashboard columns are fluid and cannot overflow the widened route content', () => {
+  const pass = css.slice(css.lastIndexOf('align profile overlay and all route content'));
+  assert.match(pass, /grid-template-columns:minmax\(205px,260px\) minmax\(0,1fr\) minmax\(190px,260px\)!important/);
+  assert.match(pass, /\.home-rebuild>\.home-right\s*\{[\s\S]*max-width:100%!important/);
+});
