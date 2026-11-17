@@ -1,3 +1,13 @@
+## 2026-11-17 — Corrective rail width, visible home search and added FACEIT spacing (SOURCE + TESTS PASS)
+- User reported the previous desktop navigation rail still looked too narrow and the player search was not obvious/visible. Root cause of discoverability: search was overlaid inside the home hero artwork. Moved it into a dedicated, clearly labeled row immediately above the hero on the home page, with a visible input and dropdown. Existing live activePlayers() lookup, click-to-profile and Enter behavior retained; no hard-coded names.
+- Corrected desktop rail sizing using the actual top-level #view > .faceit-route-shell.faceit-app-shell grid and direct child rail selectors, rather than only styling the generic route wrapper. Desktop grid/rail now 210px, with an explicit breakpoint for narrow screens.
+- Added more vertical breathing room after the map hero, around Results/Duels/Equipment tabs, between MVP/highlights and before team tables. Existing match content, data and tab behavior unchanged.
+- Files: app_v57.js, style_v57.css, index.html (app cache v17, CSS cache v21), tests/match-room-statistics-layout.test.cjs.
+- Validate workflow [44092488128](https://github.com/nonspam/cs2-5x5/actions/runs/44092488128): **320 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- Source commit: cd88613660006232f5120757b03e2e4fe091390a. Latest HEAD at this checkpoint: fce5491b8ec95e4d1952ce35d0aadc22e420d3dc.
+- Browser screenshot / live DEV deployment / visual acceptance still not verified from an interactive browser. Do not claim the screenshot result is fixed until owner refreshes and confirms.
+- Next: refresh DEV with hard reload, visit Главная to see the clearly labeled search row, test a real player name and Enter/click, then compare desktop left rail and Match Room spacing.
+
 ## 2026-11-17 — Compact Match Room polish and home player search (SOURCE + TESTS PASS)
 - Owner screenshot comparison requested slightly narrower/denser Match Room, reduced map/statistics width, compacted MVP/highlight cards and more breathing room between map hero, sub-tabs, awards and team table controls. Match Room content max width is now 1500px with 80px side allowance (was 1600px/56px); MVP/leader block height is 250px; sub-tabs, awards and toolbar have additional deliberate spacing. Existing stats/data behavior unchanged.
 - Desktop left navigation rail widened from 170px to 185px.
