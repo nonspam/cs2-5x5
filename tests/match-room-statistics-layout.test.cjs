@@ -190,3 +190,11 @@ test('desktop FACEIT app rail uses 236px width from live screenshot correction',
   assert.match(pass, /width:236px!important;min-width:236px!important;max-width:236px!important/);
   assert.match(pass, /height:38px!important;min-height:38px!important/);
 });
+
+
+test('desktop navigation rail width override is not dependent on #view direct-child structure', () => {
+  const pass = css.slice(css.lastIndexOf('robust desktop rail override'));
+  assert.match(pass, /body \.faceit-exact-shell\.faceit-app-shell\.faceit-route-shell/);
+  assert.match(pass, /grid-template-columns:236px minmax\(0,1fr\)!important/);
+  assert.match(pass, /width:236px!important;min-width:236px!important;max-width:236px!important/);
+});

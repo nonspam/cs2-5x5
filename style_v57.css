@@ -8941,3 +8941,37 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   display:inline!important;
  }
 }
+
+
+/* 2026-11-17 — robust desktop rail override: do not depend on #view being the direct parent */
+@media(min-width:1051px){
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell{
+  display:grid!important;
+  grid-template-columns:236px minmax(0,1fr)!important;
+  width:100%!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell>.faceit-exact-global-rail{
+  display:flex!important;
+  box-sizing:border-box!important;
+  width:236px!important;min-width:236px!important;max-width:236px!important;
+  flex:0 0 236px!important;
+  padding:22px 19px 18px!important;
+  align-items:stretch!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell>.faceit-exact-content{
+  min-width:0!important;width:100%!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-global-rail nav{
+  display:grid!important;width:100%!important;gap:10px!important;margin-top:25px!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-global-rail nav button,
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-rail-bottom button{
+  width:100%!important;min-width:0!important;max-width:none!important;
+  height:38px!important;min-height:38px!important;padding:0 11px!important;
+  justify-content:flex-start!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-global-rail nav button span,
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-rail-bottom button span{
+  display:inline!important;
+ }
+}
