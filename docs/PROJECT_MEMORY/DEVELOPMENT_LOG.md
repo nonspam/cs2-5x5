@@ -758,3 +758,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Commits: CSS `e122621019fa1e6cb9d495ce303251a5a8588377`; HTML `3c588003c809cba54109392404d221080c796d0c`; tests `c7383631ce8a7532079a618ca4da1092b668660c`.
 - Quality Gate run [44128113046](https://github.com/nonspam/cs2-5x5/actions/runs/44128113046): **330/330 passed**.
 - Browser visual acceptance pending. User should refresh Match Room and verify Overview + Statistics. Profile spacing and Home layout intentionally untouched.
+
+
+## 2026-11-17 — TOP tab sizing and readability pass (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User screenshot showed TOP ranking rows too short/small, with K/D/A and K/D figures visually weaker than player names.
+- Desktop TOP list now fills the available Match Room canvas (max-width 1320px), rows have 64px minimum height with increased vertical padding, avatars are 42px, player names 16px, K/D/A figures 15px bold, and K/D values 21px bold. Intermediate desktop widths use a slightly tighter version; mobile rules remain untouched.
+- Stylesheet cache key: `match-top-list-readable-sizing-20261117-v40`.
+- Commits: CSS `b1e4b5329e5b2e2e926e7d908a2479c666ab26d6`; HTML `a47020242b3b2071f80d6f9aba156a555fddd2dd`; test/cache assertion `db5101a454655ac3304e58fa6aa1659a236e636b`.
+- Quality Gate run [44129352635](https://github.com/nonspam/cs2-5x5/actions/runs/44129352635): **331/331 passed**.
+- Browser visual acceptance pending. Home, Profile, Overview and Statistics layout are not modified by this TOP-only change.
