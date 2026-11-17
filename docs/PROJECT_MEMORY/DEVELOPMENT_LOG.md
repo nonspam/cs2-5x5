@@ -767,3 +767,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Commits: CSS `b1e4b5329e5b2e2e926e7d908a2479c666ab26d6`; HTML `a47020242b3b2071f80d6f9aba156a555fddd2dd`; test/cache assertion `db5101a454655ac3304e58fa6aa1659a236e636b`.
 - Quality Gate run [44129352635](https://github.com/nonspam/cs2-5x5/actions/runs/44129352635): **331/331 passed**.
 - Browser visual acceptance pending. Home, Profile, Overview and Statistics layout are not modified by this TOP-only change.
+
+
+## 2026-11-17 — Restore compact TOP; expand Overview and Statistics (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User clarified that the TOP list had been over-expanded while Overview and Statistics still felt undersized. Restored TOP rows to compact proportions (52px row, 36px avatar, 13px centered player name, 11px K/D/A, 16px K/D) and max-width 1080px. Column order remains rank, avatar, centered name, K/D/A, final K/D.
+- Expanded Overview three-column canvas to use full match content width; team/map panels can grow without scaling text. Statistics awards and team tables now have up to 1400px width, with modestly taller cards/rows and increased internal spacing.
+- Stylesheet cache key: `matchroom-overview-stats-expanded-top-restored-20261117-v41`.
+- Commits: CSS `502b50278a72cb7d32a7dcc4669ed0919ee68689`; HTML `e2226f114bb7a96151ff394d013f30329933eaf9`; tests `7e794ce025ce7f276b239f2504dfdfe7ce29aa22`.
+- Quality Gate run [44131472011](https://github.com/nonspam/cs2-5x5/actions/runs/44131472011): **332/332 passed**.
+- Browser visual review pending. TOP is intentionally back to compact; Overview/Statistics are the only areas expanded. Existing Profile and Home layout left untouched.
