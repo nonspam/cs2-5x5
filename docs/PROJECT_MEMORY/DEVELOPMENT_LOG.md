@@ -803,3 +803,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Commits: CSS `a78b2e8db0907afd7c77fae5ab2b0b2e82308b37`; HTML `89ba1d2c9dec0abf6c33bf3050c8dcf4f8ec7337`; tests `7e6483a4e8d63159ba7a7067ea5e6a9858c893e7`.
 - Quality Gate run [44137742140](https://github.com/nonspam/cs2-5x5/actions/runs/44137742140): **336/336 passed**.
 - Browser visual review pending; no production changes.
+
+
+## 2026-11-17 — MVP and TOP-4 hard-locked to identical outer dimensions (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User's screenshot still showed MVP card bottom edge about 11px above the bottom edge of the full four-card TOP stack. Percentage height on grid children had not produced identical visible borders.
+- Replaced percentage-based sizing with explicit direct-child geometry at desktop widths (>1050px): `.match-stat-awards` is explicitly a two-column grid with a 225px row; both direct children `.match-stat-mvp-card` and `.match-stat-highlight-grid` have fixed height/min-height/max-height 225px and margin 0. TOP-4 remains four equal rows with 6px gaps; each child fills its row. This removes dependence on percentage-height resolution and stray margins.
+- Cache key: `matchroom-stats-mvp-top4-fixed-225px-20261117-v49`.
+- Commits: CSS `7e4c50112eae1dca122f53a93abea9cdbc00cee4`; HTML `623333a862a34bbb239f5440b4c7b6b5b495d5f3`; tests `b48ceb6a1a94ef4419f95e691ad2795a2af9f644`.
+- Quality Gate run [44141411421](https://github.com/nonspam/cs2-5x5/actions/runs/44141411421): **339/339 passed**.
+- Browser visual review pending; do not claim visual success until user screenshot confirms.
