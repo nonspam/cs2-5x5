@@ -8468,3 +8468,17 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T09:47:42-05:00 — fix: apply desktop rail width regardless of view wrapper nesting
+
+- Commit: fc14c716c338d0d6b08c1d683f47a7f205dbefc3
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+- M	style_v57.css
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
