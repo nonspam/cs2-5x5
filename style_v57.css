@@ -9931,3 +9931,11 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     box-sizing:border-box!important;
   }
 }
+
+
+/* 2026-11-17 — zero-state tables for Duels and Equipment */
+#matchRoomPage .match-stat-zero-note{margin:0 0 14px;padding:10px 13px;border:1px solid rgba(255,170,55,.22);border-radius:7px;background:rgba(255,170,55,.055);color:rgba(255,255,255,.62);font-size:11px;font-weight:700;line-height:1.5}
+#matchRoomPage .match-stat-subview-table-wrap{width:100%;max-width:100%;overflow-x:auto}
+#matchRoomPage .match-stat-subview-table{width:100%;min-width:680px;border-collapse:collapse}
+#matchRoomPage .match-stat-subview-table th,#matchRoomPage .match-stat-subview-table td{padding:12px 14px;text-align:center;white-space:nowrap}
+#matchRoomPage .match-stat-subview-table th:first-child,#matchRoomPage .match-stat-subview-table td:first-child{text-align:left;min-width:190px}
