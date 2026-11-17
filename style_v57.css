@@ -9275,3 +9275,32 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   box-sizing:border-box!important;
  }
 }
+
+
+/* 2026-11-17 — actual centered canvas: keep profile identity separate from the stats column */
+@media(min-width:1051px){
+ #playerProfileWindow .faceit-exact-content{
+  grid-column:2!important;
+  justify-self:center!important;
+  width:min(100%,1120px)!important;
+  max-width:1120px!important;
+  min-width:0!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+ }
+ #playerProfileWindow .faceit-exact-content>*{
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+ }
+ #matchRoomPage>.match-room-content{
+  justify-self:center!important;
+  width:min(calc(100% - 48px),1240px)!important;
+  max-width:1240px!important;
+  min-width:0!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+ }
+}
