@@ -794,3 +794,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Commits: CSS `c5573f1913feb3b4c3ccbdeb645d279461b0d602`; HTML `b7c26c35c7333d85456aa06ad806a69e4b0fa811`; tests `5dd8816a5c941ce3cc651d44cce06a8ec33255f6`.
 - Quality Gate run [44135592411](https://github.com/nonspam/cs2-5x5/actions/runs/44135592411): **335/335 passed**.
 - Browser visual review pending. No production changes.
+
+
+## 2026-11-17 — Statistics MVP alignment and compact Entry leader row (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User screenshot showed the Statistics MVP/leader block and category controls visually offset relative to the scoreboard, with the Entry Kills leader card taller than the other leader cards.
+- Desktop (>1050px) now constrains the MVP/leader block and category toolbar to `calc(100% - 34px)`, centered to align with the inner scoreboard width. MVP/leader split is 2:1, preserving the intended wide MVP panel and narrower leader stack. MVP card fixed at 220px; four leader cards fixed at 49px with 6px gaps. Leader grid explicitly uses avatar/name/value columns and labels remain on one line, preventing Entry Kills wrapping/height expansion. Tablet/mobile breakpoints untouched.
+- Cache key: `matchroom-stats-centered-compact-leaders-20261117-v46`.
+- Commits: CSS `a78b2e8db0907afd7c77fae5ab2b0b2e82308b37`; HTML `89ba1d2c9dec0abf6c33bf3050c8dcf4f8ec7337`; tests `7e6483a4e8d63159ba7a7067ea5e6a9858c893e7`.
+- Quality Gate run [44137742140](https://github.com/nonspam/cs2-5x5/actions/runs/44137742140): **336/336 passed**.
+- Browser visual review pending; no production changes.
