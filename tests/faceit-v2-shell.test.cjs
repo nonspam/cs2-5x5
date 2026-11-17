@@ -1112,7 +1112,7 @@ test('profile and Match Room workspaces use centered bounded desktop canvases',(
 test('Profile and Home layout normalization keeps columns constrained and readable',()=>{
  assert.match(css,/#playerProfileWindow #playerProfileMount\{[\s\S]*display:block!important/);
  assert.doesNotMatch(css,/#playerProfileWindow #playerProfileMount,\s*#playerProfileWindow \.faceit-profile-shell,\s*#playerProfileWindow \.faceit-exact-shell\{[\s\S]*display:grid!important/);
- assert.match(html,/profile-identity-content-spacing-20261117-v38/);
+ assert.match(html,/matchroom-overview-statistics-width-20261117-v39/);
  assert.match(css,/grid-template-columns:minmax\(220px,260px\) minmax\(0,1fr\) minmax\(200px,240px\)!important/);
  assert.match(css,/\.home-rebuild>\.home-left/);
  assert.match(css,/#playerProfileWindow #playerProfileMount>\.faceit-exact-shell\{[\s\S]*column-gap:32px!important/);
@@ -1125,7 +1125,7 @@ test('Profile analytics column is pulled away from the identity card on desktop'
  assert.match(css,/#playerProfileWindow #playerProfileMount>\.faceit-exact-shell\{[\s\S]*grid-template-columns:minmax\(0,300px\) minmax\(0,1fr\)!important;[\s\S]*column-gap:32px!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-player-column\{[\s\S]*max-width:300px!important[\s\S]*padding:18px 20px!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*padding-left:0!important/);
- assert.match(html,/profile-identity-content-spacing-20261117-v38/);
+ assert.match(html,/matchroom-overview-statistics-width-20261117-v39/);
 });
 
 
