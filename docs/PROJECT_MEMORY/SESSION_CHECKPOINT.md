@@ -489,3 +489,13 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Commits: CSS `7e4c50112eae1dca122f53a93abea9cdbc00cee4`; HTML `623333a862a34bbb239f5440b4c7b6b5b495d5f3`; tests `b48ceb6a1a94ef4419f95e691ad2795a2af9f644`.
 - Quality Gate run [44141411421](https://github.com/nonspam/cs2-5x5/actions/runs/44141411421): **339/339 passed**.
 - Browser visual review pending; do not claim visual success until user screenshot confirms.
+
+
+## 2026-11-17 — Duels and Equipment zero-state tables (SOURCE + TESTS PASS)
+- User requested the Duels and Equipment subtabs to be opened up visually and populated with explicit zeros so the sections are not empty, while avoiding surprises later.
+- Duels now renders every player row with columns: won, lost, total duels, win percentage; all cells are zero/0%. Equipment now renders every player row with columns: primary weapon, pistol, sniper rifle, grenades, grenade damage; all cells are zero. A visible note explicitly says these are zero placeholders and not factual match statistics.
+- No real duel or equipment stats are inferred or fabricated; future source integration can replace these placeholders when data is available.
+- Cache key: `matchroom-duels-equipment-zero-tables-20261117-v50`.
+- Commits: app `0105db77997a26c83c9432c04cbecc5e12dc029d`; CSS `8b170194e4fda6f78af29b07b6f52dc3a1edb633`; HTML `7ca2fa2483eec92d1cc4e6ae7d1cb2896895a6c3`; tests `2064a5f9f16674c5605b686eab8d771377ec0b7b` and `8bfeff76b6afad1b6fff0b30041a4de5c1d89ead`.
+- Quality Gate run [44142338085](https://github.com/nonspam/cs2-5x5/actions/runs/44142338085): **340/340 passed**.
+- Browser visual review pending; no production changes.
