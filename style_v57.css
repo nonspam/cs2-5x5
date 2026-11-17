@@ -9251,3 +9251,27 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 /* Preserve the established circular avatar sizing contract after the rail layout override. */
 .faceit-utility-profile{width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important;overflow:hidden!important}
 .faceit-utility-avatar-image,.faceit-utility-profile .faceit-utility-avatar-fallback{width:100%!important;height:100%!important;border-radius:50%!important;object-fit:cover!important}
+
+
+/* 2026-11-17 — give Profile and Match Room content a centered inner canvas.
+   Keep both side rails and the profile identity column at their current sizes. */
+@media(min-width:1051px){
+ #playerProfileWindow .faceit-exact-content{
+  width:min(calc(100% - 48px),1200px)!important;
+  max-width:1200px!important;
+  min-width:0!important;
+  margin-left:auto!important;margin-right:auto!important;
+  padding-left:20px!important;padding-right:20px!important;
+  box-sizing:border-box!important;
+ }
+ #playerProfileWindow .faceit-exact-content>*{
+  min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+ }
+ #matchRoomPage>.match-room-content{
+  width:min(calc(100% - 64px),1320px)!important;
+  max-width:1320px!important;min-width:0!important;
+  margin-left:auto!important;margin-right:auto!important;
+  padding-left:0!important;padding-right:0!important;
+  box-sizing:border-box!important;
+ }
+}
