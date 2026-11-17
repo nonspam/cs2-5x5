@@ -9481,3 +9481,26 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     margin:0!important;box-sizing:border-box!important;
   }
 }
+
+
+/* 2026-11-17 — Profile spacing correction: move analytics clear of the identity column. */
+@media(min-width:1051px){
+  #playerProfileWindow #playerProfileMount>.faceit-exact-shell{
+    grid-template-columns:minmax(0,300px) minmax(0,1fr)!important;
+    column-gap:32px!important;
+  }
+  #playerProfileWindow .faceit-exact-player-column{
+    width:100%!important;max-width:300px!important;min-width:0!important;
+    padding:18px 20px!important;box-sizing:border-box!important;
+  }
+  #playerProfileWindow .faceit-exact-player-card,
+  #playerProfileWindow .faceit-exact-badges,
+  #playerProfileWindow .faceit-exact-avatar-frame{
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  #playerProfileWindow .faceit-exact-content{
+    min-width:0!important;width:100%!important;max-width:none!important;
+    margin:0!important;padding-left:0!important;box-sizing:border-box!important;
+  }
+}
