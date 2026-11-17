@@ -1165,3 +1165,13 @@ test('Match Room TOP centers K/D/A in the row while keeping name left and K/D ri
  assert.match(css,/#matchRoomPage \.match-stat-top-row>b:last-child\{[\s\S]*text-align:right!important/);
  assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
 });
+
+
+test('Match Room Overview aligns map with player roster headers and balances the center column',()=>{
+ assert.match(css,/@media\(min-width:1101px\)\{[\s\S]*#matchRoomPage \.match-room-view-tabs\{[\s\S]*width:100%!important;max-width:none!important/);
+ assert.match(css,/#matchRoomPage \.match-room-columns\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(380px,1\.22fr\) minmax\(0,1fr\)!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column\{[\s\S]*padding-top:32px!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{[\s\S]*height:142px!important;min-height:142px!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column \.match-room-veto\{[\s\S]*min-height:104px!important/);
+ assert.match(html,/matchroom-overview-columns-aligned-20261117-v43/);
+});
