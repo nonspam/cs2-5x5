@@ -9055,3 +9055,56 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   left:82px!important;
  }
 }
+
+
+/* 2026-11-17 — compact Faceit-style left rail; reclaim the redundant right utility strip */
+@media(min-width:1051px){
+ /* Match the reference rail more closely: 216px instead of the oversized 236px. */
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell,
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell{
+  display:grid!important;
+  grid-template-columns:216px minmax(0,1fr)!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell>.faceit-exact-global-rail,
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell>.faceit-exact-global-rail{
+  display:flex!important;
+  box-sizing:border-box!important;
+  width:216px!important;min-width:216px!important;max-width:216px!important;
+  flex:0 0 216px!important;
+  padding:22px 16px 18px!important;
+  align-items:stretch!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell>.faceit-exact-content{
+  min-width:0!important;width:100%!important;max-width:none!important;
+ }
+ /* The right-side avatar/VS utility strip is redundant with the main navigation. */
+ body .faceit-utility-rail{display:none!important}
+ /* No reserved 64px gutter: main routes occupy the full viewport after the left rail. */
+ #view>.faceit-route-shell,#view>.faceit-profile-shell{
+  width:100%!important;max-width:none!important;
+ }
+ #playerProfileWindow.player-profile-window{
+  left:216px!important;right:0!important;
+ }
+ #playerProfileWindow .player-profile-window-backdrop{
+  left:216px!important;right:0!important;
+ }
+ #playerProfileWindow .faceit-exact-shell{
+  width:100%!important;min-width:0!important;
+  grid-template-columns:252px minmax(0,1fr)!important;
+ }
+ #playerProfileWindow .faceit-exact-content{
+  min-width:0!important;width:100%!important;max-width:none!important;box-sizing:border-box!important;
+ }
+ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
+  left:216px!important;right:0!important;width:auto!important;
+ }
+}
+@media(min-width:1051px) and (max-width:1350px){
+ body .faceit-route-shell:has(.home-rebuild) .home-rebuild{
+  grid-template-columns:minmax(190px,220px) minmax(0,1fr) minmax(180px,220px)!important;
+ }
+}
