@@ -1110,6 +1110,8 @@ test('profile and Match Room workspaces use centered bounded desktop canvases',(
 });
 
 test('Profile and Home layout normalization keeps columns constrained and readable',()=>{
+ assert.match(css,/#playerProfileWindow #playerProfileMount\\{[\\s\\S]*display:block!important/);
+ assert.doesNotMatch(css,/#playerProfileWindow #playerProfileMount,\\s*#playerProfileWindow \\.faceit-profile-shell,\\s*#playerProfileWindow \\.faceit-exact-shell\\{[\\s\\S]*display:grid!important/);
  assert.match(html,/profile-home-layout-normalized-20261117-v36/);
  assert.match(css,/grid-template-columns:minmax\(220px,260px\) minmax\(0,1fr\) minmax\(200px,240px\)!important/);
  assert.match(css,/\.home-rebuild>\.home-left/);
