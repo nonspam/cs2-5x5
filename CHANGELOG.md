@@ -9674,3 +9674,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/match-room-statistics-layout.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T14:22:12-05:00 — fix(match-room): render selectable duel comparison bodies
+
+- Commit: e3ca00d502ce6bc21dfdfb59937a108dd2cea8f0
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
