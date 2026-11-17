@@ -9771,3 +9771,28 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     box-sizing:border-box!important;
   }
 }
+
+
+/* 2026-11-17 — Revert oversized map cards; keep the center column's width, not stretched height. */
+@media(min-width:1101px){
+  #matchRoomPage .match-room-columns{align-items:start!important}
+  #matchRoomPage .match-room-center-column{
+    display:block!important;align-self:start!important;
+    min-height:0!important;padding-top:32px!important;
+  }
+  #matchRoomPage .match-room-center-column .match-room-map-list{
+    display:grid!important;flex:none!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:none!important;
+    grid-auto-rows:112px!important;
+    gap:12px!important;width:100%!important;min-height:0!important;
+  }
+  #matchRoomPage .match-room-center-column .match-map-row-cover{
+    width:100%!important;height:112px!important;
+    min-height:112px!important;max-height:112px!important;
+  }
+  #matchRoomPage .match-room-center-column .match-room-veto{
+    flex:none!important;min-height:0!important;
+    margin-top:14px!important;
+  }
+}
