@@ -9108,3 +9108,62 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   grid-template-columns:minmax(190px,220px) minmax(0,1fr) minmax(180px,220px)!important;
  }
 }
+
+
+/* 2026-11-17 — repair profile access and preserve the three-column profile layout */
+@media(min-width:1051px){
+ /* Main application navigation: slightly wider than the original, not the oversized 236px rail. */
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell{
+  display:grid!important;grid-template-columns:228px minmax(0,1fr)!important;
+  width:100%!important;max-width:none!important;min-width:0!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-route-shell>.faceit-exact-global-rail{
+  width:228px!important;min-width:228px!important;max-width:228px!important;
+  flex:0 0 228px!important;padding:22px 17px 18px!important;
+ }
+ /* Player profile is three columns: navigation, player identity, and profile content. */
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell{
+  display:grid!important;grid-template-columns:228px 300px minmax(0,1fr)!important;
+  width:100%!important;max-width:none!important;min-width:0!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell>.faceit-exact-global-rail{
+  width:228px!important;min-width:228px!important;max-width:228px!important;
+  flex:0 0 228px!important;padding:22px 17px 18px!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell>.faceit-exact-player-column{
+  min-width:0!important;width:300px!important;max-width:300px!important;
+ }
+ body .faceit-exact-shell.faceit-app-shell.faceit-profile-shell>.faceit-exact-content{
+  min-width:0!important;width:100%!important;max-width:none!important;
+ }
+ #view>.faceit-route-shell,#view>.faceit-profile-shell{width:100%!important;max-width:none!important}
+ #playerProfileWindow.player-profile-window{left:228px!important;right:0!important}
+ #playerProfileWindow .player-profile-window-backdrop{left:228px!important;right:0!important}
+ #playerProfileWindow .faceit-profile-shell{
+  display:grid!important;grid-template-columns:228px 300px minmax(0,1fr)!important;
+  width:100%!important;min-width:0!important;
+ }
+ #playerProfileWindow .faceit-profile-shell>.faceit-exact-global-rail{
+  width:228px!important;min-width:228px!important;max-width:228px!important;
+ }
+ #playerProfileWindow .faceit-profile-shell>.faceit-exact-player-column{
+  width:300px!important;min-width:0!important;max-width:300px!important;
+ }
+ #playerProfileWindow .faceit-profile-shell>.faceit-exact-content{
+  min-width:0!important;width:100%!important;max-width:none!important;
+ }
+ body.match-room-open .match-room-page,#matchRoomPage.match-room-page{
+  left:228px!important;right:0!important;width:auto!important;
+ }
+}
+/* Keep the profile entry in the left navigation after removing the right utility strip. */
+.faceit-exact-rail-bottom .faceit-rail-profile{
+ display:flex!important;align-items:center!important;justify-content:flex-start!important;
+ width:100%!important;min-height:38px!important;height:38px!important;
+ padding:0 11px!important;border:0!important;border-radius:5px!important;
+ background:transparent!important;color:#d0d0d0!important;cursor:pointer!important;
+}
+.faceit-exact-rail-bottom .faceit-rail-profile:hover{
+ color:#fff!important;background:rgba(255,255,255,.07)!important;
+}
+.faceit-exact-rail-bottom .faceit-rail-profile span{margin-left:9px!important}

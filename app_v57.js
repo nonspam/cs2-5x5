@@ -274,11 +274,12 @@ function faceitAppRailMarkup(){
   '<div class="faceit-exact-search faceit-rail-search" id="sitePlayerSearch" role="search"><span aria-hidden="true">⌕</span><input id="sitePlayerSearchInput" type="search" placeholder="Поиск" autocomplete="off" aria-label="Поиск игрока" aria-controls="sitePlayerSearchResults"><div id="sitePlayerSearchResults" class="site-player-search-results" role="listbox" hidden></div></div>'+
   '<div class="faceit-exact-game">◉ <b>CS2 ANALYTICS</b></div>'+
   '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" '+(state.tab===id?'aria-current="page" ':'')+'data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
-  '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" '+(state.tab==='settings'?'aria-current="page" ':'')+'data-app-route="settings">⚙ <span>Настройки</span></button></div>';
+  '<div class="faceit-exact-rail-bottom"><button type="button" class="faceit-rail-profile" data-own-profile>♙ <span>Профиль</span></button><button type="button" class="'+(state.tab==='settings'?'active':'')+'" '+(state.tab==='settings'?'aria-current="page" ':'')+'data-app-route="settings">⚙ <span>Настройки</span></button></div>';
 }
 function bindAppShell(root){
  root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.appRoute==='track')state.trackTargetId=null;navigateApp(button.dataset.appRoute)}));
  bindSitePlayerSearch(root);
+ root.querySelector('[data-own-profile]')?.addEventListener('click',()=>{const id=state.myPlayerId||state.myProfile?.player_id||null;if(id)openPublicPlayerProfile(id);else window.openAccountAuth?.()});
  root.querySelector('[data-account-open]')?.addEventListener('click',()=>window.openAccountAuth?.());
 }
 function renderRouteShell(v,page){
