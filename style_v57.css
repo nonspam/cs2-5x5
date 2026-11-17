@@ -9872,3 +9872,29 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     align-self:stretch!important;
   }
 }
+
+
+/* 2026-11-17 — Exact shared row: MVP outer border must match the full TOP-4 stack. */
+@media(min-width:1051px){
+  #matchRoomPage .match-stat-awards{
+    grid-template-rows:225px!important;
+    align-items:stretch!important;
+  }
+  #matchRoomPage .match-stat-awards .match-stat-mvp-card{
+    height:100%!important;min-height:0!important;
+    max-height:none!important;align-self:stretch!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-highlight-grid{
+    height:100%!important;min-height:0!important;
+    max-height:none!important;align-self:stretch!important;
+    grid-template-rows:repeat(4,minmax(0,1fr))!important;
+    align-content:stretch!important;gap:6px!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-awards .match-stat-highlight{
+    height:100%!important;min-height:0!important;
+    max-height:none!important;align-self:stretch!important;
+    box-sizing:border-box!important;
+  }
+}
