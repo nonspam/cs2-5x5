@@ -444,3 +444,12 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Commits: CSS `502b50278a72cb7d32a7dcc4669ed0919ee68689`; HTML `e2226f114bb7a96151ff394d013f30329933eaf9`; tests `7e794ce025ce7f276b239f2504dfdfe7ce29aa22`.
 - Quality Gate run [44131472011](https://github.com/nonspam/cs2-5x5/actions/runs/44131472011): **332/332 passed**.
 - Browser visual review pending. TOP is intentionally back to compact; Overview/Statistics are the only areas expanded. Existing Profile and Home layout left untouched.
+
+
+## 2026-11-17 — Match Room Overview column alignment (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User screenshots showed the center map/veto column starting above the two player rosters and ending much earlier, with the match-map cards visually narrower than desired.
+- Desktop (>1100px) Overview now aligns the center map column down by 32px so its heading lines up with the player roster headings; center grid track widened to 1.22fr (minimum 380px) while left/right roster tracks remain equal; map cards are 142px tall and veto panel minimum height 104px. Top Overview tabs are centered and span the content width. Tablet/mobile breakpoints are unchanged. Statistics and TOP styling are untouched.
+- Stylesheet cache key: `matchroom-overview-columns-aligned-20261117-v43`.
+- Commits: CSS `8eea43c9f5abb16399010168b8b5a8bb763bb4f3`; HTML `e8ba8c2cf1db50f6ef8e01e5f518aeed46d61602`; tests `e41d23ead44f3b977e11a57b4f953bb08e1454fc`.
+- Quality Gate run [44134654649](https://github.com/nonspam/cs2-5x5/actions/runs/44134654649): **334/334 passed**.
+- Browser visual review pending; no deployment workflow or browser confirmation performed. Home, Profile, Statistics, and TOP are intentionally untouched.
