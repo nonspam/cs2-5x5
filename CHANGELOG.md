@@ -8741,3 +8741,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T11:24:05-05:00 — Record profile and home layout normalization checkpoint
+
+- Commit: 4a172681c0250aac601d62b0668e8f81802f23aa
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
