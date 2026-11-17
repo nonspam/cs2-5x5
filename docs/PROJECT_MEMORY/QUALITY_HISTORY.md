@@ -270,3 +270,9 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 
 - Final Quality Gate [44155927060](https://github.com/nonspam/cs2-5x5/actions/runs/44155927060): **345 passed / 0 failed / 0 skipped**, confirmed from the validate job log.
 - Automated checks pass. Browser visual QA and DEV deployment have NOT been performed; do not claim the change is already visible in the deployed site.
+
+## 2026-11-17 — Duels comparison selector
+
+- Quality Gate [44157848516](https://github.com/nonspam/cs2-5x5/actions/runs/44157848516), commit `e3ca00d502ce6bc21dfdfb59937a108dd2cea8f0`: **346 passed / 0 failed / 0 skipped**.
+- Covers selector options for both teams, per-player opponent tbody rendering, active tbody switching and plain-text selector styling.
+- Does not verify browser interaction, screenshot fidelity or DEV deployment. Values remain zero placeholders.

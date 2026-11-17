@@ -845,3 +845,13 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 
 - Final Quality Gate [44155927060](https://github.com/nonspam/cs2-5x5/actions/runs/44155927060): **345 passed / 0 failed / 0 skipped**, confirmed from the validate job log.
 - Automated checks pass. Browser visual QA and DEV deployment have NOT been performed; do not claim the change is already visible in the deployed site.
+
+## 2026-11-17 — Duels personal comparison picker (SOURCE + TESTS PASS; BROWSER QA / DEPLOYMENT PENDING)
+- User requested removing the oval around the selected player name "РЕНАТ" and enabling personal comparisons for all players rather than locking the view to Renat.
+- Replaced the single-side selector with a plain-text native picker grouped into Team 1 and Team 2. All 10 players are selectable.
+- The comparison table now has a separate view for each selected player. Selecting a player from Team 1 displays all 5 Team 2 opponents; selecting a player from Team 2 displays all 5 Team 1 opponents. Default remains the first player on Team 1.
+- Removed pill border/background styling from the player picker; it remains interactive and the option list opens on click.
+- Fix: comparison rows are rendered as per-player TBODY blocks and toggled by setMatchRoomDuelPlayer. No fabricated values added; current metrics remain explicit zero placeholders.
+- Source commits: `2fa4ef2d92f4b42f9260ceedd6a3592838cea194` and follow-up render fix `e3ca00d502ce6bc21dfdfb59937a108dd2cea8f0`.
+- Quality Gate [44157848516](https://github.com/nonspam/cs2-5x5/actions/runs/44157848516): **346 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- Browser visual QA and DEV deployment were not performed; do not claim pixel-level visual verification.
