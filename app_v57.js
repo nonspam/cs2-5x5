@@ -1144,7 +1144,7 @@ function openMatchDetail(id,options={}){
   document.getElementById('matchRoomPage')?.remove();document.body.insertAdjacentHTML('beforeend',roomPage);document.body.classList.add('match-room-open');window.__activeMatchRoomId=matchId;
   bindMatchRoomHeader();
   const duelRoot=document.getElementById('matchRoomPage');
-  duelRoot?.querySelectorAll('[data-duel-team-choice]').forEach(button=>button.addEventListener('click',()=>setMatchRoomDuelTeam(button.dataset.duelTeamChoice)));
+  duelRoot?.querySelectorAll('[data-duel-team-choice]').forEach(button=>button.addEventListener('click',()=>{const team=button.dataset.duelTeamChoice;setMatchRoomDuelTeam(team);const first=[...(duelRoot.querySelectorAll('[data-duel-player-choice]')||[])].find(choice=>choice.dataset.duelPlayerChoice.startsWith(team+':'));if(first)setMatchRoomDuelPlayer(first.dataset.duelPlayerChoice)}));
   duelRoot?.querySelectorAll('[data-duel-player-choice]').forEach(button=>button.addEventListener('click',()=>setMatchRoomDuelPlayer(button.dataset.duelPlayerChoice)));
   if(options.initialView)setMatchRoomView(options.initialView);
 

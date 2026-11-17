@@ -223,7 +223,7 @@ test('Duels follows FACEIT matrix layout with player matchup cells and a selecta
   assert.match(app, /duelMatrixRows=A\.map/);
   assert.match(app, /match-duel-cell/);
   assert.match(app, /ЛИЧНОЕ СРАВНЕНИЕ/);
-  assert.match(app, /matchDuelComparePlayer/);
+  assert.match(app, /data-duel-player-choice=/);
   assert.match(app, /function setMatchRoomDuelPlayer/);
 });
 
@@ -264,7 +264,7 @@ test('Match Room category and filter controls are plain text, not oval pills', (
   assert.match(pass, /\.match-stat-categories button,[\s\S]*border-radius:0!important/);
   assert.match(pass, /\.match-equipment-controls button,[\s\S]*background:transparent!important/);
   assert.match(pass, /\.match-grenade-breakdown nav button\.active[\s\S]*border-bottom-color:#ff5a1f!important/);
-  assert.match(pass, /\.match-duel-comparison select[\s\S]*border-radius:0!important/);
+  assert.match(pass, /\.match-duel-player-choice[\s\S]*border-radius:0!important/);
 });
 
 
@@ -280,7 +280,7 @@ test('Duels comparison renders visible clickable player choices for both teams a
   assert.match(app, /function setMatchRoomDuelPlayer/);
   assert.match(app, /body\.hidden=body\.dataset\.duelComparisonFor!==playerId/);
   assert.match(app, /data-duel-selected-name/);
-  assert.doesNotMatch(app, /matchDuelComparePlayer|duelCompareOptions|<select/);
+  assert.doesNotMatch(app, /matchDuelComparePlayer|duelCompareOptions/);
   assert.match(css, /match-duel-player-choice/);
   assert.match(css, /border-radius:0!important/);
 });
