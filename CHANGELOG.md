@@ -9717,3 +9717,16 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/match-room-statistics-layout.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T15:06:41-05:00 — test(match-room): cover clickable duel team and player switching
+
+- Commit: c0c609db3ce54dacbb254f31c5183e098b8d2943
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	app_v57.js
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
