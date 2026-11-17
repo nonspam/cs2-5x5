@@ -8599,3 +8599,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	style_v57.css
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T11:06:16-05:00 — chore: bust centered workspace stylesheet cache
+
+- Commit: 07818b4a0d0d0eac1f8e901c48e9dc509463de64
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
