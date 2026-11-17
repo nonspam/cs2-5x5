@@ -268,14 +268,37 @@ test('Match Room category and filter controls are plain text, not oval pills', (
 });
 
 
-test('Duels personal comparison can select any of ten players and shows all five opponents from the opposite team', () => {
+test('Duels comparison renders visible clickable player choices for both teams and opposite-team opponent rows', () => {
   assert.match(app, /duelCompareEntries=\[\.\.\.A\.map/);
   assert.match(app, /\.\.\.B\.map/);
-  assert.match(app, /data-duel-comparison-for=/);
+  assert.match(app, /data-duel-team-choice="a"/);
+  assert.match(app, /data-duel-team-choice="b"/);
+  assert.match(app, /data-duel-player-choice=/);
+  assert.match(app, /duelPlayerChoices\('a',A\)/);
+  assert.match(app, /duelPlayerChoices\('b',B\)/);
+  assert.match(app, /function setMatchRoomDuelTeam/);
   assert.match(app, /function setMatchRoomDuelPlayer/);
   assert.match(app, /body\.hidden=body\.dataset\.duelComparisonFor!==playerId/);
-  assert.match(app, /optgroup label="КОМАНДА 1"/);
-  assert.match(app, /optgroup label="КОМАНДА 2"/);
-  assert.match(css, /Duels comparison player picker: plain text, no pill/);
+  assert.match(app, /data-duel-selected-name/);
+  assert.doesNotMatch(app, /matchDuelComparePlayer|duelCompareOptions|<select/);
+  assert.match(css, /match-duel-player-choice/);
   assert.match(css, /border-radius:0!important/);
+});
+
+test('Duels matrix colors left wins blue, top wins green and ties grey', () => {
+  assert.match(app, /leftWins===rightWins\?'is-neutral'/);
+  assert.match(app, /leftWins>rightWins\?'is-blue-winner'/);
+  assert.match(app, /rightWins>leftWins\?'is-green-winner'/);
+  assert.match(css, /\.match-duel-cell b\.is-blue-winner/);
+  assert.match(css, /\.match-duel-cell b\.is-green-winner/);
+  assert.match(css, /\.match-duel-cell b\.is-neutral/);
+});
+
+test('Equipment headings wrap and Support is limited to six requested metrics', () => {
+  assert.match(app, /support:\[\['flashes','Флешек<br>брошено'/);
+  assert.match(app, /\['flashSuccess','Успешность<br>флешек, %'\]/);
+  assert.match(app, /\['blindTime','Время<br>ослепления'\]\]/);
+  assert.match(app, /general:\[\['unused','Неиспольз\.<br>гранаты'/);
+  assert.match(css, /\.match-equipment-table\{width:100%!important;min-width:0!important/);
+  assert.match(css, /\.match-equipment-table th\{white-space:normal!important/);
 });
