@@ -1108,3 +1108,12 @@ test('profile and Match Room workspaces use centered bounded desktop canvases',(
   assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*justify-self:center!important[\s\S]*width:min\(100%,1120px\)!important[\s\S]*max-width:1120px!important/);
   assert.match(css,/#matchRoomPage>\.match-room-content\{[\s\S]*justify-self:center!important[\s\S]*width:min\(calc\(100% - 48px\),1240px\)!important[\s\S]*max-width:1240px!important/);
 });
+
+test('Profile and Home layout normalization keeps columns constrained and readable',()=>{
+ assert.match(css,/profile-home-layout-normalized-20261117-v36/);
+ assert.match(css,/grid-template-columns:minmax\(220px,260px\) minmax\(0,1fr\) minmax\(200px,240px\)!important/);
+ assert.match(css,/\.home-rebuild \.home-left/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*column-gap:18px!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-main-grid\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(210px,280px\)!important/);
+ assert.match(css,/@media\(max-width:1050px\)[\s\S]*#playerProfileWindow \.faceit-main-grid\{grid-template-columns:minmax\(0,1fr\)!important\}/);
+});
