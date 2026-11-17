@@ -471,3 +471,12 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Commits: CSS `a5dea8d3a40f06064421f1dd45c644048841ffcb`; HTML `ebe9a3f90b8dee826092c62829b00c02a557f101`; tests `33f879d106774c286e4103fb5d646167ebe6aaa4`.
 - Quality Gate run [44136157648](https://github.com/nonspam/cs2-5x5/actions/runs/44136157648): **335/335 passed**.
 - Browser visual review pending; no production changes.
+
+
+## 2026-11-17 — Statistics MVP alignment and compact Entry leader row (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User screenshot showed the Statistics MVP/leader block and category controls visually offset relative to the scoreboard, with the Entry Kills leader card taller than the other leader cards.
+- Desktop (>1050px) now constrains the MVP/leader block and category toolbar to `calc(100% - 34px)`, centered to align with the inner scoreboard width. MVP/leader split is 2:1, preserving the intended wide MVP panel and narrower leader stack. MVP card fixed at 220px; four leader cards fixed at 49px with 6px gaps. Leader grid explicitly uses avatar/name/value columns and labels remain on one line, preventing Entry Kills wrapping/height expansion. Tablet/mobile breakpoints untouched.
+- Cache key: `matchroom-stats-centered-compact-leaders-20261117-v46`.
+- Commits: CSS `a78b2e8db0907afd7c77fae5ab2b0b2e82308b37`; HTML `89ba1d2c9dec0abf6c33bf3050c8dcf4f8ec7337`; tests `7e6483a4e8d63159ba7a7067ea5e6a9858c893e7`.
+- Quality Gate run [44137742140](https://github.com/nonspam/cs2-5x5/actions/runs/44137742140): **336/336 passed**.
+- Browser visual review pending; no production changes.
