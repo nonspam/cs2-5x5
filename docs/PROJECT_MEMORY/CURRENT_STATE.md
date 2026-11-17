@@ -1,3 +1,11 @@
+## 2026-11-17 — Profile statistics column bleed fix (SOURCE UPDATED; QA PENDING)
+- Owner screenshot showed the Profile statistics/content area visually touching and bleeding into the left identity/ELO column.
+- Root cause in the active stylesheet: the modal's two-column grid had no gutter; child cards retained legacy sizing behavior and the profile content allowed horizontal overflow. The left identity card and statistics canvas were not isolated as independent boxes.
+- Added a 16px desktop grid gutter, border-box sizing and width constraints to the identity card/badges, horizontal clipping on both columns, and bounded the season/statistics widget grid to the available content width. No profile data, calculations, navigation or upload behavior changed.
+- Files: style_v57.css, index.html (CSS cache key profile-stats-column-guard-20261117-v35), tests/faceit-v2-shell.test.cjs, SESSION_CHECKPOINT.md, CURRENT_STATE.md, DEVELOPMENT_LOG.md.
+- Status: source change committed to faceit-dev; CI, DEV deployment, live browser rendering and owner visual acceptance pending. Do not claim the live site is fixed until deployment and screenshot QA are verified.
+- Next: inspect the quality-gate result, then verify the Profile at the same desktop viewport and confirm the stats column remains fully right of the identity rail without clipping its own content.
+
 ## 2026-11-17 — Narrow and center Profile / Match Room canvas (SOURCE UPDATED; QA PENDING)
 - Owner reported that the previous 1200px profile width change produced no visible improvement. Review of the live CSS cascade found the profile modal uses a two-column grid (identity + content); the prior width cap was not paired with an explicit centered grid-item alignment and did not sufficiently constrain the visible content.
 - Added a final, high-specificity desktop rule: profile content is centered within its own grid column and capped at 1120px; Match Room content is centered and capped at 1240px. Identity/avatar column, global left rail, right utility rail, profile entry, and VS utility are not changed.

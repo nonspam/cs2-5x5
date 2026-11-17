@@ -1,3 +1,11 @@
+## 2026-11-17 — Profile statistics column bleed fix (SOURCE UPDATED; QA PENDING)
+- Owner screenshot showed the Profile statistics/content area visually touching and bleeding into the left identity/ELO column.
+- Root cause in the active stylesheet: the modal's two-column grid had no gutter; child cards retained legacy sizing behavior and the profile content allowed horizontal overflow. The left identity card and statistics canvas were not isolated as independent boxes.
+- Added a 16px desktop grid gutter, border-box sizing and width constraints to the identity card/badges, horizontal clipping on both columns, and bounded the season/statistics widget grid to the available content width. No profile data, calculations, navigation or upload behavior changed.
+- Files: style_v57.css, index.html (CSS cache key profile-stats-column-guard-20261117-v35), tests/faceit-v2-shell.test.cjs, SESSION_CHECKPOINT.md, CURRENT_STATE.md, DEVELOPMENT_LOG.md.
+- Status: source change committed to faceit-dev; CI, DEV deployment, live browser rendering and owner visual acceptance pending. Do not claim the live site is fixed until deployment and screenshot QA are verified.
+- Next: inspect the quality-gate result, then verify the Profile at the same desktop viewport and confirm the stats column remains fully right of the identity rail without clipping its own content.
+
 ## 2026-11-17 — Corrective rail width, visible home search and added FACEIT spacing (SOURCE + TESTS PASS)
 - User reported the previous desktop navigation rail still looked too narrow and the player search was not obvious/visible. Root cause of discoverability: search was overlaid inside the home hero artwork. Moved it into a dedicated, clearly labeled row immediately above the hero on the home page, with a visible input and dropdown. Existing live activePlayers() lookup, click-to-profile and Enter behavior retained; no hard-coded names.
 - Corrected desktop rail sizing using the actual top-level #view > .faceit-route-shell.faceit-app-shell grid and direct child rail selectors, rather than only styling the generic route wrapper. Desktop grid/rail now 210px, with an explicit breakpoint for narrow screens.

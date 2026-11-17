@@ -1095,6 +1095,15 @@ test('Match Room team information strip is transparent and most-kills block is s
 });
 
 
+
+test('Profile statistics stay inside the content column and cannot overlap the identity rail',()=>{
+ assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*grid-template-columns:minmax\(0,252px\) minmax\(0,1fr\)!important;[\s\S]*column-gap:16px!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-player-column\{[\s\S]*box-sizing:border-box!important;[\s\S]*overflow-x:hidden!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-player-card,[\s\S]*width:100%!important;min-width:0!important;max-width:100%!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*overflow-x:hidden!important/);
+ assert.match(css,/#playerProfileWindow \.faceit-profile-top-widgets\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(160px,190px\)!important/);
+});
+
 test('profile and Match Room workspaces use centered bounded desktop canvases',()=>{
   assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*justify-self:center!important[\s\S]*width:min\(100%,1120px\)!important[\s\S]*max-width:1120px!important/);
   assert.match(css,/#matchRoomPage>\.match-room-content\{[\s\S]*justify-self:center!important[\s\S]*width:min\(calc\(100% - 48px\),1240px\)!important[\s\S]*max-width:1240px!important/);

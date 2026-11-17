@@ -9304,3 +9304,43 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   box-sizing:border-box!important;
  }
 }
+
+
+/* 2026-11-17 — prevent Profile statistics from bleeding into the identity column.
+   The profile modal is a two-column grid; reserve a real gutter and clip each column
+   to its own box so wide widgets cannot paint over the avatar/ELO rail. */
+@media(min-width:1051px){
+ #playerProfileWindow .faceit-exact-shell{
+  grid-template-columns:minmax(0,252px) minmax(0,1fr)!important;
+  column-gap:16px!important;
+  box-sizing:border-box!important;
+ }
+ #playerProfileWindow .faceit-exact-player-column{
+  box-sizing:border-box!important;
+  width:100%!important;min-width:0!important;max-width:252px!important;
+  overflow-x:hidden!important;
+ }
+ #playerProfileWindow .faceit-exact-player-card,
+ #playerProfileWindow .faceit-exact-badges{
+  box-sizing:border-box!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+ }
+ #playerProfileWindow .faceit-exact-player-card>*{
+  box-sizing:border-box!important;min-width:0!important;max-width:100%!important;
+ }
+ #playerProfileWindow .faceit-exact-content{
+  box-sizing:border-box!important;
+  min-width:0!important;width:min(100%,1120px)!important;max-width:1120px!important;
+  overflow-x:hidden!important;
+ }
+ #playerProfileWindow .faceit-exact-content>*{
+  box-sizing:border-box!important;min-width:0!important;max-width:100%!important;
+ }
+ #playerProfileWindow .faceit-profile-top-widgets{
+  display:grid!important;grid-template-columns:minmax(0,1fr) minmax(160px,190px)!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;
+ }
+ #playerProfileWindow .faceit-profile-top-widgets>*{
+  min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+ }
+}
