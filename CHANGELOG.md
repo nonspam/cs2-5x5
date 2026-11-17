@@ -8404,3 +8404,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	index.html
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T08:50:28-05:00 — test(nav): assert player search lives in left sidebar
+
+- Commit: 052e5964801dc9a8c3634c0828f063625ab04f04
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
