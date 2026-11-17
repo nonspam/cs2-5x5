@@ -8809,3 +8809,35 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-subtabs{margin-top:14px!important;margin-bottom:18px!important}
  #matchRoomPage .match-stat-awards{margin-top:16px!important;margin-bottom:20px!important}
 }
+
+/* 2026-11-17 — FACEIT-style player search aligned above the full home columns */
+.home-shell>.home-player-search-row{
+ grid-column:1 / -1!important;
+ grid-row:1!important;
+ width:100%!important;
+ display:flex!important;
+ flex-direction:row!important;
+ align-items:center!important;
+ justify-content:flex-end!important;
+ gap:14px!important;
+ min-height:48px!important;
+ margin:0 0 2px!important;
+ padding:0 2px!important;
+ position:relative!important;
+ z-index:80!important;
+}
+.home-shell>.home-left,.home-shell>.home-center,.home-shell>.home-right{grid-row:2!important}
+.home-shell>.home-player-search-row .home-player-search{
+ flex:0 1 360px!important;
+ width:min(360px,100%)!important;
+ height:40px!important;
+ margin:0!important;
+}
+@media(max-width:900px){
+ .home-shell>.home-player-search-row{grid-row:1!important;align-items:center!important;flex-direction:row!important}
+ .home-shell>.home-left,.home-shell>.home-center,.home-shell>.home-right{grid-row:auto!important}
+}
+@media(max-width:620px){
+ .home-shell>.home-player-search-row{align-items:stretch!important;flex-direction:column!important;gap:7px!important}
+ .home-shell>.home-player-search-row .home-player-search{width:100%!important;flex-basis:auto!important}
+}
