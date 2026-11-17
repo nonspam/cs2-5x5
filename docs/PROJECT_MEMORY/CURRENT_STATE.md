@@ -6,6 +6,9 @@
 - Source commit: pending this checkpoint commit.
 - Visual verification against owner screenshots is pending; automated tests cannot confirm pixel rendering.
 
+- Final Quality Gate [44155927060](https://github.com/nonspam/cs2-5x5/actions/runs/44155927060): **345 passed / 0 failed / 0 skipped**, confirmed from the validate job log.
+- Automated checks pass. Browser visual QA and DEV deployment have NOT been performed; do not claim the change is already visible in the deployed site.
+
 ## 2026-11-17 — Rebuild Match Room Duels and Equipment to FACEIT reference (SOURCE + TESTS PASS; BROWSER QA / DEV DEPLOYMENT PENDING)
 - Owner supplied three reference screenshots and requested Duels and Equipment to match their FACEIT structure while preserving the completed Results categories: Общее, Расширенное, Энтри, Размены, Клатчи.
 - Replaced the previous flat zero-value placeholder tables with a Duels matchup matrix (team A rows vs team B columns, 0 × 0 placeholder cells), player selector for personal comparison, and a comparison table for duel rating, kills/deaths, entry kills/deaths, trades and damage.
