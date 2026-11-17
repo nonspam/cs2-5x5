@@ -1135,3 +1135,12 @@ test('Match Room overview and statistics use a wider desktop canvas without scal
  assert.match(css,/#matchRoomPage \.match-room-overview-view,[\s\S]*#matchRoomPage \.match-room-statistics-view\{[\s\S]*width:100%!important;max-width:none!important/);
  assert.match(html,/matchroom-overview-statistics-width-20261117-v39/);
 });
+
+
+test('Match Room TOP list fills the canvas, grows vertically, and emphasizes KDA values',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-top-list\{[\s\S]*width:100%!important;max-width:1320px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row\{[\s\S]*min-height:64px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>\.match-stat-top-score\{[\s\S]*font-size:15px!important;font-weight:850!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>b:last-child\{[\s\S]*font-size:21px!important/);
+ assert.match(html,/match-top-list-readable-sizing-20261117-v40/);
+});
