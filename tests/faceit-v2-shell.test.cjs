@@ -1175,3 +1175,13 @@ test('Match Room Overview aligns map with player roster headers and balances the
  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-room-veto\{[\s\S]*min-height:104px!important/);
  assert.match(html,/matchroom-overview-columns-aligned-20261117-v43/);
 });
+
+
+test('Match Room Overview map cards are slightly shorter and center column stretches to roster height',()=>{
+ assert.match(css,/@media\(min-width:1101px\)\{[\s\S]*#matchRoomPage \.match-room-columns\{\s*align-items:stretch!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column\{\s*display:flex!important;flex-direction:column!important;[\s\S]*align-self:stretch!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column \.match-room-map-list\{\s*display:grid!important;flex:1 1 auto!important;[\s\S]*grid-template-rows:repeat\(2,minmax\(112px,1fr\)\)!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column \.match-map-row-cover\{\s*height:auto!important;min-height:112px!important;max-height:none!important/);
+ assert.match(css,/#matchRoomPage \.match-room-center-column \.match-room-veto\{\s*flex:0 0 auto!important/);
+ assert.match(html,/matchroom-overview-map-balanced-20261117-v44/);
+});
