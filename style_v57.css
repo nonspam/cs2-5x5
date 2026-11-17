@@ -9569,3 +9569,104 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   #matchRoomPage .match-stat-top-row>.match-stat-top-score{font-size:13px!important}
   #matchRoomPage .match-stat-top-row>b:last-child{font-size:19px!important}
 }
+
+
+/* 2026-11-17 — Restore compact TOP composition; spend the extra room on Overview and Statistics instead. */
+@media(min-width:1051px){
+  /* TOP returns to the earlier compact row: centered player name, K/D/A beside it, K/D at the far edge. */
+  #matchRoomPage .match-stat-top-list{
+    width:min(100%,1080px)!important;max-width:1080px!important;
+    margin:12px auto 0!important;gap:5px!important;
+  }
+  #matchRoomPage .match-stat-top-row{
+    width:100%!important;min-height:52px!important;
+    grid-template-columns:28px 38px minmax(180px,1fr) max-content 58px!important;
+    justify-content:space-between!important;gap:12px!important;
+    padding:6px 12px!important;box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-top-row>.player-avatar{
+    width:36px!important;height:36px!important;
+  }
+  #matchRoomPage .match-stat-top-row>strong{
+    min-width:0!important;text-align:center!important;
+    font-size:13px!important;line-height:1.15!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #matchRoomPage .match-stat-top-row>.match-stat-top-score{
+    font-size:11px!important;font-weight:700!important;
+    line-height:1.15!important;white-space:nowrap!important;
+  }
+  #matchRoomPage .match-stat-top-row>.match-stat-top-score small{
+    font-size:9px!important;font-weight:600!important;
+  }
+  #matchRoomPage .match-stat-top-row>b:last-child{
+    font-size:16px!important;font-weight:900!important;
+    line-height:1!important;text-align:right!important;
+  }
+
+  /* Overview: let both teams and the map/veto column use the wider Match Room canvas. */
+  #matchRoomPage .match-room-overview-view,
+  #matchRoomPage .match-room-columns{
+    width:100%!important;max-width:none!important;min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-room-columns{
+    grid-template-columns:minmax(0,1fr) minmax(340px,1.12fr) minmax(0,1fr)!important;
+    gap:clamp(18px,1.8vw,28px)!important;
+    margin-top:26px!important;
+  }
+  #matchRoomPage .match-room-team,
+  #matchRoomPage .match-room-center-column{
+    min-width:0!important;max-width:none!important;width:100%!important;
+  }
+  #matchRoomPage .match-room-team .match-team-roster{gap:14px!important}
+  #matchRoomPage .match-room-team .match-player-card-ref{
+    min-height:108px!important;
+  }
+
+  /* Statistics: widen the MVP/highlights and team tables, then add modest vertical breathing room. */
+  #matchRoomPage .match-stat-awards{
+    width:100%!important;max-width:1400px!important;
+    margin:18px auto 24px!important;gap:18px!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-awards .match-stat-mvp-card{
+    min-height:220px!important;height:100%!important;
+    padding:22px 24px!important;box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-highlight-grid{
+    gap:12px!important;
+  }
+  #matchRoomPage .match-stat-highlight-grid>.match-stat-highlight{
+    min-height:82px!important;padding:12px 14px!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-teams{
+    width:100%!important;max-width:1400px!important;
+    margin:0 auto!important;gap:24px!important;
+  }
+  #matchRoomPage .match-stat-team{
+    width:100%!important;max-width:none!important;
+    padding:16px 18px 18px!important;box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-stat-teams .match-scoreboard td,
+  #matchRoomPage .match-stat-teams .match-scoreboard th{
+    padding:12px 14px!important;
+  }
+  #matchRoomPage .match-stat-toolbar,
+  #matchRoomPage .match-stat-category-panel{
+    width:100%!important;max-width:none!important;
+    box-sizing:border-box!important;
+  }
+}
+@media(min-width:761px) and (max-width:1050px){
+  #matchRoomPage .match-stat-top-list{max-width:1080px!important;width:100%!important}
+  #matchRoomPage .match-stat-top-row{
+    min-height:52px!important;grid-template-columns:28px 38px minmax(120px,1fr) max-content 58px!important;
+    gap:10px!important;padding:6px 12px!important;
+  }
+  #matchRoomPage .match-stat-top-row>.player-avatar{width:36px!important;height:36px!important}
+  #matchRoomPage .match-stat-top-row>strong{font-size:13px!important;text-align:center!important}
+  #matchRoomPage .match-stat-top-row>.match-stat-top-score{font-size:11px!important}
+  #matchRoomPage .match-stat-top-row>b:last-child{font-size:16px!important}
+}
