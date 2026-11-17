@@ -1219,3 +1219,15 @@ test('Match Room Statistics hard-locks MVP and TOP-4 direct children to identica
  assert.match(css,/#matchRoomPage \.match-stat-awards > \.match-stat-highlight-grid > \.match-stat-highlight\{\s*height:100%!important/);
  assert.match(html,/matchroom-stats-mvp-top4-fixed-225px-20261117-v49/);
 });
+
+
+test('Match Room Duels and Equipment tabs render complete player tables with explicit zero placeholders',()=>{
+ assert.match(app,/const duelRows=statPlayers\.map\(r=>[\s\S]*?<td>0<\/td>[\s\S]*?<td>0%<\/td>/);
+ assert.match(app,/const equipmentRows=statPlayers\.map\(r=>[\s\S]*?<td>0<\/td>[\s\S]*?<td>0<\/td>[\s\S]*?<\/tr>/);
+ assert.match(app,/Пока отображаются нулевые значения-заглушки/);
+ assert.match(app,/data-stat-subview="duels"[\s\S]*?ВСЕГО ДУЭЛЕЙ/);
+ assert.match(app,/data-stat-subview="equipment"[\s\S]*?ОСНОВНОЕ ОРУЖИЕ[\s\S]*?УРОН ОТ ГРАНАТ/);
+ assert.match(app,/data-stat-subview-button="duels"/);
+ assert.match(app,/data-stat-subview-button="equipment"/);
+ assert.match(html,/matchroom-duels-equipment-zero-tables-20261117-v50/);
+});
