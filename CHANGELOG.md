@@ -9281,3 +9281,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T12:30:29-05:00 — test: assert two-to-one MVP leader layout
+
+- Commit: 7e6483a4e8d63159ba7a7067ea5e6a9858c893e7
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	tests/faceit-v2-shell.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
