@@ -9247,3 +9247,7 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 @media(max-width:1050px){body:has(.faceit-exact-shell) #view{width:100%!important;max-width:100%!important;margin:0!important}body .faceit-utility-rail{display:none!important}}
 @media(max-width:700px){#playerProfileWindow .faceit-exact-shell{grid-template-columns:86px minmax(0,1fr)!important}#playerProfileWindow .faceit-exact-player-card,#playerProfileWindow .faceit-exact-avatar-frame,#playerProfileWindow .faceit-exact-badges{width:100%!important}}
 .faceit-utility-avatar-image,#playerProfileWindow .faceit-exact-avatar-frame img,.home-rebuild-hero .hero-image{pointer-events:none!important;-webkit-user-drag:none!important;user-select:none!important}
+
+/* Preserve the established circular avatar sizing contract after the rail layout override. */
+.faceit-utility-profile{width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important;overflow:hidden!important}
+.faceit-utility-avatar-image,.faceit-utility-profile .faceit-utility-avatar-fallback{width:100%!important;height:100%!important;border-radius:50%!important;object-fit:cover!important}
