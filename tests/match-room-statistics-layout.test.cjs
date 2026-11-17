@@ -213,3 +213,35 @@ test('home dashboard columns are fluid and cannot overflow the widened route con
   assert.match(pass, /grid-template-columns:minmax\(205px,260px\) minmax\(0,1fr\) minmax\(190px,260px\)!important/);
   assert.match(pass, /\.home-rebuild>\.home-right\s*\{[\s\S]*max-width:100%!important/);
 });
+
+
+test('Duels follows FACEIT matrix layout with player matchup cells and a selectable personal comparison', () => {
+  assert.match(app, /match-duel-matrix/);
+  assert.match(app, /duelMatrixHead=B\.map/);
+  assert.match(app, /duelMatrixRows=A\.map/);
+  assert.match(app, /match-duel-cell/);
+  assert.match(app, /ЛИЧНОЕ СРАВНЕНИЕ/);
+  assert.match(app, /matchDuelComparePlayer/);
+  assert.match(app, /function setMatchRoomDuelPlayer/);
+});
+
+test('Equipment has FACEIT categories, team/player modes, grenade distribution and explicit unsupported T/CT state', () => {
+  for (const category of ['general','damage','support']) assert.ok(app.includes("data-equipment-category-button=\\""+category+"\\""));
+  assert.match(app, /function setMatchRoomEquipmentCategory/);
+  assert.match(app, /function setMatchRoomEquipmentMode/);
+  assert.match(app, /function setMatchRoomEquipmentSide/);
+  assert.match(app, /match-grenade-breakdown/);
+  assert.match(app, /match-grenade-legend/);
+  assert.match(app, /Разделение по T\/КТ пока недоступно/);
+  assert.match(css, /match-equipment-table/);
+  assert.match(css, /match-grenade-chart-grid/);
+});
+
+test('Duels and Equipment zero placeholders are visibly disclosed and do not overwrite the five existing Results categories', () => {
+  assert.match(app, /Показаны нулевые значения-заглушки/);
+  assert.match(app, /id:'general',label:'Общее'/);
+  assert.match(app, /id:'advanced',label:'Расширенное'/);
+  assert.match(app, /id:'entry',label:'Энтри'/);
+  assert.match(app, /id:'trades',label:'Размены'/);
+  assert.match(app, /id:'clutches',label:'Клатчи'/);
+});

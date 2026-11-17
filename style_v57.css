@@ -9939,3 +9939,78 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-stat-subview-table{width:100%;min-width:680px;border-collapse:collapse}
 #matchRoomPage .match-stat-subview-table th,#matchRoomPage .match-stat-subview-table td{padding:12px 14px;text-align:center;white-space:nowrap}
 #matchRoomPage .match-stat-subview-table th:first-child,#matchRoomPage .match-stat-subview-table td:first-child{text-align:left;min-width:190px}
+
+
+/* 2026-11-17 — FACEIT Duels matrix, Equipment breakdown and grenade analytics */
+#matchRoomPage .match-stat-zero-note{margin:0 0 18px!important}
+#matchRoomPage .match-duel-matrix-wrap{width:100%;overflow-x:auto;border:1px solid rgba(255,255,255,.13);border-radius:8px;background:rgba(10,12,14,.42)}
+#matchRoomPage .match-duel-matrix{width:100%;min-width:860px;border-collapse:collapse;table-layout:fixed}
+#matchRoomPage .match-duel-matrix th,#matchRoomPage .match-duel-matrix td{height:76px;padding:9px 8px;text-align:center;border-right:1px solid rgba(255,255,255,.09);border-bottom:1px solid rgba(255,255,255,.09);background:rgba(10,12,14,.24)}
+#matchRoomPage .match-duel-matrix thead th{height:82px;background:rgba(25,27,29,.72);font-size:10px;font-weight:800}
+#matchRoomPage .match-duel-matrix th:first-child{width:190px}
+#matchRoomPage .match-duel-matrix .match-duel-corner{background:rgba(20,22,24,.78)}
+#matchRoomPage .match-duel-opponent{display:flex;min-width:0;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+#matchRoomPage .match-duel-opponent b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+#matchRoomPage .match-duel-matrix tbody th .match-duel-opponent{flex-direction:row;justify-content:flex-start;padding-left:7px}
+#matchRoomPage .match-duel-matrix tbody th{background:rgba(31,33,35,.72)}
+#matchRoomPage .match-duel-cell{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:70px;padding:6px 8px;border-radius:5px;background:rgba(255,255,255,.045);font-size:12px;font-variant-numeric:tabular-nums}
+#matchRoomPage .match-duel-cell b{min-width:26px;padding:4px 5px;border-radius:4px;background:rgba(100,95,205,.68);color:#fff}
+#matchRoomPage .match-duel-cell b:last-child{background:rgba(255,255,255,.12)}
+#matchRoomPage .match-duel-cell i{color:rgba(255,255,255,.45);font-style:normal}
+#matchRoomPage .match-duel-comparison{margin-top:30px}
+#matchRoomPage .match-duel-comparison>header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+#matchRoomPage .match-duel-comparison h3,#matchRoomPage .match-grenade-breakdown h3{margin:0;font-size:16px;font-weight:900}
+#matchRoomPage .match-duel-comparison label{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.6);font-size:11px;font-weight:800}
+#matchRoomPage .match-duel-comparison select{min-width:180px;height:36px;padding:0 10px;border:1px solid rgba(255,255,255,.17);border-radius:5px;background:#17191b;color:#eee}
+#matchRoomPage .match-duel-compare-table{min-width:1120px}
+#matchRoomPage .match-equipment-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0 22px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.12)}
+#matchRoomPage .match-equipment-categories,#matchRoomPage .match-equipment-controls,#matchRoomPage .match-equipment-controls>div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#matchRoomPage .match-equipment-toolbar button,#matchRoomPage .match-grenade-breakdown nav button{min-height:30px;padding:0 12px;border:0;border-radius:16px;background:rgba(255,255,255,.075);color:rgba(255,255,255,.58);font-size:10px;font-weight:900;cursor:pointer}
+#matchRoomPage .match-equipment-toolbar button.active,#matchRoomPage .match-grenade-breakdown nav button.active{background:rgba(255,91,27,.17);color:#ff641f}
+#matchRoomPage .match-equipment-controls{justify-content:flex-end}
+#matchRoomPage .match-equipment-teams{display:grid;gap:26px}
+#matchRoomPage .match-equipment-team{min-width:0}
+#matchRoomPage .match-equipment-team-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 10px;padding:0 6px}
+#matchRoomPage .match-equipment-team-head>div{display:flex;align-items:center;gap:12px;min-width:0}
+#matchRoomPage .match-equipment-team-head>div>span{font-size:13px;font-weight:850}
+#matchRoomPage .match-equipment-team-score{color:#d9f04a;font-size:14px}
+#matchRoomPage .match-equipment-team-head>small{color:rgba(255,255,255,.48);font-size:10px;font-weight:800}
+#matchRoomPage .match-equipment-table{min-width:1260px}
+#matchRoomPage .match-equipment-table th:first-child,#matchRoomPage .match-equipment-table td:first-child{min-width:180px}
+#matchRoomPage .match-equipment-table th:nth-child(2),#matchRoomPage .match-equipment-table td:nth-child(2){min-width:72px}
+#matchRoomPage .match-equipment-player-list{min-width:0}
+#matchRoomPage .match-equipment-side-note{margin:10px 0;padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:6px;background:rgba(8,10,12,.45);color:rgba(255,255,255,.62);font-size:11px}
+#matchRoomPage .match-grenade-breakdown{margin-top:42px}
+#matchRoomPage .match-grenade-breakdown>header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
+#matchRoomPage .match-grenade-breakdown nav{display:flex;gap:8px}
+#matchRoomPage .match-grenade-teams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+#matchRoomPage .match-grenade-team{min-width:0;padding:20px;border:1px solid rgba(255,255,255,.09);border-radius:8px;background:rgba(8,10,12,.38)}
+#matchRoomPage .match-grenade-team>header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+#matchRoomPage .match-grenade-team>header>div{display:flex;align-items:center;gap:10px;min-width:0}
+#matchRoomPage .match-grenade-team>header>div>b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+#matchRoomPage .match-grenade-team>header>span{color:rgba(255,255,255,.52);font-size:10px;white-space:nowrap}
+#matchRoomPage .match-grenade-team>header>span strong{margin-left:5px;color:#f2f2f2;font-size:14px}
+#matchRoomPage .match-grenade-legend{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:20px}
+#matchRoomPage .match-grenade-legend>div{display:grid;grid-template-columns:1fr;gap:4px;min-width:0}
+#matchRoomPage .match-grenade-legend i{height:9px;border-radius:2px}
+#matchRoomPage .match-grenade-legend b{font-size:17px;font-variant-numeric:tabular-nums}
+#matchRoomPage .match-grenade-legend small{color:rgba(255,255,255,.52);font-size:9px;line-height:1.35}
+#matchRoomPage .match-grenade-chart-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;min-height:210px;padding:16px 6px 0;border-top:1px solid rgba(255,255,255,.08)}
+#matchRoomPage .match-grenade-player{display:flex;align-items:center;flex-direction:column;justify-content:flex-end;gap:8px;min-width:0}
+#matchRoomPage .match-grenade-bar{display:flex;align-items:flex-end;justify-content:center;width:100%;height:118px;border-bottom:1px solid rgba(255,255,255,.15);background:repeating-linear-gradient(to top,transparent 0,transparent 39px,rgba(255,255,255,.055) 40px)}
+#matchRoomPage .match-grenade-bar i{display:block;width:22px;height:0;background:linear-gradient(to top,#e94a1d 0 30%,#f5a12b 30% 55%,#83c9ee 55% 100%);border-radius:2px 2px 0 0}
+#matchRoomPage .match-grenade-total{padding:4px 8px;border-radius:4px;background:rgba(255,255,255,.08);font-size:11px}
+#matchRoomPage .match-grenade-player strong{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+#matchRoomPage .match-grenade-breakdown[data-grenade-filter="unused"] .match-grenade-bar i{background:rgba(255,255,255,.22)}
+@media(max-width:900px){
+ #matchRoomPage .match-equipment-toolbar{align-items:flex-start;flex-direction:column}
+ #matchRoomPage .match-equipment-controls{justify-content:flex-start}
+ #matchRoomPage .match-grenade-teams{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+ #matchRoomPage .match-duel-comparison>header,#matchRoomPage .match-grenade-breakdown>header{align-items:flex-start;flex-direction:column}
+ #matchRoomPage .match-duel-comparison label{width:100%;justify-content:space-between}
+ #matchRoomPage .match-duel-comparison select{min-width:0;max-width:65%}
+ #matchRoomPage .match-grenade-legend{grid-template-columns:repeat(3,minmax(0,1fr))}
+ #matchRoomPage .match-grenade-chart-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
