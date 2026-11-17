@@ -9216,3 +9216,7 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 }
 @media(max-width:1050px){body .faceit-utility-rail{display:none!important}}
 .faceit-exact-global-rail{border-right:0!important}
+
+/* Keep the restored right-side profile entry compact and circular. */
+.faceit-utility-profile{width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important;overflow:hidden!important}
+.faceit-utility-avatar-image,.faceit-utility-profile .faceit-utility-avatar-fallback{width:100%!important;height:100%!important;border-radius:50%!important;object-fit:cover!important}
