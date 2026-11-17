@@ -834,3 +834,11 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Quality Gate [44148038005](https://github.com/nonspam/cs2-5x5/actions/runs/44148038005): **343 passed / 0 failed / 0 skipped**, confirmed from the validate job log.
 - Browser visual QA, screenshot comparison and DEV deployment have NOT been performed. Automated tests do not prove the layout is pixel-identical to the supplied reference or that it is live on DEV.
 - Next: owner refreshes the DEV build when deployed/available and compares Duels matrix, personal comparison, Equipment categories/tables and grenade breakdown against the supplied screenshots. Fix only the visual deltas reported; preserve the existing five Results categories.
+
+## 2026-11-17 — Transparent Duels/Equipment and text-only filters (SOURCE + TESTS PASS; VISUAL QA PENDING)
+- Owner screenshots showed opaque dark surfaces behind the Duels matrix, personal comparison table, Equipment team/player tables and grenade panels. Replaced those panel/table/row fills with transparent backgrounds so the existing page wallpaper remains visible, preserving text, column separators and table structure.
+- Removed pill/oval backgrounds, outlines, rounded borders and shadows from Match Room statistic category buttons, team/player sort controls, All/T/CT filters, Equipment category controls and Used/Unused grenade filters. They now render as plain text labels; active choice is orange text with a thin underline. Personal-comparison select is also transparent and text-like.
+- Kept the Results, Duels and Equipment navigation tabs and their content/handlers intact. No changes to gameplay data, database, SQL, migrations, RLS/grants, production or main.
+- Cache key: `matchroom-transparent-plain-text-controls-20261117-v53`.
+- Source commit: pending this checkpoint commit.
+- Visual verification against owner screenshots is pending; automated tests cannot confirm pixel rendering.

@@ -262,3 +262,8 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Scope: JavaScript syntax checks and Node regression/static contracts for Duels matchup matrix, personal comparison, Equipment categories/team-player controls, grenade breakdown, asset cache marker and preservation of existing Results categories.
 - Does not prove browser rendering, screenshot-level visual fidelity, DEV deployment, real duel/equipment data availability, or correctness of future event-source integration. All new Duels/Equipment metrics remain explicitly labelled zero placeholders.
 - No DB writes, SQL, migrations, RLS/grants, production or `main` changes.
+
+## 2026-11-17 — Transparent Duels/Equipment and text-only filters
+
+- Static/regression coverage added for transparent matrix/table/panel surfaces and text-only category/filter controls. Quality Gate result pending.
+- Browser screenshot comparison and DEV deployment are not performed by this commit.

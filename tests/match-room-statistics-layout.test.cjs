@@ -247,3 +247,22 @@ test('Duels and Equipment zero placeholders are visibly disclosed and do not ove
   assert.match(app, /id:'trades',label:'Размены'/);
   assert.match(app, /id:'clutches',label:'Клатчи'/);
 });
+
+
+test('Duels and Equipment use transparent surfaces with no opaque card or row fills', () => {
+  const pass = css.slice(css.lastIndexOf('/* 2026-11-17 — Match Room Duels/Equipment transparent surfaces'));
+  for (const selector of ['.match-duel-matrix-wrap','.match-duel-matrix th','.match-stat-subview-table td','.match-equipment-team','.match-equipment-table td','.match-grenade-team']) {
+    assert.ok(pass.includes(selector), 'missing transparent override for '+selector);
+  }
+  assert.match(pass, /background:transparent!important/);
+  assert.match(pass, /background-color:transparent!important/);
+  assert.match(pass, /box-shadow:none!important/);
+});
+
+test('Match Room category and filter controls are plain text, not oval pills', () => {
+  const pass = css.slice(css.lastIndexOf('/* 2026-11-17 — Match Room Duels/Equipment transparent surfaces'));
+  assert.match(pass, /\.match-stat-categories button,[\s\S]*border-radius:0!important/);
+  assert.match(pass, /\.match-equipment-controls button,[\s\S]*background:transparent!important/);
+  assert.match(pass, /\.match-grenade-breakdown nav button\.active[\s\S]*border-bottom-color:#ff5a1f!important/);
+  assert.match(pass, /\.match-duel-comparison select[\s\S]*border-radius:0!important/);
+});

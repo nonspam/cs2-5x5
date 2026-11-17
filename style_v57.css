@@ -10019,3 +10019,155 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
 #matchRoomPage .match-equipment-elo{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
 #matchRoomPage .match-duel-selected-caption{display:block;margin:-6px 0 12px;color:rgba(255,255,255,.48);font-size:10px}
 #matchRoomPage .match-duel-selected-caption b{color:#eee;font-size:11px}
+
+
+/* 2026-11-17 — Match Room Duels/Equipment transparent surfaces + text-only selectors */
+#matchRoomPage [data-stat-subview="duels"],
+#matchRoomPage [data-stat-subview="equipment"],
+#matchRoomPage .match-duel-matrix-wrap,
+#matchRoomPage .match-duel-comparison,
+#matchRoomPage .match-equipment-team,
+#matchRoomPage .match-equipment-teams,
+#matchRoomPage .match-equipment-player-list,
+#matchRoomPage .match-grenade-breakdown,
+#matchRoomPage .match-grenade-team,
+#matchRoomPage .match-grenade-teams,
+#matchRoomPage .match-stat-subview-table-wrap{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+#matchRoomPage .match-stat-zero-note,
+#matchRoomPage .match-equipment-side-note{
+  background:transparent!important;
+  background-color:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:8px 0!important;
+}
+#matchRoomPage .match-duel-matrix,
+#matchRoomPage .match-duel-matrix thead,
+#matchRoomPage .match-duel-matrix tbody,
+#matchRoomPage .match-duel-matrix tr,
+#matchRoomPage .match-duel-matrix th,
+#matchRoomPage .match-duel-matrix td,
+#matchRoomPage .match-stat-subview-table,
+#matchRoomPage .match-stat-subview-table thead,
+#matchRoomPage .match-stat-subview-table tbody,
+#matchRoomPage .match-stat-subview-table tr,
+#matchRoomPage .match-stat-subview-table th,
+#matchRoomPage .match-stat-subview-table td,
+#matchRoomPage .match-equipment-table,
+#matchRoomPage .match-equipment-table thead,
+#matchRoomPage .match-equipment-table tbody,
+#matchRoomPage .match-equipment-table tr,
+#matchRoomPage .match-equipment-table th,
+#matchRoomPage .match-equipment-table td{
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+#matchRoomPage .match-duel-matrix th,
+#matchRoomPage .match-duel-matrix td,
+#matchRoomPage .match-stat-subview-table th,
+#matchRoomPage .match-stat-subview-table td,
+#matchRoomPage .match-equipment-table th,
+#matchRoomPage .match-equipment-table td{
+  border-color:rgba(255,255,255,.10)!important;
+}
+#matchRoomPage .match-duel-matrix tbody th,
+#matchRoomPage .match-equipment-team-head,
+#matchRoomPage .match-grenade-team>header,
+#matchRoomPage .match-grenade-legend,
+#matchRoomPage .match-grenade-chart-grid{
+  background:transparent!important;
+  background-color:transparent!important;
+  border-color:rgba(255,255,255,.10)!important;
+}
+#matchRoomPage .match-duel-cell,
+#matchRoomPage .match-duel-cell b,
+#matchRoomPage .match-grenade-total{
+  border-radius:2px!important;
+}
+#matchRoomPage .match-stat-toolbar,
+#matchRoomPage .match-stat-categories,
+#matchRoomPage .match-stat-controls,
+#matchRoomPage .match-stat-mode,
+#matchRoomPage .match-stat-side,
+#matchRoomPage .match-equipment-toolbar,
+#matchRoomPage .match-equipment-categories,
+#matchRoomPage .match-equipment-controls,
+#matchRoomPage .match-equipment-controls>div,
+#matchRoomPage .match-grenade-breakdown nav{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#matchRoomPage .match-stat-categories button,
+#matchRoomPage .match-stat-mode button,
+#matchRoomPage .match-stat-side button,
+#matchRoomPage .match-equipment-categories button,
+#matchRoomPage .match-equipment-controls button,
+#matchRoomPage .match-grenade-breakdown nav button{
+  appearance:none!important;
+  min-height:0!important;
+  height:auto!important;
+  padding:5px 0 7px!important;
+  margin:0 14px 0 0!important;
+  border:0!important;
+  border-bottom:2px solid transparent!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:rgba(255,255,255,.58)!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  line-height:1.35!important;
+  cursor:pointer!important;
+}
+#matchRoomPage .match-stat-categories button.active,
+#matchRoomPage .match-stat-mode button.active,
+#matchRoomPage .match-stat-side button.active,
+#matchRoomPage .match-equipment-categories button.active,
+#matchRoomPage .match-equipment-controls button.active,
+#matchRoomPage .match-grenade-breakdown nav button.active{
+  border-bottom-color:#ff5a1f!important;
+  background:transparent!important;
+  color:#ff6428!important;
+  box-shadow:none!important;
+}
+#matchRoomPage .match-equipment-toolbar{
+  padding:0 0 10px!important;
+}
+#matchRoomPage .match-duel-comparison select{
+  appearance:none!important;
+  min-width:0!important;
+  height:auto!important;
+  padding:2px 18px 4px 0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.24)!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#fff!important;
+}
+#matchRoomPage .match-duel-comparison select:focus,
+#matchRoomPage .match-duel-comparison select:hover{
+  border-bottom-color:#ff6428!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+#matchRoomPage .match-duel-comparison select option{
+  background:#151719!important;
+  color:#fff!important;
+}
