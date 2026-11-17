@@ -855,3 +855,13 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Source commits: `2fa4ef2d92f4b42f9260ceedd6a3592838cea194` and follow-up render fix `e3ca00d502ce6bc21dfdfb59937a108dd2cea8f0`.
 - Quality Gate [44157848516](https://github.com/nonspam/cs2-5x5/actions/runs/44157848516): **346 passed / 0 failed / 0 skipped**, confirmed from validate job log.
 - Browser visual QA and DEV deployment were not performed; do not claim pixel-level visual verification.
+
+## 2026-11-17 — Duels comparison interaction, matrix winner colors and compact Equipment headers (SOURCE + TESTS PASS; BROWSER QA PENDING)
+- User screenshot showed the Renat selector still rendered as an oval and other players did not appear. Root cause: `app_v57.js` cache query in `index.html` was still `restore-right-profile-entry-20261117-v21`, despite later JS changes; browser could keep serving stale JS. Bumped JS asset key to `duels-player-picker-matrix-colors-equipment-wrap-20261117-v22` and CSS key to `...-v54`.
+- Replaced the native select/pill with visible plain-text team switches and clickable player names. Both teams expose all five players; choosing a player switches the personal comparison to the five opponents from the opposite team. Switching teams automatically selects that team's first player. Selected player name is shown above the opponent table with duel-rating and kill placeholders.
+- Duels matrix remains rows = left team, columns = top team. Cell coloring semantics: tie -> both neutral grey; left-team win -> left value blue and right value neutral; top-team win -> top value green and left value neutral. Current values remain 0 × 0 placeholders because the current event source does not provide head-to-head duel events; no fabricated scores.
+- Equipment: General headers now use two-line labels and the table is fixed to available width (no horizontal page drag for this table). Support is limited to the six requested metrics through flash duration: flashes thrown, flash success %, flash assists, blind kills, enemies blinded, blind duration. Unneeded support columns after blind duration removed.
+- Source commit `714eb6ccbaca43ac70c6de489505083048e5700f`; test follow-up `c0c609db3ce54dacbb254f31c5183e098b8d2943`.
+- Quality Gate [44165796338](https://github.com/nonspam/cs2-5x5/actions/runs/44165796338): **348 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- No database/SQL/migration/RLS/grant, production or main changes.
+- Browser visual QA and DEV deployment remain unverified. After deployment, confirm the browser loads the new v22/v54 assets and compare the no-pill player picker, 5-vs-5 opponent switching, winner colors and equipment width against the supplied screenshots.

@@ -276,3 +276,9 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 - Quality Gate [44157848516](https://github.com/nonspam/cs2-5x5/actions/runs/44157848516), commit `e3ca00d502ce6bc21dfdfb59937a108dd2cea8f0`: **346 passed / 0 failed / 0 skipped**.
 - Covers selector options for both teams, per-player opponent tbody rendering, active tbody switching and plain-text selector styling.
 - Does not verify browser interaction, screenshot fidelity or DEV deployment. Values remain zero placeholders.
+
+## 2026-11-17 — Duels/Equipment follow-up
+
+- Quality Gate [44165796338](https://github.com/nonspam/cs2-5x5/actions/runs/44165796338), tested commit `c0c609db3ce54dacbb254f31c5183e098b8d2943`: **348 passed / 0 failed / 0 skipped**.
+- Covers visible clickable team/player choices, opposite-team rows, matrix color rules, Equipment two-line headers, six Support metrics and cache-busting asset versions.
+- Does not verify browser rendering or DEV deployment. Head-to-head values remain explicit zero placeholders until source events exist.
