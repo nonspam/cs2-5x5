@@ -9611,3 +9611,18 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T13:28:36-05:00 — docs(project-memory): checkpoint FACEIT Duels and Equipment rebuild
+
+- Commit: 7afab5864223d33445e9921b01019babf35e4438
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+- M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
+- M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
