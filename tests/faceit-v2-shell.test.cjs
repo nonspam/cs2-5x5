@@ -1112,7 +1112,7 @@ test('profile and Match Room workspaces use centered bounded desktop canvases',(
 test('Profile and Home layout normalization keeps columns constrained and readable',()=>{
  assert.match(css,/#playerProfileWindow #playerProfileMount\{[\s\S]*display:block!important/);
  assert.doesNotMatch(css,/#playerProfileWindow #playerProfileMount,\s*#playerProfileWindow \.faceit-profile-shell,\s*#playerProfileWindow \.faceit-exact-shell\{[\s\S]*display:grid!important/);
- assert.match(html,/matchroom-overview-stats-expanded-top-restored-20261117-v41/);
+ assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
  assert.match(css,/grid-template-columns:minmax\(220px,260px\) minmax\(0,1fr\) minmax\(200px,240px\)!important/);
  assert.match(css,/\.home-rebuild>\.home-left/);
  assert.match(css,/#playerProfileWindow #playerProfileMount>\.faceit-exact-shell\{[\s\S]*column-gap:32px!important/);
@@ -1125,7 +1125,7 @@ test('Profile analytics column is pulled away from the identity card on desktop'
  assert.match(css,/#playerProfileWindow #playerProfileMount>\.faceit-exact-shell\{[\s\S]*grid-template-columns:minmax\(0,300px\) minmax\(0,1fr\)!important;[\s\S]*column-gap:32px!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-player-column\{[\s\S]*max-width:300px!important[\s\S]*padding:18px 20px!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*padding-left:0!important/);
- assert.match(html,/matchroom-overview-stats-expanded-top-restored-20261117-v41/);
+ assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
 });
 
 
@@ -1133,7 +1133,7 @@ test('Match Room overview and statistics use a wider desktop canvas without scal
  assert.match(css,/#matchRoomPage>\.match-room-content\{[\s\S]*width:min\(calc\(100% - 64px\),1360px\)!important;[\s\S]*max-width:1360px!important/);
  assert.match(css,/#matchRoomPage \.match-stat-awards\{[\s\S]*width:min\(100%,1240px\)!important;[\s\S]*max-width:1240px!important/);
  assert.match(css,/#matchRoomPage \.match-room-overview-view,[\s\S]*#matchRoomPage \.match-room-statistics-view\{[\s\S]*width:100%!important;max-width:none!important/);
- assert.match(html,/matchroom-overview-stats-expanded-top-restored-20261117-v41/);
+ assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
 });
 
 
@@ -1143,7 +1143,7 @@ test('Match Room TOP keeps the compact FACEIT-like row sizing',()=>{
  assert.match(css,/#matchRoomPage \.match-stat-top-row>strong\{[\s\S]*text-align:center!important/);
  assert.match(css,/#matchRoomPage \.match-stat-top-row>\.match-stat-top-score\{[\s\S]*font-size:11px!important/);
  assert.match(css,/#matchRoomPage \.match-stat-top-row>b:last-child\{[\s\S]*font-size:16px!important/);
- assert.match(html,/matchroom-overview-stats-expanded-top-restored-20261117-v41/);
+ assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
 });
 
 
@@ -1154,5 +1154,14 @@ test('Match Room TOP stays compact while Overview and Statistics receive the wid
  assert.match(css,/#matchRoomPage \.match-room-columns\{[\s\S]*minmax\(340px,1\.12fr\)/);
  assert.match(css,/#matchRoomPage \.match-stat-awards\{[\s\S]*max-width:1400px!important/);
  assert.match(css,/#matchRoomPage \.match-stat-teams\{[\s\S]*max-width:1400px!important/);
- assert.match(html,/matchroom-overview-stats-expanded-top-restored-20261117-v41/);
+ assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
+});
+
+
+test('Match Room TOP centers K/D/A in the row while keeping name left and K/D right',()=>{
+ assert.match(css,/#matchRoomPage \.match-stat-top-row\{[\s\S]*grid-template-columns:28px 38px minmax\(0,1fr\) 58px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>\.match-stat-top-score\{[\s\S]*left:50%!important;top:50%!important;[\s\S]*transform:translate\(-50%,-50%\)!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>strong\{[\s\S]*text-align:left!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-top-row>b:last-child\{[\s\S]*text-align:right!important/);
+ assert.match(html,/matchroom-top-kda-centered-20261117-v42/);
 });
