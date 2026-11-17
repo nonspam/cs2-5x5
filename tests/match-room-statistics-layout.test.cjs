@@ -184,8 +184,8 @@ test('FACEIT reference pass widens the persistent rail and increases match stati
 
 
 test('desktop FACEIT app rail uses 236px width from live screenshot correction', () => {
-  const css = fs.readFileSync(path.join(ROOT, 'style_v57.css'), 'utf8');
   const pass = css.slice(css.lastIndexOf('final desktop rail width correction'));
+  assert.match(pass, /#view > \.faceit-exact-shell\.faceit-app-shell\.faceit-route-shell/);
   assert.match(pass, /grid-template-columns:236px minmax\(0,1fr\)!important/);
   assert.match(pass, /width:236px!important;min-width:236px!important;max-width:236px!important/);
   assert.match(pass, /height:38px!important;min-height:38px!important/);
