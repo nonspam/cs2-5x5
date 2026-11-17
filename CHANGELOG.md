@@ -9626,3 +9626,22 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T14:11:35-05:00 — style(match-room): transparent statistics and text-only filters
+
+- Commit: dedb5f88a0f3e7830463b63bb0ca72b0d42b55f5
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/CURRENT_STATE.md
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+- M	docs/PROJECT_MEMORY/QUALITY_HISTORY.md
+- M	docs/PROJECT_MEMORY/SESSION_CHECKPOINT.md
+- M	index.html
+- M	style_v57.css
+- M	tests/faceit-v2-shell.test.cjs
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
