@@ -1,3 +1,12 @@
+## 2026-11-17 — Normalize Profile and Home dashboard geometry (SOURCE + TESTS PASS; DEV DEPLOYMENT BLOCKED)
+- Owner approved fixing both Profile and Home and deploying only to DEV.
+- Replaced the conflicting tail-end layout overrides in style_v57.css with one consolidated responsive geometry block. Desktop app shell reserves the right utility rail once; route rail/content widths are explicit; Home uses stable readable side columns with the center absorbing remaining width; Profile uses a fixed 252px identity column, an 18px gutter, and a minmax(0,1fr) content column. Profile inner widgets and match history are constrained to their own column; tablet/mobile collapse to a single content column.
+- Updated stylesheet cache key in index.html to profile-home-layout-normalized-20261117-v36. Added regression coverage in tests/faceit-v2-shell.test.cjs.
+- Commits: CSS c7daf9f44af6d86dd66d029ad83ef492d61fb71f; cache 7348bf84c4af5687f8d79553a22f20cf2006201a; tests c370d7b0a3d49ffb282c9407d273edcd70b7b814.
+- Quality Gate [44125152842](https://github.com/nonspam/cs2-5x5/actions/runs/44125152842): **328 passed / 0 failed / 0 skipped**, confirmed from validate job log.
+- Deployment is NOT performed: faceit-dev currently contains only quality-gate.yml and project-memory.yml; there is no deployment workflow or connected Cloudflare deploy action available in this session. Browser visual QA could not be started because the browser automation service has insufficient wallet balance. Do not claim DEV is updated.
+- Next: deploy only this faceit-dev HEAD to the DEV Cloudflare Worker through the project's authorized Cloudflare deployment path, then visually verify Home and Profile at the owner's desktop viewport. Never deploy to production.
+
 ## 2026-11-17 — Profile statistics column bleed fix (SOURCE + TESTS PASS; VISUAL QA PENDING)
 - Owner screenshot showed the Profile statistics/content area visually touching and bleeding into the left identity/ELO column.
 - Root cause in the active stylesheet: the modal's two-column grid had no gutter; child cards retained legacy sizing behavior and the profile content allowed horizontal overflow. The left identity card and statistics canvas were not isolated as independent boxes.
