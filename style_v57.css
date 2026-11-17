@@ -9849,3 +9849,26 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     padding-left:0!important;padding-right:0!important;
   }
 }
+
+
+/* 2026-11-17 — Match statistics: enlarge MVP slightly and align all four leader cards edge-to-edge. */
+@media(min-width:1051px){
+  #matchRoomPage .match-stat-awards{
+    align-items:stretch!important;
+  }
+  #matchRoomPage .match-stat-awards .match-stat-mvp-card{
+    height:236px!important;min-height:236px!important;
+    align-self:stretch!important;
+  }
+  #matchRoomPage .match-stat-highlight-grid{
+    height:236px!important;min-height:236px!important;
+    align-self:stretch!important;
+    grid-template-rows:repeat(4,minmax(0,1fr))!important;
+    align-content:stretch!important;
+    gap:6px!important;
+  }
+  #matchRoomPage .match-stat-awards .match-stat-highlight{
+    height:auto!important;min-height:0!important;
+    align-self:stretch!important;
+  }
+}
