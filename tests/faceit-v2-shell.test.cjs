@@ -1127,3 +1127,11 @@ test('Profile analytics column is pulled away from the identity card on desktop'
  assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*padding-left:0!important/);
  assert.match(html,/profile-identity-content-spacing-20261117-v38/);
 });
+
+
+test('Match Room overview and statistics use a wider desktop canvas without scaling UI elements',()=>{
+ assert.match(css,/#matchRoomPage>\.match-room-content\{[\s\S]*width:min\(calc\(100% - 64px\),1360px\)!important;[\s\S]*max-width:1360px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards\{[\s\S]*width:min\(100%,1240px\)!important;[\s\S]*max-width:1240px!important/);
+ assert.match(css,/#matchRoomPage \.match-room-overview-view,[\s\S]*#matchRoomPage \.match-room-statistics-view\{[\s\S]*width:100%!important;max-width:none!important/);
+ assert.match(html,/matchroom-overview-statistics-width-20261117-v39/);
+});
