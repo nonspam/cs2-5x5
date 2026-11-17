@@ -171,3 +171,13 @@ test('Desktop navigation rail uses the actual top-level app grid and has FACEIT-
   assert.match(polish, /min-width:210px!important/);
   assert.match(polish, /margin-top:22px!important;margin-bottom:28px!important/);
 });
+
+
+test('FACEIT reference pass widens the persistent rail and increases match statistics spacing', () => {
+  const rail = css.slice(css.lastIndexOf('/* 2026-11-17 — FACEIT reference spacing pass'));
+  assert.match(rail, /grid-template-columns:216px minmax\(0,1fr\)!important/);
+  assert.match(rail, /margin:30px 0 10px!important/);
+  assert.match(rail, /margin-top:34px!important/);
+  assert.match(rail, /margin-bottom:52px!important/);
+  assert.match(rail, /\.match-stat-awards\s*\{[\s\S]*margin-top:0!important/);
+});
