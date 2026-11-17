@@ -8921,3 +8921,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T11:44:54-05:00 — style(match-room): enlarge top ranking rows and KDA values
+
+- Commit: b1e4b5329e5b2e2e926e7d908a2479c666ab26d6
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
