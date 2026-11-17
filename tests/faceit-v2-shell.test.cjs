@@ -1184,3 +1184,14 @@ test('Match Room Overview restores compact fixed-height map cards without stretc
  assert.match(css,/#matchRoomPage \.match-room-center-column \.match-room-veto\{\s*flex:none!important/);
  assert.match(html,/matchroom-overview-map-size-restored-20261117-v45/);
 });
+
+
+test('Match Room Statistics centers MVP and category controls and keeps all four leader cards compact',()=>{
+ assert.match(css,/@media\(min-width:1051px\)\{[\s\S]*#matchRoomPage \.match-stat-awards,[\s\S]*width:calc\(100% - 34px\)!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards\{\s*display:grid!important;\s*grid-template-columns:minmax\(0,1fr\) minmax\(300px,1fr\)!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-mvp-card\{\s*height:220px!important;min-height:220px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-highlight-grid\{[\s\S]*grid-template-rows:repeat\(4,49px\)!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight\{\s*width:100%!important;height:49px!important;min-height:49px!important/);
+ assert.match(css,/#matchRoomPage \.match-stat-awards \.match-stat-highlight-value small\{\s*white-space:nowrap!important/);
+ assert.match(html,/matchroom-stats-centered-compact-leaders-20261117-v46/);
+});
