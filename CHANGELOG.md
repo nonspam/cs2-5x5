@@ -8430,3 +8430,17 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/match-room-statistics-layout.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T09:15:31-05:00 — style: widen desktop navigation rail
+
+- Commit: e5d714d081eb2b3b770e5c87b9f154b1cd9c2828
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+- M	style_v57.css
+- M	tests/match-room-statistics-layout.test.cjs
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
