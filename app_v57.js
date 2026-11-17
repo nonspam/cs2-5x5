@@ -271,12 +271,14 @@ window.addEventListener('hashchange',restoreAppRouteFromHistory);
 function faceitAppRailMarkup(){
  const items=[['home','⌂','Главное'],['analytics','♙','Статистика'],['ranking','▥','Рейтинг'],['base','▤','Матчи'],['maps','◫','Карты'],['teams','♟','Составы'],['records','♜','Рекорды']];
  return '<div class="faceit-exact-brand" aria-label="CS2 Analytics">◢</div>'+
+  '<div class="faceit-exact-search faceit-rail-search" id="sitePlayerSearch" role="search"><span aria-hidden="true">⌕</span><input id="sitePlayerSearchInput" type="search" placeholder="Поиск" autocomplete="off" aria-label="Поиск игрока" aria-controls="sitePlayerSearchResults"><div id="sitePlayerSearchResults" class="site-player-search-results" role="listbox" hidden></div></div>'+
   '<div class="faceit-exact-game">◉ <b>CS2 ANALYTICS</b></div>'+
   '<nav aria-label="Разделы сайта">'+items.map(([id,ico,label])=>'<button type="button" class="'+(state.tab===id?'active':'')+'" '+(state.tab===id?'aria-current="page" ':'')+'data-app-route="'+id+'">'+ico+' <span>'+label+'</span></button>').join('')+'</nav>'+
   '<div class="faceit-exact-rail-bottom"><button type="button" class="'+(state.tab==='settings'?'active':'')+'" '+(state.tab==='settings'?'aria-current="page" ':'')+'data-app-route="settings">⚙ <span>Настройки</span></button></div>';
 }
 function bindAppShell(root){
  root.querySelectorAll('[data-app-route]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.appRoute==='track')state.trackTargetId=null;navigateApp(button.dataset.appRoute)}));
+ bindSitePlayerSearch(root);
  root.querySelector('[data-account-open]')?.addEventListener('click',()=>window.openAccountAuth?.());
 }
 function renderRouteShell(v,page){
@@ -914,13 +916,6 @@ function home(v){
   const key=ps[0]||null;
   v.innerHTML=`
   <section class="home-shell home-rebuild">
-      <div class="home-player-search-row">
-        <div class="home-player-search-label">ПОИСК ИГРОКА</div>
-        <div class="site-player-search home-player-search" id="sitePlayerSearch" role="search">
-          <input id="sitePlayerSearchInput" type="search" placeholder="Введите ник игрока..." autocomplete="off" aria-label="Поиск игрока" aria-controls="sitePlayerSearchResults">
-          <div id="sitePlayerSearchResults" class="site-player-search-results" role="listbox" hidden></div>
-        </div>
-      </div>
     <aside class="home-left">
       <section class="panel home-panel last-match-panel">
         <div class="section-head"><div><h2>Последняя игра</h2><div class="muted">Обновляется автоматически</div></div><button class="text-link" onclick="navigateApp('base')">Все игры ›</button></div>
