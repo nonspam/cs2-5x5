@@ -740,3 +740,12 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Corrected the cascade: #playerProfileMount is now a full-width block; only its direct .faceit-exact-shell child owns the 252px + flexible content grid with an 18px gutter. Added a regression assertion and bumped the stylesheet cache key to profile-mount-grid-fix-20261117-v37.
 - Source commits: CSS 9332805e5686fa0f099bc8ce53a03c64ad45d460; HTML ef01cb34a64f05d8a906b6b253c4abccbf25b2d7; tests ba906f58ca024ef703121ff01db3a49cd155b774.
 - Not yet verified: latest Quality Gate, DEV deployment, or browser screenshot. Do not claim the live DEV page is fixed until the corrected stylesheet is deployed and the profile is visually checked. Home layout rules were left unchanged.
+
+
+## 2026-11-17 — Profile identity/content separation (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- Owner screenshot showed the profile analytics column pressed directly against the identity card; the previous 252px identity track left the profile visually cramped.
+- Desktop Profile window now uses a 300px identity column and a 32px column gap. Player card/avatar expand within that column; analytics content is shifted right. Mobile/tablet single-column rules are unchanged. Home CSS is untouched.
+- Stylesheet cache key: `profile-identity-content-spacing-20261117-v38`.
+- Commits: CSS `f9857ef255fe30d3b818bc8860b3ef0f1bc0fc85`; HTML `e39292551badc226849dbf25c6dd92718c06b45d`; tests `1e9e7e85d3dfc6662e55f8cc2811f54cc913f3d3`.
+- Quality Gate run [44127100544](https://github.com/nonspam/cs2-5x5/actions/runs/44127100544): **329/329 passed**.
+- Browser visual acceptance is not yet confirmed. User should refresh the DEV profile and compare the identity/statistics separation. No production, DB, or Home layout changes.
