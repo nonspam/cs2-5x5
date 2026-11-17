@@ -1,3 +1,12 @@
+## 2026-11-17 — Narrow and center Profile / Match Room canvas (SOURCE UPDATED; QA PENDING)
+- Owner reported that the previous 1200px profile width change produced no visible improvement. Review of the live CSS cascade found the profile modal uses a two-column grid (identity + content); the prior width cap was not paired with an explicit centered grid-item alignment and did not sufficiently constrain the visible content.
+- Added a final, high-specificity desktop rule: profile content is centered within its own grid column and capped at 1120px; Match Room content is centered and capped at 1240px. Identity/avatar column, global left rail, right utility rail, profile entry, and VS utility are not changed.
+- Updated stylesheet cache key to profile-match-centered-canvas-20261117-v34.
+- Files: style_v57.css, index.html, tests/faceit-v2-shell.test.cjs.
+- Commits: CSS 2885af7c0535072e779c27cfe2b50d6c78c375d6; cache 07818b4a0d0d0eac1f8e901c48e9dc509463de64; regression contract bdcd4994d579120d03eb7605c70e7b24459e627c.
+- Status: source changes pushed to faceit-dev; automated tests, Cloudflare deployment, live browser rendering and owner visual acceptance are NOT yet verified. Do not claim the DEV site has changed until deployment is confirmed.
+- Next: verify the deployment SHA / workflow, then inspect the profile and Match Room at the same desktop viewport. If deployment is not automatic, deploy only the faceit-dev DEV worker after owner authorization; never touch production.
+
 ## 2026-11-17 — Corrective rail width, visible home search and added FACEIT spacing (SOURCE + TESTS PASS)
 - User reported the previous desktop navigation rail still looked too narrow and the player search was not obvious/visible. Root cause of discoverability: search was overlaid inside the home hero artwork. Moved it into a dedicated, clearly labeled row immediately above the hero on the home page, with a visible input and dropdown. Existing live activePlayers() lookup, click-to-profile and Enter behavior retained; no hard-coded names.
 - Corrected desktop rail sizing using the actual top-level #view > .faceit-route-shell.faceit-app-shell grid and direct child rail selectors, rather than only styling the generic route wrapper. Desktop grid/rail now 210px, with an explicit breakpoint for narrow screens.
