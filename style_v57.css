@@ -8907,3 +8907,37 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-stat-subtabs{margin-top:20px!important;margin-bottom:28px!important}
  #matchRoomPage .match-stat-awards{margin-top:0!important;margin-bottom:22px!important}
 }
+
+
+/* 2026-11-17 — final desktop rail width correction from live screenshot */
+@media(min-width:1051px){
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell{
+  display:grid!important;
+  grid-template-columns:236px minmax(0,1fr)!important;
+  width:100%!important;
+ }
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell > .faceit-exact-global-rail{
+  display:flex!important;
+  box-sizing:border-box!important;
+  width:236px!important;min-width:236px!important;max-width:236px!important;
+  flex:0 0 236px!important;
+  padding:22px 19px 18px!important;
+  align-items:stretch!important;
+ }
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell > .faceit-exact-content{
+  min-width:0!important;width:100%!important;
+ }
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-global-rail nav{
+  display:grid!important;width:100%!important;gap:10px!important;margin-top:25px!important;
+ }
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-global-rail nav button,
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-rail-bottom button{
+  width:100%!important;min-width:0!important;max-width:none!important;
+  height:38px!important;min-height:38px!important;padding:0 11px!important;
+  justify-content:flex-start!important;
+ }
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-global-rail nav button span,
+ #view > .faceit-exact-shell.faceit-app-shell.faceit-route-shell .faceit-exact-rail-bottom button span{
+  display:inline!important;
+ }
+}
