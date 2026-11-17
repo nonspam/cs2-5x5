@@ -1,3 +1,5 @@
+- Quality Gate [44123578615](https://github.com/nonspam/cs2-5x5/actions/runs/44123578615): **327 passed / 0 failed / 0 skipped**, confirmed from the validate job log. Browser visual QA, DEV deployment and owner acceptance remain pending.
+
 ## 2026-11-17 — Corrective rail width, visible home search and added FACEIT spacing (SOURCE + TESTS PASS)
 - User reported the previous desktop navigation rail still looked too narrow and the player search was not obvious/visible. Root cause of discoverability: search was overlaid inside the home hero artwork. Moved it into a dedicated, clearly labeled row immediately above the hero on the home page, with a visible input and dropdown. Existing live activePlayers() lookup, click-to-profile and Enter behavior retained; no hard-coded names.
 - Corrected desktop rail sizing using the actual top-level #view > .faceit-route-shell.faceit-app-shell grid and direct child rail selectors, rather than only styling the generic route wrapper. Desktop grid/rail now 210px, with an explicit breakpoint for narrow screens.

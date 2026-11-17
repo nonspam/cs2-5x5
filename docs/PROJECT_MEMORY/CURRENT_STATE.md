@@ -3,7 +3,7 @@
 - Root cause in the active stylesheet: the modal's two-column grid had no gutter; child cards retained legacy sizing behavior and the profile content allowed horizontal overflow. The left identity card and statistics canvas were not isolated as independent boxes.
 - Added a 16px desktop grid gutter, border-box sizing and width constraints to the identity card/badges, horizontal clipping on both columns, and bounded the season/statistics widget grid to the available content width. No profile data, calculations, navigation or upload behavior changed.
 - Files: style_v57.css, index.html (CSS cache key profile-stats-column-guard-20261117-v35), tests/faceit-v2-shell.test.cjs, SESSION_CHECKPOINT.md, CURRENT_STATE.md, DEVELOPMENT_LOG.md.
-- Status: source change committed to faceit-dev; CI, DEV deployment, live browser rendering and owner visual acceptance pending. Do not claim the live site is fixed until deployment and screenshot QA are verified.
+- Status: source change committed to faceit-dev; Quality Gate [44123578615](https://github.com/nonspam/cs2-5x5/actions/runs/44123578615): **327 passed / 0 failed / 0 skipped**, confirmed from the validate job log. Browser visual QA, DEV deployment and owner acceptance remain pending. Browser visual QA, DEV deployment and owner visual acceptance remain pending. Do not claim the live site is fixed until deployment and screenshot QA are verified.
 - Next: inspect the quality-gate result, then verify the Profile at the same desktop viewport and confirm the stats column remains fully right of the identity rail without clipping its own content.
 
 ## 2026-11-17 — Narrow and center Profile / Match Room canvas (SOURCE UPDATED; QA PENDING)
