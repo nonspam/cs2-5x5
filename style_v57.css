@@ -10014,3 +10014,8 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
  #matchRoomPage .match-grenade-legend{grid-template-columns:repeat(3,minmax(0,1fr))}
  #matchRoomPage .match-grenade-chart-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
+#matchRoomPage .match-equipment-rank{display:inline-flex;vertical-align:middle;margin-right:6px}
+#matchRoomPage .match-equipment-elo{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+#matchRoomPage .match-duel-selected-caption{display:block;margin:-6px 0 12px;color:rgba(255,255,255,.48);font-size:10px}
+#matchRoomPage .match-duel-selected-caption b{color:#eee;font-size:11px}
