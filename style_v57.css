@@ -9402,7 +9402,6 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;
     box-sizing:border-box!important;overflow:hidden!important;
   }
-  #playerProfileWindow #playerProfileMount,
   #playerProfileWindow .faceit-profile-shell,
   #playerProfileWindow .faceit-exact-shell{
     display:grid!important;grid-template-columns:minmax(0,252px) minmax(0,1fr)!important;
@@ -9464,4 +9463,21 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
   #playerProfileWindow.player-profile-window,
   #playerProfileWindow .player-profile-window-backdrop{left:0!important;right:0!important}
   #playerProfileWindow .faceit-profile-top-widgets{grid-template-columns:minmax(0,1fr)!important}
+}
+
+
+/* 2026-11-17 — FIX: the mount has one shell child; only the shell owns the two-column grid. */
+@media(min-width:1051px){
+  #playerProfileWindow #playerProfileMount{
+    display:block!important;
+    width:100%!important;max-width:none!important;min-width:0!important;
+    margin:0!important;padding:0!important;box-sizing:border-box!important;
+  }
+  #playerProfileWindow #playerProfileMount>.faceit-exact-shell{
+    display:grid!important;
+    grid-template-columns:minmax(0,252px) minmax(0,1fr)!important;
+    column-gap:18px!important;
+    width:100%!important;max-width:none!important;min-width:0!important;
+    margin:0!important;box-sizing:border-box!important;
+  }
 }
