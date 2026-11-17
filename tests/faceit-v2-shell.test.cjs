@@ -1093,3 +1093,9 @@ test('Match Room team information strip is transparent and most-kills block is s
  assert.match(css,/\.match-stat-highlight\.is-kills-leader/);
  assert.doesNotMatch(css,/translateX\(10px\)!important|margin-right:-12px!important/);
 });
+
+
+test('profile and Match Room workspaces use centered bounded desktop canvases',()=>{
+  assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*justify-self:center!important[\s\S]*width:min\(100%,1120px\)!important[\s\S]*max-width:1120px!important/);
+  assert.match(css,/#matchRoomPage>\.match-room-content\{[\s\S]*justify-self:center!important[\s\S]*width:min\(calc\(100% - 48px\),1240px\)!important[\s\S]*max-width:1240px!important/);
+});
