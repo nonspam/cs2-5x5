@@ -132,12 +132,13 @@ test('Match Room has no standalone roster strip or like/dislike controls beneath
 
 
 
-test('Home page exposes real-player search with suggestions and Enter-to-open profile', () => {
-  const homeMarkup = app.slice(app.indexOf('function home(v)'), app.indexOf('function homeLastRows'));
-  assert.match(homeMarkup, /id="sitePlayerSearch"/);
-  assert.match(homeMarkup, /id="sitePlayerSearchInput"/);
-  assert.match(homeMarkup, /id="sitePlayerSearchResults"/);
-  assert.match(homeMarkup, /bindSitePlayerSearch\(v\)/);
+test('Persistent sidebar exposes real-player search with suggestions and Enter-to-open profile', () => {
+  const railMarkup = app.slice(app.indexOf('function faceitAppRailMarkup'), app.indexOf('function bindAppShell'));
+  assert.match(railMarkup, /id="sitePlayerSearch"/);
+  assert.match(railMarkup, /id="sitePlayerSearchInput"/);
+  assert.match(railMarkup, /id="sitePlayerSearchResults"/);
+  assert.doesNotMatch(app.slice(app.indexOf('function home(v)'), app.indexOf('function homeLastRows')), /sitePlayerSearch/);
+  assert.match(app.slice(app.indexOf('function bindAppShell'), app.indexOf('function renderRouteShell')), /bindSitePlayerSearch\(root\)/);
   const binder = app.slice(app.indexOf('function bindSitePlayerSearch'), app.indexOf('if(document.readyState', app.indexOf('function bindSitePlayerSearch')));
   assert.match(binder, /activePlayers\(\)/);
   assert.match(binder, /event\.key==='Enter'/);
@@ -153,12 +154,14 @@ test('Match Room compact polish keeps content slightly narrower and adds breathi
 });
 
 
-test('Home player search is visibly placed above the hero, not overlaid on its artwork', () => {
+test('Player search is placed at the top of the left sidebar, outside the home content columns', () => {
+  const railMarkup = app.slice(app.indexOf('function faceitAppRailMarkup'), app.indexOf('function bindAppShell'));
+  assert.ok(railMarkup.indexOf('faceit-exact-brand') < railMarkup.indexOf('faceit-rail-search'));
+  assert.ok(railMarkup.indexOf('faceit-rail-search') < railMarkup.indexOf('faceit-exact-game'));
+  assert.ok(railMarkup.indexOf('faceit-rail-search') < railMarkup.indexOf('<nav'));
   const homeMarkup = app.slice(app.indexOf('function home(v)'), app.indexOf('function homeLastRows'));
-  assert.match(homeMarkup, /home-player-search-row/);
-  assert.ok(homeMarkup.indexOf('home-player-search-row') < homeMarkup.indexOf('home-rebuild-hero'));
-  assert.match(homeMarkup, /placeholder="Введите ник игрока/);
-  assert.match(homeMarkup, /bindSitePlayerSearch\(v\)/);
+  assert.doesNotMatch(homeMarkup, /home-player-search-row|sitePlayerSearch/);
+  assert.match(css, /\.faceit-route-shell \.faceit-rail-search/);
 });
 
 test('Desktop navigation rail uses the actual top-level app grid and has FACEIT-like width', () => {
