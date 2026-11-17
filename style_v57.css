@@ -9700,3 +9700,46 @@ body.has-account-wallpaper #matchRoomPage>.match-room-content{
     text-align:right!important;
   }
 }
+
+
+/* 2026-11-17 — Overview alignment: center map with roster headers and balance column proportions. */
+@media(min-width:1101px){
+  #matchRoomPage .match-room-view-tabs{
+    display:flex!important;width:100%!important;max-width:none!important;
+    margin:14px auto 20px!important;
+    justify-content:center!important;align-items:stretch!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-room-columns{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(380px,1.22fr) minmax(0,1fr)!important;
+    align-items:start!important;
+    gap:clamp(16px,1.55vw,24px)!important;
+    margin-top:24px!important;
+  }
+  #matchRoomPage .match-room-team{
+    align-self:start!important;min-width:0!important;
+  }
+  #matchRoomPage .match-room-center-column{
+    align-self:start!important;min-width:0!important;
+    padding-top:32px!important;
+    box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-room-center-column .match-room-center-heading{
+    margin-top:0!important;
+    margin-bottom:10px!important;
+  }
+  #matchRoomPage .match-room-center-column .match-room-map-list{
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;width:100%!important;
+  }
+  #matchRoomPage .match-room-center-column .match-map-row-cover{
+    width:100%!important;height:142px!important;min-height:142px!important;
+    max-height:142px!important;box-sizing:border-box!important;
+  }
+  #matchRoomPage .match-room-center-column .match-room-veto{
+    width:100%!important;min-height:104px!important;
+    margin-top:14px!important;padding:14px 16px!important;
+    box-sizing:border-box!important;
+  }
+}
