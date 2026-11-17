@@ -1097,7 +1097,7 @@ test('Match Room team information strip is transparent and most-kills block is s
 
 
 test('Profile statistics stay inside the content column and cannot overlap the identity rail',()=>{
- assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*grid-template-columns:minmax\(0,252px\) minmax\(0,1fr\)!important;[\s\S]*column-gap:16px!important/);
+ assert.match(css,/#playerProfileWindow #playerProfileMount>\.faceit-exact-shell\{[\s\S]*grid-template-columns:minmax\(0,300px\) minmax\(0,1fr\)!important;[\s\S]*column-gap:32px!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-player-column\{[\s\S]*box-sizing:border-box!important;[\s\S]*overflow-x:hidden!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-player-card,[\s\S]*width:100%!important;min-width:0!important;max-width:100%!important/);
  assert.match(css,/#playerProfileWindow \.faceit-exact-content\{[\s\S]*overflow-x:hidden!important/);
@@ -1112,10 +1112,10 @@ test('profile and Match Room workspaces use centered bounded desktop canvases',(
 test('Profile and Home layout normalization keeps columns constrained and readable',()=>{
  assert.match(css,/#playerProfileWindow #playerProfileMount\{[\s\S]*display:block!important/);
  assert.doesNotMatch(css,/#playerProfileWindow #playerProfileMount,\s*#playerProfileWindow \.faceit-profile-shell,\s*#playerProfileWindow \.faceit-exact-shell\{[\s\S]*display:grid!important/);
- assert.match(html,/profile-mount-grid-fix-20261117-v37/);
+ assert.match(html,/profile-identity-content-spacing-20261117-v38/);
  assert.match(css,/grid-template-columns:minmax\(220px,260px\) minmax\(0,1fr\) minmax\(200px,240px\)!important/);
  assert.match(css,/\.home-rebuild>\.home-left/);
- assert.match(css,/#playerProfileWindow \.faceit-exact-shell\{[\s\S]*column-gap:32px!important/);
+ assert.match(css,/#playerProfileWindow #playerProfileMount>\.faceit-exact-shell\{[\s\S]*column-gap:32px!important/);
  assert.match(css,/#playerProfileWindow \.faceit-main-grid\{[\s\S]*grid-template-columns:minmax\(0,1fr\) minmax\(210px,280px\)!important/);
  assert.match(css,/@media\(max-width:1050px\)[\s\S]*#playerProfileWindow \.faceit-main-grid\{grid-template-columns:minmax\(0,1fr\)!important\}/);
 });
