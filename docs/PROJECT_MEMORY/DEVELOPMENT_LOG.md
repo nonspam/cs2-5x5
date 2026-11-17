@@ -822,3 +822,15 @@ Owner's latest screenshots showed the outer cards were translucent but inner lay
 - Commits: app `0105db77997a26c83c9432c04cbecc5e12dc029d`; CSS `8b170194e4fda6f78af29b07b6f52dc3a1edb633`; HTML `7ca2fa2483eec92d1cc4e6ae7d1cb2896895a6c3`; tests `2064a5f9f16674c5605b686eab8d771377ec0b7b` and `8bfeff76b6afad1b6fff0b30041a4de5c1d89ead`.
 - Quality Gate run [44142338085](https://github.com/nonspam/cs2-5x5/actions/runs/44142338085): **340/340 passed**.
 - Browser visual review pending; no production changes.
+
+## 2026-11-17 — Rebuild Match Room Duels and Equipment to FACEIT reference (SOURCE + TESTS PASS; BROWSER QA / DEV DEPLOYMENT PENDING)
+- Owner supplied three reference screenshots and requested Duels and Equipment to match their FACEIT structure while preserving the completed Results categories: Общее, Расширенное, Энтри, Размены, Клатчи.
+- Replaced the previous flat zero-value placeholder tables with a Duels matchup matrix (team A rows vs team B columns, 0 × 0 placeholder cells), player selector for personal comparison, and a comparison table for duel rating, kills/deaths, entry kills/deaths, trades and damage.
+- Equipment now has Общee / Урон / Поддержка categories; team and player sort modes; all / T / КТ controls; two team tables with FACEIT level badge + ELO identity and detailed grenade-use/damage/support columns. T/КТ selection intentionally shows an unavailable-state note because current source data does not identify player-side grenade events; it does not invent side assignments.
+- Added team-level grenade breakdown panels with grenade-type totals and per-player chart slots for HE, flash, incendiary, smoke and decoy. All values and bars are explicit zero placeholders, clearly disclosed as non-factual until a real event source is integrated.
+- Existing Results subviews and their five categories were not rewritten. No database, SQL, migration, RLS, grants, production or main changes.
+- Cache key: `matchroom-duels-equipment-faceit-rebuild-20261117-v52`.
+- Source commits: UI `79e6b728893a5598d17093ac608d7585c00efc44`; rank/selection polish `6b4fc86a33a54e554fb37d7a6cb09cfa0d31b04a`. Test updates: `d24e41c52bd0f206e4311c7e4174fdf4698b30db`, `aeecaa3ca90b4cc7944bd1f41573a06119f5d3a3`, `03c9e129e6b3bf5d98eaee9d0bc183b3672f1c38`.
+- Quality Gate [44148038005](https://github.com/nonspam/cs2-5x5/actions/runs/44148038005): **343 passed / 0 failed / 0 skipped**, confirmed from the validate job log.
+- Browser visual QA, screenshot comparison and DEV deployment have NOT been performed. Automated tests do not prove the layout is pixel-identical to the supplied reference or that it is live on DEV.
+- Next: owner refreshes the DEV build when deployed/available and compares Duels matrix, personal comparison, Equipment categories/tables and grenade breakdown against the supplied screenshots. Fix only the visual deltas reported; preserve the existing five Results categories.

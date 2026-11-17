@@ -255,3 +255,10 @@ The latest confirmed CI evidence recorded here is run `43616036526` on commit `1
 ## 2026-11-15 — Leaderboard glass + K/D update
 - Quality Gate [43760767947](https://github.com/nonspam/cs2-5x5/actions/runs/43760767947), final validation for commit `fee87fc4085b0a07b7ef0736b305efdab8bd4389`: **286 passed / 0 failed / 0 skipped**.
 - Scope: automated Node regression/static checks. Browser screenshot comparison and DEV deployment are not included.
+
+## 2026-11-17 — FACEIT Duels and Equipment rebuild
+
+- Quality Gate [44148038005](https://github.com/nonspam/cs2-5x5/actions/runs/44148038005), tested commit `03c9e129e6b3bf5d98eaee9d0bc183b3672f1c38`: **343 passed / 0 failed / 0 skipped**, confirmed from the actual validate job log.
+- Scope: JavaScript syntax checks and Node regression/static contracts for Duels matchup matrix, personal comparison, Equipment categories/team-player controls, grenade breakdown, asset cache marker and preservation of existing Results categories.
+- Does not prove browser rendering, screenshot-level visual fidelity, DEV deployment, real duel/equipment data availability, or correctness of future event-source integration. All new Duels/Equipment metrics remain explicitly labelled zero placeholders.
+- No DB writes, SQL, migrations, RLS/grants, production or `main` changes.
