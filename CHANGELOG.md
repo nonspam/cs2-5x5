@@ -8368,3 +8368,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	app_v57.js
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T08:44:33-05:00 — chore: bust cache for search position fix
+
+- Commit: 198e189ac9524f37128b4594612c7c0e674fd9f6
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	index.html
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
