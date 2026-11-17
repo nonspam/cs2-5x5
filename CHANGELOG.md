@@ -8789,3 +8789,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	tests/faceit-v2-shell.test.cjs
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T11:29:03-05:00 — Record profile mount grid root-cause fix
+
+- Commit: 4d5335cad5039ae113f6dae8a6317aec056040f2
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
