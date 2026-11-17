@@ -453,3 +453,12 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Commits: CSS `8eea43c9f5abb16399010168b8b5a8bb763bb4f3`; HTML `e8ba8c2cf1db50f6ef8e01e5f518aeed46d61602`; tests `e41d23ead44f3b977e11a57b4f953bb08e1454fc`.
 - Quality Gate run [44134654649](https://github.com/nonspam/cs2-5x5/actions/runs/44134654649): **334/334 passed**.
 - Browser visual review pending; no deployment workflow or browser confirmation performed. Home, Profile, Statistics, and TOP are intentionally untouched.
+
+
+## 2026-11-17 — Match Room Overview map sizing + vertical balance (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- Follow-up screenshots showed the map covers still visually oversized and the central map/veto stack still shorter than the five-player roster columns.
+- Desktop (>1100px): central overview column now stretches to the grid row height (matching the roster columns); it is a flex column. Map list fills available vertical space with two equal rows, each at least 112px, so map covers are slightly shorter than the previous fixed 142px. VETO remains at least 104px. Previous 32px top offset is retained to align the map heading with roster headings. Tablet/mobile behavior unchanged.
+- Cache key: `matchroom-overview-map-balanced-20261117-v44`.
+- Commits: CSS `c5573f1913feb3b4c3ccbdeb645d279461b0d602`; HTML `b7c26c35c7333d85456aa06ad806a69e4b0fa811`; tests `5dd8816a5c941ce3cc651d44cce06a8ec33255f6`.
+- Quality Gate run [44135592411](https://github.com/nonspam/cs2-5x5/actions/runs/44135592411): **335/335 passed**.
+- Browser visual review pending. No production changes.
