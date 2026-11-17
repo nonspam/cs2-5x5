@@ -73,7 +73,9 @@ test('Team information strip and wrapper are transparent while scoreboard remain
 
 
 test('FACEIT team colors tint only the player-name cells by team side and outrank legacy resets', () => {
-  const faceitTint = css.slice(css.lastIndexOf('/* 2026-11-17 — final FACEIT statistics overrides'));
+  const tintStart = css.lastIndexOf('/* 2026-11-17 — final FACEIT statistics overrides');
+  const nextSection = css.indexOf('/* 2026-11-17 — FACEIT Duels matrix', tintStart);
+  const faceitTint = css.slice(tintStart, nextSection > tintStart ? nextSection : undefined);
   assert.match(faceitTint, /#matchRoomPage\.match-room-page[\s\S]*tr\[data-team-side="a"\] > td\.name,[\s\S]*background:#24213f!important/);
   assert.match(faceitTint, /#matchRoomPage\.match-room-page[\s\S]*tr\[data-team-side="b"\] > td\.name,[\s\S]*background:#234239!important/);
   assert.doesNotMatch(faceitTint, /td\.match-stat-rank|td:not\(\.name\)|nth-child/);
@@ -93,7 +95,7 @@ test('Match Room statistics has working Results, Duels and Equipment subviews be
   assert.match(app, /data-stat-subview="duels"/);
   assert.match(app, /data-stat-subview="equipment"/);
   assert.match(app, /duels_won[\s\S]*duels_lost[\s\S]*duel_win_percent/);
-  assert.match(app, /Пока отображаются нулевые значения-заглушки. Это не фактическая статистика матча./);
+  assert.match(app, /Показаны нулевые значения-заглушки\. Это не фактическая статистика матча/);
 });
 
 test('Match Room hero and statistics navigation share the same responsive horizontal container', () => {
