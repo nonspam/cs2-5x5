@@ -8753,3 +8753,15 @@ The first run after the feature commit (`43325544240`, 187/191) exposed four sta
 - M	docs/PROJECT_MEMORY/DEVELOPMENT_LOG.md
 
 > Автоматическая запись GitHub Actions; это не смысловое резюме чата.
+
+## 2026-11-17T11:28:29-05:00 — Fix profile mount width and restore statistics column
+
+- Commit: 9332805e5686fa0f099bc8ce53a03c64ad45d460
+- Author: nonspam <z2z2djt852@privaterelay.appleid.com>
+- Push actor: nonspam
+
+### Changed paths
+
+- M	style_v57.css
+
+> Автоматическая запись GitHub Actions; это не смысловое резюме чата.
