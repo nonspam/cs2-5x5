@@ -266,3 +266,16 @@ test('Match Room category and filter controls are plain text, not oval pills', (
   assert.match(pass, /\.match-grenade-breakdown nav button\.active[\s\S]*border-bottom-color:#ff5a1f!important/);
   assert.match(pass, /\.match-duel-comparison select[\s\S]*border-radius:0!important/);
 });
+
+
+test('Duels personal comparison can select any of ten players and shows all five opponents from the opposite team', () => {
+  assert.match(app, /duelCompareEntries=\[\.\.\.A\.map/);
+  assert.match(app, /\.\.\.B\.map/);
+  assert.match(app, /data-duel-comparison-for=/);
+  assert.match(app, /function setMatchRoomDuelPlayer/);
+  assert.match(app, /body\.hidden=body\.dataset\.duelComparisonFor!==playerId/);
+  assert.match(app, /optgroup label="КОМАНДА 1"/);
+  assert.match(app, /optgroup label="КОМАНДА 2"/);
+  assert.match(css, /Duels comparison player picker: plain text, no pill/);
+  assert.match(css, /border-radius:0!important/);
+});

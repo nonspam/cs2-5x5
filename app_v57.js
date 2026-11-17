@@ -1121,8 +1121,9 @@ function openMatchDetail(id,options={}){
  const statHighlights='<section class="match-stat-awards">'+statMvpCard+'<div class="match-stat-highlight-grid">'+statLeaderCard('БОЛЬШЕ ВСЕГО УБИЙСТВ',statMvp,statMvp?.kills,'is-kills-leader')+' '+statLeaderCard('НАИБОЛЬШИЙ УРОН',statDamageLeader,statDamageLeader?.damage)+' '+statLeaderCard('KAST',statKastLeader,statKastLeader?fmt(statKastLeader.kast,1)+'%':null)+' '+statLeaderCard('ЭНТРИ-УБИЙСТВА',statEntryLeader,statEntryLeader?.entry_kills)+'</div></section>';
  const duelMatrixHead=B.map(r=>'<th><div class="match-duel-opponent">'+matchRoomInitialAvatar(r.id||null,'xs',r.name)+'<b>'+esc(r.name)+'</b></div></th>').join('');
  const duelMatrixRows=A.map(r=>'<tr><th><div class="match-duel-opponent">'+matchRoomInitialAvatar(r.id||null,'xs',r.name)+'<b>'+esc(r.name)+'</b></div></th>'+B.map(opponent=>'<td><span class="match-duel-cell"><b>0</b><i>×</i><b>0</b></span></td>').join('')+'</tr>').join('');
- const duelCompareOptions=A.map((r,i)=>'<option value="'+esc(r.id||r.name)+'" '+(i===0?'selected':'')+'>'+esc(r.name)+'</option>').join('');
- const duelCompareRows=B.map(r=>'<tr><td>'+matchRoomInitialAvatar(r.id||null,'xs',r.name)+esc(r.name)+'</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>').join('');
+ const duelCompareEntries=[...A.map(r=>({key:'a:'+String(r.id||r.name),player:r,opponents:B})),...B.map(r=>({key:'b:'+String(r.id||r.name),player:r,opponents:A}))];
+ const duelCompareOptions='<optgroup label="КОМАНДА 1">'+A.map(r=>'<option value="'+esc('a:'+String(r.id||r.name))+'" '+(r===A[0]?'selected':'')+'>'+esc(r.name)+'</option>').join('')+'</optgroup><optgroup label="КОМАНДА 2">'+B.map(r=>'<option value="'+esc('b:'+String(r.id||r.name))+'">'+esc(r.name)+'</option>').join('')+'</optgroup>';
+ const duelCompareRows=duelCompareEntries.map(entry=>'<tbody data-duel-comparison-for="'+esc(entry.key)+'" '+(entry.key===duelCompareEntries[0]?.key?'':'hidden')+'>'+entry.opponents.map(r=>'<tr><td>'+matchRoomInitialAvatar(r.id||null,'xs',r.name)+esc(r.name)+'</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>').join('')+'</tbody>').join('');
  const zeroStatsNote='<div class="match-stat-zero-note">Показаны нулевые значения-заглушки. Это не фактическая статистика матча: источник пока не передаёт события дуэлей и использования снаряжения.</div><div class="match-equipment-side-note" hidden>Разделение по T/КТ пока недоступно: источник не передаёт сторону игрока для этих событий.</div>';
  const equipmentColumns={
   general:[['unused','Неиспольз. гранаты'],['used','Гранат использ.'],['successful','Успешн. гранат'],['damage','Общий урон'],['teamDamage','Урон команде'],['blinded','Противников ослеплено'],['blindTime','Время ослепления'],['teamBlinded','Ослепления команды'],['teamBlindTime','Время ослепления команды']],
@@ -1218,8 +1219,11 @@ function sortMatchRoomStats(key){
 function setMatchRoomDuelPlayer(playerId){
  const root=document.getElementById('matchRoomPage');if(!root)return;
  const select=root.querySelector('#matchDuelComparePlayer');if(select&&select.value!==playerId)select.value=playerId;
- const comparison=root.querySelector('.match-duel-comparison');comparison?.setAttribute('data-selected-player',playerId);
- const selectedName=select?.selectedOptions?.[0]?.textContent||'';const selectedLabel=comparison?.querySelector('[data-duel-selected-name]');if(selectedLabel)selectedLabel.textContent=selectedName;
+ const comparison=root.querySelector('.match-duel-comparison');if(!comparison)return;
+ comparison.setAttribute('data-selected-player',playerId);
+ comparison.querySelectorAll('[data-duel-comparison-for]').forEach(body=>{body.hidden=body.dataset.duelComparisonFor!==playerId;});
+ const selectedName=select?.selectedOptions?.[0]?.textContent||'';
+ const selectedLabel=comparison.querySelector('[data-duel-selected-name]');if(selectedLabel)selectedLabel.textContent=selectedName;
  window.__matchRoomDuelPlayer=playerId;
 }
 function setMatchRoomEquipmentCategory(category){
