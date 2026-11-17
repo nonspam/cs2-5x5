@@ -417,3 +417,12 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - Commits: CSS `f9857ef255fe30d3b818bc8860b3ef0f1bc0fc85`; HTML `e39292551badc226849dbf25c6dd92718c06b45d`; tests `1e9e7e85d3dfc6662e55f8cc2811f54cc913f3d3`.
 - Quality Gate run [44127100544](https://github.com/nonspam/cs2-5x5/actions/runs/44127100544): **329/329 passed**.
 - Browser visual acceptance is not yet confirmed. User should refresh the DEV profile and compare the identity/statistics separation. No production, DB, or Home layout changes.
+
+
+## 2026-11-17 — Match Room overview/statistics width adjustment (SOURCE + TESTS PASS; VISUAL REVIEW PENDING)
+- User screenshot showed Match Room overview and statistics content visually too narrow/small within the desktop viewport. This is horizontal canvas width, not a request to scale fonts or zoom UI.
+- Desktop Match Room content canvas widened from 1240px to 1360px; statistics awards block widened from 1080px to 1240px. Overview and Statistics views explicitly occupy the available content width. No transform/zoom/font scaling added; mobile/tablet breakpoints unchanged.
+- Stylesheet cache key: `matchroom-overview-statistics-width-20261117-v39`.
+- Commits: CSS `e122621019fa1e6cb9d495ce303251a5a8588377`; HTML `3c588003c809cba54109392404d221080c796d0c`; tests `c7383631ce8a7532079a618ca4da1092b668660c`.
+- Quality Gate run [44128113046](https://github.com/nonspam/cs2-5x5/actions/runs/44128113046): **330/330 passed**.
+- Browser visual acceptance pending. User should refresh Match Room and verify Overview + Statistics. Profile spacing and Home layout intentionally untouched.
