@@ -400,3 +400,11 @@ The owner reported that Profile showed the route underneath it (map forecast, AV
 - `style_v57.css`: MVP area widened to 1.55fr against a .78fr Top 4 column; MVP card fixed at 258px high; Top 4 rows compressed to 44px, with a smaller gap and a compact avatar/name/value grid.
 - `index.html` cache marker is `matchroom-statistics-layout-20261116-v4`.
 - Quality Gate [43944687653](https://github.com/nonspam/cs2-5x5/actions/runs/43944687653): **301 passed / 0 failed / 0 skipped**. Browser rendering remains unverified.
+
+
+## 2026-11-17 — Fix Profile mount collapsing its own content grid (SOURCE UPDATED; TEST/DEV QA PENDING)
+- Owner screenshot showed the identity card compressed to roughly 185px and the statistics/content column missing from view, while Home appeared restored.
+- Root cause confirmed in the latest CSS: the desktop grid rule incorrectly included both #playerProfileMount and its only child .faceit-exact-shell. Since the mount contains one shell child, making the mount itself a two-column grid constrained that entire shell to the first 252px track. The inner identity/content columns were therefore squeezed into that narrow track.
+- Corrected the cascade: #playerProfileMount is now a full-width block; only its direct .faceit-exact-shell child owns the 252px + flexible content grid with an 18px gutter. Added a regression assertion and bumped the stylesheet cache key to profile-mount-grid-fix-20261117-v37.
+- Source commits: CSS 9332805e5686fa0f099bc8ce53a03c64ad45d460; HTML ef01cb34a64f05d8a906b6b253c4abccbf25b2d7; tests ba906f58ca024ef703121ff01db3a49cd155b774.
+- Not yet verified: latest Quality Gate, DEV deployment, or browser screenshot. Do not claim the live DEV page is fixed until the corrected stylesheet is deployed and the profile is visually checked. Home layout rules were left unchanged.
